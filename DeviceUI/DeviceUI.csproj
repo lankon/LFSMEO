@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{78FCBDD7-F840-449E-9A6F-4F86889DB2A7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DeviceUI</RootNamespace>
+    <AssemblyName>DeviceUI</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Motion\F_AxisButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Motion\F_AxisButton.designer.cs">
+      <DependentUpon>F_AxisButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Motion\F_AxisSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Motion\F_AxisSetting.designer.cs">
+      <DependentUpon>F_AxisSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Motion\F_MotionSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Motion\F_MotionSetting.designer.cs">
+      <DependentUpon>F_MotionSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Motion\F_MotionSettingManage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Motion\F_AxisButton.resx">
+      <DependentUpon>F_AxisButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Motion\F_AxisSetting.resx">
+      <DependentUpon>F_AxisSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Motion\F_MotionSetting.resx">
+      <DependentUpon>F_MotionSetting.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CSharpApp\ToolFunction\ToolFunction.csproj">
+      <Project>{77b8d9d2-9f73-4ce7-9b42-9ede2a5b6945}</Project>
+      <Name>ToolFunction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
+      <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
+      <Name>DeviceCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

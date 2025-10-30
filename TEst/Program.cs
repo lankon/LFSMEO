@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LFSMEO
+namespace TEst
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace LFSMEO
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new F_MainForm());
+            Application.Run(new Form1());
         }
     }
 }

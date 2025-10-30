@@ -1,5 +1,5 @@
 ﻿
-namespace LFSMEO
+namespace TEst
 {
     partial class Form1
     {
