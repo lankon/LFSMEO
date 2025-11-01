@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DeviceCore
+{
+    public struct AXIS_INFO
+    {
+        //[Axis Configuration]
+        public string AXIS_TYPE;    //軸卡名稱
+        public int LINE_NO;         //軸卡線程
+        public int DEV_NO;          //軸卡軸編號
+        public int AXIS_USE;        //軸卡使用Y/N
+        public int LIMIT_LOGIC;     //硬體極限觸發邏輯
+        public int STOP_MODE;       //停止模式
+
+        //[Software Configuration]
+        public string AXIS_NANE;    //軸名稱
+        public int SW_LIMIT;        //軟體極限Y/N
+        public double PEL_POS;      //軟體正極限位置
+        public double MEL_POS;      //軟體負極限位置
+        public int REVERSE_MOVE;    //運動方向相反Y/N
+
+        //[Home Configuration]
+        public int MODE;            //歸Home模式
+        public int DIRECTION;       //方向
+        public int HOME_POS;        //原點位置
+        public int HOME_SHIFT;      //到原點後位移距離
+        public int MAX_VELOCITY;    //最大速度
+        public int HOEM_FIND_ORG_VELOCITY;  //搜尋原點速度
+        public int ACC;             //加速度
+    }
+    public enum MOTION_IO
+    {
+        ALM,
+        PEL,
+        MEL,
+        ORG,
+        SVON,
+        INP,
+        RDY,
+    }
+
+    public interface IMotionCard
+    {
+        bool Open();
+        string GetName();
+        bool SetMotionConfig();
+        short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
+        bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0);
+        bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
+        bool Servo_ONOff(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, bool flag = false);
+        //bool SetGoHomeParam(AXIS_INFO hOME_PARAM);
+        bool GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
+        double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
+        int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0);
+        int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start,
+                                          double Tacc, double Sacc, double Tdec, double Sdec);
+        int RelativeSMove(int axis, double position, double velocity_max, double velocity_start,
+                                          double Tacc, double Sacc, double Tdec, double Sdec);
+        
+    }
+}

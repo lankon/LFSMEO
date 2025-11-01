@@ -13,7 +13,7 @@ using ToolFunction;
 
 namespace LFSMEO.UI
 {
-    public partial class F_Equipment_Setting : Form
+    public partial class F_MachineSetting : Form
     {
         #region parameter define
         #endregion
@@ -39,7 +39,7 @@ namespace LFSMEO.UI
         
         #endregion
 
-        public F_Equipment_Setting()
+        public F_MachineSetting()
         {
             InitializeComponent();
 

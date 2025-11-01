@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToolFunction;
+using ToolFunction.Base;
 
 //using ToolFunction;
 

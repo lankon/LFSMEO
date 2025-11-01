@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestDll
+namespace DeviceFunction
 {
     public class Class1
     {

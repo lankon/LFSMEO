@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LFSMEO.Base_LFSMEO
+namespace LFSMEO
 {
     public  static partial class Scope
     {

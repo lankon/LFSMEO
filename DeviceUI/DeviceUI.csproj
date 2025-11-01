@@ -77,10 +77,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CSharpApp\ToolFunction\ToolFunction.csproj">
-      <Project>{77b8d9d2-9f73-4ce7-9b42-9ede2a5b6945}</Project>
-      <Name>ToolFunction</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>

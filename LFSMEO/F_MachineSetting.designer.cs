@@ -1,7 +1,7 @@
 ﻿
 namespace LFSMEO.UI
 {
-    partial class F_Equipment_Setting
+    partial class F_MachineSetting
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,6 @@ namespace LFSMEO.UI
             this.label1 = new System.Windows.Forms.Label();
             this.Cmbx_MachineType = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.Cmbx_ShowFormName = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +45,6 @@ namespace LFSMEO.UI
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.Cmbx_MachineType, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.Cmbx_ShowFormName, 1, 3);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
@@ -95,28 +93,14 @@ namespace LFSMEO.UI
             this.label3.Text = "Machine";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // Cmbx_ShowFormName
-            // 
-            this.Cmbx_ShowFormName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Cmbx_ShowFormName.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Cmbx_ShowFormName.FormattingEnabled = true;
-            this.Cmbx_ShowFormName.Items.AddRange(new object[] {
-            "NoUse",
-            "Use"});
-            this.Cmbx_ShowFormName.Location = new System.Drawing.Point(304, 114);
-            this.Cmbx_ShowFormName.Name = "Cmbx_ShowFormName";
-            this.Cmbx_ShowFormName.Size = new System.Drawing.Size(130, 28);
-            this.Cmbx_ShowFormName.TabIndex = 8;
-            this.Cmbx_ShowFormName.Tag = "0";
-            // 
-            // F_Equipment_Setting
+            // F_MachineSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "F_Equipment_Setting";
+            this.Name = "F_MachineSetting";
             this.Text = "F_Equipment_Setting";
             this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -131,6 +115,5 @@ namespace LFSMEO.UI
         private System.Windows.Forms.ComboBox Cmbx_MachineType;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox Cmbx_ShowFormName;
     }
 }

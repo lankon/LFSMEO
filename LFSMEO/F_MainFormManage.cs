@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 using ToolFunction;
-using LFSMEO.Base_LFSMEO;
+
 
 namespace LFSMEO
 {
@@ -67,6 +67,23 @@ namespace LFSMEO
 
             ApplicationSetting.ReadAllRecipe<eOEMSetting>();
             ApplicationSetting.SaveAllRecipe<eOEMSetting>();
+        }
+
+
+
+        private static void ConfigureServices(IServiceCollection services, MachineType type)
+        {
+            // 註冊「共用」的介面，但給予「不同」的實作
+            switch (type)
+            {
+                case MachineType.MachineA:
+                    services.AddSingleton<Form, MachineA_StartForm>();
+                    break;
+
+                case MachineType.MachineB:
+                    services.AddSingleton<Form, MachineB_StartForm>();
+                    break;
+            }
         }
 
     }
