@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeviceUI
+namespace ProbeTester.Base.SettingEnum
 {
-    public class Class1
+    public enum eOEMSetting
     {
+        Cmbx_ShowFormName,
     }
 }

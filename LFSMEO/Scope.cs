@@ -11,6 +11,8 @@ namespace LFSMEO
     {
         public static Panel MainPanel;          //F_MainForm:Pnl_Group
         public static Panel UpButtonPanel;      //F_MainForm:Pnl_Group1
+        
+        public static string LFSMEO_StartupPath = Application.StartupPath;
 
         //[Machine Parameter]
         public static EMachineType MachineType = EMachineType.NONE;

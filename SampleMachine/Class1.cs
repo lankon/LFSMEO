@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProbeTester
+namespace SampleMachine
 {
     public class Class1
     {
-
-
-
-
     }
 }

@@ -9,7 +9,7 @@ using DeviceCore;
 
 namespace Device_MN200
 {
-    class MN200:IMotionCard,IIOCard
+    public class MN200:IMotionCard,IIOCard
     {
         #region parameter define
         private Int16 nErrCode;

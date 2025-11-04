@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using ToolFunction;
+
 namespace LFSMEO
 {
     static class Program
@@ -16,7 +18,25 @@ namespace LFSMEO
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new F_MainForm());
+
+            GetMachineType();
+            LFSMEO_Assemble assemble = new LFSMEO_Assemble();
+            Form main_form = assemble.BuildAndGetMainForm();
+
+            Application.Run(main_form);
+        }
+
+        static EMachineType GetMachineType()
+        {
+            ApplicationSetting.ReadAllRecipe<eMachineSetting>();
+            int option = ApplicationSetting.Get_Int_Recipe<eMachineSetting>((int)eMachineSetting.Cmbx_MachineType);
+
+            if (option == 0)
+                Scope.MachineType = EMachineType.NONE;
+            else if (option == 1)
+                Scope.MachineType = EMachineType.VPT_3IN1;
+
+            return Scope.MachineType;
         }
     }
 }

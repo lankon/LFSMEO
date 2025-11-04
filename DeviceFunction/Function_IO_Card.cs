@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 
+using ToolFunction;
+using DeviceCore;
 
 namespace DeviceFunction
 {
@@ -45,7 +47,7 @@ namespace DeviceFunction
     public class Function_IO_Card
     {
         #region parameter define
-        private List<Base_Motion_IO_Card> IO = new List<Base_Motion_IO_Card>();
+        private List<IIOCard> IO = new List<IIOCard>();
         private List<IOData> IO_List = new List<IOData>();
         private Dictionary<string, IOData> ioListDict;
         #endregion
@@ -60,13 +62,13 @@ namespace DeviceFunction
                 {
                     if(IO[k].GetName() == "MN200")
                     {
-                        List<byte> LineNo = IO[k].Get_IO_LineNo();
-                        List<byte> DevNo = IO[k].Get_IO_DevNo();
+                        //List<byte> LineNo = IO[k].Get_IO_LineNo();
+                        //List<byte> DevNo = IO[k].Get_IO_DevNo();
 
-                        for (byte i = 0; i < LineNo.Count; i++)
-                        {
-                            IO[k].UpdateInput(lineNo: LineNo[i], devNo: DevNo[i]);
-                        }
+                        //for (byte i = 0; i < LineNo.Count; i++)
+                        //{
+                        //    IO[k].UpdateInput(lineNo: LineNo[i], devNo: DevNo[i]);
+                        //}
                     }
                     else if(IO[k].GetName() == "PCI_9111")
                     {
@@ -88,17 +90,21 @@ namespace DeviceFunction
         public bool Initial_All_IO()
         {
             bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false ;
-            
-            Base_Motion_IO_Card mN200 = new MN200();
-            Base_Motion_IO_Card pcis_dask = new Pcis_dask(Pcis_dask_param.PCI_9111DG);
-            Base_Motion_IO_Card APS = new APS();
 
-            if (mN200.Open() == true)
-                IO.Add(mN200);
-            if(pcis_dask.Open() == true)
-                IO.Add(pcis_dask);
-            if(APS.Open() == true)
-                IO.Add(APS);
+            //IIOCard mN200 = new MN200();
+            //IIOCard pcis_dask = new Pcis_dask(Pcis_dask_param.PCI_9111DG);
+            //IIOCard APS = new APS();
+
+            IIOCard mN200 = null;
+            IIOCard pcis_dask = null;
+            IIOCard APS = null;
+
+            //if (mN200.Open() == true)
+            //    IO.Add(mN200);
+            //if(pcis_dask.Open() == true)
+            //    IO.Add(pcis_dask);
+            //if(APS.Open() == true)
+            //    IO.Add(APS);
 
             for (int i = 0; i < IO.Count; i++)
             {

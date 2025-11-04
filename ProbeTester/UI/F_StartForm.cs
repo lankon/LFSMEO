@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using LFSMEO.Base_LFSMEO;
 using ToolFunction;
+using ProbeTester.Base.SettingEnum;
 
-namespace LFSMEO.UI
+namespace ProbeTester.UI
 {
-    public partial class F_MachineSetting : Form
+    public partial class F_StartForm : Form
     {
         #region parameter define
         #endregion
@@ -21,7 +21,7 @@ namespace LFSMEO.UI
         #region private function
         void InitialForm()
         {
-            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            ReadAllEnumRecipe();
             ApplicationSetting.UpdataRecipeToForm<eOEMSetting>(this);
 
             ShowHint();
@@ -29,37 +29,29 @@ namespace LFSMEO.UI
             if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
         }
+        private void ReadAllEnumRecipe()
+        {
+            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+        }
         void ShowHint()
         {
-
         }
         #endregion
 
         #region public function
-        
         #endregion
 
-        public F_MachineSetting()
+        public F_StartForm()
         {
             InitializeComponent();
 
             InitialForm();
         }
 
-        private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
+        private void Btn_Start_Click(object sender, EventArgs e)
         {
-            if (!this.Visible)
-            {
-                //儲存參數
-                ApplicationSetting.SaveRecipeFromForm<eOEMSetting>(this);
-                //重新讀取變數值
-                ApplicationSetting.ReadAllRecipe<eOEMSetting>();
-
-                //釋放記憶體資源
-                Tool.ReleaseButtonImages(this);
-                this.Close();
-                this.Dispose();
-            }
+            GC.Collect();
         }
     }
 }
