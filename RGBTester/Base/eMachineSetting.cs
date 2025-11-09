@@ -4,18 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LFSMEO
+namespace RGBTester.Base
 {
-    public enum EMachineType
-    {
-        NONE,
-        VPT_3IN1,
-        RGBTester,
-    }
-
     public enum eMachineSetting
     {
         Cmbx_MachineType,
     }
-
 }

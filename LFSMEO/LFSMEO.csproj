@@ -221,9 +221,17 @@
       <Project>{bfd18304-b910-4652-9208-384492b8ef81}</Project>
       <Name>Device_MN200</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_PCIS_DASK\Device_PCIS_DASK.csproj">
+      <Project>{bc7e3727-5a66-4475-b135-40382c3ee841}</Project>
+      <Name>Device_PCIS_DASK</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProbeTester\ProbeTester.csproj">
       <Project>{e38566f8-a449-4e97-af5e-d5b50a5ff910}</Project>
       <Name>ProbeTester</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RGBTester\RGBTester.csproj">
+      <Project>{361bd130-12a3-4bd0-b08e-88bf32c41891}</Project>
+      <Name>RGBTester</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>

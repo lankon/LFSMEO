@@ -4,14 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E38566F8-A449-4E97-AF5E-D5B50A5FF910}</ProjectGuid>
+    <ProjectGuid>{361BD130-12A3-4BD0-B08E-88BF32C41891}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProbeTester</RootNamespace>
-    <AssemblyName>ProbeTester</AssemblyName>
+    <RootNamespace>RGBTester</RootNamespace>
+    <AssemblyName>RGBTester</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,11 +52,23 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.9.0.10\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog, Version=4.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.4.3.0\lib\net471\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Async, Version=2.1.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Async.2.1.0\lib\net471\Serilog.Sinks.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.7.0.0\lib\net471\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
@@ -64,6 +79,9 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Channels, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Channels.8.0.0\lib\net462\System.Threading.Channels.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -80,21 +98,85 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\SettingEnum\eOEMSetting.cs" />
+    <Compile Include="Base\eMachineSetting.cs" />
+    <Compile Include="Base\eOEMSetting.cs" />
+    <Compile Include="Base\IF_MainForm.cs" />
+    <Compile Include="Base\IF_StateControl.cs" />
+    <Compile Include="IRGBTesterMachine.cs" />
+    <Compile Include="Base\IBaseMainTask.cs" />
+    <Compile Include="Base\IBaseTask.cs" />
+    <Compile Include="Logic\Thread\MainTask.cs" />
+    <Compile Include="Logic\Thread\SubTask.cs" />
+    <Compile Include="Logic\Thread\Task.cs" />
+    <Compile Include="RGBTesterAssemble.cs" />
+    <Compile Include="Base\Scope.cs" />
+    <Compile Include="Logic\F_MainFormLogic.cs" />
+    <Compile Include="Logic\TestDataCalculate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RGBTesterMachine.cs" />
+    <Compile Include="UI\F_Equipment_Setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_Equipment_Setting.designer.cs">
+      <DependentUpon>F_Equipment_Setting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_MainForm.designer.cs">
+      <DependentUpon>F_MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_OEM_Setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_OEM_Setting.designer.cs">
+      <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_StartForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\F_StartForm.designer.cs">
       <DependentUpon>F_StartForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_StartForm_ButtonGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_StartForm_ButtonGroup.designer.cs">
+      <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_StateControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_StateControl.designer.cs">
+      <DependentUpon>F_StateControl.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="UI\F_Equipment_Setting.resx">
+      <DependentUpon>F_Equipment_Setting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_MainForm.resx">
+      <DependentUpon>F_MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_OEM_Setting.resx">
+      <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StartForm.resx">
       <DependentUpon>F_StartForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_StartForm_ButtonGroup.resx">
+      <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_StateControl.resx">
+      <DependentUpon>F_StateControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
+      <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
+      <Name>DeviceCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
       <Name>ToolFunction</Name>
@@ -105,4 +187,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Serilog.4.3.0\build\Serilog.targets'))" />
+  </Target>
 </Project>

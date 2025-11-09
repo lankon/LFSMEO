@@ -28,7 +28,7 @@ namespace ToolFunction
             {
                 //Application.StartupPath
 
-                string customConfigPath = enumName + ".exe.Config";
+                string customConfigPath = Application.StartupPath + "\\Setting\\" + enumName + ".exe.Config";
 
                 ExeConfigurationFileMap configMap = new ExeConfigurationFileMap
                 {
@@ -62,49 +62,76 @@ namespace ToolFunction
         public static void ReadAllRecipe<T>(string function = "flash") where T : Enum
         {
             string enumName = typeof(T).Name;
-
-            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap
-            {
-                ExeConfigFilename = enumName + ".exe.Config"
-            };
-
             var infoArray = GetInfoArray<T>();
+            Configuration config; // 我們將在迴圈外，只載入一次
 
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            // -----------------------------------------------------------------
+            // 步驟 1: 根據 Enum 名稱，決定要載入「哪一個」設定檔
+            // -----------------------------------------------------------------
+            if (enumName == "eDefaultSetting")
+            {
+                // 載入主程式的 .config (例如 LFSMEO.exe.config)
+                config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            }
+            else
+            {
+                // --- 這是「客製化 .config」的全新路徑邏輯 ---
+
+                // 1. 【關鍵】使用這個來取代 Application.StartupPath
+                //    (它不需要參考 System.Windows.Forms)
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+                // 2. 使用您在 SaveAllRecipe 中「相同」的資料夾名稱
+                //    (在您的範例中是 "Setting")
+                string configFolder = System.IO.Path.Combine(baseDir, "Setting");
+
+                // 3. 組合出「完整的絕對路徑」
+                string fileName = enumName + ".exe.Config";
+                string customConfigPath = System.IO.Path.Combine(configFolder, fileName);
+
+                // 4. 【重要】檢查檔案是否存在
+                if (!System.IO.File.Exists(customConfigPath))
+                {
+                    // 檔案不存在，我們無法讀取
+                    // 快速將所有值設為 "Not Found" 並返回
+                    foreach (var value in Enum.GetValues(typeof(T)))
+                    {
+                        infoArray[(int)value] = "Not Found";
+                    }
+                    return; // 結束方法
+                }
+
+                // 5. 載入客製化的 .config 檔案 (只在迴圈外做這一次)
+                ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap
+                {
+                    ExeConfigFilename = customConfigPath // 使用絕對路徑
+                };
+                config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+            }
+
+            // -----------------------------------------------------------------
+            // 步驟 2: 迴圈遍歷 Enum，從「已經載入」的 config 中讀取資料
+            // -----------------------------------------------------------------
+
+            // 取得設定檔中的 appSettings 區段
+            KeyValueConfigurationCollection appSettings = config.AppSettings.Settings;
 
             foreach (var value in Enum.GetValues(typeof(T)))
             {
                 string eName = Enum.GetName(typeof(T), value);
 
-                if (enumName == "eDefaultSetting") //預設存放檔名-> {專案名稱}.exe.config
+                if (enumName == "eDefaultSetting" && function == "flash")
                 {
-                    if (function == "flash") //快閃記憶體讀取
-                    {
-
-                        var appSettings = ConfigurationManager.AppSettings;
-                        infoArray[(int)value] = appSettings[eName] ?? "Not Found";
-                    }
-                    else if (function == "ReRead") //重新讀取{專案名稱}.exe.config檔案內參數
-                    {
-                        var setting = config.AppSettings.Settings[eName]?.Value;
-                        if (string.IsNullOrEmpty(setting))
-                        {
-                            //未設定，找不到參數
-                            infoArray[(int)value] = "Not Found";
-                        }
-                        else
-                        {
-                            infoArray[(int)value] = setting;
-                        }
-                    }
+                    // 「快閃」模式是特例，它會讀取「目前記憶體中」的快取設定
+                    // (這是您原本的邏輯，我們保留它)
+                    infoArray[(int)value] = ConfigurationManager.AppSettings[eName] ?? "Not Found";
                 }
                 else
                 {
-                    Configuration customConfig = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
-                    KeyValueConfigurationCollection appSettings = customConfig.AppSettings.Settings;
-
+                    // 對於「ReRead」或「任何客製化 config」，
+                    // 我們都從「步驟 1」載入的 'config' 物件中讀取
                     string setting = appSettings[eName]?.Value;
-                    infoArray[(int)value] = setting;
+                    infoArray[(int)value] = setting ?? "Not Found";
                 }
             }
         }
@@ -120,9 +147,7 @@ namespace ToolFunction
             }
             else
             {
-                //Application.StartupPath
-
-                string customConfigPath = enumName + ".exe.Config";
+                string customConfigPath = Application.StartupPath + "\\Setting\\" + enumName + ".exe.Config";
 
                 // 設定自訂的配置檔路徑
                 ExeConfigurationFileMap configMap = new ExeConfigurationFileMap
@@ -155,7 +180,7 @@ namespace ToolFunction
             {
                 //Application.StartupPath
 
-                string customConfigPath = enumName + ".exe.Config";
+                string customConfigPath = Application.StartupPath + "\\Setting\\" + enumName + ".exe.Config";
 
                 // 設定自訂的配置檔路徑
                 ExeConfigurationFileMap configMap = new ExeConfigurationFileMap

@@ -35,6 +35,8 @@ namespace LFSMEO
                 Scope.MachineType = EMachineType.NONE;
             else if (option == 1)
                 Scope.MachineType = EMachineType.VPT_3IN1;
+            else if(option == 2)
+                Scope.MachineType = EMachineType.RGBTester;
 
             return Scope.MachineType;
         }

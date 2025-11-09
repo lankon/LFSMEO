@@ -11,40 +11,7 @@ using DeviceCore;
 
 namespace DeviceFunction
 {
-    public enum EIOCardType
-    {
-        None = 0,
-        PCI_9111,
-        MN200,
-        AMP_204C,
-    }
-    public enum EIOName
-    {
-        #region Input
-        SafePos_Sensor,
-
-        #endregion
-
-        #region Output
-
-        #endregion
-    }
-
-    public class IOData
-    {
-        public string Title_IO { get; set; }
-        public string Title_Name { get; set; }
-        public string Title_Description { get; set; }
-        public string Title_CardType { get; set; }
-        public int Title_CardNum { get; set; }
-        public int Title_LineNum { get; set; }
-        public int Title_DevNum { get; set; }
-        public int Title_IO_Num { get; set; }
-        public string Title_Status { get; set; }
-        public string Title_Inverse { get; set; }
-    }
-
-    public class Function_IO_Card
+    public class Function_IO_Card: IFunction_IO_Card
     {
         #region parameter define
         private List<IIOCard> IO = new List<IIOCard>();
@@ -127,34 +94,47 @@ namespace DeviceFunction
 
             return true;
         }
-        public void Update_IO_List(DataGridView DGV, List<IOData> io_list)
+        //public void Update_IO_List(DataGridView DGV, List<IOData> io_list)
+        //{
+        //    io_list.Clear();
+        //    IO_List.Clear();
+
+        //    foreach (DataGridViewRow row in DGV.Rows)
+        //    {
+        //        if (row.IsNewRow) continue;
+
+        //        var data = new IOData()
+        //        {
+        //            Title_IO = row.Cells["Title_IO"]?.Value?.ToString(),
+        //            Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
+        //            Title_Description = row.Cells["Title_Description"]?.Value?.ToString(),
+        //            Title_CardType = row.Cells["Title_CardType"]?.Value?.ToString(),
+        //            Title_IO_Num = Convert.ToInt32(row.Cells["Title_IO_Num"]?.Value ?? "-1"),
+        //            Title_Status = row.Cells["Title_Status"]?.Value?.ToString(),
+        //            Title_Inverse = row.Cells["Title_Inverse"]?.Value?.ToString(),
+        //            Title_CardNum = Convert.ToInt32(row.Cells["Title_CardNum"]?.Value ?? "-1"),
+        //            Title_LineNum = Convert.ToInt32(row.Cells["Title_LineNum"]?.Value ?? "-1"),
+        //            Title_DevNum = Convert.ToInt32(row.Cells["Title_DevNum"]?.Value ?? "-1"),
+        //        };
+
+        //        io_list.Add(data);
+        //        IO_List.Add(data);
+        //    }
+
+        //    ioListDict = IO_List.GroupBy(x => x.Title_Name).ToDictionary(g => g.Key, g => g.First());
+        //}
+        public void LoadConfiguration(List<IOData> newIoDataList)
         {
-            io_list.Clear();
+            // 1. 清除舊的內部資料
             IO_List.Clear();
 
-            foreach (DataGridViewRow row in DGV.Rows)
-            {
-                if (row.IsNewRow) continue;
+            // 2. 載入新的資料
+            IO_List.AddRange(newIoDataList);
 
-                var data = new IOData()
-                {
-                    Title_IO = row.Cells["Title_IO"]?.Value?.ToString(),
-                    Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
-                    Title_Description = row.Cells["Title_Description"]?.Value?.ToString(),
-                    Title_CardType = row.Cells["Title_CardType"]?.Value?.ToString(),
-                    Title_IO_Num = Convert.ToInt32(row.Cells["Title_IO_Num"]?.Value ?? "-1"),
-                    Title_Status = row.Cells["Title_Status"]?.Value?.ToString(),
-                    Title_Inverse = row.Cells["Title_Inverse"]?.Value?.ToString(),
-                    Title_CardNum = Convert.ToInt32(row.Cells["Title_CardNum"]?.Value ?? "-1"),
-                    Title_LineNum = Convert.ToInt32(row.Cells["Title_LineNum"]?.Value ?? "-1"),
-                    Title_DevNum = Convert.ToInt32(row.Cells["Title_DevNum"]?.Value ?? "-1"),
-                };
-
-                io_list.Add(data);
-                IO_List.Add(data);
-            }
-
-            ioListDict = IO_List.GroupBy(x => x.Title_Name).ToDictionary(g => g.Key, g => g.First());
+            // 3. 重建字典 (您原本的邏輯)
+            ioListDict = IO_List
+                        .GroupBy(x => x.Title_Name)
+                        .ToDictionary(g => g.Key, g => g.First());
         }
         public bool GetInputStatus(EIOCardType CardType, byte lineNo, byte devNo, byte port, int iList)
         {

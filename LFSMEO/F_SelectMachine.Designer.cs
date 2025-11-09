@@ -65,7 +65,8 @@ namespace LFSMEO
             this.Cmbx_MachineType.FormattingEnabled = true;
             this.Cmbx_MachineType.Items.AddRange(new object[] {
             "NONE",
-            "VPT_3IN1"});
+            "VPT_3IN1",
+            "RGBTester"});
             this.Cmbx_MachineType.Location = new System.Drawing.Point(163, 3);
             this.Cmbx_MachineType.Name = "Cmbx_MachineType";
             this.Cmbx_MachineType.Size = new System.Drawing.Size(155, 28);
