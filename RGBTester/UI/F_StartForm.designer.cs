@@ -60,6 +60,9 @@ namespace RGBTester.UI
             this.PicBx_Mapping = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.button10 = new System.Windows.Forms.Button();
+            this.Btn_Open = new System.Windows.Forms.Button();
+            this.Btn_StartChiller = new System.Windows.Forms.Button();
+            this.panel1.SuspendLayout();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -75,6 +78,8 @@ namespace RGBTester.UI
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.Btn_StartChiller);
+            this.panel1.Controls.Add(this.Btn_Open);
             this.panel1.Location = new System.Drawing.Point(7, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(809, 525);
@@ -412,6 +417,25 @@ namespace RGBTester.UI
             this.button10.TabIndex = 37;
             this.button10.UseVisualStyleBackColor = true;
             // 
+            // Btn_Open
+            // 
+            this.Btn_Open.Location = new System.Drawing.Point(282, 129);
+            this.Btn_Open.Name = "Btn_Open";
+            this.Btn_Open.Size = new System.Drawing.Size(125, 43);
+            this.Btn_Open.TabIndex = 0;
+            this.Btn_Open.Text = "Open";
+            this.Btn_Open.UseVisualStyleBackColor = true;
+            // 
+            // Btn_StartChiller
+            // 
+            this.Btn_StartChiller.Location = new System.Drawing.Point(282, 178);
+            this.Btn_StartChiller.Name = "Btn_StartChiller";
+            this.Btn_StartChiller.Size = new System.Drawing.Size(125, 43);
+            this.Btn_StartChiller.TabIndex = 1;
+            this.Btn_StartChiller.Text = "Start";
+            this.Btn_StartChiller.UseVisualStyleBackColor = true;
+            this.Btn_StartChiller.Click += new System.EventHandler(this.Btn_StartChiller_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -426,6 +450,7 @@ namespace RGBTester.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StartForm";
             this.Text = "F_StartForm";
+            this.panel1.ResumeLayout(false);
             this.Pnl_MainButton.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -472,5 +497,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.PictureBox PicBx_Mapping;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button Btn_StartChiller;
+        private System.Windows.Forms.Button Btn_Open;
     }
 }

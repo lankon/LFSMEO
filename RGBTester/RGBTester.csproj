@@ -102,6 +102,7 @@
     <Compile Include="Base\eOEMSetting.cs" />
     <Compile Include="Base\IF_MainForm.cs" />
     <Compile Include="Base\IF_StateControl.cs" />
+    <Compile Include="Logic\F_StartFormLogic.cs" />
     <Compile Include="IRGBTesterMachine.cs" />
     <Compile Include="Base\IBaseMainTask.cs" />
     <Compile Include="Base\IBaseTask.cs" />

@@ -11,5 +11,6 @@ namespace RGBTester
     public interface IRGBTesterMachine
     {
         IFunction_IO_Card DIOL { get; }
+        IChillerControl Chiller { get; }
     }
 }

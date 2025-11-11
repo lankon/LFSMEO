@@ -11,12 +11,23 @@ using System.Windows.Forms;
 using ToolFunction;
 using RGBTester.Base;
 
+using RGBTester.Logic;
+
 
 namespace RGBTester.UI
 {
     public partial class F_StartForm : Form
     {
+        public F_StartForm(F_StartFormLogic f_StartFormLogic)
+        {
+            InitializeComponent();
+
+            StartFormLogic = f_StartFormLogic;
+            //InitialForm();
+        }
+
         #region parameter define
+        F_StartFormLogic StartFormLogic;
         #endregion
 
         #region private function
@@ -43,12 +54,7 @@ namespace RGBTester.UI
         #region public function
         #endregion
 
-        public F_StartForm()
-        {
-            InitializeComponent();
 
-            //InitialForm();
-        }
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
@@ -57,6 +63,11 @@ namespace RGBTester.UI
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
+        }
+
+        private void Btn_StartChiller_Click(object sender, EventArgs e)
+        {
+            StartFormLogic.ChillerStart();
         }
     }
 }

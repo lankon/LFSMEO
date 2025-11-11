@@ -11,10 +11,12 @@ namespace RGBTester
     public class RGBTesterMachine:IRGBTesterMachine
     {
         public IFunction_IO_Card DIOL { get; }
+        public IChillerControl Chiller { get; }
 
-        public RGBTesterMachine(IFunction_IO_Card iOCard)
+        public RGBTesterMachine(IFunction_IO_Card iOCard, IChillerControl chillerControl)
         {
             DIOL = iOCard;
+            Chiller = chillerControl;
         }
     }
 }

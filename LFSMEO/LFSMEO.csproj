@@ -217,6 +217,10 @@
       <Project>{8ff1cdcb-02f4-41d7-be1e-69c93e2e9e96}</Project>
       <Name>DeviceFunction</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_Klzx\Device_Klzx.csproj">
+      <Project>{9c7c95d6-1c0f-4aeb-90f3-047e24034952}</Project>
+      <Name>Device_Klzx</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Device_MN200\Device_MN200.csproj">
       <Project>{bfd18304-b910-4652-9208-384492b8ef81}</Project>
       <Name>Device_MN200</Name>

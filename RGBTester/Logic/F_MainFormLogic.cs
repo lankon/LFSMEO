@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ToolFunction;
 
 using RGBTester.Base;
+using DeviceCore;
 
 namespace RGBTester.Logic
 {
@@ -19,12 +20,15 @@ namespace RGBTester.Logic
         #region parameter define
         IF_MainForm MainForm;
         IBaseMainTask MainTask;
+        
         #endregion
 
         public void ReadAllSetting()
         {
             ApplicationSetting.ReadAllRecipe<eOEMSetting>();
         }
+
+        
 
         public void SetForm(IF_MainForm f_MainForm)
         {

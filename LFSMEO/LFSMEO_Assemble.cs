@@ -12,6 +12,7 @@ using DeviceCore;
 using DeviceFunction;
 using Device_MN200;
 using Device_PCIS_DASK;
+using Device_Klzx;
 
 //[Machine]
 using RGBTester;
@@ -52,14 +53,17 @@ namespace LFSMEO
         {
             MN200 mn200 = new MN200();
             Pcis_dask pcis_dask = new Pcis_dask(Pcis_dask_param.PCI_9111DG);
+            ChillerControl_Klzx Klxz = new ChillerControl_Klzx();
 
             // 同一個實例，註冊成多個介面
             services.AddSingleton(mn200);
             services.AddSingleton(pcis_dask);
+            services.AddSingleton(Klxz);
 
             services.AddSingleton<IMotionCard>(sp => sp.GetRequiredService<MN200>());
             services.AddSingleton<IIOCard>(sp => sp.GetRequiredService<MN200>());
             services.AddSingleton<IIOCard>(sp => sp.GetRequiredService<Pcis_dask>());
+            services.AddSingleton<IChillerControl>(sp => sp.GetRequiredService<ChillerControl_Klzx>());
 
 
             // --- 步驟 3: 註冊「管理者」(DeviceFunction) ---

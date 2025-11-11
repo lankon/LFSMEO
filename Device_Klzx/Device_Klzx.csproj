@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{984A1DB1-08F4-4BFD-8FCE-B78C97BBB83F}</ProjectGuid>
+    <ProjectGuid>{9C7C95D6-1C0F-4AEB-90F3-047E24034952}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeviceCore</RootNamespace>
-    <AssemblyName>DeviceCore</AssemblyName>
+    <RootNamespace>Device_Klzx</RootNamespace>
+    <AssemblyName>Device_Klzx</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,12 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IChillerControl.cs" />
-    <Compile Include="IFunction_IO_Card.cs" />
-    <Compile Include="IFunction_MotionCard.cs" />
-    <Compile Include="IIOCard.cs" />
-    <Compile Include="IMotionCard.cs" />
+    <Compile Include="ChillerControl_Klzx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
+      <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
+      <Name>DeviceCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

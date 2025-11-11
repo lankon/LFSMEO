@@ -24,6 +24,7 @@ namespace RGBTester
             services.AddSingleton<F_MainForm>();
             services.AddSingleton<F_MainFormLogic>();
             services.AddSingleton<F_StartForm>();
+            services.AddSingleton<F_StartFormLogic>();
             services.AddSingleton<F_StartForm_ButtonGroup>();
             
             services.AddTransient<F_OEM_Setting>();
