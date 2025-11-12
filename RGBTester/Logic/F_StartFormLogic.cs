@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO.Ports;
 
 using DeviceCore;
 
@@ -22,12 +23,12 @@ namespace RGBTester.Logic
         #region public function
         public void OpenChillerComm()
         {
-            //Chiller.Open();
+            Chiller.Open("COM8",9600, Parity.None, 8, StopBits.One);
         }
 
-        public void ChillerStart()
+        public void GetChillerStatus()
         {
-            Chiller.StartChiller();
+            Chiller.GetStatus();
         }
         #endregion
     }

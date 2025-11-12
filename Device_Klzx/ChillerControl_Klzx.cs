@@ -12,8 +12,18 @@ namespace Device_Klzx
     public class ChillerControl_Klzx:IChillerControl
     {
         #region parameter define
+        public double Temperature { get; set; } = 0.0;
+        public bool bRunning { get; set; } = false;
         private SerialPort _serialPort;
         private byte _deviceAddress = 0x01;
+        private ASK_TYPE AskType = ASK_TYPE.STATUS;
+
+        enum ASK_TYPE
+        {
+            START,
+            STOP,
+            STATUS,
+        }
         #endregion
 
         #region private function
@@ -26,7 +36,7 @@ namespace Device_Klzx
             {
                 throw new InvalidOperationException("通訊埠尚未開啟。");
             }
-
+            
             // 1. 創建一個包含CRC的完整幀
             byte[] fullFrame = new byte[commandData.Length + 2];
             Array.Copy(commandData, fullFrame, commandData.Length);
@@ -67,18 +77,45 @@ namespace Device_Klzx
 
             return new byte[] { (byte)(crc & 0xFF), (byte)(crc >> 8) };
         }
+
+        /// <summary>
+        /// 解封包
+        /// </summary>
+        /// <param name="receive"></param>
+        private void UnPack(byte[] receive)
+        {
+            if(AskType == ASK_TYPE.STATUS)
+            {
+                //[運行狀態]
+                short statusCode = (short)((receive[3] << 8) | receive[4]);
+                switch(statusCode)
+                {
+                    case 2:
+                        bRunning = true;    //設備運作中
+                        break;
+                    default:
+                        bRunning = false;   //設備停止中
+                        break;
+                }
+                
+                //[溫度]
+                short rawTemperature = (short)((receive[17] << 8) | receive[18]);
+                Temperature = rawTemperature / 10.0;
+            }
+        }
         #endregion
 
         /// <summary>
-        /// 1. 開啟通訊指令 (開啟 Serial Port)
+        /// 開啟通訊指令 (開啟 Serial Port)
         /// </summary>
-        public bool Open(string port, int baud_rate, StopBits stopBits, Parity parity)
+        public bool Open(string port, int baud_rate, Parity parity, int data_bits, StopBits stopBits)
         {
             _serialPort = new SerialPort(port);
             _serialPort.BaudRate = baud_rate;
-            _serialPort.StopBits = stopBits;
             _serialPort.Parity = parity;
-
+            _serialPort.DataBits = data_bits;
+            _serialPort.StopBits = stopBits;
+            
             _serialPort.ReadTimeout = 500;
             _serialPort.WriteTimeout = 500;
 
@@ -97,7 +134,7 @@ namespace Device_Klzx
         }
 
         /// <summary>
-        /// 5. 關閉通訊指令 (關閉 Serial Port)
+        /// 關閉通訊指令 (關閉 Serial Port)
         /// </summary>
         public void Close()
         {
@@ -115,6 +152,8 @@ namespace Device_Klzx
             int bytesToRead = _serialPort.BytesToRead;
             byte[] buffer = new byte[bytesToRead];
             _serialPort.Read(buffer, 0, bytesToRead);
+
+            UnPack(buffer);
 
             return buffer;
         }
@@ -152,7 +191,7 @@ namespace Device_Klzx
         }
 
         /// <summary>
-        /// 3. 設定溫度指令
+        /// 設定溫度指令
         /// </summary>
         /// <param name="temperature">要設定的溫度 (例如 20.5)</param>
         public void SetTemperature(double temperature)
@@ -184,6 +223,22 @@ namespace Device_Klzx
                 0x00, 0x07,     // 數據地址 (Hi: 0x04, Lo: 0x01)
                 0x00,           // 數據個數 (Hi)
                 0x01            // 數據個數 (Lo)
+            };
+
+            SendModbusCommand(commandData);
+        }
+
+        public void GetStatus()
+        {
+            AskType = ASK_TYPE.STATUS;
+            
+            byte[] commandData = new byte[]
+            {
+                _deviceAddress, // 設備地址
+                0x04,           // 功能碼
+                0x00, 0x00,     // 數據地址 (Hi,Lo)
+                0x00,           // 數據個數 (Hi)
+                0x08            // 數據個數 (Lo)
             };
 
             SendModbusCommand(commandData);

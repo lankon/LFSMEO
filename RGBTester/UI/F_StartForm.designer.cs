@@ -31,6 +31,8 @@ namespace RGBTester.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Btn_GetChillerStatus = new System.Windows.Forms.Button();
+            this.Btn_Open = new System.Windows.Forms.Button();
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
             this.Btn_Load = new System.Windows.Forms.Button();
             this.Btn_Start = new System.Windows.Forms.Button();
@@ -60,8 +62,7 @@ namespace RGBTester.UI
             this.PicBx_Mapping = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.button10 = new System.Windows.Forms.Button();
-            this.Btn_Open = new System.Windows.Forms.Button();
-            this.Btn_StartChiller = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -78,12 +79,33 @@ namespace RGBTester.UI
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.Btn_StartChiller);
+            this.panel1.Controls.Add(this.button8);
+            this.panel1.Controls.Add(this.Btn_GetChillerStatus);
             this.panel1.Controls.Add(this.Btn_Open);
             this.panel1.Location = new System.Drawing.Point(7, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(809, 525);
             this.panel1.TabIndex = 0;
+            // 
+            // Btn_GetChillerStatus
+            // 
+            this.Btn_GetChillerStatus.Location = new System.Drawing.Point(162, 178);
+            this.Btn_GetChillerStatus.Name = "Btn_GetChillerStatus";
+            this.Btn_GetChillerStatus.Size = new System.Drawing.Size(125, 43);
+            this.Btn_GetChillerStatus.TabIndex = 1;
+            this.Btn_GetChillerStatus.Text = "Get Status";
+            this.Btn_GetChillerStatus.UseVisualStyleBackColor = true;
+            this.Btn_GetChillerStatus.Click += new System.EventHandler(this.Btn_GetChillerStatus_Click);
+            // 
+            // Btn_Open
+            // 
+            this.Btn_Open.Location = new System.Drawing.Point(282, 129);
+            this.Btn_Open.Name = "Btn_Open";
+            this.Btn_Open.Size = new System.Drawing.Size(125, 43);
+            this.Btn_Open.TabIndex = 0;
+            this.Btn_Open.Text = "Open";
+            this.Btn_Open.UseVisualStyleBackColor = true;
+            this.Btn_Open.Click += new System.EventHandler(this.Btn_Open_Click);
             // 
             // Pnl_MainButton
             // 
@@ -417,24 +439,14 @@ namespace RGBTester.UI
             this.button10.TabIndex = 37;
             this.button10.UseVisualStyleBackColor = true;
             // 
-            // Btn_Open
+            // button8
             // 
-            this.Btn_Open.Location = new System.Drawing.Point(282, 129);
-            this.Btn_Open.Name = "Btn_Open";
-            this.Btn_Open.Size = new System.Drawing.Size(125, 43);
-            this.Btn_Open.TabIndex = 0;
-            this.Btn_Open.Text = "Open";
-            this.Btn_Open.UseVisualStyleBackColor = true;
-            // 
-            // Btn_StartChiller
-            // 
-            this.Btn_StartChiller.Location = new System.Drawing.Point(282, 178);
-            this.Btn_StartChiller.Name = "Btn_StartChiller";
-            this.Btn_StartChiller.Size = new System.Drawing.Size(125, 43);
-            this.Btn_StartChiller.TabIndex = 1;
-            this.Btn_StartChiller.Text = "Start";
-            this.Btn_StartChiller.UseVisualStyleBackColor = true;
-            this.Btn_StartChiller.Click += new System.EventHandler(this.Btn_StartChiller_Click);
+            this.button8.Location = new System.Drawing.Point(330, 178);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(125, 43);
+            this.button8.TabIndex = 2;
+            this.button8.Text = "Get Response";
+            this.button8.UseVisualStyleBackColor = true;
             // 
             // F_StartForm
             // 
@@ -497,7 +509,8 @@ namespace RGBTester.UI
         private System.Windows.Forms.PictureBox PicBx_Mapping;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button Btn_StartChiller;
+        private System.Windows.Forms.Button Btn_GetChillerStatus;
         private System.Windows.Forms.Button Btn_Open;
+        private System.Windows.Forms.Button button8;
     }
 }

@@ -9,11 +9,14 @@ namespace DeviceCore
 {
     public interface IChillerControl
     {
-        bool Open(string port, int baud_rate, StopBits stopBits, Parity parity);
+        double Temperature { get; set; }
+        bool bRunning { get; set; }
+        bool Open(string port, int baud_rate, Parity parity, int data_bits, StopBits stopBits);
         void Close();
         void StartChiller();
         void StopChiller();
         void SetTemperature(double temperature);
         void GetTemerature();
+        void GetStatus();
     }
 }
