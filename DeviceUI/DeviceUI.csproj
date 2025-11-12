@@ -61,7 +61,6 @@
     <Compile Include="Motion\F_MotionSetting.designer.cs">
       <DependentUpon>F_MotionSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Motion\F_MotionSettingManage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

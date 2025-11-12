@@ -7,18 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using ToolFunction;
-using ToolFunction.Base;
-
-//using ToolFunction;
-
+using DeviceCore;
 
 namespace DeviceUI.Motion
 {
-    public partial class F_AxisButton: Form, IF_MotionSetting
+    public partial class F_AxisButton: Form, IF_AxisButton
     {
+        public F_AxisButton()
+        {
+            InitializeComponent();
+            InitialForm();
+        }
+
+
         #region parameter define
-        F_MotionSettingManage f_MotionSettingManage;
+        F_MotionSettingLogic f_MotionSettingManage;
         List<Panel> PnlPartList = new List<Panel>();
         private int curPnlPart = 0;
         private int CurBtnNum = 0;
@@ -35,8 +40,8 @@ namespace DeviceUI.Motion
 
             SetHint();
 
-            if (ApplicationSetting.Get_Int_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == 1)
-                Tool.ShowFormName(this);
+            //if (ApplicationSetting.Get_Int_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == 1)
+            //    Tool.ShowFormName(this);
 
             PnlPartList.Add(Pnl_Part1);
             PnlPartList.Add(Pnl_Part2);
@@ -100,19 +105,7 @@ namespace DeviceUI.Motion
         {
             return CurBtnNum;
         }
-        public void SetMediator(F_MotionSettingManage med)
-        {
-            f_MotionSettingManage = med;
-        }
         #endregion
-
-        public F_AxisButton()
-        {
-            InitializeComponent();
-
-
-            InitialForm();
-        }
 
         private void Btn_Axis0_Click(object sender, EventArgs e)
         {

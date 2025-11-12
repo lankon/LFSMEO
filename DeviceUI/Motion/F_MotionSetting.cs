@@ -9,15 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using ToolFunction;
+using DeviceCore;
 
 namespace DeviceUI.Motion
 {    
     public partial class F_MotionSetting : Form
     {
         #region parameter define
-        F_AxisButton f_AxisButton = new F_AxisButton();
-        F_AxisSetting f_AxisSetting = new F_AxisSetting();
-        F_MotionSettingManage Mediator = new F_MotionSettingManage();
         #endregion
 
         #region private function
@@ -28,8 +26,8 @@ namespace DeviceUI.Motion
 
             ShowHint();
 
-            if (ApplicationSetting.Get_Bool_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == true)
-                Tool.ShowFormName(this, 1);    //可開選項設定是否顯示
+            //if (ApplicationSetting.Get_Bool_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == true)
+            //    Tool.ShowFormName(this, 1);    //可開選項設定是否顯示
 
             f_AxisButton = new F_AxisButton();
             Tool.SetForm(Pnl_AxisButton, f_AxisButton);
@@ -38,10 +36,6 @@ namespace DeviceUI.Motion
             f_AxisSetting = new F_AxisSetting();
             Tool.SetForm(Pnl_AxisSetting, f_AxisSetting);
             f_AxisSetting.Show();
-
-            Mediator.SetForm(f_AxisButton);
-            Mediator.SetForm(f_AxisSetting);
-
         }
         private void ShowHint()
         {
@@ -70,9 +64,9 @@ namespace DeviceUI.Motion
                 ApplicationSetting.ReadAllRecipe<eMotionSetting>();
 
                 //釋放記憶體資源
-                Tool.ReleaseButtonImages(this);
-                this.Close();
-                this.Dispose();
+                //Tool.ReleaseButtonImages(this);
+                //this.Close();
+                //this.Dispose();
             }
         }
     }

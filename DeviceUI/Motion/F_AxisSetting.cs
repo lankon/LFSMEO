@@ -1,15 +1,27 @@
-﻿using LFSMEO.Base_LFSMEO;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using ToolFunction;
-
+using DeviceCore;
+using System.Collections.Generic;
 
 namespace DeviceUI.Motion
 {
     public partial class F_AxisSetting : Form, IF_MotionSetting
     {
+        public F_AxisSetting(F_MotionSettingLogic f_MotionSettingLogic)
+        {
+            InitializeComponent();
+
+            MotionSettingLogic = f_MotionSettingLogic;
+
+            ApplicationSetting.ReadAllRecipe<eMotionSetting>();
+            ApplicationSetting.UpdataRecipeToForm<eMotionSetting>(this);
+
+            InitialForm();
+        }
+
         #region parameter define
-        F_MotionSettingManage f_MotionSettingManage;
+        F_MotionSettingLogic MotionSettingLogic;
         #endregion
 
         #region private function
@@ -21,43 +33,49 @@ namespace DeviceUI.Motion
         {
             SetHint();
 
-            if (ApplicationSetting.Get_Int_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == 1)
-                Tool.ShowFormName(this);
+            //if (ApplicationSetting.Get_Int_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == 1)
+            //    Tool.ShowFormName(this);
         }
         #endregion
 
         #region public function
-        public void SetMediator(F_MotionSettingManage med)
-        {
-            f_MotionSettingManage = med;
-        }
         public void UpdateParmeter()
         {
             ApplicationSetting.ReadAllRecipe<eMotionSetting>();
             ApplicationSetting.UpdataRecipeToForm<eMotionSetting>(this);
         }
-        #endregion
-
-        public F_AxisSetting()
+        public void SaveAxisParameter()
         {
-            InitializeComponent();
-
+            ApplicationSetting.SaveRecipeFromForm<eMotionSetting>(this);
             ApplicationSetting.ReadAllRecipe<eMotionSetting>();
-            ApplicationSetting.UpdataRecipeToForm<eMotionSetting>(this);
 
-            InitialForm();
+            int num = MotionSettingLogic.GetCurrentBtnNum();
+            string set;
+
+            Dictionary<string, string> param = new Dictionary<string, string>();
+
+            eMotionSetting[] total_param = new eMotionSetting[]
+            {
+                eMotionSetting.Cmbx_AxisType,
+                eMotionSetting.TxtBx_AxisStation,
+                eMotionSetting.Cmbx_AxisUse,
+                eMotionSetting.Cmbx_AxisLimitLogic,
+                eMotionSetting.Cmbx_AxisLimitStopMode,
+            };
+
+            for (int i = 0; i < total_param.Length; i++)
+            {
+                set = ApplicationSetting.Get_String_Recipe<eMotionSetting>((int)total_param[i]);
+                param.Add(total_param[i].ToString(), set);
+            }
+
+            //Scope.DML.SaveAxis(Application.StartupPath + @"\Setting\AxisConfig.xml", $"Axis{num}", param);
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
 
         private void Btn_AllSetting_Click(object sender, EventArgs e)
         {
-            
-            
-            f_MotionSettingManage.SaveAxisParameter();
+            SaveAxisParameter();
         }
     }
 }

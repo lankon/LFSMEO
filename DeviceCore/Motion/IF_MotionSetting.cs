@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace DeviceCore
 {
-    public enum eMotionSetting
+    public interface IF_MotionSetting
     {
-
     }
 }
