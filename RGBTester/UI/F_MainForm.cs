@@ -66,6 +66,7 @@ namespace RGBTester.UI
             MainFormLogic.ReadAllSetting();
 
             ServiceProvider.GetRequiredService<IBaseMainTask>();
+            ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();
         }
         private void CreateDynamicElement()
         {

@@ -13,9 +13,9 @@ using RGBTester.Base;
 
 namespace RGBTester.Logic
 {
-    public class MainTask : IBaseMainTask
+    public class MainTaskMulti : IBaseMainTask, IBaseMainTaskMulti
     {
-        public MainTask(IServiceProvider serviceProvider, IRGBTesterMachine rGBTesterMachine, IF_StateControl f_StateControl)
+        public MainTaskMulti(IServiceProvider serviceProvider, IRGBTesterMachine rGBTesterMachine, IF_StateControl f_StateControl)
         {
             Machine = rGBTesterMachine;
             F_StateControl = f_StateControl;
@@ -173,6 +173,8 @@ namespace RGBTester.Logic
             };
 
             BaseTask = (IF_BaseTask)ctor.Invoke(constructorArgs);
+
+            Thread.Sleep(1);
         }
 
         /// <summary>
@@ -181,7 +183,7 @@ namespace RGBTester.Logic
         public void Run()
         {
             F_StateControl.SetMainTask(this);
-            F_StateControl.ShowForm(0);
+            F_StateControl.ShowForm(1);
             //BaseTask.SetForm(f_StateControl);
 
             Transition(WORK.TASK);

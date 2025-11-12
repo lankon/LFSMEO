@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using LFSMEO.Base_LFSMEO;
 using ToolFunction;
 
 namespace DeviceUI.Motion

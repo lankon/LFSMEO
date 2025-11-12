@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="eMotionSetting.cs" />
     <Compile Include="IChillerControl.cs" />
     <Compile Include="IFunction_IO_Card.cs" />
     <Compile Include="IFunction_MotionCard.cs" />

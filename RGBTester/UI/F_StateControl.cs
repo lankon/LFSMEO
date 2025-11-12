@@ -55,14 +55,19 @@ namespace RGBTester.UI
                 BtnContinue.Enabled = false;
             }
         }
-        private void InvokeShowForm(Form form)
+        private void InvokeShowForm(Form form, int pos)
         {
             this.TopMost = true;            // 顯示在最上層（避免被遮）
             this.ShowInTaskbar = false;     //不顯示於工具列
             this.Owner = form;              // 指定主窗
             this.StartPosition = FormStartPosition.Manual;
 
-            int x = form.Left + 10;
+            int x = 10;
+            if (pos == 0)
+                x = form.Left + 10;
+            else if(pos == 1)
+                x = form.Left + 10 + 420;
+
             int y = form.Top + form.Height - this.Height - 10;
             this.Location = new Point(x, y);
 
@@ -97,17 +102,17 @@ namespace RGBTester.UI
                 UpdateUI(status);
             }
         }
-        public void ShowForm()
+        public void ShowForm(int pos)
         {
             var main_form = ServiceProvider.GetRequiredService<F_MainForm>();
 
             if (InvokeRequired)
             {
-                Invoke(new Action(() => InvokeShowForm(main_form)));
+                Invoke(new Action(() => InvokeShowForm(main_form, pos)));
             }
             else
             {
-                InvokeShowForm(main_form);
+                InvokeShowForm(main_form, pos);
             }
         }
         public void HideForm()

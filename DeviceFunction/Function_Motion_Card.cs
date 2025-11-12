@@ -14,6 +14,11 @@ namespace DeviceFunction
 {
     public class Function_Motion_Card:IFunction_MotionCard
     {
+        public Function_Motion_Card(IEnumerable<IMotionCard> cards)
+        {
+            Cards = cards;
+        }
+
         #region parameter define
         private List<IMotionCard> DML = new List<IMotionCard>();
         private List<AXIS_INFO> DML_INFO = new List<AXIS_INFO>();
@@ -215,10 +220,7 @@ namespace DeviceFunction
         }
         #endregion
 
-        Function_Motion_Card(IEnumerable<IMotionCard> cards)
-        {
-            Cards = cards;
-        }
+        
 
         #region public function
         // Initial Function

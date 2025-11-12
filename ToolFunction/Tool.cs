@@ -125,33 +125,58 @@ namespace ToolFunction
 
         public static ILogger CreateLog(String Name = "History\\Log_", String Type = ".log")
         {
+            //String path;
+            //path = System.IO.Directory.GetCurrentDirectory();
+            //path = path + "\\" + Name;
+            //path += Type;
+
+            //if (Name == "History\\Log_")
+            //{
+            //    Log.Logger = new LoggerConfiguration()
+            //    .MinimumLevel.Debug()
+            //    .WriteTo.Async(a => a.File(path: path,
+            //                               rollingInterval: RollingInterval.Day,
+            //                               outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+            //                   ).CreateLogger();
+
+            //    return Log.Logger;
+            //}
+            //else
+            //{
+            //    var logger = new LoggerConfiguration()
+            //    .MinimumLevel.Debug()
+            //    .WriteTo.Async(a => a.File(path: path,
+            //                               rollingInterval: RollingInterval.Day,
+            //                               outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+            //                   ).CreateLogger();
+
+            //    return logger;
+            //}
+
             String path;
             path = System.IO.Directory.GetCurrentDirectory();
             path = path + "\\" + Name;
             path += Type;
 
+            // --- 修正後的程式碼 ---
+            // 1. 移除 .WriteTo.Async()
+            // 2. 直接使用 .WriteTo.File()，並加入兩個關鍵參數
+            var logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File(path: path,
+                              rollingInterval: RollingInterval.Day,
+                              outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                              buffered: true,   //啟用緩衝
+                              flushToDiskInterval: TimeSpan.FromSeconds(5)  //5s
+                             )
+                .CreateLogger();
+
             if (Name == "History\\Log_")
             {
-                Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Async(a => a.File(path: path,
-                                           rollingInterval: RollingInterval.Day,
-                                           outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                               ).CreateLogger();
-
-                return Log.Logger;
+                Log.Logger = logger;
             }
-            else
-            {
-                var logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Async(a => a.File(path: path,
-                                           rollingInterval: RollingInterval.Day,
-                                           outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                               ).CreateLogger();
 
-                return logger;
-            }
+            return logger;
         }
 
         public static void SaveLogToFile(String Msg, ILogger log = null, string level = "DBG")

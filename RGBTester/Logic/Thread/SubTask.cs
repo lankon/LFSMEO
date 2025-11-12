@@ -65,8 +65,8 @@ namespace RGBTester.Logic
         {
             if (target != State) //狀態有變化時紀錄
             {
-                Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
-                F_StateControl.UpdateTask($"[Task]({TaskName})" + target.ToString());
+                Tool.SaveLogToFile($"[SubTask]({TaskName})" + target.ToString());
+                F_StateControl.UpdateTask($"[SubTask]({TaskName})" + target.ToString());
             }
 
             State = target;

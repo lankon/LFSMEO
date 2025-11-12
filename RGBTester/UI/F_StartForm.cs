@@ -54,8 +54,6 @@ namespace RGBTester.UI
         #region public function
         #endregion
 
-
-
         private void Btn_Start_Click(object sender, EventArgs e)
         {
             GC.Collect();
@@ -63,6 +61,7 @@ namespace RGBTester.UI
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
+            StartFormLogic.StartTaskAction();
         }
 
         private void Btn_Open_Click(object sender, EventArgs e)

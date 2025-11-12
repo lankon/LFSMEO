@@ -26,15 +26,18 @@ namespace RGBTester.Base
     }
     public interface IBaseTaskDependence
     {
-        IRGBTesterMachine Machine { get; }
+        IFunction_IO_Card DIOL { get; }
+        IFunction_MotionCard DML { get; }
     }
     public class BaseTaskDependence : IBaseTaskDependence
     {
-        public IRGBTesterMachine Machine { get; }
+        public IFunction_IO_Card DIOL { get; }
+        public IFunction_MotionCard DML { get; }
 
-        public BaseTaskDependence(IRGBTesterMachine rGBTesterMachine)
+        public BaseTaskDependence(IFunction_IO_Card io, IFunction_MotionCard motion)
         {
-            Machine = rGBTesterMachine;
+            DML = motion;
+            DIOL = io;
         }
     }
     public interface IF_BaseTask
@@ -55,7 +58,7 @@ namespace RGBTester.Base
         protected TWork State;                                  //執行緒狀態
         protected readonly IBaseTaskDependence Deps;            //共用方法介面
         private TASK_STATUS status = TASK_STATUS.CONTINUE;      //設定目前狀態機狀態,傳出給MainTask知道
-        private TASK_STATUS status_commad = TASK_STATUS.NONE;   //設定要傳入SubTask的狀態命令
+        private TASK_STATUS status_command = TASK_STATUS.NONE;  //設定要傳入SubTask的狀態命令
         private bool is_subtask_processing = false;             //判斷是否有SubTask
         private TWork next_state;                               //設定下一個WORK
         private TWork pause_state;                              //設定暫停的WORK
@@ -109,7 +112,7 @@ namespace RGBTester.Base
 
         }
 
-        //
+        
         /// <summary>
         /// 設定Task狀態
         /// </summary>
@@ -130,7 +133,7 @@ namespace RGBTester.Base
         /// <param name="task_status"></param>
         protected void SetStatusCommand(TASK_STATUS task_status)
         {
-            status_commad = task_status;
+            status_command = task_status;
         }
         /// <summary>
         /// 取得傳入SubTask狀態命令
@@ -139,8 +142,8 @@ namespace RGBTester.Base
         protected TASK_STATUS GetStatusCommand()
         {
             TASK_STATUS temp_status;
-            temp_status = status_commad;
-            status_commad = TASK_STATUS.NONE;   //清空命令
+            temp_status = status_command;
+            status_command = TASK_STATUS.NONE;   //清空命令
 
             return temp_status;
         }

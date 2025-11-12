@@ -14,24 +14,31 @@ namespace RGBTester
 {
     public static class RGBTesterAssemble
     {
-        // 建立一個擴充 IServiceCollection 的 public static 方法
         public static IServiceCollection AddRGBTesterServices(this IServiceCollection services)
         {
-            services.AddTransient<IBaseMainTask, MainTask>();
-            services.AddTransient<IRGBTesterMachine, RGBTesterMachine>();
+            //[RGBTesterMachine]
+            services.AddSingleton<IRGBTesterMachine, RGBTesterMachine>();
 
+            //[Thread]
+            services.AddSingleton<IBaseMainTask, MainTask>();
+            services.AddSingleton<IBaseMainTaskMulti, MainTaskMulti>();
+            services.AddSingleton<IBaseTaskDependence, BaseTaskDependence>();
 
+            //[Form]
             services.AddSingleton<F_MainForm>();
-            services.AddSingleton<F_MainFormLogic>();
             services.AddSingleton<F_StartForm>();
-            services.AddSingleton<F_StartFormLogic>();
             services.AddSingleton<F_StartForm_ButtonGroup>();
-            
-            services.AddTransient<F_OEM_Setting>();
-            services.AddTransient<F_Equipment_Setting>();
-            services.AddTransient<IF_StateControl, F_StateControl>();
 
-            // 必須回傳 services
+            //[Form Logic]
+            services.AddSingleton<F_MainFormLogic>();
+            services.AddSingleton<F_StartFormLogic>();
+
+            //[Form]
+            //退出Form後即close掉,要用再new
+            services.AddTransient<F_OEM_Setting>();
+            services.AddTransient<F_Equipment_Setting>();               
+            services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
+
             return services;
         }
     }

@@ -11,7 +11,7 @@ namespace RGBTester.Base
         void SetMainTask(IBaseMainTask baseMainTask);
         void UpdateTask(string msg);
         void SetPauseAbortContinue(TASK_STATUS status);
-        void ShowForm();
+        void ShowForm(int pos);
         void HideForm();
         void CloseForm();
         void GotoPause();

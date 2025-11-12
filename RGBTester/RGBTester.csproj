@@ -100,12 +100,14 @@
   <ItemGroup>
     <Compile Include="Base\eMachineSetting.cs" />
     <Compile Include="Base\eOEMSetting.cs" />
+    <Compile Include="Base\IBaseMainTaskMulti.cs" />
     <Compile Include="Base\IF_MainForm.cs" />
     <Compile Include="Base\IF_StateControl.cs" />
     <Compile Include="Logic\F_StartFormLogic.cs" />
     <Compile Include="IRGBTesterMachine.cs" />
     <Compile Include="Base\IBaseMainTask.cs" />
     <Compile Include="Base\IBaseTask.cs" />
+    <Compile Include="Logic\Thread\MainTaskMulti.cs" />
     <Compile Include="Logic\Thread\MainTask.cs" />
     <Compile Include="Logic\Thread\SubTask.cs" />
     <Compile Include="Logic\Thread\Task.cs" />

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace RGBTester.Base
 {
-    public interface IBaseMainTask
+    public interface IBaseMainTaskMulti
     {
         void SetTask<T>(string method = "Default") where T : IF_BaseTask;
         void Run();
