@@ -31,6 +31,7 @@ namespace RGBTester.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button8 = new System.Windows.Forms.Button();
             this.Btn_GetChillerStatus = new System.Windows.Forms.Button();
             this.Btn_Open = new System.Windows.Forms.Button();
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
@@ -62,7 +63,6 @@ namespace RGBTester.UI
             this.PicBx_Mapping = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.button10 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -86,6 +86,15 @@ namespace RGBTester.UI
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(809, 525);
             this.panel1.TabIndex = 0;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(330, 178);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(125, 43);
+            this.button8.TabIndex = 2;
+            this.button8.Text = "Get Response";
+            this.button8.UseVisualStyleBackColor = true;
             // 
             // Btn_GetChillerStatus
             // 
@@ -438,15 +447,6 @@ namespace RGBTester.UI
             this.button10.Size = new System.Drawing.Size(60, 60);
             this.button10.TabIndex = 37;
             this.button10.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(330, 178);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(125, 43);
-            this.button8.TabIndex = 2;
-            this.button8.Text = "Get Response";
-            this.button8.UseVisualStyleBackColor = true;
             // 
             // F_StartForm
             // 

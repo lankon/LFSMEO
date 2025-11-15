@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace DeviceUI.Motion
 {
-    public partial class F_AxisSetting : Form, IF_MotionSetting
+    public partial class F_AxisSetting : Form, IF_AxisSetting
     {
         public F_AxisSetting(F_MotionSettingLogic f_MotionSettingLogic)
         {
@@ -69,7 +69,7 @@ namespace DeviceUI.Motion
                 param.Add(total_param[i].ToString(), set);
             }
 
-            //Scope.DML.SaveAxis(Application.StartupPath + @"\Setting\AxisConfig.xml", $"Axis{num}", param);
+            MotionSettingLogic.SaveAxis(Application.StartupPath + @"\Setting\AxisConfig.xml", $"Axis{num}", param);
         }
         #endregion
 

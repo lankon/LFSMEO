@@ -8,6 +8,7 @@ namespace DeviceCore
 {
     public interface IIOCard
     {
+        bool Open();
         string GetName();
         void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0);
         bool GetInputStatus(byte lineNo, byte DevNo, byte port);

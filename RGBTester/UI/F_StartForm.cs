@@ -18,16 +18,18 @@ namespace RGBTester.UI
 {
     public partial class F_StartForm : Form
     {
-        public F_StartForm(F_StartFormLogic f_StartFormLogic)
+        public F_StartForm(F_StartFormLogic f_StartFormLogic, IRGBTesterMachine rGBTesterMachine)
         {
             InitializeComponent();
 
             StartFormLogic = f_StartFormLogic;
+            RGBTesterMachine = rGBTesterMachine;
             //InitialForm();
         }
 
         #region parameter define
         F_StartFormLogic StartFormLogic;
+        IRGBTesterMachine RGBTesterMachine;
         #endregion
 
         #region private function
@@ -66,7 +68,8 @@ namespace RGBTester.UI
 
         private void Btn_Open_Click(object sender, EventArgs e)
         {
-            StartFormLogic.OpenChillerComm();
+            //StartFormLogic.OpenChillerComm();
+            RGBTesterMachine.IOTest.Open();
         }
 
         private void Btn_GetChillerStatus_Click(object sender, EventArgs e)

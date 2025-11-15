@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
+using DeviceCore;
 using RGBTester.Base;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.UI
 {
@@ -80,11 +81,14 @@ namespace RGBTester.UI
 
         private void Btn_MotionSetting_Click(object sender, EventArgs e)
         {
-            //Tool.HideElementOnPanel(Scope.MainPanel);
+            var oem_set = ServiceProvider.GetRequiredService<IF_MotionSetting>();
 
-            //F_MotionSetting f_Motion_Setting = new F_MotionSetting();
-            //Tool.SetForm(Scope.MainPanel, f_Motion_Setting);
-            //f_Motion_Setting.Show();
+            if(oem_set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
         }
     }
 }

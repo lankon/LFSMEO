@@ -44,10 +44,10 @@
   <ItemGroup>
     <Compile Include="Motion\eMotionSetting.cs" />
     <Compile Include="IChillerControl.cs" />
-    <Compile Include="IFunction_IO_Card.cs" />
+    <Compile Include="IO\IFunction_IO_Card.cs" />
     <Compile Include="Motion\F_MotionSettingLogic.cs" />
     <Compile Include="Motion\IFunction_MotionCard.cs" />
-    <Compile Include="IIOCard.cs" />
+    <Compile Include="IO\IIOCard.cs" />
     <Compile Include="Motion\IF_AxisButton.cs" />
     <Compile Include="Motion\IF_AxisSetting.cs" />
     <Compile Include="Motion\IF_MotionSetting.cs" />

@@ -15,15 +15,15 @@ namespace DeviceUI.Motion
 {
     public partial class F_AxisButton: Form, IF_AxisButton
     {
-        public F_AxisButton()
+        public F_AxisButton(F_MotionSettingLogic f_MotionSettingLogic)
         {
             InitializeComponent();
             InitialForm();
+
+            f_MotionSettingLogic.SetAxisButtonIF(this);
         }
 
-
         #region parameter define
-        F_MotionSettingLogic f_MotionSettingManage;
         List<Panel> PnlPartList = new List<Panel>();
         private int curPnlPart = 0;
         private int CurBtnNum = 0;

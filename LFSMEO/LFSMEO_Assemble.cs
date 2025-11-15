@@ -10,6 +10,7 @@ using System.Windows.Forms;
 //[Device]
 using DeviceCore;
 using DeviceFunction;
+using DeviceUI.Motion;
 using Device_MN200;
 using Device_PCIS_DASK;
 using Device_Klzx;
@@ -64,6 +65,11 @@ namespace LFSMEO
             services.AddSingleton<IIOCard>(sp => sp.GetRequiredService<MN200>());
             services.AddSingleton<IIOCard>(sp => sp.GetRequiredService<Pcis_dask>());
             services.AddSingleton<IChillerControl>(sp => sp.GetRequiredService<ChillerControl_Klzx>());
+
+            services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
+            services.AddSingleton<IF_AxisSetting, F_AxisSetting>();
+            services.AddSingleton<IF_AxisButton, F_AxisButton>();
+            services.AddSingleton<F_MotionSettingLogic>();
 
 
             // --- 步驟 3: 註冊「管理者」(DeviceFunction) ---
