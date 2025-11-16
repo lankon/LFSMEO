@@ -10,5 +10,6 @@ namespace UserPrivilege.Base
     {
         void GetDataGridInfo(List<Dictionary<string, object>> data);
         void SaveAccountPassword();
+        eUserLevel CheckUserPrivilege(string input_account, string input_password);
     }
 }

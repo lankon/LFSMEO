@@ -35,11 +35,11 @@ namespace UserPrivilege.UI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.TxtBx_Password = new System.Windows.Forms.TextBox();
+            this.Btn_Login = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.TxtBx_Account = new System.Windows.Forms.TextBox();
+            this.Labl_LevelResult = new System.Windows.Forms.Label();
             this.DGV_UserLevel = new System.Windows.Forms.DataGridView();
             this.Title_Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Password = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,12 +59,12 @@ namespace UserPrivilege.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.textBox2, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Password, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_Login, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.button2, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Account, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_LevelResult, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
@@ -98,24 +98,25 @@ namespace UserPrivilege.UI
             this.label2.Text = "Password";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBox2
+            // TxtBx_Password
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.textBox2, 2);
-            this.textBox2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox2.Location = new System.Drawing.Point(3, 108);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(266, 29);
-            this.textBox2.TabIndex = 3;
+            this.tableLayoutPanel1.SetColumnSpan(this.TxtBx_Password, 2);
+            this.TxtBx_Password.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Password.Location = new System.Drawing.Point(3, 108);
+            this.TxtBx_Password.Name = "TxtBx_Password";
+            this.TxtBx_Password.Size = new System.Drawing.Size(266, 29);
+            this.TxtBx_Password.TabIndex = 3;
             // 
-            // button1
+            // Btn_Login
             // 
-            this.button1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button1.Location = new System.Drawing.Point(3, 143);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(130, 39);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Login";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Btn_Login.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Login.Location = new System.Drawing.Point(3, 143);
+            this.Btn_Login.Name = "Btn_Login";
+            this.Btn_Login.Size = new System.Drawing.Size(130, 39);
+            this.Btn_Login.TabIndex = 4;
+            this.Btn_Login.Text = "Login";
+            this.Btn_Login.UseVisualStyleBackColor = true;
+            this.Btn_Login.Click += new System.EventHandler(this.Btn_Login_Click);
             // 
             // button2
             // 
@@ -127,28 +128,28 @@ namespace UserPrivilege.UI
             this.button2.Text = "Logout";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // TxtBx_Account
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.textBox1, 2);
-            this.textBox1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox1.Location = new System.Drawing.Point(3, 38);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(266, 29);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "Maintenance";
+            this.tableLayoutPanel1.SetColumnSpan(this.TxtBx_Account, 2);
+            this.TxtBx_Account.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Account.Location = new System.Drawing.Point(3, 38);
+            this.TxtBx_Account.Name = "TxtBx_Account";
+            this.TxtBx_Account.Size = new System.Drawing.Size(266, 29);
+            this.TxtBx_Account.TabIndex = 1;
+            this.TxtBx_Account.Text = "Maintenance";
             // 
-            // label3
+            // Labl_LevelResult
             // 
-            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.tableLayoutPanel1.SetColumnSpan(this.label3, 2);
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.label3.Location = new System.Drawing.Point(3, 185);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(266, 50);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "OEM OK";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_LevelResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tableLayoutPanel1.SetColumnSpan(this.Labl_LevelResult, 2);
+            this.Labl_LevelResult.Font = new System.Drawing.Font("微軟正黑體", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_LevelResult.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.Labl_LevelResult.Location = new System.Drawing.Point(3, 185);
+            this.Labl_LevelResult.Name = "Labl_LevelResult";
+            this.Labl_LevelResult.Size = new System.Drawing.Size(266, 50);
+            this.Labl_LevelResult.TabIndex = 6;
+            this.Labl_LevelResult.Text = "OEM OK";
+            this.Labl_LevelResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DGV_UserLevel
             // 
@@ -213,6 +214,7 @@ namespace UserPrivilege.UI
             // 
             // Pnl_CreateAccount
             // 
+            this.Pnl_CreateAccount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Pnl_CreateAccount.Controls.Add(this.Btn_Save);
             this.Pnl_CreateAccount.Controls.Add(this.Btn_Remove);
             this.Pnl_CreateAccount.Controls.Add(this.Btn_Add);
@@ -279,11 +281,11 @@ namespace UserPrivilege.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox TxtBx_Password;
+        private System.Windows.Forms.Button Btn_Login;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox TxtBx_Account;
+        private System.Windows.Forms.Label Labl_LevelResult;
         private System.Windows.Forms.DataGridView DGV_UserLevel;
         private System.Windows.Forms.Panel Pnl_CreateAccount;
         private System.Windows.Forms.Button Btn_Add;

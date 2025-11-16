@@ -100,5 +100,31 @@ namespace UserPrivilege.UI
             UserPrivilegeLogic.GetDataGridInfo(list);
             UserPrivilegeLogic.SaveAccountPassword();
         }
+
+        private void Btn_Login_Click(object sender, EventArgs e)
+        {
+            eUserLevel res = UserPrivilegeLogic.CheckUserPrivilege(TxtBx_Account.Text, TxtBx_Password.Text);
+        
+            if(res == eUserLevel.NONE)
+            {
+                Labl_LevelResult.Text = "FAIL";
+                Labl_LevelResult.ForeColor = Color.Red;
+            }
+            if (res == eUserLevel.OP)
+            {
+                Labl_LevelResult.Text = "OP OK";
+                Labl_LevelResult.ForeColor = Color.Blue;
+            }
+            else if(res == eUserLevel.ENG)
+            {
+                Labl_LevelResult.Text = "ENG OK";
+                Labl_LevelResult.ForeColor = Color.Blue;
+            }
+            else if (res == eUserLevel.OEM)
+            {
+                Labl_LevelResult.Text = "OEM OK";
+                Labl_LevelResult.ForeColor = Color.Blue;
+            }
+        }
     }
 }

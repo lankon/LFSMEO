@@ -48,6 +48,36 @@ namespace UserPrivilege.Logic
             Tool.CloseFile(File);
             Tool.SaveLogToFile("Account & Password Save Success");
         }
+        public eUserLevel CheckUserPrivilege(string input_account, string input_password)
+        {
+            for (int i = 0; i < AccountPasswordData.Count; i++)
+            {
+                AccountPasswordData[i].TryGetValue("Title_Account", out object account);
+                AccountPasswordData[i].TryGetValue("Title_Password", out object password);
+                AccountPasswordData[i].TryGetValue("Title_Level", out object level);
+
+                if(input_account == (string)account && input_password == (string)password)
+                {
+                    if ((string)level == eUserLevel.ENG.ToString())
+                    {
+                        CurLevel = eUserLevel.ENG;
+                        return eUserLevel.ENG;
+                    }
+                    else if((string)level == eUserLevel.OP.ToString())
+                    {
+                        CurLevel = eUserLevel.OP;
+                        return eUserLevel.OP;
+                    }
+                    else if ((string)level == eUserLevel.OEM.ToString())
+                    {
+                        CurLevel = eUserLevel.OEM;
+                        return eUserLevel.OEM;
+                    }
+                }
+            }
+
+            return eUserLevel.NONE;
+        }
         #endregion
 
 

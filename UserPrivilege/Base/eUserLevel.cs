@@ -8,6 +8,7 @@ namespace UserPrivilege.Base
 {
     public enum eUserLevel
     {
+        NONE,
         OP,
         ENG,
         OEM,
