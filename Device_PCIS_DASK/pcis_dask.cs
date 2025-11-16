@@ -98,7 +98,15 @@ namespace Device_PCIS_DASK
         public bool Open()
         {
             // 1. 註冊卡片
-            card = (ushort)DASK64.Register_Card(DASK64.PCI_9111HR, 0); // 假設 CardType
+            try
+            {
+                card = (ushort)DASK64.Register_Card(DASK64.PCI_9111HR, 0); // 假設 CardType
+            }
+            catch
+            {
+                return false;
+            }
+
             if (card < 0)
             {
                 Console.WriteLine("Register_Card failed.");
@@ -209,7 +217,7 @@ namespace Device_PCIS_DASK
             else
                 pCI_Parm.Input_Status[lineNo, devNo, port] = false;
         }
-        public  bool GetInputStatus(byte lineNo, byte DevNo, byte port)
+        public  bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
             if (pCI_Parm.CardType == DASK64.PCI_9111DG)
             {
@@ -235,6 +243,11 @@ namespace Device_PCIS_DASK
         }
 
         public  bool GetOutputStatus(byte lineNo, byte DevNo, byte port)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetOutputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
             throw new NotImplementedException();
         }

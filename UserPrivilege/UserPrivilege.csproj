@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{78FCBDD7-F840-449E-9A6F-4F86889DB2A7}</ProjectGuid>
+    <ProjectGuid>{DA522546-9AC7-47E5-B40E-17B0CFEF3726}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeviceUI</RootNamespace>
-    <AssemblyName>DeviceUI</AssemblyName>
+    <RootNamespace>UserPrivilege</RootNamespace>
+    <AssemblyName>UserPrivilege</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,29 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.10\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.9.0.10\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.9.0.10\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.9.0.10\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.10\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Primitives.9.0.10\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
-    </Reference>
     <Reference Include="Serilog, Version=4.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.4.3.0\lib\net471\Serilog.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.Async, Version=2.1.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.Async.2.1.0\lib\net471\Serilog.Sinks.Async.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -82,9 +62,6 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -94,51 +71,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IO\F_IO_Card.cs">
+    <Compile Include="Base\eUserLevel.cs" />
+    <Compile Include="Base\IF_UserPrivilege.cs" />
+    <Compile Include="Base\IF_UserPrivilegeLogic.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Logic\F_UserPrivilegeLogic.cs" />
+    <Compile Include="UI\F_UserPrivilege.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IO\F_IO_Card.designer.cs">
-      <DependentUpon>F_IO_Card.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Motion\F_AxisButton.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Motion\F_AxisButton.designer.cs">
-      <DependentUpon>F_AxisButton.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Motion\F_AxisSetting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Motion\F_AxisSetting.designer.cs">
-      <DependentUpon>F_AxisSetting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Motion\F_MotionSetting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Motion\F_MotionSetting.designer.cs">
-      <DependentUpon>F_MotionSetting.cs</DependentUpon>
+    <Compile Include="UI\F_UserPrivilege.designer.cs">
+      <DependentUpon>F_UserPrivilege.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="IO\F_IO_Card.resx">
-      <DependentUpon>F_IO_Card.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Motion\F_AxisButton.resx">
-      <DependentUpon>F_AxisButton.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Motion\F_AxisSetting.resx">
-      <DependentUpon>F_AxisSetting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Motion\F_MotionSetting.resx">
-      <DependentUpon>F_MotionSetting.cs</DependentUpon>
+    <EmbeddedResource Include="UI\F_UserPrivilege.resx">
+      <DependentUpon>F_UserPrivilege.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
-      <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
-      <Name>DeviceCore</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
       <Name>ToolFunction</Name>

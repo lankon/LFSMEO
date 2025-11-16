@@ -245,11 +245,10 @@
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
       <Name>ToolFunction</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="PCI-Dask64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\UserPrivilege\UserPrivilege.csproj">
+      <Project>{da522546-9ac7-47e5-b40e-17b0cfef3726}</Project>
+      <Name>UserPrivilege</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />

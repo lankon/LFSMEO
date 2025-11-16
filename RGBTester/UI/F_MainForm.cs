@@ -65,6 +65,8 @@ namespace RGBTester.UI
 
             MainFormLogic.ReadAllSetting();
 
+            MainFormLogic.Initial_IO_Function();
+
             ServiceProvider.GetRequiredService<IBaseMainTask>();
             ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();
         }

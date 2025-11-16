@@ -266,6 +266,16 @@ namespace Device_MN200
         {
             throw new NotImplementedException();
         }
+
+        public bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetOutputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

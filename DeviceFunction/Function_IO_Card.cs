@@ -13,10 +13,16 @@ namespace DeviceFunction
 {
     public class Function_IO_Card: IFunction_IO_Card
     {
+        public Function_IO_Card(IEnumerable<IIOCard> cards)
+        {
+            Cards = cards;
+        }
+
         #region parameter define
         private List<IIOCard> IO = new List<IIOCard>();
         private List<IOData> IO_List = new List<IOData>();
         private Dictionary<string, IOData> ioListDict;
+        private IEnumerable<IIOCard> Cards;
         #endregion
 
         #region private function
@@ -58,20 +64,11 @@ namespace DeviceFunction
         {
             bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false ;
 
-            //IIOCard mN200 = new MN200();
-            //IIOCard pcis_dask = new Pcis_dask(Pcis_dask_param.PCI_9111DG);
-            //IIOCard APS = new APS();
-
-            IIOCard mN200 = null;
-            IIOCard pcis_dask = null;
-            IIOCard APS = null;
-
-            //if (mN200.Open() == true)
-            //    IO.Add(mN200);
-            //if(pcis_dask.Open() == true)
-            //    IO.Add(pcis_dask);
-            //if(APS.Open() == true)
-            //    IO.Add(APS);
+            foreach(IIOCard card in Cards)
+            {
+                if(card.Open() == true)
+                    IO.Add(card);
+            }
 
             for (int i = 0; i < IO.Count; i++)
             {
@@ -136,7 +133,7 @@ namespace DeviceFunction
                         .GroupBy(x => x.Title_Name)
                         .ToDictionary(g => g.Key, g => g.First());
         }
-        public bool GetInputStatus(EIOCardType CardType, byte lineNo, byte devNo, byte port, int iList)
+        public bool GetInputStatus(EIOCardType CardType, byte card, byte lineNo, byte devNo, byte port, int iList)
         {
             for (int i = 0; i < IO.Count; i++)
             {
@@ -144,9 +141,9 @@ namespace DeviceFunction
                     continue;
 
                 if (IO_List[iList].Title_Inverse == "True" || IO_List[iList].Title_Inverse == "true")
-                    return !IO[i].GetInputStatus(lineNo, devNo, port);
+                    return !IO[i].GetInputStatus(card, lineNo, devNo, port);
                 else if (IO_List[iList].Title_Inverse == "False" || IO_List[iList].Title_Inverse == "false")
-                    return IO[i].GetInputStatus(lineNo, devNo, port);
+                    return IO[i].GetInputStatus(card, lineNo, devNo, port);
             }
 
             return false;
@@ -155,6 +152,7 @@ namespace DeviceFunction
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
 
+            byte card = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
             byte devNo = (byte)iOData.Title_DevNum;
             byte port = (byte)iOData.Title_IO_Num;
@@ -165,26 +163,26 @@ namespace DeviceFunction
                     continue;
 
                 if (iOData.Title_Inverse == "True" || iOData.Title_Inverse == "true")
-                    return !IO[j].GetInputStatus(lineNo, devNo, port);
+                    return !IO[j].GetInputStatus(card, lineNo, devNo, port);
                 else if (iOData.Title_Inverse == "False" || iOData.Title_Inverse == "false")
-                    return IO[j].GetInputStatus(lineNo, devNo, port);
+                    return IO[j].GetInputStatus(card, lineNo, devNo, port);
             }
             
             return false;
         }
-        public bool GetOutputStatus(EIOCardType CardType, byte lineNo, byte devNo, byte port, int iList)
+        public bool GetOutputStatus(EIOCardType CardType,byte cardNo, byte lineNo, byte devNo, byte port, int iList)
         {
             for (int i = 0; i < IO.Count; i++)
             {
                 if (IO[i].GetName() != CardType.ToString())
                     continue;
 
-                IO[i].GetOutputStatus(lineNo, devNo, port);
+                IO[i].GetOutputStatus(cardNo, lineNo, devNo, port);
 
                 if (IO_List[iList].Title_Inverse == "True" || IO_List[iList].Title_Inverse == "true")
-                    return !IO[i].GetOutputStatus(lineNo, devNo, port);
+                    return !IO[i].GetOutputStatus(cardNo, lineNo, devNo, port);
                 else if (IO_List[iList].Title_Inverse == "False" || IO_List[iList].Title_Inverse == "false")
-                    return IO[i].GetOutputStatus(lineNo, devNo, port);
+                    return IO[i].GetOutputStatus(cardNo, lineNo, devNo, port);
             }
 
             return false;

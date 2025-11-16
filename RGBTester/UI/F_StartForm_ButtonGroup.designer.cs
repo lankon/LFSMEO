@@ -66,6 +66,7 @@ namespace RGBTester.UI
             this.Btn_LogIn.Size = new System.Drawing.Size(60, 60);
             this.Btn_LogIn.TabIndex = 36;
             this.Btn_LogIn.UseVisualStyleBackColor = true;
+            this.Btn_LogIn.Click += new System.EventHandler(this.Btn_LogIn_Click);
             // 
             // Btn_OEM_Setting
             // 

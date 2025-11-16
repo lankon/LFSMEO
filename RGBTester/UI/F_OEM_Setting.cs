@@ -45,15 +45,16 @@ namespace RGBTester.UI
         #region public function
         #endregion
 
-        
-
         private void Btn_IO_Form_Click(object sender, EventArgs e)
         {
-            //Tool.HideElementOnPanel(Scope.MainPanel);
+            var io_set = ServiceProvider.GetRequiredService<IF_IO_Card>();
 
-            //F_IO_Setting f_IO_Setting = new F_IO_Setting();
-            //Tool.SetForm(Scope.MainPanel, f_IO_Setting);
-            //f_IO_Setting.Show();
+            if (io_set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
         }
 
         private void Btn_EquipmentSetting_Click(object sender, EventArgs e)

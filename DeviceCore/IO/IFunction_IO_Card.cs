@@ -12,6 +12,7 @@ namespace DeviceCore
         PCI_9111,
         MN200,
         AMP_204C,
+        P32C32,
     }
 
     public enum EIOName
@@ -44,9 +45,9 @@ namespace DeviceCore
     {
         bool Initial_All_IO();
         void LoadConfiguration(List<IOData> newIoDataList);
-        bool GetInputStatus(EIOCardType CardType, byte lineNo, byte devNo, byte port, int iList);
+        bool GetInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
         bool GetInputStatus(EIOName name);
-        bool GetOutputStatus(EIOCardType CardType, byte lineNo, byte devNo, byte port, int iList);
+        bool GetOutputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
         bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false);
         bool SetOutputStatus(EIOName name, bool truefalse);
     }

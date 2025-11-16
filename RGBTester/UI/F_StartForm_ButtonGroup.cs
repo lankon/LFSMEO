@@ -10,8 +10,8 @@ using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
+using UserPrivilege.Base;
 using RGBTester.Base;
-
 
 namespace RGBTester.UI
 {
@@ -109,6 +109,18 @@ namespace RGBTester.UI
             //F_IO_Setting f_IO_Setting = new F_IO_Setting();
             //Tool.SetForm(Scope.MainPanel, f_IO_Setting);
             //f_IO_Setting.Show();
+        }
+
+        private void Btn_LogIn_Click(object sender, EventArgs e)
+        {
+            var set = ServiceProvider.GetRequiredService<IF_UserPrivilege>();
+
+            if(set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
         }
     }
 }

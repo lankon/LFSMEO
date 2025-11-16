@@ -11,9 +11,15 @@ using System.Windows.Forms;
 using DeviceCore;
 using DeviceFunction;
 using DeviceUI.Motion;
+using DeviceUI.IO;
 using Device_MN200;
 using Device_PCIS_DASK;
 using Device_Klzx;
+
+//[Tool]
+using UserPrivilege.Base;
+using UserPrivilege.UI;
+using UserPrivilege.Logic;
 
 //[Machine]
 using RGBTester;
@@ -70,6 +76,7 @@ namespace LFSMEO
             services.AddSingleton<IF_AxisSetting, F_AxisSetting>();
             services.AddSingleton<IF_AxisButton, F_AxisButton>();
             services.AddSingleton<F_MotionSettingLogic>();
+            services.AddSingleton<IF_IO_Card, F_IO_Card>();
 
 
             // --- 步驟 3: 註冊「管理者」(DeviceFunction) ---
@@ -78,8 +85,11 @@ namespace LFSMEO
             services.AddSingleton<IFunction_IO_Card, Function_IO_Card>();
 
 
-            // --- 步驟 4: 註冊「機台邏輯」(Machine) ---
-            // (這部分只依賴 "machineType" 變數)
+            //[Tool]
+            services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();
+            services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
+
+            //[Machine]
             switch (Scope.MachineType)
             {
                 case EMachineType.VPT_3IN1:

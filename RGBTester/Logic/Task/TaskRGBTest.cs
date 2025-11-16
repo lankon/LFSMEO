@@ -12,9 +12,9 @@ using RGBTester.Base;
 namespace RGBTester.Logic
 {
     #region Task
-    public class StdTask:IBaseTask<StdTask.WORK>
+    public class TaskRGBTest: IBaseTask<TaskRGBTest.WORK>
     {
-        public StdTask(IBaseTaskDependence dependencies,
+        public TaskRGBTest(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -172,6 +172,8 @@ namespace RGBTester.Logic
 
         }
         #endregion
+
+        
 
         protected override void RunLoop(TASK_STATUS task_command)
         {

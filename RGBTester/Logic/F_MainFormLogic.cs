@@ -12,20 +12,25 @@ namespace RGBTester.Logic
 {
     public class F_MainFormLogic
     {
-        public F_MainFormLogic()
+        public F_MainFormLogic(IRGBTesterMachine rGBTesterMachine)
         {
-            
+            RGBTesterMachine = rGBTesterMachine;
         }
 
         #region parameter define
         IF_MainForm MainForm;
         IBaseMainTask MainTask;
-        
+        IRGBTesterMachine RGBTesterMachine;
         #endregion
 
         public void ReadAllSetting()
         {
             ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+        }
+
+        public void Initial_IO_Function()
+        {
+            RGBTesterMachine.DIOL.Initial_All_IO();
         }
 
         

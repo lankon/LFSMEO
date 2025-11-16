@@ -233,8 +233,6 @@ namespace RGBTester.Logic
         }
         #endregion
 
-        
-
         private void Process()
         {
             while (!Terminate)
