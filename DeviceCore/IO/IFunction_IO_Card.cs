@@ -18,6 +18,19 @@ namespace DeviceCore
     public enum EIOName
     {
         #region Input
+        #region RGBTester
+        V_IN_L,
+        I_IN_L,
+        VF_R_L,
+        VF_G_L,
+        VF_B_L,
+        V_FB_L,
+        PP_DISP_1V2_L,
+        PP_DISP_6V0_L,
+
+
+
+        #endregion
         SafePos_Sensor,
 
         #endregion

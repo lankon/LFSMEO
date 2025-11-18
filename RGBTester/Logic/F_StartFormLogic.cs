@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using DeviceCore;
 using RGBTester.Base;
+using System.Threading;
 
 namespace RGBTester.Logic
 {
@@ -27,23 +28,37 @@ namespace RGBTester.Logic
         #region public function
         public void OpenChillerComm()
         {
-            Machine.Chiller.Open("COM8",9600, Parity.None, 8, StopBits.One);
+            //Machine.Chiller.Open("COM8",9600, Parity.None, 8, StopBits.One);
+            Machine.Chiller.SetTemperature(25);
         }
 
         public void GetChillerStatus()
         {
-            Machine.Chiller.GetStatus();
+            Thread.Sleep(100);
+            
+            while(true)
+            {
+                Machine.Chiller.GetStatus();
+
+                Thread.Sleep(100);
+
+
+            }
+            
+            
+            
+            
         }
 
         public void StartTaskAction()
         {
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-            MainTask.SetTask<StdTask>();
+            MainTask.SetTask<TaskRGBTest>();
             MainTask.Run();
 
-            var MainTask2 = ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();
-            MainTask2.SetTask<StdTask>();
-            MainTask2.Run();
+            //var MainTask2 = ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();
+            //MainTask2.SetTask<StdTask>();
+            //MainTask2.Run();
         }
         #endregion
     }

@@ -107,39 +107,12 @@ namespace Device_PCIS_DASK
                 return false;
             }
 
-            if (card < 0)
+            if (card < 0 || card > 65530)
             {
                 Console.WriteLine("Register_Card failed.");
                 return false;
             }
 
-            // 2. 設定觸發方式
-            short res = DASK64.AI_9111_Config(card, DASK64.TRIG_INT_PACER, DASK64.P9111_TRGMOD_SOFT, 0);
-
-            // 3. 啟用DoubleBuffer
-            DASK64.AI_AsyncDblBufferMode(card, true);
-
-            // 4. 建立並註冊 Callback 函式
-            aiHalfReadyCallback = new CallbackDelegate64(OnHalfBufferReady);
-            aiEndCallback = new CallbackDelegate64(OnAcquisitionEnd);
-
-            // 告訴 Dask 當 "半緩衝區就緒" (DBEvent) 時呼叫 OnHalfBufferReady
-            DASK64.AI_EventCallBack_x64(card, 1, (short)DASK64.DBEvent, aiHalfReadyCallback);
-
-            // 告訴 Dask 當 "採集結束" (AIEnd) 時呼叫 OnAcquisitionEnd
-            DASK64.AI_EventCallBack_x64(card, 1, (short)DASK64.AIEnd, aiEndCallback);
-
-
-            // 5. 連續掃描
-            // Buffer 參數在雙緩衝模式下無用，傳入 null
-            short err = DASK64.AI_ContScanChannels(card, 7, DASK64.AD_B_5_V, null, ReadCount, 10000, DASK64.ASYNCH_OP);
-
-            if (err != 0)
-            {
-                Console.WriteLine("AI_ContScanChannels failed.");
-                Stop(); // 呼叫停止函式
-                return false;
-            }
 
             return true;
         }

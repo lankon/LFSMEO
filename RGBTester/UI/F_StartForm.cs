@@ -68,8 +68,13 @@ namespace RGBTester.UI
 
         private void Btn_Open_Click(object sender, EventArgs e)
         {
-            //StartFormLogic.OpenChillerComm();
-            RGBTesterMachine.IOTest.Open();
+            StartFormLogic.OpenChillerComm();
+
+
+            StartFormLogic.GetChillerStatus();
+
+
+            //RGBTesterMachine.IOTest.Open();
         }
 
         private void Btn_GetChillerStatus_Click(object sender, EventArgs e)

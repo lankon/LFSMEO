@@ -43,6 +43,14 @@ namespace RGBTester.Logic
             INITIAL,
             IDLE,
 
+            LED_R_TEST,
+            LED_G_TEST,
+            LED_B_TEST,
+
+            WAIT_LED_R_TEST,
+            WAIT_LED_G_TEST,
+            WAIT_LED_B_TEST,
+
             INITIAL_SUBTASK,
             SUBTASK_PROCESS,
             SUBTASK_PROCESS_PAUSE,
@@ -173,8 +181,6 @@ namespace RGBTester.Logic
         }
         #endregion
 
-        
-
         protected override void RunLoop(TASK_STATUS task_command)
         {
             if (task_command == TASK_STATUS.ABORT)   //人員傳入ABORT命令
@@ -186,29 +192,49 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.INITIAL_SUBTASK);
+                        Transition(WORK.LED_R_TEST);
                     }
                     break;
-                
-                #region SubTask
-                case WORK.INITIAL_SUBTASK:
-                    {
-                        Transition(WORK.SUBTASK_PROCESS);
-                    }
-                    break;
-                case WORK.SUBTASK_PROCESS:
-                    {
-                        //建立SubTask
-                        SubTask = new StdSubTask(Deps, F_StateControl);
-                        //委派必要Function
-                        //SubTask.SetForm(TaskForm);
-                        //設定是否有SubTask執行
-                        SetSubTaskProcessing(true);
 
-                        Transition(WORK.WAIT_SUBTASK_PROCESS);
+                #region RED
+                case WORK.LED_R_TEST:
+                    {
+                        SubTask = new SubTaskRGBTest(Deps, F_StateControl);
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_R_TEST);
                     }
                     break;
-                case WORK.WAIT_SUBTASK_PROCESS:
+                case WORK.WAIT_LED_R_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.LED_G_TEST);
+                    }
+                    break;
+                #endregion
+                #region GREEN
+                case WORK.LED_G_TEST:
+                    {
+                        SubTask = new SubTaskRGBTest(Deps, F_StateControl);
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_G_TEST);
+                    }
+                    break;
+                case WORK.WAIT_LED_G_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.LED_B_TEST);
+                    }
+                    break;
+                #endregion
+                #region BLUE
+                case WORK.LED_B_TEST:
+                    {
+                        SubTask = new SubTaskRGBTest(Deps, F_StateControl);
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_B_TEST);
+                    }
+                    break;
+                case WORK.WAIT_LED_B_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
                         CheckResult(check);

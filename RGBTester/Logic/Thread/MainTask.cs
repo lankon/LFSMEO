@@ -237,7 +237,7 @@ namespace RGBTester.Logic
         {
             while (!Terminate)
             {
-                Thread.Sleep(1000);  //測試用
+                //Thread.Sleep(1000);  //測試用
 
                 switch (state)
                 {
