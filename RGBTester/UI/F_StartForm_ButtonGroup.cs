@@ -118,6 +118,7 @@ namespace RGBTester.UI
             if(set is Form form)
             {
                 Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.HideElementOnPanel(Scope.UpButtonPanel);
                 Tool.SetForm(Scope.MainPanel, form);
                 form.Show();
             }

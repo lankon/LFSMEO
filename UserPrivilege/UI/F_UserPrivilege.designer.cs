@@ -29,17 +29,17 @@ namespace UserPrivilege.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.TxtBx_Password = new System.Windows.Forms.TextBox();
             this.Btn_Login = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Btn_Logout = new System.Windows.Forms.Button();
             this.TxtBx_Account = new System.Windows.Forms.TextBox();
             this.Labl_LevelResult = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.DGV_UserLevel = new System.Windows.Forms.DataGridView();
             this.Title_Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Password = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,7 +61,7 @@ namespace UserPrivilege.UI
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.TxtBx_Password, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.Btn_Login, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.button2, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_Logout, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.TxtBx_Account, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.Labl_LevelResult, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
@@ -88,22 +88,13 @@ namespace UserPrivilege.UI
             this.label1.Text = "Account";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(3, 70);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(130, 35);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Password";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // TxtBx_Password
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.TxtBx_Password, 2);
             this.TxtBx_Password.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.TxtBx_Password.Location = new System.Drawing.Point(3, 108);
             this.TxtBx_Password.Name = "TxtBx_Password";
+            this.TxtBx_Password.PasswordChar = '*';
             this.TxtBx_Password.Size = new System.Drawing.Size(266, 29);
             this.TxtBx_Password.TabIndex = 3;
             // 
@@ -118,15 +109,16 @@ namespace UserPrivilege.UI
             this.Btn_Login.UseVisualStyleBackColor = true;
             this.Btn_Login.Click += new System.EventHandler(this.Btn_Login_Click);
             // 
-            // button2
+            // Btn_Logout
             // 
-            this.button2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button2.Location = new System.Drawing.Point(139, 143);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(130, 39);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Logout";
-            this.button2.UseVisualStyleBackColor = true;
+            this.Btn_Logout.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Logout.Location = new System.Drawing.Point(139, 143);
+            this.Btn_Logout.Name = "Btn_Logout";
+            this.Btn_Logout.Size = new System.Drawing.Size(130, 39);
+            this.Btn_Logout.TabIndex = 5;
+            this.Btn_Logout.Text = "Logout";
+            this.Btn_Logout.UseVisualStyleBackColor = true;
+            this.Btn_Logout.Click += new System.EventHandler(this.Btn_Logout_Click);
             // 
             // TxtBx_Account
             // 
@@ -151,39 +143,50 @@ namespace UserPrivilege.UI
             this.Labl_LevelResult.Text = "OEM OK";
             this.Labl_LevelResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(3, 70);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(130, 35);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Password";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // DGV_UserLevel
             // 
             this.DGV_UserLevel.AllowUserToAddRows = false;
             this.DGV_UserLevel.AllowUserToDeleteRows = false;
             this.DGV_UserLevel.AllowUserToResizeColumns = false;
             this.DGV_UserLevel.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_UserLevel.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_UserLevel.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.DGV_UserLevel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_UserLevel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_Account,
             this.Title_Password,
             this.Title_Level});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_UserLevel.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_UserLevel.DefaultCellStyle = dataGridViewCellStyle6;
             this.DGV_UserLevel.Location = new System.Drawing.Point(3, 3);
             this.DGV_UserLevel.Name = "DGV_UserLevel";
             this.DGV_UserLevel.RowHeadersVisible = false;
             this.DGV_UserLevel.RowTemplate.Height = 24;
             this.DGV_UserLevel.Size = new System.Drawing.Size(366, 289);
             this.DGV_UserLevel.TabIndex = 14;
+            this.DGV_UserLevel.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DGV_UserLevel_CellFormatting);
             // 
             // Title_Account
             // 
@@ -200,9 +203,9 @@ namespace UserPrivilege.UI
             // Title_Level
             // 
             this.Title_Level.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Title_Level.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Title_Level.DefaultCellStyle = dataGridViewCellStyle5;
             this.Title_Level.HeaderText = "Level";
             this.Title_Level.Items.AddRange(new object[] {
             "ENG",
@@ -283,7 +286,7 @@ namespace UserPrivilege.UI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TxtBx_Password;
         private System.Windows.Forms.Button Btn_Login;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button Btn_Logout;
         private System.Windows.Forms.TextBox TxtBx_Account;
         private System.Windows.Forms.Label Labl_LevelResult;
         private System.Windows.Forms.DataGridView DGV_UserLevel;

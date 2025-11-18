@@ -21,7 +21,7 @@ namespace UserPrivilege.UI
             InitializeComponent();
 
             UserPrivilegeLogic = f_UserPrivilegeLogic;
-
+            
             InitialForm();
         }
 
@@ -46,6 +46,17 @@ namespace UserPrivilege.UI
         {
 
         }
+        private void UpdatePage()
+        {
+            if(UserPrivilegeLogic.AtLeastEng())
+            {
+                Pnl_CreateAccount.Visible = true;
+            }
+            else
+            {
+                Pnl_CreateAccount.Visible = false;
+            }
+        }
         #endregion
 
         #region public function
@@ -68,6 +79,10 @@ namespace UserPrivilege.UI
                 //this.Close();
                 //this.Dispose();
             }
+            else
+            {
+                UpdatePage();
+            }
         }
 
         private void Btn_Add_Click(object sender, EventArgs e)
@@ -84,18 +99,26 @@ namespace UserPrivilege.UI
         private void Btn_Save_Click(object sender, EventArgs e)
         {
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+            Dictionary<string, object> dict;
+
 
             foreach (DataGridViewRow row in DGV_UserLevel.Rows)
             {
                 if (row.IsNewRow) continue;
 
-                var dict = new Dictionary<string, object>();
+                dict = new Dictionary<string, object>();
 
                 foreach (DataGridViewCell cell in row.Cells)
                     dict[DGV_UserLevel.Columns[cell.ColumnIndex].Name] = cell.Value;
 
                 list.Add(dict);
             }
+
+            dict = new Dictionary<string, object>();
+            dict["Title_Account"] = "Maintenance";
+            dict["Title_Password"] = "70697332";
+            dict["Title_Level"] = "OEM";
+            list.Add(dict);
 
             UserPrivilegeLogic.GetDataGridInfo(list);
             UserPrivilegeLogic.SaveAccountPassword();
@@ -124,6 +147,31 @@ namespace UserPrivilege.UI
             {
                 Labl_LevelResult.Text = "OEM OK";
                 Labl_LevelResult.ForeColor = Color.Blue;
+            }
+
+            this.Hide();
+            this.Show();
+        }
+
+        private void Btn_Logout_Click(object sender, EventArgs e)
+        {
+            UserPrivilegeLogic.SetCurLevel(eUserLevel.OP);
+
+            Labl_LevelResult.Text = "OP OK";
+            Labl_LevelResult.ForeColor = Color.Blue;
+
+            this.Hide();
+            this.Show();
+        }
+
+        private void DGV_UserLevel_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (DGV_UserLevel.Columns[e.ColumnIndex].Name == "Title_Password")
+            {
+                if (e.Value != null)
+                {
+                    e.Value = new string('*', e.Value.ToString().Length);
+                }
             }
         }
     }

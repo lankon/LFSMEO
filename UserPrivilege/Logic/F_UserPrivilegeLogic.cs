@@ -14,11 +14,22 @@ namespace UserPrivilege.Logic
     public class F_UserPrivilegeLogic:IF_UserPrivilegeLogic
     {
         #region parameter define
-        private eUserLevel CurLevel = eUserLevel.OP;
+        private eUserLevel CurLevel = eUserLevel.ENG;
         private List<Dictionary<string, object>> AccountPasswordData;
         #endregion
 
         #region public function
+        public bool AtLeastEng()
+        {
+            if (CurLevel == eUserLevel.ENG || CurLevel == eUserLevel.OEM)
+                return true;
+            else
+                return false;
+        }
+        public void SetCurLevel(eUserLevel level)
+        {
+            CurLevel = level;
+        }
         public eUserLevel GetCurLevel()
         {
             return CurLevel;
@@ -32,7 +43,7 @@ namespace UserPrivilege.Logic
             StreamWriter File;
             string Msg;
 
-            File = Tool.CreateFile("Setting\\Account&Password", ".dat", true);
+            File = Tool.CreateFile("Setting\\Account&Password", ".dat", false);
 
             for(int i=0; i< AccountPasswordData.Count; i++)
             {
