@@ -28,7 +28,7 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            Tool.SaveLogToFile("StdTask Start", level: "INF");
+            Tool.SaveLogToFile("TaskRGBTest Start", level: "INF");
 
             F_StateControl = f_StateControl;
 
@@ -245,7 +245,7 @@ namespace RGBTester.Logic
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);
-                        Tool.SaveLogToFile("WaferAlign End", level:"INF");
+                        Tool.SaveLogToFile("RGBTest End", level:"INF");
                     }
                     break;
                 case WORK.FAIL:

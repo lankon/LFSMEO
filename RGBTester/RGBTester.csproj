@@ -108,6 +108,7 @@
     <Compile Include="IRGBTesterMachine.cs" />
     <Compile Include="Base\IBaseMainTask.cs" />
     <Compile Include="Base\IBaseTask.cs" />
+    <Compile Include="Logic\LightEngine\GL18Command.cs" />
     <Compile Include="Logic\RGBTesterData.cs" />
     <Compile Include="Logic\Task\RGBTest\SubTask\SubTaskRGBTest.cs" />
     <Compile Include="Logic\Task\RGBTest\TaskRGBTest.cs" />

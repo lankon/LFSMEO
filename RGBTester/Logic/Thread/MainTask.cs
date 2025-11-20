@@ -298,7 +298,9 @@ namespace RGBTester.Logic
                         break;
                 }
 
-                Thread.Sleep(1);
+                //Thread.Sleep(1);
+
+                Thread.Yield(); // 告訴排程器讓其他執行緒有機會運行
             }
         }
     } 

@@ -30,6 +30,8 @@ namespace RGBTester.UI
         #region parameter define
         F_StartFormLogic StartFormLogic;
         IRGBTesterMachine RGBTesterMachine;
+
+
         #endregion
 
         #region private function
@@ -58,28 +60,7 @@ namespace RGBTester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            GC.Collect();
-        }
-
-        private void Btn_Load_Click(object sender, EventArgs e)
-        {
             StartFormLogic.StartTaskAction();
-        }
-
-        private void Btn_Open_Click(object sender, EventArgs e)
-        {
-            StartFormLogic.OpenChillerComm();
-
-
-            StartFormLogic.GetChillerStatus();
-
-
-            //RGBTesterMachine.IOTest.Open();
-        }
-
-        private void Btn_GetChillerStatus_Click(object sender, EventArgs e)
-        {
-            StartFormLogic.GetChillerStatus();
         }
     }
 }

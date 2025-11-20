@@ -27,8 +27,7 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            ResetTimeCount(out task_delay);
-            Tool.SaveLogToFile("StdTask Start", level: "INF");
+            Tool.SaveLogToFile("SubTaskRGBTest Start", level: "INF");
 
             F_StateControl = f_StateControl;
         }
@@ -41,16 +40,19 @@ namespace RGBTester.Logic
         private RGBTesterData TesterData_L = new RGBTesterData();
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
+        private TestMode TMode = TestMode.RED;
         private int RepeatTime = 1;     //平均次數
+        private int DAQ_Vf_R = 0;       //DAQ卡Vr點位
+        private int DAQ_Vf_G = 0;       //DAQ卡Vg點位
+        private int DAQ_Vf_B = 0;       //DAQ卡Vb點位
+        private int DAQ_Vf = 0;         //DAQ卡Vf點位
         private double Rfb_HCM = 0;     //High Current Mode阻抗
         private double Rfb_LCM = 0;     //Low Current Mode阻抗
         private double Rfb = 1;         //阻抗
         private double Rin = 1;         //輸入阻抗
         private double LED_Duty;        //LED Duty
         private int SigMag = 1;         //訊號放大倍率
-        private int task_delay = 0;
-        private int delay_time = 1;
-        private IF_BaseTask SubTask;                  //子流程
+        private IF_BaseTask SubTask;            //子流程
         private IF_StateControl F_StateControl;
         enum TestMode
         {
@@ -90,6 +92,13 @@ namespace RGBTester.Logic
                 qDAC_L.Enqueue(i);
                 qDAC_H.Enqueue(i);
             }
+
+            if (TMode == TestMode.RED)
+                DAQ_Vf = DAQ_Vf_R;
+            else if(TMode == TestMode.GREEN)
+                DAQ_Vf = DAQ_Vf_G;
+            else if(TMode == TestMode.BLUE)
+                DAQ_Vf = DAQ_Vf_B;
         }
         
         protected override void Transition(WORK target)
@@ -232,8 +241,7 @@ namespace RGBTester.Logic
                 case WORK.GET_ADC_LOW:
                     {
                         double sum_Vin = 0, sum_VSYS = 0, sum_Vled = 0;
-                        double sum_VR = 0, sum_VG = 0, sum_VB = 0;
-                        double sum_Vfb = 0;
+                        double sum_Vf = 0, sum_Vfb = 0;
 
                         //取得AI訊號
                         for (int i=0; i<RepeatTime; i++)
@@ -241,45 +249,35 @@ namespace RGBTester.Logic
                             sum_Vin += 0;
                             sum_VSYS += 0;
                             sum_Vled += 0;
-                            sum_VR += 0;
-                            sum_VG += 0;
-                            sum_VB += 0;
+                            sum_Vf += 0;    //DAQ_Vf點位
                             sum_Vfb += 0;
                         }
 
                         TesterData_L.Vin.Add(sum_Vin / RepeatTime);
                         TesterData_L.Iin.Add(sum_VSYS / RepeatTime / Rin / SigMag);
                         TesterData_L.Vled.Add(sum_Vled / RepeatTime);
-                        TesterData_L.Vf_R.Add((sum_Vled - sum_VR) / RepeatTime);
-                        TesterData_L.Vf_G.Add((sum_Vled - sum_VG) / RepeatTime);
-                        TesterData_L.Vf_B.Add((sum_Vled - sum_VB) / RepeatTime);
+                        TesterData_L.Vf.Add((sum_Vled - sum_Vf) / RepeatTime);
                         TesterData_L.Iled.Add(sum_Vfb / RepeatTime / Rfb / SigMag);
 
-                        Transition(WORK.CALCULATE_LOW);
+                        goto case WORK.CALCULATE_LOW;
                     }
                     break;
                 case WORK.CALCULATE_LOW:
                     {
-                        for(int i=0; i< TesterData_L.Vin.Count; i++)
-                        {
-                            TesterData_L.Pin.Add(TesterData_L.Vin[i]* TesterData_L.Iin[i]);
-                            
-                            TesterData_L.Pled_R.Add(TesterData_L.Vf_R[i] * TesterData_L.Iled[i] * LED_Duty);
-                            TesterData_L.Pled_G.Add(TesterData_L.Vf_G[i] * TesterData_L.Iled[i] * LED_Duty);
-                            TesterData_L.Pled_B.Add(TesterData_L.Vf_B[i] * TesterData_L.Iled[i] * LED_Duty);
-
-                            TesterData_L.Eff_R.Add(TesterData_L.Pled_R[i] / TesterData_L.Pin[i]);
-                            TesterData_L.Eff_G.Add(TesterData_L.Pled_G[i] / TesterData_L.Pin[i]);
-                            TesterData_L.Eff_B.Add(TesterData_L.Pled_B[i] / TesterData_L.Pin[i]);
-                        }
-
                         if (qDAC_L.Count == 0)
                         {
+                            for (int i = 0; i < TesterData_L.Vin.Count; i++)
+                            {
+                                TesterData_L.Pin.Add(TesterData_L.Vin[i] * TesterData_L.Iin[i]);
+                                TesterData_L.Pled.Add(TesterData_L.Vf[i] * TesterData_L.Iled[i] * LED_Duty);
+                                TesterData_L.Eff.Add(TesterData_L.Pled[i] / TesterData_L.Pin[i]);
+                            }
+
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), TesterData_L.Iled.ToArray());
                             Transition(WORK.SET_DAC_HIGH);
                         }
                         else
-                            Transition(WORK.SET_DAC_LOW);
+                            goto case WORK.SET_DAC_LOW;
                     }
                     break;
                 #endregion
@@ -294,8 +292,7 @@ namespace RGBTester.Logic
                 case WORK.GET_ADC_HIGH:
                     {
                         double sum_Vin = 0, sum_VSYS = 0, sum_Vled = 0;
-                        double sum_VR = 0, sum_VG = 0, sum_VB = 0;
-                        double sum_Vfb = 0;
+                        double sum_Vf = 0, sum_Vfb = 0;
 
                         //取得AI訊號
                         for (int i = 0; i < RepeatTime; i++)
@@ -303,64 +300,48 @@ namespace RGBTester.Logic
                             sum_Vin += 0;
                             sum_VSYS += 0;
                             sum_Vled += 0;
-                            sum_VR += 0;
-                            sum_VG += 0;
-                            sum_VB += 0;
+                            sum_Vf += 0;    //DAQ_Vf點位
                             sum_Vfb += 0;
                         }
 
                         TesterData_H.Vin.Add(sum_Vin / RepeatTime);
                         TesterData_H.Iin.Add(sum_VSYS / RepeatTime / Rin / SigMag);
                         TesterData_H.Vled.Add(sum_Vled / RepeatTime);
-                        TesterData_H.Vf_R.Add((sum_Vled - sum_VR) / RepeatTime);
-                        TesterData_H.Vf_G.Add((sum_Vled - sum_VG) / RepeatTime);
-                        TesterData_H.Vf_B.Add((sum_Vled - sum_VB) / RepeatTime);
+                        TesterData_H.Vf.Add((sum_Vled - sum_Vf) / RepeatTime);
                         TesterData_H.Iled.Add(sum_Vfb / RepeatTime / Rfb / SigMag);
 
-                        Transition(WORK.CALCULATE_HIGH);
+                        goto case WORK.CALCULATE_HIGH;
                     }
-                    break;
+                    //break;
                 case WORK.CALCULATE_HIGH:
                     {
-                        for (int i = 0; i < TesterData_H.Vin.Count; i++)
-                        {
-                            TesterData_H.Pin.Add(TesterData_H.Vin[i] * TesterData_H.Iin[i]);
-
-                            TesterData_H.Pled_R.Add(TesterData_H.Vf_R[i] * TesterData_H.Iled[i] * LED_Duty);
-                            TesterData_H.Pled_G.Add(TesterData_H.Vf_G[i] * TesterData_H.Iled[i] * LED_Duty);
-                            TesterData_H.Pled_B.Add(TesterData_H.Vf_B[i] * TesterData_H.Iled[i] * LED_Duty);
-
-                            TesterData_H.Eff_R.Add(TesterData_H.Pled_R[i] / TesterData_H.Pin[i]);
-                            TesterData_H.Eff_G.Add(TesterData_H.Pled_G[i] / TesterData_H.Pin[i]);
-                            TesterData_H.Eff_B.Add(TesterData_H.Pled_B[i] / TesterData_H.Pin[i]);
-                        }
-
                         if (qDAC_H.Count == 0)
                         {
+                            for (int i = 0; i < TesterData_H.Vin.Count; i++)
+                            {
+                                TesterData_H.Pin.Add(TesterData_H.Vin[i] * TesterData_H.Iin[i]);
+                                TesterData_H.Pled.Add(TesterData_H.Vf[i] * TesterData_H.Iled[i] * LED_Duty);
+                                TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
+                            }
+
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
                             Transition(WORK.SUCCESS);
                         }
                         else
-                            Transition(WORK.SET_DAC_HIGH);
+                            goto case WORK.SET_DAC_HIGH;
                     }
                     break;
                 #endregion
 
                 case WORK.SUCCESS:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                            Tool.SaveLogToFile("WaferAlign End", level:"INF");
-                        }
+                        SetStatus(TASK_STATUS.SUCCESS);
+                        Tool.SaveLogToFile("RGBTest End", level:"INF");
                     }
                     break;
                 case WORK.FAIL:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.FAIL);
-                        }
+                        SetStatus(TASK_STATUS.FAIL);
                     }
                     break;
                 case WORK.PAUSE:
@@ -384,10 +365,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.END:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                        }
+                        SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
             }
