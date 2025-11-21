@@ -4,20 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 
 using ToolFunction;
-using RGBTester.Base;
+using SampleCode.Base;
 
-namespace RGBTester.Logic
+namespace SampleCode.Logic
 {
     #region Task
-    public class TaskRGBTest: IBaseTask<TaskRGBTest.WORK>
+    public class StdSubTask:IBaseTask<StdSubTask.WORK>
     {
-        public TaskRGBTest(IBaseTaskDependence dependencies,
-            IF_StateControl f_StateControl,
-            string set_state = "Default")
-            : base(dependencies)
+        public StdSubTask(IBaseTaskDependence dependencies, 
+                          IF_StateControl f_StateControl,  
+                          string set_state = "Default") : base(dependencies)
         {
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
@@ -28,33 +27,27 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            Tool.SaveLogToFile("TaskRGBTest Start", level: "INF");
+            ResetTimeCount(out task_delay);
+            Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
+        private int task_delay = 0;
+        private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        //private F_StateControl TaskForm;
         public enum WORK
         {
             NONE,
             INITIAL,
             IDLE,
 
-            LED_R_TEST,
-            LED_G_TEST,
-            LED_B_TEST,
-
-            WAIT_LED_R_TEST,
-            WAIT_LED_G_TEST,
-            WAIT_LED_B_TEST,
-
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
+            RUNNING,
+            RUNNING_1,
+            RUNNING_2,
 
             END,
 
@@ -73,7 +66,7 @@ namespace RGBTester.Logic
             if (target != State) //狀態有變化時紀錄
             {
                 Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
-                F_StateControl.UpdateTask($"[Task]({TaskName})" + target.ToString());
+                F_StateControl.UpdateTask($"({TaskName})\n" + target.ToString());
             }
 
             State = target;
@@ -192,65 +185,34 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.LED_R_TEST);
+                        Transition(WORK.RUNNING);
                     }
                     break;
-
-                #region RED
-                case WORK.LED_R_TEST:
+                case WORK.RUNNING:
                     {
-                        SubTask = new SubTaskRGBTest(Deps, F_StateControl);
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_R_TEST);
+                        Transition(WORK.RUNNING_1);
                     }
                     break;
-                case WORK.WAIT_LED_R_TEST:
+                case WORK.RUNNING_1:
                     {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.LED_G_TEST);
+                        Transition(WORK.SUCCESS);
                     }
                     break;
-                #endregion
-                #region GREEN
-                case WORK.LED_G_TEST:
-                    {
-                        SubTask = new SubTaskRGBTest(Deps, F_StateControl);
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_G_TEST);
-                    }
-                    break;
-                case WORK.WAIT_LED_G_TEST:
-                    {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.LED_B_TEST);
-                    }
-                    break;
-                #endregion
-                #region BLUE
-                case WORK.LED_B_TEST:
-                    {
-                        SubTask = new SubTaskRGBTest(Deps, F_StateControl);
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_B_TEST);
-                    }
-                    break;
-                case WORK.WAIT_LED_B_TEST:
-                    {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check);
-                    }
-                    break;
-                #endregion
-
                 case WORK.SUCCESS:
                     {
-                        SetStatus(TASK_STATUS.SUCCESS);
-                        Tool.SaveLogToFile("RGBTest End", level:"INF");
+                        if (CheckTimeOverSec(task_delay, delay_time))
+                        {
+                            SetStatus(TASK_STATUS.SUCCESS);
+                            Tool.SaveLogToFile("WaferAlign End", level:"INF");
+                        }
                     }
                     break;
                 case WORK.FAIL:
                     {
-                        SetStatus(TASK_STATUS.FAIL);
+                        if (CheckTimeOverSec(task_delay, delay_time))
+                        {
+                            SetStatus(TASK_STATUS.FAIL);
+                        }
                     }
                     break;
                 case WORK.PAUSE:
@@ -261,7 +223,6 @@ namespace RGBTester.Logic
                 case WORK.ABORT:
                     {
                         SetStatus(TASK_STATUS.ABORT);
-                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -275,7 +236,10 @@ namespace RGBTester.Logic
                     break;
                 case WORK.END:
                     {
-                        SetStatus(TASK_STATUS.SUCCESS);
+                        if (CheckTimeOverSec(task_delay, delay_time))
+                        {
+                            SetStatus(TASK_STATUS.SUCCESS);
+                        }
                     }
                     break;
             }

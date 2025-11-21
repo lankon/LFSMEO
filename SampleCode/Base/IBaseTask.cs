@@ -8,7 +8,7 @@ using System.Threading;
 
 using DeviceCore;
 
-namespace RGBTester.Base
+namespace SampleCode.Base
 {
     public enum TASK_STATUS
     {
@@ -28,23 +28,16 @@ namespace RGBTester.Base
     {
         IFunction_IO_Card DIOL { get; }
         IFunction_MotionCard DML { get; }
-        ILightEngineCommand LightEngine { get; }
-        IWriteFile File { get; }
     }
     public class BaseTaskDependence : IBaseTaskDependence
     {
         public IFunction_IO_Card DIOL { get; }
         public IFunction_MotionCard DML { get; }
-        public ILightEngineCommand LightEngine { get; }
-        public IWriteFile File { get; }
 
-        public BaseTaskDependence(IFunction_IO_Card io, IFunction_MotionCard motion, 
-                                  ILightEngineCommand command, IWriteFile file)
+        public BaseTaskDependence(IFunction_IO_Card io, IFunction_MotionCard motion)
         {
             DML = motion;
             DIOL = io;
-            LightEngine = command;
-            File = file;
         }
     }
     public interface IF_BaseTask

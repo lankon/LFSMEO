@@ -12,9 +12,9 @@ using RGBTester.Base;
 namespace RGBTester.Logic
 {
     #region Task
-    public class StdTask:IBaseTask<StdTask.WORK>
+    public class SubTaskRGBTest: IBaseTask<SubTaskRGBTest.WORK>
     {
-        public StdTask(IBaseTaskDependence dependencies,
+        public SubTaskRGBTest(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -28,20 +28,30 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            Tool.SaveLogToFile("StdTask Start", level: "INF");
+            Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
 
+            Type = set_state;
         }
 
         #region parameter
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private string Type;
         public enum WORK
         {
             NONE,
             INITIAL,
             IDLE,
+
+            LED_R_TEST,
+            LED_G_TEST,
+            LED_B_TEST,
+
+            WAIT_LED_R_TEST,
+            WAIT_LED_G_TEST,
+            WAIT_LED_B_TEST,
 
             INITIAL_SUBTASK,
             SUBTASK_PROCESS,
@@ -65,7 +75,7 @@ namespace RGBTester.Logic
             if (target != State) //狀態有變化時紀錄
             {
                 Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
-                F_StateControl.UpdateTask($"[Task]({TaskName})" + target.ToString());
+                F_StateControl.UpdateTask($"({TaskName})\n" + target.ToString());
             }
 
             State = target;
@@ -184,29 +194,49 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.INITIAL_SUBTASK);
+                        Transition(WORK.LED_R_TEST);
                     }
                     break;
-                
-                #region SubTask
-                case WORK.INITIAL_SUBTASK:
-                    {
-                        Transition(WORK.SUBTASK_PROCESS);
-                    }
-                    break;
-                case WORK.SUBTASK_PROCESS:
-                    {
-                        //建立SubTask
-                        SubTask = new StdSubTask(Deps, F_StateControl);
-                        //委派必要Function
-                        //SubTask.SetForm(TaskForm);
-                        //設定是否有SubTask執行
-                        SetSubTaskProcessing(true);
 
-                        Transition(WORK.WAIT_SUBTASK_PROCESS);
+                #region RED
+                case WORK.LED_R_TEST:
+                    {
+                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type+"_R");
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_R_TEST);
                     }
                     break;
-                case WORK.WAIT_SUBTASK_PROCESS:
+                case WORK.WAIT_LED_R_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.LED_G_TEST);
+                    }
+                    break;
+                #endregion
+                #region GREEN
+                case WORK.LED_G_TEST:
+                    {
+                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_G_TEST);
+                    }
+                    break;
+                case WORK.WAIT_LED_G_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.LED_B_TEST);
+                    }
+                    break;
+                #endregion
+                #region BLUE
+                case WORK.LED_B_TEST:
+                    {
+                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_B_TEST);
+                    }
+                    break;
+                case WORK.WAIT_LED_B_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
                         CheckResult(check);
@@ -217,7 +247,7 @@ namespace RGBTester.Logic
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);
-                        Tool.SaveLogToFile("WaferAlign End", level:"INF");
+                        Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
                     break;
                 case WORK.FAIL:

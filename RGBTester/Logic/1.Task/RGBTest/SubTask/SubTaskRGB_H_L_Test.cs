@@ -12,9 +12,9 @@ using RGBTester.Base;
 namespace RGBTester.Logic
 {
     #region Task
-    public class SubTaskRGBTest : IBaseTask<SubTaskRGBTest.WORK>
+    public class SubTaskRGB_H_L_Test : IBaseTask<SubTaskRGB_H_L_Test.WORK>
     {
-        public SubTaskRGBTest(IBaseTaskDependence dependencies, 
+        public SubTaskRGB_H_L_Test(IBaseTaskDependence dependencies, 
                           IF_StateControl f_StateControl,  
                           string set_state = "Default") : base(dependencies)
         {
@@ -27,12 +27,15 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            Tool.SaveLogToFile("SubTaskRGBTest Start", level: "INF");
+            Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
+
+            Type = set_state;
         }
 
         #region parameter
+        private string Type;
         private Queue<int> qDAC_L = new Queue<int>();
         private Queue<int> qDAC_H = new Queue<int>();
         private int DAC_Start = 0, DAC_End = 1022, DAC_Step = 2;
@@ -103,10 +106,11 @@ namespace RGBTester.Logic
         
         protected override void Transition(WORK target)
         {
-            if (target != State) //狀態有變化時紀錄
+            if (target != State && !(target == WORK.GET_ADC_LOW || target == WORK.SET_DAC_LOW || 
+                                     target == WORK.GET_ADC_HIGH || target == WORK.SET_DAC_HIGH)) //狀態有變化時紀錄
             {
-                Tool.SaveLogToFile($"[SubTask]({TaskName})" + target.ToString());
-                F_StateControl.UpdateTask($"[SubTask]({TaskName})" + target.ToString());
+                Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
+                F_StateControl.UpdateTask($"({TaskName})\n" + target.ToString());
             }
 
             State = target;
@@ -225,6 +229,7 @@ namespace RGBTester.Logic
                     {
                         Preset();
                         Transition(WORK.SET_DAC_LOW);
+                        Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_LOW.ToString());
                     }
                     break;
 
@@ -234,6 +239,8 @@ namespace RGBTester.Logic
                         //傳送廣達指令
                         int val = qDAC_L.Dequeue();
                         TesterData_L.DACpoint.Add(val);
+
+                        Deps.LightEngine.SetLedDriverData(0x00, 0x13, 0x10);
 
                         Transition(WORK.GET_ADC_LOW);
                     }
@@ -259,6 +266,8 @@ namespace RGBTester.Logic
                         TesterData_L.Vf.Add((sum_Vled - sum_Vf) / RepeatTime);
                         TesterData_L.Iled.Add(sum_Vfb / RepeatTime / Rfb / SigMag);
 
+                        //Transition(WORK.CALCULATE_LOW);
+                        State = WORK.CALCULATE_LOW;
                         goto case WORK.CALCULATE_LOW;
                     }
                     break;
@@ -274,10 +283,24 @@ namespace RGBTester.Logic
                             }
 
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), TesterData_L.Iled.ToArray());
+
+                            string[] side = Type.Split('_');
+                            for(int i=0; i< TesterData_L.Vin.Count; i++)
+                            {
+                                Deps.File.WriteFile($"{Type}_Low,{TesterData_L.Iin[i]},{TesterData_L.Vled[i]}", side[0]);
+                            }
+
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
                             Transition(WORK.SET_DAC_HIGH);
                         }
                         else
+                        {
+                            //Transition(WORK.SET_DAC_LOW);
+                            State = WORK.SET_DAC_LOW;
                             goto case WORK.SET_DAC_LOW;
+                        }
                     }
                     break;
                 #endregion
@@ -309,10 +332,11 @@ namespace RGBTester.Logic
                         TesterData_H.Vled.Add(sum_Vled / RepeatTime);
                         TesterData_H.Vf.Add((sum_Vled - sum_Vf) / RepeatTime);
                         TesterData_H.Iled.Add(sum_Vfb / RepeatTime / Rfb / SigMag);
-
+                        //Transition(WORK.CALCULATE_HIGH);
+                        State = WORK.CALCULATE_HIGH;
                         goto case WORK.CALCULATE_HIGH;
                     }
-                    //break;
+                    break;
                 case WORK.CALCULATE_HIGH:
                     {
                         if (qDAC_H.Count == 0)
@@ -325,10 +349,16 @@ namespace RGBTester.Logic
                             }
 
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
+
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_HIGH.ToString());
                             Transition(WORK.SUCCESS);
                         }
                         else
+                        {
+                            State = WORK.SET_DAC_HIGH;
                             goto case WORK.SET_DAC_HIGH;
+                        }
                     }
                     break;
                 #endregion
@@ -336,7 +366,7 @@ namespace RGBTester.Logic
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);
-                        Tool.SaveLogToFile("RGBTest End", level:"INF");
+                        Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
                     break;
                 case WORK.FAIL:

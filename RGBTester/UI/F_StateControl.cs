@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
+using ToolFunction;
 using RGBTester.Base;
 
 namespace RGBTester.UI
@@ -20,6 +21,7 @@ namespace RGBTester.UI
             InitializeComponent();
             this.Hide();
             ServiceProvider = serviceProvider;
+            SetHint();
         }
 
         #region parameter define
@@ -28,6 +30,13 @@ namespace RGBTester.UI
         #endregion
 
         #region private function
+        private void SetHint()
+        {
+            toolTip1.SetToolTip(BtnPause, "Pause");
+            toolTip1.SetToolTip(BtnAbort, "Abort");
+            toolTip1.SetToolTip(BtnContinue, "Continue");
+
+        }
         private void UpdateUI(TASK_STATUS status)
         {
             if (status == TASK_STATUS.ABORT_CONTINUE)
@@ -156,6 +165,11 @@ namespace RGBTester.UI
         private void BtnContinue_Click(object sender, EventArgs e)
         {
             MainTask.GoToContinue();
+        }
+
+        private void F_StateControl_VisibleChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }

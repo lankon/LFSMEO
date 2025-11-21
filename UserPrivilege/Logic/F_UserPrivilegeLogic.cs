@@ -61,6 +61,9 @@ namespace UserPrivilege.Logic
         }
         public eUserLevel CheckUserPrivilege(string input_account, string input_password)
         {
+            if (AccountPasswordData == null)
+                return eUserLevel.OP;
+            
             for (int i = 0; i < AccountPasswordData.Count; i++)
             {
                 AccountPasswordData[i].TryGetValue("Title_Account", out object account);

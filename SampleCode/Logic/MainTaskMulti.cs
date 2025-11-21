@@ -8,14 +8,14 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
-using RGBTester.Base;
+using SampleCode.Base;
 
 
-namespace RGBTester.Logic
+namespace SampleCode.Logic
 {
-    public class MainTask : IBaseMainTask
+    public class MainTaskMulti : IBaseMainTask, IBaseMainTaskMulti
     {
-        public MainTask(IServiceProvider serviceProvider, IRGBTesterMachine rGBTesterMachine, IF_StateControl f_StateControl)
+        public MainTaskMulti(IServiceProvider serviceProvider, IMachine rGBTesterMachine, IF_StateControl f_StateControl)
         {
             Machine = rGBTesterMachine;
             F_StateControl = f_StateControl;
@@ -28,7 +28,7 @@ namespace RGBTester.Logic
         private bool Terminate = false;
         private IServiceProvider ServiceProvider;
         public IF_BaseTask BaseTask;
-        private IRGBTesterMachine Machine;
+        private IMachine Machine;
         private IF_StateControl F_StateControl;
         private TASK_STATUS status_commad = TASK_STATUS.NONE;
         private TASK_STATUS result_status = TASK_STATUS.NONE;
@@ -173,6 +173,8 @@ namespace RGBTester.Logic
             };
 
             BaseTask = (IF_BaseTask)ctor.Invoke(constructorArgs);
+
+            Thread.Sleep(1);
         }
 
         /// <summary>
@@ -181,7 +183,7 @@ namespace RGBTester.Logic
         public void Run()
         {
             F_StateControl.SetMainTask(this);
-            F_StateControl.ShowForm(0);
+            F_StateControl.ShowForm(1);
             //BaseTask.SetForm(f_StateControl);
 
             Transition(WORK.TASK);
@@ -233,11 +235,13 @@ namespace RGBTester.Logic
         }
         #endregion
 
+        
+
         private void Process()
         {
             while (!Terminate)
             {
-                //Thread.Sleep(1000);  //測試用
+                Thread.Sleep(1000);  //測試用
 
                 switch (state)
                 {
@@ -298,9 +302,7 @@ namespace RGBTester.Logic
                         break;
                 }
 
-                //Thread.Sleep(1);
-
-                Thread.Yield(); // 告訴排程器讓其他執行緒有機會運行
+                Thread.Sleep(1);
             }
         }
     } 

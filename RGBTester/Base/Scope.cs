@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,5 +12,6 @@ namespace RGBTester.Base
     {
         public static Panel MainPanel;          //F_MainForm:Pnl_Group
         public static Panel UpButtonPanel;      //F_MainForm:Pnl_Group1
+
     }
 }

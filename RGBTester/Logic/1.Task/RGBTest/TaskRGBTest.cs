@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-//using System.Windows.Forms;
+using System.Windows.Forms;
+using System.IO;
 
 using ToolFunction;
 using RGBTester.Base;
@@ -12,11 +13,12 @@ using RGBTester.Base;
 namespace RGBTester.Logic
 {
     #region Task
-    public class StdSubTask:IBaseTask<StdSubTask.WORK>
+    public class TaskRGBTest: IBaseTask<TaskRGBTest.WORK>
     {
-        public StdSubTask(IBaseTaskDependence dependencies, 
-                          IF_StateControl f_StateControl,  
-                          string set_state = "Default") : base(dependencies)
+        public TaskRGBTest(IBaseTaskDependence dependencies,
+            IF_StateControl f_StateControl,
+            string set_state = "Default")
+            : base(dependencies)
         {
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
@@ -27,27 +29,31 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            ResetTimeCount(out task_delay);
-            Tool.SaveLogToFile("StdTask Start", level: "INF");
+            Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
+
         }
 
         #region parameter
-        private int task_delay = 0;
-        private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
-        //private F_StateControl TaskForm;
         public enum WORK
         {
             NONE,
             INITIAL,
             IDLE,
 
-            RUNNING,
-            RUNNING_1,
-            RUNNING_2,
+            LEFT_GLASSES_TEST,
+            RIGHT_GLASSES_TEST,
+
+            WAIT_LEFT_GLASSES_TEST,
+            WAIT_RIGHT_GLASSES_TEST,
+
+            INITIAL_SUBTASK,
+            SUBTASK_PROCESS,
+            SUBTASK_PROCESS_PAUSE,
+            WAIT_SUBTASK_PROCESS,
 
             END,
 
@@ -61,12 +67,21 @@ namespace RGBTester.Logic
         #endregion
 
         #region private function
+        private void CreateTestFile()
+        {
+            Deps.File.CreateFile("Left");
+            Deps.File.CreateFile("Right");
+        }
+        private void Preset()
+        {
+            CreateTestFile();
+        }
         protected override void Transition(WORK target)
         {
             if (target != State) //狀態有變化時紀錄
             {
-                Tool.SaveLogToFile($"[SubTask]({TaskName})" + target.ToString());
-                F_StateControl.UpdateTask($"[SubTask]({TaskName})" + target.ToString());
+                Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
+                F_StateControl.UpdateTask($"({TaskName})\n" + target.ToString());
             }
 
             State = target;
@@ -174,8 +189,6 @@ namespace RGBTester.Logic
         }
         #endregion
 
-        
-
         protected override void RunLoop(TASK_STATUS task_command)
         {
             if (task_command == TASK_STATUS.ABORT)   //人員傳入ABORT命令
@@ -187,34 +200,54 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.RUNNING);
+                        Preset();
+                        
+                        Transition(WORK.LEFT_GLASSES_TEST);
                     }
                     break;
-                case WORK.RUNNING:
+
+                #region Left
+                case WORK.LEFT_GLASSES_TEST:
                     {
-                        Transition(WORK.RUNNING_1);
+                        SubTask = new SubTaskRGBTest(Deps, F_StateControl,"Left");
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LEFT_GLASSES_TEST);
                     }
                     break;
-                case WORK.RUNNING_1:
+                case WORK.WAIT_LEFT_GLASSES_TEST:
                     {
-                        Transition(WORK.SUCCESS);
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.RIGHT_GLASSES_TEST);
                     }
                     break;
+                #endregion
+                #region Right
+                case WORK.RIGHT_GLASSES_TEST:
+                    {
+                        SubTask = new SubTaskRGBTest(Deps, F_StateControl,"Right");
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_RIGHT_GLASSES_TEST);
+                    }
+                    break;
+                case WORK.WAIT_RIGHT_GLASSES_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.SUCCESS);
+                    }
+                    break;
+                #endregion
+
                 case WORK.SUCCESS:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                            Tool.SaveLogToFile("WaferAlign End", level:"INF");
-                        }
+                        Deps.File.CloseFile("Left");
+                        Deps.File.CloseFile("Right");
+                        SetStatus(TASK_STATUS.SUCCESS);
+                        Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
                     break;
                 case WORK.FAIL:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.FAIL);
-                        }
+                        SetStatus(TASK_STATUS.FAIL);
                     }
                     break;
                 case WORK.PAUSE:
@@ -224,7 +257,10 @@ namespace RGBTester.Logic
                     break;
                 case WORK.ABORT:
                     {
+                        Deps.File.CloseFile("Left");
+                        Deps.File.CloseFile("Right");
                         SetStatus(TASK_STATUS.ABORT);
+                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -238,10 +274,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.END:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                        }
+                        SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
             }

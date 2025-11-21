@@ -116,7 +116,7 @@ namespace RGBTester.UI
             this.Btn_Start = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -132,7 +132,7 @@ namespace RGBTester.UI
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 69);
+            this.groupBox1.Location = new System.Drawing.Point(65, 69);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(591, 491);
             this.groupBox1.TabIndex = 1;
@@ -300,10 +300,11 @@ namespace RGBTester.UI
             // 
             this.label28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.label28.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label28.Location = new System.Drawing.Point(6, 31);
+            this.label28.Location = new System.Drawing.Point(3, 31);
+            this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
             this.tableLayoutPanel2.SetRowSpan(this.label28, 2);
-            this.label28.Size = new System.Drawing.Size(64, 73);
+            this.label28.Size = new System.Drawing.Size(70, 73);
             this.label28.TabIndex = 35;
             this.label28.Text = "Red";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -312,10 +313,11 @@ namespace RGBTester.UI
             // 
             this.label29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.label29.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label29.Location = new System.Drawing.Point(6, 107);
+            this.label29.Location = new System.Drawing.Point(3, 107);
+            this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
             this.tableLayoutPanel2.SetRowSpan(this.label29, 2);
-            this.label29.Size = new System.Drawing.Size(64, 73);
+            this.label29.Size = new System.Drawing.Size(70, 73);
             this.label29.TabIndex = 36;
             this.label29.Text = "Green";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -324,10 +326,11 @@ namespace RGBTester.UI
             // 
             this.label30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.label30.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label30.Location = new System.Drawing.Point(6, 183);
+            this.label30.Location = new System.Drawing.Point(3, 183);
+            this.label30.Margin = new System.Windows.Forms.Padding(0);
             this.label30.Name = "label30";
             this.tableLayoutPanel2.SetRowSpan(this.label30, 2);
-            this.label30.Size = new System.Drawing.Size(64, 73);
+            this.label30.Size = new System.Drawing.Size(70, 73);
             this.label30.TabIndex = 37;
             this.label30.Text = "Blue";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -573,7 +576,7 @@ namespace RGBTester.UI
             this.groupBox2.Controls.Add(this.tableLayoutPanel3);
             this.groupBox2.Controls.Add(this.tableLayoutPanel4);
             this.groupBox2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.groupBox2.Location = new System.Drawing.Point(609, 69);
+            this.groupBox2.Location = new System.Drawing.Point(662, 69);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(591, 492);
             this.groupBox2.TabIndex = 2;
@@ -617,7 +620,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.Controls.Add(this.label41, 3, 5);
             this.tableLayoutPanel3.Controls.Add(this.label42, 3, 4);
             this.tableLayoutPanel3.Controls.Add(this.label43, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(6, 228);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(6, 227);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 7;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
@@ -741,10 +744,11 @@ namespace RGBTester.UI
             // 
             this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.label9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label9.Location = new System.Drawing.Point(6, 31);
+            this.label9.Location = new System.Drawing.Point(3, 31);
+            this.label9.Margin = new System.Windows.Forms.Padding(0);
             this.label9.Name = "label9";
             this.tableLayoutPanel3.SetRowSpan(this.label9, 2);
-            this.label9.Size = new System.Drawing.Size(64, 73);
+            this.label9.Size = new System.Drawing.Size(70, 73);
             this.label9.TabIndex = 35;
             this.label9.Text = "Red";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -753,10 +757,11 @@ namespace RGBTester.UI
             // 
             this.label17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.label17.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label17.Location = new System.Drawing.Point(6, 107);
+            this.label17.Location = new System.Drawing.Point(3, 107);
+            this.label17.Margin = new System.Windows.Forms.Padding(0);
             this.label17.Name = "label17";
             this.tableLayoutPanel3.SetRowSpan(this.label17, 2);
-            this.label17.Size = new System.Drawing.Size(64, 73);
+            this.label17.Size = new System.Drawing.Size(70, 73);
             this.label17.TabIndex = 36;
             this.label17.Text = "Green";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -765,10 +770,11 @@ namespace RGBTester.UI
             // 
             this.label31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.label31.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label31.Location = new System.Drawing.Point(6, 183);
+            this.label31.Location = new System.Drawing.Point(3, 183);
+            this.label31.Margin = new System.Windows.Forms.Padding(0);
             this.label31.Name = "label31";
             this.tableLayoutPanel3.SetRowSpan(this.label31, 2);
-            this.label31.Size = new System.Drawing.Size(64, 73);
+            this.label31.Size = new System.Drawing.Size(70, 73);
             this.label31.TabIndex = 37;
             this.label31.Text = "Blue";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1014,9 +1020,9 @@ namespace RGBTester.UI
             this.Pnl_MainButton.AutoScroll = true;
             this.Pnl_MainButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Pnl_MainButton.Controls.Add(this.Btn_Start);
-            this.Pnl_MainButton.Location = new System.Drawing.Point(1219, 12);
+            this.Pnl_MainButton.Location = new System.Drawing.Point(71, 566);
             this.Pnl_MainButton.Name = "Pnl_MainButton";
-            this.Pnl_MainButton.Size = new System.Drawing.Size(85, 637);
+            this.Pnl_MainButton.Size = new System.Drawing.Size(1182, 83);
             this.Pnl_MainButton.TabIndex = 3;
             // 
             // Btn_Start
@@ -1038,10 +1044,10 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.94152F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.05848F));
+            this.tableLayoutPanel5.Controls.Add(this.Cmbx_TestMode, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.label15, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.comboBox1, 1, 0);
             this.tableLayoutPanel5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(19, 13);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(72, 13);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -1058,18 +1064,18 @@ namespace RGBTester.UI
             this.label15.Text = "Test Mode";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // comboBox1
+            // Cmbx_TestMode
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.Cmbx_TestMode.FormattingEnabled = true;
+            this.Cmbx_TestMode.Items.AddRange(new object[] {
             "LEFT",
             "RIGHT",
             "BOTH"});
-            this.comboBox1.Location = new System.Drawing.Point(210, 6);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(129, 28);
-            this.comboBox1.TabIndex = 5;
-            this.comboBox1.Text = "LEFT";
+            this.Cmbx_TestMode.Location = new System.Drawing.Point(210, 6);
+            this.Cmbx_TestMode.Name = "Cmbx_TestMode";
+            this.Cmbx_TestMode.Size = new System.Drawing.Size(129, 28);
+            this.Cmbx_TestMode.TabIndex = 5;
+            this.Cmbx_TestMode.Text = "LEFT";
             // 
             // F_StartForm
             // 
@@ -1083,6 +1089,8 @@ namespace RGBTester.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StartForm";
             this.Text = "F_StartForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.F_StartForm_FormClosing);
+            this.VisibleChanged += new System.EventHandler(this.F_StartForm_VisibleChanged);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
@@ -1133,7 +1141,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_Start;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox Cmbx_TestMode;
         private System.Windows.Forms.TextBox textBox15;
         private System.Windows.Forms.TextBox textBox16;
         private System.Windows.Forms.TextBox textBox17;
