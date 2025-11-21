@@ -8,17 +8,21 @@ using DeviceCore;
 
 namespace Device_PCIS_DASK
 {
-    public class Pcis_dask_param
-    {
-        //ADLink PCI Card Type
-        public const ushort PCI_9111DG = DASK64.PCI_9111DG;
-
-        //Channel Count
-        public const ushort P9111_CHANNEL_DI = DASK64.P9111_CHANNEL_DI;
-    }
-
     public class Pcis_dask : IIOCard
     {
+        public Pcis_dask(string card_type)
+        {
+            if (card_type == "PCI_9111HR")
+            {
+
+            }
+            else if (card_type == "PCI_9111DG")
+            {
+                pCI_Parm.CardType = DASK64.PCI_9111DG;
+                pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
+            }
+        }
+
         #region parameter define
         private ushort card;     //卡片handle
         private CallbackDelegate64 aiHalfReadyCallback;
@@ -38,24 +42,39 @@ namespace Device_PCIS_DASK
         }
         #endregion
 
-        public Pcis_dask(ushort card_type)
-        {
-            pCI_Parm.CardType = card_type;
-
-            if(card_type == DASK64.PCI_9111DG)
-            {
-                pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
-            }
-        }
-
+        #region public function
         public string GetName()
         {
-            if (pCI_Parm.CardType == DASK64.PCI_9111DG || 
-                pCI_Parm.CardType == DASK64.PCI_9111HR)
-                return "PCI_9111";
+            if (pCI_Parm.CardType == DASK64.PCI_9111DG)
+                return "PCI_9111DG";
+            else if (pCI_Parm.CardType == DASK64.PCI_9111HR)
+                return "PCI_9111HR";
             else
                 return "None";
         }
+
+        public bool Open()
+        {
+            try
+            {
+                card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 0); // 假設 CardType
+            }
+            catch
+            {
+                return false;
+            }
+
+            if (card < 0 || card > 65530)
+            {
+                Console.WriteLine("Register_IO_Card failed.");
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
+
+
 
         //public  bool Open()
         //{
@@ -95,27 +114,7 @@ namespace Device_PCIS_DASK
         //    return true;
         //}
 
-        public bool Open()
-        {
-            // 1. 註冊卡片
-            try
-            {
-                card = (ushort)DASK64.Register_Card(DASK64.PCI_9111HR, 0); // 假設 CardType
-            }
-            catch
-            {
-                return false;
-            }
 
-            if (card < 0 || card > 65530)
-            {
-                Console.WriteLine("Register_Card failed.");
-                return false;
-            }
-
-
-            return true;
-        }
 
         private void OnHalfBufferReady()
         {

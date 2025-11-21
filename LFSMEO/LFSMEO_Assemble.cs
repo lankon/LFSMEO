@@ -59,17 +59,17 @@ namespace LFSMEO
         private void ConfigureApplicationServices(IServiceCollection services)
         {
             MN200 mn200 = new MN200();
-            Pcis_dask pcis_dask = new Pcis_dask(Pcis_dask_param.PCI_9111DG);
+            Pcis_dask pcis_9111DG = new Pcis_dask("PCI_9111DG");
+            Pcis_dask pcis_9111HR = new Pcis_dask("PCI_9111HR");
             ChillerControl_Klzx Klxz = new ChillerControl_Klzx();
 
             // 同一個實例，註冊成多個介面
-            services.AddSingleton(mn200);
-            services.AddSingleton(pcis_dask);
             services.AddSingleton(Klxz);
 
-            services.AddSingleton<IMotionCard>(sp => sp.GetRequiredService<MN200>());
-            services.AddSingleton<IIOCard>(sp => sp.GetRequiredService<MN200>());
-            services.AddSingleton<IIOCard>(sp => sp.GetRequiredService<Pcis_dask>());
+            services.AddSingleton<IMotionCard>(mn200);
+            services.AddSingleton<IIOCard>(mn200);
+            services.AddSingleton<IIOCard>(pcis_9111DG);
+            services.AddSingleton<IIOCard>(pcis_9111HR);
             services.AddSingleton<IChillerControl>(sp => sp.GetRequiredService<ChillerControl_Klzx>());
 
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
