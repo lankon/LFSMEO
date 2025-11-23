@@ -14,7 +14,7 @@ namespace UserPrivilege.Logic
     public class F_UserPrivilegeLogic:IF_UserPrivilegeLogic
     {
         #region parameter define
-        private eUserLevel CurLevel = eUserLevel.ENG;
+        private eUserLevel CurLevel = eUserLevel.OP;
         private List<Dictionary<string, object>> AccountPasswordData;
         #endregion
 
@@ -59,6 +59,33 @@ namespace UserPrivilege.Logic
             Tool.CloseFile(File);
             Tool.SaveLogToFile("Account & Password Save Success");
         }
+        public List<Dictionary<string, object>> LoadAccountPassword()
+        {
+            AccountPasswordData = new List<Dictionary<string, object>>();
+
+            string[] lines = File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + "\\Setting\\Account&Password.dat");
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
+                string[] parts = line.Split(',');
+
+                if (parts.Length < 3)
+                    continue;
+
+                var dict = new Dictionary<string, object>();
+
+                dict["Title_Account"] = parts[0];
+                dict["Title_Password"] = DES_Decrypt(parts[1]);
+                dict["Title_Level"] = parts[2];
+
+                AccountPasswordData.Add(dict);
+            }
+
+            return AccountPasswordData;
+        }
         public eUserLevel CheckUserPrivilege(string input_account, string input_password)
         {
             if (AccountPasswordData == null)
@@ -99,7 +126,7 @@ namespace UserPrivilege.Logic
 
 
 
-        protected string FixPassword(String Password)
+        private string FixPassword(String Password)
         {
             try
             {
@@ -127,6 +154,32 @@ namespace UserPrivilege.Logic
             catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
+        private string DES_Decrypt(string cipherText)
+        {
+            try
+            {
+                string publickey = "19960321";
+                string secretkey = "85032143";
+
+                byte[] keyBytes = Encoding.UTF8.GetBytes(publickey);
+                byte[] ivBytes = Encoding.UTF8.GetBytes(secretkey);
+
+                byte[] cipherBytes = Convert.FromBase64String(cipherText);
+
+                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
+                using (MemoryStream ms = new MemoryStream())
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(keyBytes, ivBytes), CryptoStreamMode.Write))
+                {
+                    cs.Write(cipherBytes, 0, cipherBytes.Length);
+                    cs.FlushFinalBlock();
+                    return Encoding.UTF8.GetString(ms.ToArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("解密失敗: " + ex.Message);
             }
         }
     }

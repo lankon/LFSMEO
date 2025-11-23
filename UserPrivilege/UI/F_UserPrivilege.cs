@@ -56,6 +56,32 @@ namespace UserPrivilege.UI
             {
                 Pnl_CreateAccount.Visible = false;
             }
+
+            LoadAccountPasswordToDataGrid();
+        }
+        private void LoadAccountPasswordToDataGrid()
+        {
+            DGV_UserLevel.Rows.Clear();
+
+            var list = UserPrivilegeLogic.LoadAccountPassword();
+
+            foreach (var dict in list)
+            {
+                dict.TryGetValue("Title_Account", out object account);
+                if (account.ToString() == "Maintenance")
+                    continue;
+
+                int rowIndex = DGV_UserLevel.Rows.Add();
+
+                foreach (var kv in dict)
+                {
+                    if (kv.Value.ToString() == "OEM")
+                        continue;
+                    
+                    if (DGV_UserLevel.Columns.Contains(kv.Key))
+                        DGV_UserLevel.Rows[rowIndex].Cells[kv.Key].Value = kv.Value;
+                }
+            }
         }
         #endregion
 
@@ -81,6 +107,7 @@ namespace UserPrivilege.UI
             }
             else
             {
+                
                 UpdatePage();
             }
         }

@@ -62,6 +62,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -94,6 +95,12 @@
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
     <Compile Include="Base\IBaseTask.cs" />
     <Compile Include="Base\IF_StateControl.cs" />
+    <Compile Include="UI\F_Sample.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_Sample.designer.cs">
+      <DependentUpon>F_Sample.cs</DependentUpon>
+    </Compile>
     <Compile Include="IRGBTesterMachine.cs" />
     <Compile Include="Logic\MainTask.cs" />
     <Compile Include="Logic\MainTaskMulti.cs" />
@@ -114,6 +121,12 @@
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
       <Name>ToolFunction</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="UI\F_Sample.resx">
+      <DependentUpon>F_Sample.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />

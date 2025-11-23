@@ -32,6 +32,7 @@ namespace RGBTester
             services.AddSingleton<F_MainForm>();
             services.AddSingleton<F_StartForm>();
             services.AddSingleton<F_StartForm_ButtonGroup>();
+            services.AddSingleton<F_Recipe>();
 
             //[Form]
             //退出Form後即close掉,要用再new

@@ -41,12 +41,14 @@ namespace RGBTester.UI
             this.Btn_PreviousPnlPart2 = new System.Windows.Forms.Button();
             this.Btn_NextPnlPart2 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.Btn_Recipe = new System.Windows.Forms.Button();
             this.Pnl_Part1.SuspendLayout();
             this.Pnl_Part2.SuspendLayout();
             this.SuspendLayout();
             // 
             // Pnl_Part1
             // 
+            this.Pnl_Part1.Controls.Add(this.Btn_Recipe);
             this.Pnl_Part1.Controls.Add(this.Btn_LogIn);
             this.Pnl_Part1.Controls.Add(this.Btn_OEM_Setting);
             this.Pnl_Part1.Controls.Add(this.Btn_PreviousPnlPart1);
@@ -143,6 +145,16 @@ namespace RGBTester.UI
             this.Btn_NextPnlPart2.UseVisualStyleBackColor = true;
             this.Btn_NextPnlPart2.Click += new System.EventHandler(this.Btn_NextPnlPart_Click);
             // 
+            // Btn_Recipe
+            // 
+            this.Btn_Recipe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Recipe.Location = new System.Drawing.Point(91, 6);
+            this.Btn_Recipe.Name = "Btn_Recipe";
+            this.Btn_Recipe.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Recipe.TabIndex = 37;
+            this.Btn_Recipe.UseVisualStyleBackColor = true;
+            this.Btn_Recipe.Click += new System.EventHandler(this.Btn_Recipe_Click);
+            // 
             // F_StartForm_ButtonGroup
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -153,6 +165,7 @@ namespace RGBTester.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StartForm_ButtonGroup";
             this.Text = "F_StartForm_ButtonGroup";
+            this.VisibleChanged += new System.EventHandler(this.F_StartForm_ButtonGroup_VisibleChanged);
             this.Pnl_Part1.ResumeLayout(false);
             this.Pnl_Part2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -170,5 +183,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_OEM_Setting;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button Btn_LogIn;
+        private System.Windows.Forms.Button Btn_Recipe;
     }
 }

@@ -115,8 +115,8 @@ namespace RGBTester.UI
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.label15 = new System.Windows.Forms.Label();
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -1054,16 +1054,6 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.Size = new System.Drawing.Size(345, 40);
             this.tableLayoutPanel5.TabIndex = 4;
             // 
-            // label15
-            // 
-            this.label15.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label15.Location = new System.Drawing.Point(6, 3);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(195, 30);
-            this.label15.TabIndex = 4;
-            this.label15.Text = "Test Mode";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // Cmbx_TestMode
             // 
             this.Cmbx_TestMode.FormattingEnabled = true;
@@ -1076,6 +1066,16 @@ namespace RGBTester.UI
             this.Cmbx_TestMode.Size = new System.Drawing.Size(129, 28);
             this.Cmbx_TestMode.TabIndex = 5;
             this.Cmbx_TestMode.Text = "LEFT";
+            // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label15.Location = new System.Drawing.Point(6, 3);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(195, 30);
+            this.label15.TabIndex = 4;
+            this.label15.Text = "Test Mode";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // F_StartForm
             // 

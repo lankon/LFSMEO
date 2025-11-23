@@ -38,6 +38,7 @@ namespace RGBTester.UI
             toolTip1.SetToolTip(Btn_OEM_Setting, "OEM Setting");
             toolTip1.SetToolTip(Btn_ParameterSetting, "Parameter Setting");
             toolTip1.SetToolTip(Btn_LogIn, "LogIn");
+            toolTip1.SetToolTip(Btn_Recipe, "Recipe");
         }
         private void InitialForm()
         {
@@ -78,10 +79,20 @@ namespace RGBTester.UI
 
             return index;
         }
+        private void UpdatePage()
+        {
+            var UserPrivilege = ServiceProvider.GetRequiredService<IF_UserPrivilegeLogic>();
 
+            if (UserPrivilege.AtLeastEng())
+            {
+                Btn_OEM_Setting.Enabled = true;
+            }
+            else
+            {
+                Btn_OEM_Setting.Enabled = false;
+            }
+        }
         #endregion
-
-        
 
         private void Btn_PreviousPnlPart_Click(object sender, EventArgs e)
         {
@@ -122,6 +133,37 @@ namespace RGBTester.UI
                 Tool.SetForm(Scope.MainPanel, form);
                 form.Show();
             }
+        }
+
+        private void F_StartForm_ButtonGroup_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!this.Visible)
+            {
+                ////儲存參數
+                //ApplicationSetting.SaveRecipeFromForm<eOEMSetting>(this);
+                //ApplicationSetting.SaveRecipeFromForm<eMachineSetting>(this);
+                ////重新讀取變數值
+                //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+                //ApplicationSetting.ReadAllRecipe<eMachineSetting>();
+
+                ////釋放記憶體資源
+                //Tool.ReleaseButtonImages(this);
+                //this.Close();
+                //this.Dispose();
+            }
+            else
+            {
+                UpdatePage();
+            }
+        }
+
+        private void Btn_Recipe_Click(object sender, EventArgs e)
+        {
+            var recipe = ServiceProvider.GetRequiredService<F_Recipe>();
+
+            Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.SetForm(Scope.MainPanel, recipe);
+            recipe.Show();
         }
     }
 }

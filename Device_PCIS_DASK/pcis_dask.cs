@@ -24,12 +24,8 @@ namespace Device_PCIS_DASK
         }
 
         #region parameter define
-        private ushort card;     //卡片handle
-        private CallbackDelegate64 aiHalfReadyCallback;
-        private CallbackDelegate64 aiEndCallback;
+        private ushort card;            //卡片handle
         private ushort[] dataBuffer = new ushort[512];
-        private const uint ReadCount = 1024;
-        private const uint HalfReadCount = 512;
         private int lineMaxCount = 5;
         private int devMaxCount = 2;
         private int portMaxCount = 16;
@@ -113,60 +109,6 @@ namespace Device_PCIS_DASK
 
         //    return true;
         //}
-
-
-
-        private void OnHalfBufferReady()
-        {
-            try
-            {
-                // 取得回傳資料
-                short err = DASK64.AI_AsyncDblBufferTransfer(card, dataBuffer);
-                if (err == 0)
-                {
-                    // *** 在這裡處理您的 dataBuffer (512 筆資料) ***
-                    // 注意：若要更新 UI，必須將資料封送 (Marshal) 回 UI 執行緒
-                    Console.WriteLine($"Callback: 讀取 {dataBuffer.Length} 筆資料。第一筆: {dataBuffer[0]}");
-                }
-                else
-                {
-                    Console.WriteLine("AI_AsyncDblBufferTransfer failed in callback.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Callback 發生錯誤: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// **[新增]** 採集結束時由 DASK 呼叫
-        /// (參照 User's Manual 3.5 節範例 [cite: 932, 933, 934, 935, 936])
-        /// </summary>
-        private void OnAcquisitionEnd()
-        {
-            Console.WriteLine("採集已完成 (AIEnd event)。");
-            // 這裡可以設置一個旗標(Flag)通知主程式
-        }
-
-        public void Stop()
-        {
-            if (card >= 0)
-            {
-                //呼叫停止 (並修正參數)
-                //(參照 Function Reference AI_AsyncClear 頁面 [cite: 2482])
-                uint accessCount;
-                DASK64.AI_AsyncClear(card, out accessCount);
-
-                // **[新增]** 移除事件回呼
-                DASK64.AI_EventCallBack_x64(card, 0, (short)DASK64.DBEvent, null);
-                DASK64.AI_EventCallBack_x64(card, 0, (short)DASK64.AIEnd, null);
-
-                DASK64.Release_Card(card);
-                Console.WriteLine("採集已停止並釋放卡片。");
-            }
-        }
-
 
 
         public void Get_AI_Signal()
