@@ -47,7 +47,7 @@ namespace DeviceFunction
                     }
                     else if(IO[k].GetName() == "PCI_9111DG")
                     {
-                        for (byte i = 0; i < 15; i++)
+                        for (byte i = 0; i <= 15; i++)
                             IO[k].UpdateInput(port: i);
                     }
                     else if (IO[k].GetName() == "AMP_204C")

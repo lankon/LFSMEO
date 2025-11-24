@@ -9,7 +9,7 @@ namespace DeviceCore
     public enum EIOCardType
     {
         None = 0,
-        PCI_9111,
+        PCI_9111DG,
         MN200,
         AMP_204C,
         P32C32,

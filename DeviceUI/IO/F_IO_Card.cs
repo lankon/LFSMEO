@@ -42,6 +42,9 @@ namespace DeviceUI.IO
             if (IOList[i].Title_IO == "Input" &&
                 Enum.TryParse<EIOCardType>(IOList[i].Title_CardType, out var cardType))
             {
+                if (cardType == EIOCardType.None)
+                    return input_res;
+                
                 input_res = DIOL.GetInputStatus(cardType,
                                     (byte)IOList[i].Title_CardNum,
                                     (byte)IOList[i].Title_LineNum,
@@ -203,7 +206,7 @@ namespace DeviceUI.IO
 
         private void Timer_IO_Tick(object sender, EventArgs e)
         {
-            if (IO_Init == false)
+            if (!DIOL.InitialDone)
                 return;
 
             for (int i = 0; i < IOList.Count; i++)
@@ -227,7 +230,7 @@ namespace DeviceUI.IO
 
         private void DGV_IO_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (IO_Init == false)
+            if (!DIOL.InitialDone)
                 return;
 
             if (e.RowIndex >= 0 && 
