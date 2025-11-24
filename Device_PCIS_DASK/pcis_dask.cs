@@ -68,6 +68,20 @@ namespace Device_PCIS_DASK
 
             return true;
         }
+
+        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        {
+            if (card < 0 || card > 65530)
+                return -1;
+
+            ushort rawValue = 0;
+            double voltage = 0;
+
+            DASK64.AI_ReadChannel((ushort)card, port, DASK64.AD_B_5_V, out rawValue);
+            DASK64.AI_VoltScale((ushort)card, DASK64.AD_B_5_V, (short)rawValue, out voltage);
+
+            return voltage;
+        }
         #endregion
 
 
@@ -111,10 +125,7 @@ namespace Device_PCIS_DASK
         //}
 
 
-        public void Get_AI_Signal()
-        {
 
-        }
 
         public void Read_AI_Signal()
         {

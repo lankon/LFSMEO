@@ -7,20 +7,23 @@ using ToolFunction;
 
 using RGBTester.Base;
 using DeviceCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
     public class F_MainFormLogic
     {
-        public F_MainFormLogic(IRGBTesterMachine rGBTesterMachine)
+        public F_MainFormLogic(IRGBTesterMachine rGBTesterMachine , IServiceProvider serviceProvider)
         {
             RGBTesterMachine = rGBTesterMachine;
+            ServiceProvider = serviceProvider;
         }
 
         #region parameter define
         IF_MainForm MainForm;
         IBaseMainTask MainTask;
         IRGBTesterMachine RGBTesterMachine;
+        IServiceProvider ServiceProvider;
         #endregion
 
         public void ReadAllSetting()
@@ -30,6 +33,8 @@ namespace RGBTester.Logic
 
         public void Initial_IO_Function()
         {
+            ServiceProvider.GetRequiredService<IF_IO_Card>();
+
             RGBTesterMachine.DIOL.Initial_All_IO();
         }
 

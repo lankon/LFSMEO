@@ -147,8 +147,9 @@ namespace RGBTester.UI
             // 
             // Btn_Recipe
             // 
+            this.Btn_Recipe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Recipe.BackgroundImage")));
             this.Btn_Recipe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_Recipe.Location = new System.Drawing.Point(91, 6);
+            this.Btn_Recipe.Location = new System.Drawing.Point(91, 5);
             this.Btn_Recipe.Name = "Btn_Recipe";
             this.Btn_Recipe.Size = new System.Drawing.Size(60, 60);
             this.Btn_Recipe.TabIndex = 37;

@@ -63,7 +63,12 @@ namespace UserPrivilege.Logic
         {
             AccountPasswordData = new List<Dictionary<string, object>>();
 
-            string[] lines = File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + "\\Setting\\Account&Password.dat");
+            string path = System.IO.Directory.GetCurrentDirectory() + "\\Setting\\Account&Password.dat";
+
+            if (!File.Exists(path))
+                return AccountPasswordData;
+
+            string[] lines = File.ReadAllLines(path);
 
             foreach (string line in lines)
             {

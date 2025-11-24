@@ -40,7 +40,8 @@ namespace RGBTester.UI
         }
         void ShowHint()
         {
-
+            toolTip1.SetToolTip(Btn_Save, "Save");
+            toolTip1.SetToolTip(Btn_Delete, "Delete");
         }
         private void UpdatePage()
         {
@@ -72,5 +73,9 @@ namespace RGBTester.UI
             }
         }
 
+        private void Btn_Save_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

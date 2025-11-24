@@ -23,6 +23,8 @@ namespace DeviceFunction
         private List<IOData> IO_List = new List<IOData>();
         private Dictionary<string, IOData> ioListDict;
         private IEnumerable<IIOCard> Cards;
+        private IF_IO_Card F_IO;
+        public bool InitialDone { get; private set; } = false;
         #endregion
 
         #region private function
@@ -43,7 +45,7 @@ namespace DeviceFunction
                         //    IO[k].UpdateInput(lineNo: LineNo[i], devNo: DevNo[i]);
                         //}
                     }
-                    else if(IO[k].GetName() == "PCI_9111")
+                    else if(IO[k].GetName() == "PCI_9111DG")
                     {
                         for (byte i = 0; i < 15; i++)
                             IO[k].UpdateInput(port: i);
@@ -60,6 +62,10 @@ namespace DeviceFunction
         #endregion
 
         #region public function
+        public void Set_IO_Form(IF_IO_Card f_io)
+        {
+            F_IO = f_io;
+        }
         public bool Initial_All_IO()
         {
             bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false ;
@@ -74,7 +80,7 @@ namespace DeviceFunction
             {
                 if (IO[i].GetName() == "MN200")
                     UseMN200 = true;
-                if (IO[i].GetName() == "PCI_9111")
+                if (IO[i].GetName() == "PCI_9111DG" || IO[i].GetName() == "PCI_9111HR")
                     UsePcisDask = true;
                 if (IO[i].GetName() == "AMP_204C")
                     UseAPS = true;
@@ -83,11 +89,15 @@ namespace DeviceFunction
             if (!UseMN200 && !UseP32C32 && !UsePcisDask && !UseAPS)    //沒有任何一張IO卡
             {
                 Tool.SaveLogToFile("IO卡Initial失敗");
-                
+                InitialDone = false;
                 return false;
             }
-
             Task task = Task.Run(() => Process());
+
+            F_IO.Update_IO_List();
+            F_IO.UpdateOutputStatus_UI();
+
+            InitialDone = true;
 
             return true;
         }
@@ -122,17 +132,45 @@ namespace DeviceFunction
         //}
         public void LoadConfiguration(List<IOData> newIoDataList)
         {
-            // 1. 清除舊的內部資料
             IO_List.Clear();
-
-            // 2. 載入新的資料
             IO_List.AddRange(newIoDataList);
-
-            // 3. 重建字典 (您原本的邏輯)
             ioListDict = IO_List
                         .GroupBy(x => x.Title_Name)
                         .ToDictionary(g => g.Key, g => g.First());
         }
+        public double GetAInputStatus(EIOCardType CardType, byte card, byte lineNo, byte devNo, byte port, int iList)
+        {
+            for (int i = 0; i < IO.Count; i++)
+            {
+                if (IO[i].GetName() != CardType.ToString())
+                    continue;
+
+                return IO[i].GetAInput(card, lineNo, devNo, port);
+            }
+
+            return -1;
+        }
+        public double GetAInputStatus(EIOName name)
+        {
+            ioListDict.TryGetValue(name.ToString(), out IOData iOData);
+
+            byte card = (byte)iOData.Title_CardNum;
+            byte lineNo = (byte)iOData.Title_LineNum;
+            byte devNo = (byte)iOData.Title_DevNum;
+            byte port = (byte)iOData.Title_IO_Num;
+            string range = iOData.Title_Range;
+
+            for (int j = 0; j < IO.Count; j++)
+            {
+                if (IO[j].GetName() != iOData.Title_CardType || range == "Digital")
+                    continue;
+
+                return IO[j].GetAInput(card, lineNo, devNo, port);
+            }
+
+            return -1;
+        }
+
         public bool GetInputStatus(EIOCardType CardType, byte card, byte lineNo, byte devNo, byte port, int iList)
         {
             for (int i = 0; i < IO.Count; i++)

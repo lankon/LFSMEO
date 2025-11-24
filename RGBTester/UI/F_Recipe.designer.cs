@@ -29,6 +29,7 @@ namespace RGBTester.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_Recipe));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -37,9 +38,10 @@ namespace RGBTester.UI
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Btn_Delete = new System.Windows.Forms.Button();
             this.Btn_Home = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Btn_Save = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -115,9 +117,9 @@ namespace RGBTester.UI
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.button1, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.Btn_Delete, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.Btn_Home, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.button2, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.Btn_Save, 0, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
@@ -127,19 +129,18 @@ namespace RGBTester.UI
             this.tableLayoutPanel2.Size = new System.Drawing.Size(66, 200);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
-            // button2
+            // Btn_Delete
             // 
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button2.Location = new System.Drawing.Point(3, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(60, 60);
-            this.button2.TabIndex = 31;
-            this.button2.UseVisualStyleBackColor = true;
+            this.Btn_Delete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Delete.BackgroundImage")));
+            this.Btn_Delete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Delete.Location = new System.Drawing.Point(3, 135);
+            this.Btn_Delete.Name = "Btn_Delete";
+            this.Btn_Delete.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Delete.TabIndex = 32;
+            this.Btn_Delete.UseVisualStyleBackColor = true;
             // 
             // Btn_Home
             // 
-            this.Btn_Home.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Home.BackgroundImage")));
             this.Btn_Home.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Btn_Home.Location = new System.Drawing.Point(3, 69);
             this.Btn_Home.Name = "Btn_Home";
@@ -147,15 +148,17 @@ namespace RGBTester.UI
             this.Btn_Home.TabIndex = 30;
             this.Btn_Home.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // Btn_Save
             // 
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.Location = new System.Drawing.Point(3, 135);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(60, 60);
-            this.button1.TabIndex = 32;
-            this.button1.UseVisualStyleBackColor = true;
+            this.Btn_Save.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Save.BackgroundImage")));
+            this.Btn_Save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Save.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Save.Location = new System.Drawing.Point(3, 3);
+            this.Btn_Save.Name = "Btn_Save";
+            this.Btn_Save.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Save.TabIndex = 31;
+            this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
             // 
             // F_Recipe
             // 
@@ -187,8 +190,9 @@ namespace RGBTester.UI
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button Btn_Save;
         private System.Windows.Forms.Button Btn_Home;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Btn_Delete;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -21,6 +21,11 @@ namespace DeviceUI.IO
             InitializeComponent();
 
             DIOL = function_IO_Card;
+
+            DIOL.Set_IO_Form(this);
+
+            if (!Tool.DataGrid_DataLoad(DGV_IO, "IO.xml"))
+                Tool.SaveLogToFile("IO表讀取失敗");
         }
         
         #region parameter
@@ -33,8 +38,6 @@ namespace DeviceUI.IO
         private bool IOCard_GetInputStatus(int i)
         {
             bool input_res = false;
-
-
 
             if (IOList[i].Title_IO == "Input" &&
                 Enum.TryParse<EIOCardType>(IOList[i].Title_CardType, out var cardType))
@@ -64,26 +67,7 @@ namespace DeviceUI.IO
 
             return output_res;
         }
-        private void UpdateOutputStatus_UI()
-        {
-            for (int i = 0; i < IOList.Count; i++)
-            {
-                bool output_res = false;
-
-                output_res = IOCard_GetOutputStatus(i);
-
-                if (output_res && DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() == "Output")
-                {
-                    DGV_IO.Rows[i].Cells["Title_Status"].Value = "ON";
-                    DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.SkyBlue;
-                }
-                else if (output_res == false && DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() == "Output")
-                {
-                    DGV_IO.Rows[i].Cells["Title_Status"].Value = "OFF";
-                    DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.White;
-                }
-            }
-        }
+        
         public void Update_IO_List(DataGridView DGV, List<IOData> io_list)
         {
             io_list.Clear();
@@ -104,6 +88,7 @@ namespace DeviceUI.IO
                     Title_CardNum = Convert.ToInt32(row.Cells["Title_CardNum"]?.Value ?? "-1"),
                     Title_LineNum = Convert.ToInt32(row.Cells["Title_LineNum"]?.Value ?? "-1"),
                     Title_DevNum = Convert.ToInt32(row.Cells["Title_DevNum"]?.Value ?? "-1"),
+                    Title_Range = row.Cells["Title_Range"]?.Value?.ToString(),
                 };
 
                 io_list.Add(data);
@@ -127,9 +112,31 @@ namespace DeviceUI.IO
 
             form.Hide();
         }
-        #endregion
+        public void Update_IO_List()
+        {
+            Update_IO_List(DGV_IO, IOList);
+        }
+        public void UpdateOutputStatus_UI()
+        {
+            for (int i = 0; i < IOList.Count; i++)
+            {
+                bool output_res = false;
 
-        
+                output_res = IOCard_GetOutputStatus(i);
+
+                if (output_res && DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() == "Output")
+                {
+                    DGV_IO.Rows[i].Cells["Title_Status"].Value = "ON";
+                    DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.SkyBlue;
+                }
+                else if (output_res == false && DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() == "Output")
+                {
+                    DGV_IO.Rows[i].Cells["Title_Status"].Value = "OFF";
+                    DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.White;
+                }
+            }
+        }
+        #endregion
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
@@ -166,14 +173,8 @@ namespace DeviceUI.IO
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
-            if(Tool.DataGrid_DataLoad(DGV_IO, "IO.xml"))
-            {
-                Btn_Open.Enabled = true;
-            }
-            else
-            {
+            if(!Tool.DataGrid_DataLoad(DGV_IO, "IO.xml"))
                 Tool.SaveLogToFile("IO表讀取失敗");
-            }
         }
 
         private void DGV_IO_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -200,18 +201,6 @@ namespace DeviceUI.IO
             Update_IO_List(DGV_IO, IOList);
         }
 
-        private void Btn_Open_Click(object sender, EventArgs e)
-        {
-            if(DIOL.Initial_All_IO())
-            {
-                IO_Init = true;
-
-                Update_IO_List(DGV_IO, IOList);
-
-                UpdateOutputStatus_UI();
-            }
-        }
-
         private void Timer_IO_Tick(object sender, EventArgs e)
         {
             if (IO_Init == false)
@@ -234,14 +223,6 @@ namespace DeviceUI.IO
                     DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.White;
                 }
             }
-        }
-
-        private void Btn_Test_Click(object sender, EventArgs e)
-        {
-            //if (IO_Init == false)
-            //    return;
-
-            //UpdateOutputStatus_UI();
         }
 
         private void DGV_IO_CellClick(object sender, DataGridViewCellEventArgs e)

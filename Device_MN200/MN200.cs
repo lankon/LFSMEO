@@ -276,6 +276,11 @@ namespace Device_MN200
         {
             throw new NotImplementedException();
         }
+
+        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

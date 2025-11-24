@@ -8,6 +8,7 @@ namespace DeviceCore
 {
     public interface IF_IO_Card
     {
-
+        void Update_IO_List();
+        void UpdateOutputStatus_UI();
     }
 }

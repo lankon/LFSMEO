@@ -52,10 +52,14 @@ namespace DeviceCore
         public int Title_IO_Num { get; set; }
         public string Title_Status { get; set; }
         public string Title_Inverse { get; set; }
+        public string Title_Range { get; set; }
     }
 
     public interface IFunction_IO_Card
     {
+        bool InitialDone { get; }
+
+        void Set_IO_Form(IF_IO_Card f_io);
         bool Initial_All_IO();
         void LoadConfiguration(List<IOData> newIoDataList);
         bool GetInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
