@@ -124,14 +124,6 @@ namespace Device_PCIS_DASK
         //    return true;
         //}
 
-
-
-
-        public void Read_AI_Signal()
-        {
-
-        }
-
         public  void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
             //port:點位

@@ -45,18 +45,6 @@ namespace RGBTester.UI
         #region public function
         #endregion
 
-        private void Btn_IO_Form_Click(object sender, EventArgs e)
-        {
-            var io_set = ServiceProvider.GetRequiredService<IF_IO_Card>();
-
-            if (io_set is Form form)
-            {
-                Tool.HideElementOnPanel(Scope.MainPanel);
-                Tool.SetForm(Scope.MainPanel, form);
-                form.Show();
-            }
-        }
-
         private void Btn_EquipmentSetting_Click(object sender, EventArgs e)
         {
             Tool.HideElementOnPanel(Scope.MainPanel);
@@ -85,6 +73,18 @@ namespace RGBTester.UI
             var oem_set = ServiceProvider.GetRequiredService<IF_MotionSetting>();
 
             if(oem_set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
+        }
+
+        private void Btn_IO_Setting_Click(object sender, EventArgs e)
+        {
+            var io_set = ServiceProvider.GetRequiredService<IF_IO_Card>();
+
+            if (io_set is Form form)
             {
                 Tool.HideElementOnPanel(Scope.MainPanel);
                 Tool.SetForm(Scope.MainPanel, form);

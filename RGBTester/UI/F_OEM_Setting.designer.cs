@@ -30,23 +30,13 @@ namespace RGBTester.UI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_OEM_Setting));
-            this.Btn_IO_Form = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Btn_EquipmentSetting = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Btn_MotionSetting = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.Btn_IO_Setting = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // Btn_IO_Form
-            // 
-            this.Btn_IO_Form.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_IO_Form.Location = new System.Drawing.Point(44, 12);
-            this.Btn_IO_Form.Name = "Btn_IO_Form";
-            this.Btn_IO_Form.Size = new System.Drawing.Size(60, 60);
-            this.Btn_IO_Form.TabIndex = 32;
-            this.Btn_IO_Form.UseVisualStyleBackColor = true;
-            this.Btn_IO_Form.Click += new System.EventHandler(this.Btn_IO_Form_Click);
             // 
             // label1
             // 
@@ -99,17 +89,28 @@ namespace RGBTester.UI
             this.label3.Text = "Motion";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // Btn_IO_Setting
+            // 
+            this.Btn_IO_Setting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_IO_Setting.BackgroundImage")));
+            this.Btn_IO_Setting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_IO_Setting.Location = new System.Drawing.Point(44, 12);
+            this.Btn_IO_Setting.Name = "Btn_IO_Setting";
+            this.Btn_IO_Setting.Size = new System.Drawing.Size(60, 60);
+            this.Btn_IO_Setting.TabIndex = 39;
+            this.Btn_IO_Setting.UseVisualStyleBackColor = true;
+            this.Btn_IO_Setting.Click += new System.EventHandler(this.Btn_IO_Setting_Click);
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.Btn_IO_Setting);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.Btn_MotionSetting);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Btn_EquipmentSetting);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Btn_IO_Form);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_OEM_Setting";
             this.Text = "F_OEM_Setting";
@@ -119,12 +120,11 @@ namespace RGBTester.UI
         }
 
         #endregion
-
-        private System.Windows.Forms.Button Btn_IO_Form;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Btn_EquipmentSetting;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Btn_MotionSetting;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button Btn_IO_Setting;
     }
 }
