@@ -88,6 +88,11 @@ namespace RGBTester.Device
         {
             return true;
         }
+
+        public bool CheckConnect()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

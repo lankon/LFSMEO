@@ -91,5 +91,14 @@ namespace RGBTester.UI
                 form.Show();
             }
         }
+
+        private void Btn_DAQ_SamplingTest_Click(object sender, EventArgs e)
+        {
+            Tool.HideElementOnPanel(Scope.MainPanel);
+
+            var form = ServiceProvider.GetRequiredService<F_DAQ_SamplingTest>();
+            Tool.SetForm(Scope.MainPanel, form);
+            form.Show();
+        }
     }
 }

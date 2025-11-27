@@ -21,7 +21,7 @@ namespace RGBTester
             services.AddSingleton<IRGBTesterMachine, RGBTesterMachine>();
 
             //[Device]
-            services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
+            services.AddSingleton<ILightEngineCommand, GL18Command>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
@@ -33,6 +33,7 @@ namespace RGBTester
             services.AddSingleton<F_StartForm>();
             services.AddSingleton<F_StartForm_ButtonGroup>();
             services.AddSingleton<F_Recipe>();
+            services.AddSingleton<F_DAQ_SamplingTest>();
 
             //[Form]
             //退出Form後即close掉,要用再new

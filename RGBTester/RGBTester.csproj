@@ -154,6 +154,12 @@
     <Compile Include="UI\F_Recipe.designer.cs">
       <DependentUpon>F_Recipe.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_DAQ_SamplingTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_DAQ_SamplingTest.designer.cs">
+      <DependentUpon>F_DAQ_SamplingTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_StartForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_Recipe.resx">
       <DependentUpon>F_Recipe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_DAQ_SamplingTest.resx">
+      <DependentUpon>F_DAQ_SamplingTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StartForm.resx">
       <DependentUpon>F_StartForm.cs</DependentUpon>

@@ -256,6 +256,17 @@ namespace ToolFunction
             // 插入一列
             dataGridView.Rows.Insert(insertIndex, context);
         }
+        public static void DataGrid_AddInEndRow(DataGridView dataGridView, string[] context)
+        {
+            if (context.Length != dataGridView.ColumnCount)
+            {
+                SaveLogToFile("新增行數與DataGrid行數不一致");
+                return;
+            }
+
+            dataGridView.Rows.Add(context);
+        }
+
         public static void DataGrid_DeleteRow(DataGridView dataGridView)
         {
             if (dataGridView.CurrentRow != null && !dataGridView.CurrentRow.IsNewRow)
@@ -403,6 +414,42 @@ namespace ToolFunction
             {
                 return;
             }
+        }
+        public static void DataGridSaveToCsv(DataGridView dgv, string filePath)
+        {
+            using (StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            {
+                // 寫入欄位名稱
+                List<string> headers = new List<string>();
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    headers.Add(EscapeCsv(col.HeaderText));
+                }
+                sw.WriteLine(string.Join(",", headers));
+
+                // 寫入每一列資料
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    // 跳過新增列（最後的空白行）
+                    if (row.IsNewRow) continue;
+
+                    List<string> cells = new List<string>();
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        cells.Add(EscapeCsv(cell.Value?.ToString() ?? ""));
+                    }
+                    sw.WriteLine(string.Join(",", cells));
+                }
+            }
+        }
+        private static string EscapeCsv(string field)
+        {
+            if (field.Contains(",") || field.Contains("\"") || field.Contains("\n"))
+            {
+                field = field.Replace("\"", "\"\""); // 雙引號要變 "" 
+                return $"\"{field}\"";
+            }
+            return field;
         }
     }
 

@@ -170,7 +170,6 @@ namespace DeviceFunction
 
             return -1;
         }
-
         public bool GetInputStatus(EIOCardType CardType, byte card, byte lineNo, byte devNo, byte port, int iList)
         {
             for (int i = 0; i < IO.Count; i++)

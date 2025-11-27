@@ -36,6 +36,8 @@ namespace RGBTester.UI
             this.Btn_MotionSetting = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.Btn_IO_Setting = new System.Windows.Forms.Button();
+            this.Btn_DAQ_SamplingTest = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -100,11 +102,33 @@ namespace RGBTester.UI
             this.Btn_IO_Setting.UseVisualStyleBackColor = true;
             this.Btn_IO_Setting.Click += new System.EventHandler(this.Btn_IO_Setting_Click);
             // 
+            // Btn_DAQ_SamplingTest
+            // 
+            this.Btn_DAQ_SamplingTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_DAQ_SamplingTest.Location = new System.Drawing.Point(396, 12);
+            this.Btn_DAQ_SamplingTest.Name = "Btn_DAQ_SamplingTest";
+            this.Btn_DAQ_SamplingTest.Size = new System.Drawing.Size(60, 60);
+            this.Btn_DAQ_SamplingTest.TabIndex = 40;
+            this.Btn_DAQ_SamplingTest.UseVisualStyleBackColor = true;
+            this.Btn_DAQ_SamplingTest.Click += new System.EventHandler(this.Btn_DAQ_SamplingTest_Click);
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(388, 75);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(81, 23);
+            this.label4.TabIndex = 41;
+            this.label4.Text = "DAQ SP";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.Btn_DAQ_SamplingTest);
             this.Controls.Add(this.Btn_IO_Setting);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.Btn_MotionSetting);
@@ -126,5 +150,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_MotionSetting;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Btn_IO_Setting;
+        private System.Windows.Forms.Button Btn_DAQ_SamplingTest;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -18,18 +18,21 @@ namespace RGBTester.UI
 {
     public partial class F_StartForm : Form
     {
-        public F_StartForm(F_StartFormLogic f_StartFormLogic, IRGBTesterMachine rGBTesterMachine)
+        public F_StartForm(F_StartFormLogic f_StartFormLogic, IRGBTesterMachine rGBTesterMachine,
+                            ILightEngineCommand lea)
         {
             InitializeComponent();
 
             StartFormLogic = f_StartFormLogic;
             RGBTesterMachine = rGBTesterMachine;
+            LEA = lea;
             InitialForm();
         }
 
         #region parameter define
         F_StartFormLogic StartFormLogic;
         IRGBTesterMachine RGBTesterMachine;
+        ILightEngineCommand LEA;
         #endregion
 
         #region private function
@@ -74,6 +77,11 @@ namespace RGBTester.UI
         {
             ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
             ApplicationSetting.ReadAllRecipe<eF_StartForm>();
+        }
+
+        private void Btn_Test_Click(object sender, EventArgs e)
+        {
+            bool open = LEA.CheckConnect();
         }
     }
 }

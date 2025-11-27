@@ -117,6 +117,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.Btn_Test = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -1077,11 +1078,22 @@ namespace RGBTester.UI
             this.label15.Text = "Test Mode";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // Btn_Test
+            // 
+            this.Btn_Test.Location = new System.Drawing.Point(473, 19);
+            this.Btn_Test.Name = "Btn_Test";
+            this.Btn_Test.Size = new System.Drawing.Size(94, 34);
+            this.Btn_Test.TabIndex = 5;
+            this.Btn_Test.Text = "button1";
+            this.Btn_Test.UseVisualStyleBackColor = true;
+            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.tableLayoutPanel5);
             this.Controls.Add(this.Pnl_MainButton);
             this.Controls.Add(this.groupBox2);
@@ -1195,5 +1207,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Button Btn_Test;
     }
 }
