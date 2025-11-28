@@ -26,9 +26,30 @@ namespace RGBTester.Device
 
         #region parameter define
         private SerialPort _serialPort;
+        public byte LED_RightSide { get; private set; } = 0x00;
+        public byte LED_LeftSide { get; private set; } = 0x01;
+        public byte LED_R_LSB { get; private set; } = 0x13;
+        public byte LED_G_LSB { get; private set; } = 0x14;
+        public byte LED_B_LSB { get; private set; } = 0x15;
+        public byte LED_RGB_MSB { get; private set; } = 0x17;
         #endregion
 
         #region public function
+        public bool SetLed_DAC(byte rgb, byte side, int value)
+        {
+            byte high = (byte)(value >> 8);     // 高位元
+            byte low = (byte)(value & 0xFF);    // 低位元
+
+            // ====== 發送 LSB ======
+            SetLedDriverData(side, rgb, low);
+
+            Thread.Sleep(1);
+
+            // ====== 發送 MSB ======
+            SetLedDriverData(side, LED_RGB_MSB, high);
+
+            return true;
+        }
         public bool SetLedDriverData(byte index, byte registerAddress, byte value)
         {
             const byte PACKAGE_LENGTH = 6;
@@ -87,11 +108,6 @@ namespace RGBTester.Device
         private bool SendCommand(byte[] packet)
         {
             return true;
-        }
-
-        public bool CheckConnect()
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

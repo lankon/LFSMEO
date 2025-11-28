@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using DeviceCore;
+using RGBTester.Base;
 
 namespace RGBTester
 {
@@ -15,7 +16,8 @@ namespace RGBTester
         public IChillerControl Chiller { get; }
         public IIOCard IOTest { get; }
 
-        public RGBTesterMachine(IFunction_MotionCard motion, IFunction_IO_Card iOCard, IChillerControl chillerControl, IIOCard card)
+        public RGBTesterMachine(IFunction_MotionCard motion, IFunction_IO_Card iOCard, IChillerControl chillerControl,
+                                IIOCard card)
         {
             DIOL = iOCard;
             Chiller = chillerControl;

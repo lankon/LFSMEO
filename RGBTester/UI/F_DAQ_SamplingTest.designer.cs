@@ -56,9 +56,13 @@ namespace RGBTester.UI
             this.Title_CH13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_CH14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_CH15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.TxtBx_TotalTestTime = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_DAQ_Result)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -312,11 +316,45 @@ namespace RGBTester.UI
             this.Title_CH15.Name = "Title_CH15";
             this.Title_CH15.Width = 80;
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.28986F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.71014F));
+            this.tableLayoutPanel2.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_TotalTestTime, 1, 0);
+            this.tableLayoutPanel2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 613);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(272, 36);
+            this.tableLayoutPanel2.TabIndex = 17;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(3, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(157, 36);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Total Test Time(us)";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_TotalTestTime
+            // 
+            this.TxtBx_TotalTestTime.Location = new System.Drawing.Point(166, 3);
+            this.TxtBx_TotalTestTime.Name = "TxtBx_TotalTestTime";
+            this.TxtBx_TotalTestTime.ReadOnly = true;
+            this.TxtBx_TotalTestTime.Size = new System.Drawing.Size(103, 29);
+            this.TxtBx_TotalTestTime.TabIndex = 5;
+            // 
             // F_DAQ_SamplingTest
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Btn_SaveData);
             this.Controls.Add(this.Btn_Start);
@@ -330,6 +368,8 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_DAQ_Result)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -361,5 +401,8 @@ namespace RGBTester.UI
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_CH13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_CH14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_CH15;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox TxtBx_TotalTestTime;
     }
 }

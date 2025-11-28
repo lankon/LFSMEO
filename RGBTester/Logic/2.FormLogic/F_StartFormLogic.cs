@@ -50,10 +50,17 @@ namespace RGBTester.Logic
             
         }
 
-        public void StartTaskAction()
+        public void StartTaskAction(string method = "")
         {
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-            MainTask.SetTask<TaskRGBTest>();
+            
+            if(method == "Left")
+                MainTask.SetTask<TaskRGBTest>("Left");
+            else if(method == "Right")
+                MainTask.SetTask<TaskRGBTest>("Right");
+            else
+                MainTask.SetTask<TaskRGBTest>("Both");
+
             MainTask.Run();
 
             //var MainTask2 = ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();

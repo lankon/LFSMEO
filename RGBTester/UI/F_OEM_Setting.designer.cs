@@ -104,6 +104,7 @@ namespace RGBTester.UI
             // 
             // Btn_DAQ_SamplingTest
             // 
+            this.Btn_DAQ_SamplingTest.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_DAQ_SamplingTest.BackgroundImage")));
             this.Btn_DAQ_SamplingTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Btn_DAQ_SamplingTest.Location = new System.Drawing.Point(396, 12);
             this.Btn_DAQ_SamplingTest.Name = "Btn_DAQ_SamplingTest";

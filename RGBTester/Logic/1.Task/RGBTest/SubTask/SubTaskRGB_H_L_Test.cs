@@ -21,6 +21,16 @@ namespace RGBTester.Logic
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
 
+            string[] splits = set_state.Split('_');
+
+            if(splits.Length == 3)
+            {
+                if (splits[2] == "H")
+                    OnlyHeighMode = true;
+                else if (splits[2] == "L")
+                    OnlyLowMode = true;
+            }
+
             switch (set_state)
             {
                 default:
@@ -38,31 +48,28 @@ namespace RGBTester.Logic
         private string Type;
         private Queue<int> qDAC_L = new Queue<int>();
         private Queue<int> qDAC_H = new Queue<int>();
-        private int DAC_Start = 0, DAC_End = 1022, DAC_Step = 2;
+        private int DAC_Start = 0, DAC_End = 4, DAC_Step = 2;
         private RGBTesterData TesterData_H = new RGBTesterData();
         private RGBTesterData TesterData_L = new RGBTesterData();
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
-        private TestMode TMode = TestMode.RED;
         private int RepeatTime = 1;     //平均次數
         private int DAQ_Vf_R = 0;       //DAQ卡Vr點位
         private int DAQ_Vf_G = 0;       //DAQ卡Vg點位
         private int DAQ_Vf_B = 0;       //DAQ卡Vb點位
         private int DAQ_Vf = 0;         //DAQ卡Vf點位
+        private int SigMag = 1;         //訊號放大倍率
+        private byte Side;              //LED Side
+        private byte Color;             //LED Color
         private double Rfb_HCM = 0;     //High Current Mode阻抗
         private double Rfb_LCM = 0;     //Low Current Mode阻抗
         private double Rfb = 1;         //阻抗
         private double Rin = 1;         //輸入阻抗
         private double LED_Duty;        //LED Duty
-        private int SigMag = 1;         //訊號放大倍率
+        private bool OnlyHeighMode = false;     //只跑Heigh Current Mode
+        private bool OnlyLowMode = false;       //只跑Low Current Mode
         private IF_BaseTask SubTask;            //子流程
         private IF_StateControl F_StateControl;
-        enum TestMode
-        {
-            RED,
-            GREEN,
-            BLUE,
-        }
         public enum WORK
         {
             NONE,
@@ -96,12 +103,29 @@ namespace RGBTester.Logic
                 qDAC_H.Enqueue(i);
             }
 
-            if (TMode == TestMode.RED)
+            string[] res = Type.Split('_');
+
+            if (res[0] == "Left")
+                Side = Deps.LightEngine.LED_LeftSide;
+            else
+                Side = Deps.LightEngine.LED_RightSide;
+
+            if (res[1] == "R")
+            {
+                Color = Deps.LightEngine.LED_R_LSB;
                 DAQ_Vf = DAQ_Vf_R;
-            else if(TMode == TestMode.GREEN)
+            }
+            else if (res[1] == "G")
+            {
+                Color = Deps.LightEngine.LED_G_LSB;
                 DAQ_Vf = DAQ_Vf_G;
-            else if(TMode == TestMode.BLUE)
+            }
+            else
+            {
+                Color = Deps.LightEngine.LED_B_LSB;
                 DAQ_Vf = DAQ_Vf_B;
+            }
+                
         }
         
         protected override void Transition(WORK target)
@@ -228,7 +252,12 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.SET_DAC_LOW);
+
+                        if(OnlyHeighMode)
+                            Transition(WORK.SET_DAC_HIGH);
+                        else
+                            Transition(WORK.SET_DAC_LOW);
+
                         Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_LOW.ToString());
                     }
                     break;
@@ -240,7 +269,7 @@ namespace RGBTester.Logic
                         int val = qDAC_L.Dequeue();
                         TesterData_L.DACpoint.Add(val);
 
-                        Deps.LightEngine.SetLedDriverData(0x00, 0x13, 0x10);
+                        Deps.LightEngine.SetLed_DAC(Color, Side, val);
 
                         Transition(WORK.GET_ADC_LOW);
                     }
@@ -293,7 +322,11 @@ namespace RGBTester.Logic
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
-                            Transition(WORK.SET_DAC_HIGH);
+
+                            if (OnlyLowMode)
+                                Transition(WORK.SUCCESS);
+                            else
+                                Transition(WORK.SET_DAC_HIGH);
                         }
                         else
                         {
@@ -309,6 +342,8 @@ namespace RGBTester.Logic
                     {
                         //傳送廣達指令
                         int val = qDAC_H.Dequeue();
+                        TesterData_H.DACpoint.Add(val);
+                        Deps.LightEngine.SetLed_DAC(Color, Side, val);
                         Transition(WORK.GET_ADC_HIGH);
                     }
                     break;
@@ -349,6 +384,12 @@ namespace RGBTester.Logic
                             }
 
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
+
+                            string[] side = Type.Split('_');
+                            for (int i = 0; i < TesterData_L.Vin.Count; i++)
+                            {
+                                Deps.File.WriteFile($"{Type}_Heigh,{TesterData_H.Iin[i]},{TesterData_H.Vled[i]}", side[0]);
+                            }
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_HIGH.ToString());

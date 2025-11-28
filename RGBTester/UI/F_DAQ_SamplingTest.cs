@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Threading;
 
 using ToolFunction;
 using DeviceCore;
@@ -78,26 +78,37 @@ namespace RGBTester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
+            if (TxtBx_AveraingCount.Text == "")
+                return;
+            long CycleTime = 0;
             string[] context = new string[16];
             double[] result = new double[16];
+            List<string[]> buffer = new List<string[]>();
             int AvgCount = Int32.Parse(TxtBx_AveraingCount.Text);
+
+            _ = DIOL.GetAInputStatus(EIOCardType.PCI_9111DG, 0, 0, 0, 0, 0);
 
             DGV_DAQ_Result.Rows.Clear();
 
             for (int i=0; i<result.Length; i++)
                 result[i] = 0;
 
+            Tool.ResetTimeCount(out CycleTime);
             for(int j=0; j< AvgCount; j++)
             {
+                context = new string[16];
                 for (byte i = 0; i < 16; i++)
                 {
                     double res = DIOL.GetAInputStatus(EIOCardType.PCI_9111DG, 0, 0, 0, i, 0);
                     context[i] = res.ToString();
                     result[i] += res;
                 }
-
-                Tool.DataGrid_AddInEndRow(DGV_DAQ_Result, context);
+                buffer.Add(context);
             }
+            TxtBx_TotalTestTime.Text =  Tool.GetTime(CycleTime, "us").ToString();
+
+            foreach (var row in buffer)
+                Tool.DataGrid_AddInEndRow(DGV_DAQ_Result, row);
 
             for (int i = 0; i < 16; i++)
                 context[i] = "Result";
@@ -115,7 +126,10 @@ namespace RGBTester.UI
 
         private void Btn_SaveData_Click(object sender, EventArgs e)
         {
-            Tool.DataGridSaveToCsv(DGV_DAQ_Result, "D:\\aaa.csv");
+            DateTime date = DateTime.Now;
+            string path = Application.StartupPath + $@"\Result\DAQ_SamplingTest_{date.ToString("yyyyMMddHHmmss")}.csv";
+
+            Tool.DataGridSaveToCsv(DGV_DAQ_Result, path);
         }
     }
 }

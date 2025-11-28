@@ -113,11 +113,23 @@ namespace RGBTester.UI
             this.label14 = new System.Windows.Forms.Label();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
+            this.Btn_SingleTest = new System.Windows.Forms.Button();
+            this.Pnl_ShowTemperature = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBox36 = new System.Windows.Forms.TextBox();
+            this.label44 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox35 = new System.Windows.Forms.TextBox();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.Btn_Test = new System.Windows.Forms.Button();
+            this.Pnl_HighLowMode = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label46 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -125,7 +137,11 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.Pnl_MainButton.SuspendLayout();
+            this.Pnl_ShowTemperature.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.Pnl_HighLowMode.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -488,6 +504,7 @@ namespace RGBTester.UI
             // 
             // textBox6
             // 
+            this.textBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox6.Location = new System.Drawing.Point(210, 158);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(135, 29);
@@ -495,6 +512,7 @@ namespace RGBTester.UI
             // 
             // textBox5
             // 
+            this.textBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox5.Location = new System.Drawing.Point(210, 120);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(135, 29);
@@ -502,6 +520,7 @@ namespace RGBTester.UI
             // 
             // textBox4
             // 
+            this.textBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox4.Location = new System.Drawing.Point(210, 82);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(135, 29);
@@ -509,6 +528,7 @@ namespace RGBTester.UI
             // 
             // textBox3
             // 
+            this.textBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox3.Location = new System.Drawing.Point(210, 44);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(135, 29);
@@ -932,6 +952,7 @@ namespace RGBTester.UI
             // 
             // textBox10
             // 
+            this.textBox10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox10.Location = new System.Drawing.Point(210, 158);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(135, 29);
@@ -939,6 +960,7 @@ namespace RGBTester.UI
             // 
             // textBox11
             // 
+            this.textBox11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox11.Location = new System.Drawing.Point(210, 120);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(135, 29);
@@ -946,6 +968,7 @@ namespace RGBTester.UI
             // 
             // textBox12
             // 
+            this.textBox12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox12.Location = new System.Drawing.Point(210, 82);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(135, 29);
@@ -953,6 +976,7 @@ namespace RGBTester.UI
             // 
             // textBox13
             // 
+            this.textBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.textBox13.Location = new System.Drawing.Point(210, 44);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(135, 29);
@@ -1020,11 +1044,103 @@ namespace RGBTester.UI
             // 
             this.Pnl_MainButton.AutoScroll = true;
             this.Pnl_MainButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_MainButton.Controls.Add(this.Btn_SingleTest);
+            this.Pnl_MainButton.Controls.Add(this.Pnl_ShowTemperature);
             this.Pnl_MainButton.Controls.Add(this.Btn_Start);
             this.Pnl_MainButton.Location = new System.Drawing.Point(71, 566);
             this.Pnl_MainButton.Name = "Pnl_MainButton";
             this.Pnl_MainButton.Size = new System.Drawing.Size(1182, 83);
             this.Pnl_MainButton.TabIndex = 3;
+            // 
+            // Btn_SingleTest
+            // 
+            this.Btn_SingleTest.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_SingleTest.BackgroundImage")));
+            this.Btn_SingleTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_SingleTest.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_SingleTest.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Btn_SingleTest.Location = new System.Drawing.Point(84, 4);
+            this.Btn_SingleTest.Name = "Btn_SingleTest";
+            this.Btn_SingleTest.Size = new System.Drawing.Size(75, 75);
+            this.Btn_SingleTest.TabIndex = 8;
+            this.Btn_SingleTest.UseVisualStyleBackColor = true;
+            // 
+            // Pnl_ShowTemperature
+            // 
+            this.Pnl_ShowTemperature.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_ShowTemperature.Controls.Add(this.tableLayoutPanel6);
+            this.Pnl_ShowTemperature.Location = new System.Drawing.Point(165, 4);
+            this.Pnl_ShowTemperature.Name = "Pnl_ShowTemperature";
+            this.Pnl_ShowTemperature.Size = new System.Drawing.Size(298, 75);
+            this.Pnl_ShowTemperature.TabIndex = 7;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 3;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.tableLayoutPanel6.Controls.Add(this.textBox36, 2, 1);
+            this.tableLayoutPanel6.Controls.Add(this.label44, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label45, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.button1, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.textBox35, 1, 1);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(296, 73);
+            this.tableLayoutPanel6.TabIndex = 6;
+            // 
+            // textBox36
+            // 
+            this.textBox36.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox36.Location = new System.Drawing.Point(183, 39);
+            this.textBox36.Name = "textBox36";
+            this.textBox36.ReadOnly = true;
+            this.textBox36.Size = new System.Drawing.Size(110, 29);
+            this.textBox36.TabIndex = 9;
+            // 
+            // label44
+            // 
+            this.label44.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label44.Location = new System.Drawing.Point(73, 0);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(104, 36);
+            this.label44.TabIndex = 5;
+            this.label44.Text = "Left Temp.";
+            this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label45
+            // 
+            this.label45.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label45.Location = new System.Drawing.Point(183, 0);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(110, 36);
+            this.label45.TabIndex = 6;
+            this.label45.Text = "Right Temp.";
+            this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button1.Location = new System.Drawing.Point(3, 3);
+            this.button1.Name = "button1";
+            this.tableLayoutPanel6.SetRowSpan(this.button1, 2);
+            this.button1.Size = new System.Drawing.Size(64, 67);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Get";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // textBox35
+            // 
+            this.textBox35.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox35.Location = new System.Drawing.Point(73, 39);
+            this.textBox35.Name = "textBox35";
+            this.textBox35.ReadOnly = true;
+            this.textBox35.Size = new System.Drawing.Size(104, 29);
+            this.textBox35.TabIndex = 8;
             // 
             // Btn_Start
             // 
@@ -1080,7 +1196,7 @@ namespace RGBTester.UI
             // 
             // Btn_Test
             // 
-            this.Btn_Test.Location = new System.Drawing.Point(473, 19);
+            this.Btn_Test.Location = new System.Drawing.Point(1010, 13);
             this.Btn_Test.Name = "Btn_Test";
             this.Btn_Test.Size = new System.Drawing.Size(94, 34);
             this.Btn_Test.TabIndex = 5;
@@ -1088,11 +1204,58 @@ namespace RGBTester.UI
             this.Btn_Test.UseVisualStyleBackColor = true;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
+            // Pnl_HighLowMode
+            // 
+            this.Pnl_HighLowMode.Controls.Add(this.tableLayoutPanel7);
+            this.Pnl_HighLowMode.Location = new System.Drawing.Point(423, 3);
+            this.Pnl_HighLowMode.Name = "Pnl_HighLowMode";
+            this.Pnl_HighLowMode.Size = new System.Drawing.Size(356, 60);
+            this.Pnl_HighLowMode.TabIndex = 6;
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.94152F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.05848F));
+            this.tableLayoutPanel7.Controls.Add(this.comboBox1, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label46, 0, 0);
+            this.tableLayoutPanel7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 10);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(345, 40);
+            this.tableLayoutPanel7.TabIndex = 5;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "High",
+            "Low"});
+            this.comboBox1.Location = new System.Drawing.Point(210, 6);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(129, 28);
+            this.comboBox1.TabIndex = 5;
+            this.comboBox1.Text = "High";
+            // 
+            // label46
+            // 
+            this.label46.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label46.Location = new System.Drawing.Point(6, 3);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(195, 30);
+            this.label46.TabIndex = 4;
+            this.label46.Text = "High/Low Mode";
+            this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.Pnl_HighLowMode);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.tableLayoutPanel5);
             this.Controls.Add(this.Pnl_MainButton);
@@ -1114,7 +1277,12 @@ namespace RGBTester.UI
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.Pnl_MainButton.ResumeLayout(false);
+            this.Pnl_ShowTemperature.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
+            this.Pnl_HighLowMode.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1208,5 +1376,17 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Button Btn_Test;
+        private System.Windows.Forms.Panel Pnl_ShowTemperature;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox36;
+        private System.Windows.Forms.TextBox textBox35;
+        private System.Windows.Forms.Panel Pnl_HighLowMode;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.Button Btn_SingleTest;
     }
 }

@@ -23,6 +23,11 @@ namespace RGBTester.Logic
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
 
+            if (set_state == "Left")
+                OnlyLeftTest = true;
+            else if (set_state == "Right")
+                OnlyRightTest = true;
+
             switch (set_state)
             {
                 default:
@@ -38,6 +43,8 @@ namespace RGBTester.Logic
         #region parameter
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private bool OnlyLeftTest = false;
+        private bool OnlyRightTest = false;
         public enum WORK
         {
             NONE,
@@ -69,8 +76,11 @@ namespace RGBTester.Logic
         #region private function
         private void CreateTestFile()
         {
-            Deps.File.CreateFile("Left");
-            Deps.File.CreateFile("Right");
+            if(!OnlyLeftTest)
+                Deps.File.CreateFile("Right");
+
+            if(!OnlyRightTest)
+                Deps.File.CreateFile("Left");
         }
         private void Preset()
         {
@@ -202,7 +212,10 @@ namespace RGBTester.Logic
                     {
                         Preset();
                         
-                        Transition(WORK.LEFT_GLASSES_TEST);
+                        if(OnlyRightTest)
+                            Transition(WORK.RIGHT_GLASSES_TEST);
+                        else
+                            Transition(WORK.LEFT_GLASSES_TEST);
                     }
                     break;
 
@@ -217,7 +230,11 @@ namespace RGBTester.Logic
                 case WORK.WAIT_LEFT_GLASSES_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.RIGHT_GLASSES_TEST);
+                        
+                        if(OnlyLeftTest)
+                            CheckResult(check, SUCCESS: WORK.SUCCESS);
+                        else
+                            CheckResult(check, SUCCESS: WORK.RIGHT_GLASSES_TEST);
                     }
                     break;
                 #endregion

@@ -71,7 +71,7 @@ namespace Device_PCIS_DASK
 
         public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
-            if (card < 0 || card > 65530)
+            if (card < 0 || card > 65000)
                 return -1;
 
             ushort rawValue = 0;
