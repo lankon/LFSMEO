@@ -81,12 +81,13 @@ namespace RGBTester.UI
             if (TxtBx_AveraingCount.Text == "")
                 return;
             long CycleTime = 0;
-            string[] context = new string[16];
-            double[] result = new double[16];
+            const int channel_count = 16;
+            string[] context = new string[channel_count];
+            double[] result = new double[channel_count];
             List<string[]> buffer = new List<string[]>();
             int AvgCount = Int32.Parse(TxtBx_AveraingCount.Text);
 
-            _ = DIOL.GetAInputStatus(EIOCardType.PCI_9111DG, 0, 0, 0, 0, 0);
+            _ = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, 0, 0);
 
             DGV_DAQ_Result.Rows.Clear();
 
@@ -96,10 +97,10 @@ namespace RGBTester.UI
             Tool.ResetTimeCount(out CycleTime);
             for(int j=0; j< AvgCount; j++)
             {
-                context = new string[16];
-                for (byte i = 0; i < 16; i++)
+                context = new string[channel_count];
+                for (byte i = 0; i < channel_count; i++)
                 {
-                    double res = DIOL.GetAInputStatus(EIOCardType.PCI_9111DG, 0, 0, 0, i, 0);
+                    double res = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, i, 0);
                     context[i] = res.ToString();
                     result[i] += res;
                 }
@@ -110,12 +111,12 @@ namespace RGBTester.UI
             foreach (var row in buffer)
                 Tool.DataGrid_AddInEndRow(DGV_DAQ_Result, row);
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < channel_count; i++)
                 context[i] = "Result";
 
             Tool.DataGrid_AddInEndRow(DGV_DAQ_Result, context);
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < channel_count; i++)
             {
                 result[i] = result[i] / AvgCount;
                 context[i] = result[i].ToString();

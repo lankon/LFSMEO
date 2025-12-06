@@ -28,10 +28,8 @@ namespace SampleCode.UI
         #region private function
         void InitialForm()
         {
-            //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
-            //ApplicationSetting.ReadAllRecipe<eMachineSetting>();
-            //ApplicationSetting.UpdataRecipeToForm<eOEMSetting>(this);
-            //ApplicationSetting.UpdataRecipeToForm<eMachineSetting>(this);
+            ReadAllEnumSetting();
+            UpdateEnumSettingToForm();
 
             ShowHint();
 
@@ -42,8 +40,30 @@ namespace SampleCode.UI
         {
 
         }
+        private void ReadAllEnumSetting()
+        {
+            //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
+
+            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            //ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(recipe_name);
+        }
+        private void UpdateEnumSettingToForm()
+        {
+            //ApplicationSetting.UpdataRecipeToForm<eF_StartForm>(this);
+            //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
+        }
+        private void SaveAllEnumSetting()
+        {
+            //ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
+
+            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
+        }
         private void UpdatePage()
         {
+            ReadAllEnumSetting();
+            UpdateEnumSettingToForm();
         }
         #endregion
 
@@ -54,12 +74,8 @@ namespace SampleCode.UI
         {
             if (!this.Visible)
             {
-                ////儲存參數
-                //ApplicationSetting.SaveRecipeFromForm<eOEMSetting>(this);
-                //ApplicationSetting.SaveRecipeFromForm<eMachineSetting>(this);
-                ////重新讀取變數值
-                //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
-                //ApplicationSetting.ReadAllRecipe<eMachineSetting>();
+                SaveAllEnumSetting();
+                ReadAllEnumSetting();
 
                 ////釋放記憶體資源
                 //Tool.ReleaseButtonImages(this);

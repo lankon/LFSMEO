@@ -201,6 +201,7 @@ namespace RGBTester.Logic
                 #region RED
                 case WORK.LED_R_TEST:
                     {
+                        Tool.SaveLogToFile("LED_R_Test", level: "INF");
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type+"_R");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_R_TEST);
@@ -216,6 +217,7 @@ namespace RGBTester.Logic
                 #region GREEN
                 case WORK.LED_G_TEST:
                     {
+                        Tool.SaveLogToFile("LED_G_TEST", level: "INF");
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_G_TEST);
@@ -231,6 +233,7 @@ namespace RGBTester.Logic
                 #region BLUE
                 case WORK.LED_B_TEST:
                     {
+                        Tool.SaveLogToFile("LED_B_TEST", level: "INF");
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_B_TEST);

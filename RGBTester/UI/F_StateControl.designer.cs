@@ -32,14 +32,14 @@ namespace RGBTester.UI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StateControl));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.BtnRetry = new System.Windows.Forms.Button();
+            this.BtnContinue = new System.Windows.Forms.Button();
+            this.BtnPause = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.LablTaskState = new System.Windows.Forms.Label();
             this.BtnAbort = new System.Windows.Forms.Button();
-            this.BtnPause = new System.Windows.Forms.Button();
-            this.BtnContinue = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.BtnRetry = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -66,6 +66,39 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(399, 159);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
+            // BtnRetry
+            // 
+            this.BtnRetry.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnRetry.BackgroundImage")));
+            this.BtnRetry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BtnRetry.Location = new System.Drawing.Point(301, 4);
+            this.BtnRetry.Name = "BtnRetry";
+            this.BtnRetry.Size = new System.Drawing.Size(92, 92);
+            this.BtnRetry.TabIndex = 33;
+            this.BtnRetry.UseVisualStyleBackColor = true;
+            this.BtnRetry.Visible = false;
+            // 
+            // BtnContinue
+            // 
+            this.BtnContinue.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnContinue.BackgroundImage")));
+            this.BtnContinue.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BtnContinue.Location = new System.Drawing.Point(202, 4);
+            this.BtnContinue.Name = "BtnContinue";
+            this.BtnContinue.Size = new System.Drawing.Size(92, 92);
+            this.BtnContinue.TabIndex = 32;
+            this.BtnContinue.UseVisualStyleBackColor = true;
+            this.BtnContinue.Click += new System.EventHandler(this.BtnContinue_Click);
+            // 
+            // BtnPause
+            // 
+            this.BtnPause.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnPause.BackgroundImage")));
+            this.BtnPause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BtnPause.Location = new System.Drawing.Point(4, 4);
+            this.BtnPause.Name = "BtnPause";
+            this.BtnPause.Size = new System.Drawing.Size(92, 92);
+            this.BtnPause.TabIndex = 31;
+            this.BtnPause.UseVisualStyleBackColor = true;
+            this.BtnPause.Click += new System.EventHandler(this.BtnPause_Click);
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
@@ -83,6 +116,16 @@ namespace RGBTester.UI
             this.tableLayoutPanel2.Size = new System.Drawing.Size(397, 58);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(4, 1);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(115, 56);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Processing";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // LablTaskState
             // 
             this.LablTaskState.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -95,63 +138,22 @@ namespace RGBTester.UI
             // 
             // BtnAbort
             // 
+            this.BtnAbort.BackColor = System.Drawing.Color.White;
             this.BtnAbort.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnAbort.BackgroundImage")));
             this.BtnAbort.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BtnAbort.Location = new System.Drawing.Point(103, 4);
             this.BtnAbort.Name = "BtnAbort";
             this.BtnAbort.Size = new System.Drawing.Size(92, 92);
             this.BtnAbort.TabIndex = 30;
-            this.BtnAbort.UseVisualStyleBackColor = true;
+            this.BtnAbort.UseVisualStyleBackColor = false;
             this.BtnAbort.Click += new System.EventHandler(this.BtnAbort_Click);
-            // 
-            // BtnPause
-            // 
-            this.BtnPause.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnPause.BackgroundImage")));
-            this.BtnPause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnPause.Location = new System.Drawing.Point(4, 4);
-            this.BtnPause.Name = "BtnPause";
-            this.BtnPause.Size = new System.Drawing.Size(92, 92);
-            this.BtnPause.TabIndex = 31;
-            this.BtnPause.UseVisualStyleBackColor = true;
-            this.BtnPause.Click += new System.EventHandler(this.BtnPause_Click);
-            // 
-            // BtnContinue
-            // 
-            this.BtnContinue.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnContinue.BackgroundImage")));
-            this.BtnContinue.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnContinue.Location = new System.Drawing.Point(202, 4);
-            this.BtnContinue.Name = "BtnContinue";
-            this.BtnContinue.Size = new System.Drawing.Size(92, 92);
-            this.BtnContinue.TabIndex = 32;
-            this.BtnContinue.UseVisualStyleBackColor = true;
-            this.BtnContinue.Click += new System.EventHandler(this.BtnContinue_Click);
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(4, 1);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 56);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Processing";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // BtnRetry
-            // 
-            this.BtnRetry.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnRetry.BackgroundImage")));
-            this.BtnRetry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnRetry.Location = new System.Drawing.Point(301, 4);
-            this.BtnRetry.Name = "BtnRetry";
-            this.BtnRetry.Size = new System.Drawing.Size(92, 92);
-            this.BtnRetry.TabIndex = 33;
-            this.BtnRetry.UseVisualStyleBackColor = true;
             // 
             // F_StateControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(406, 163);
+            this.ClientSize = new System.Drawing.Size(406, 166);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StateControl";

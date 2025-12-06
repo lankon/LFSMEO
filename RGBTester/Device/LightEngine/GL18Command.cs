@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using ToolFunction;
 using RGBTester.Base;
 
 namespace RGBTester.Device
@@ -25,8 +27,6 @@ namespace RGBTester.Device
             _serialPort.ReadBufferSize = 8192;          // 設定讀取緩衝區大小
             _serialPort.DataReceived += SerialPort_DataReceived;    //取得回傳資料
 
-            //先註解掉要再解決Open不了時的情況
-            _serialPort.Open();
         }
 
         #region parameter define
@@ -51,11 +51,28 @@ namespace RGBTester.Device
         #endregion
 
         #region public function
+        public bool Open()
+        {
+            try
+            {
+                _serialPort.Open();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
         public bool SetLed_DAC(byte rgb, byte side, int value)
         {
             byte high = (byte)(value >> 8);     // 高位元
             byte low = (byte)(value & 0xFF);    // 低位元
             int res = 0;
+
+            long targetTicks = Stopwatch.Frequency / 1000;
+            var sw = Stopwatch.StartNew();
+            while (sw.ElapsedTicks < targetTicks * 10) { }
 
             // ====== 發送 LSB ======
             SetLedDriverData(side, rgb, low);
@@ -64,7 +81,8 @@ namespace RGBTester.Device
             if (res < 0)
                 return false;
 
-            Thread.Sleep(1);
+            sw = Stopwatch.StartNew();
+            while (sw.ElapsedTicks < targetTicks * 10) { }
 
             // ====== 發送 MSB ======
             SetLedDriverData(side, LED_RGB_MSB, high);

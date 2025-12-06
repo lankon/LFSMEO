@@ -42,34 +42,61 @@ namespace RGBTester.UI
         #region private function
         void InitialForm()
         {
-            ReadAllEnumRecipe();
-            ApplicationSetting.UpdataRecipeToForm<eF_StartForm>(this);
+            ReadAllEnumSetting();
+            UpdateEnumSettingToForm();
 
             ShowHint();
 
             if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
+
+            if (!LEA.Open())
+                MessageBox.Show("LED Board Connect Fail！","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
         }
-        private void ReadAllEnumRecipe()
+        private void ReadAllEnumSetting()
         {
             ApplicationSetting.ReadAllRecipe<eOEMSetting>();
             ApplicationSetting.ReadAllRecipe<eF_StartForm>();
+
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(recipe_name);
+        }
+        private void UpdateEnumSettingToForm()
+        {
+            ApplicationSetting.UpdataRecipeToForm<eF_StartForm>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
+        }
+        private void SaveAllEnumSetting()
+        {
+            ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
+
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
         }
         void ShowHint()
         {
+            toolTip1.SetToolTip(Btn_Start, "Auto");
+            toolTip1.SetToolTip(Btn_SingleTest, "Test");
+            toolTip1.SetToolTip(Btn_GetTemperature, "Get Temperature");
         }
         private void UpdatePage()
         {
-            if (UserLevel.AtLeastEng())
-            {
-                Btn_SingleTest.Enabled = true;
-                Pnl_HighLowMode.Enabled = true;
-            }
-            else
-            {
-                Btn_SingleTest.Enabled = false;
-                Pnl_HighLowMode.Enabled = false;
-            }
+            bool enable = UserLevel.AtLeastEng();
+
+            Btn_SingleTest.Enabled = enable;
+            Pnl_HighLowMode.Enabled = enable;
+            Pnl_ShowTemperature.Enabled = enable;
+            TxtBx_Left_DAC_Start.Enabled = enable;
+            TxtBx_Left_DAC_End.Enabled = enable;
+            TxtBx_Left_DAC_Step.Enabled = enable;
+            TxtBx_Left_AvgCount.Enabled = enable;
+            TxtBx_Right_DAC_Start.Enabled = enable;
+            TxtBx_Right_DAC_End.Enabled = enable;
+            TxtBx_Right_DAC_Step.Enabled = enable;
+            TxtBx_Right_AvgCount.Enabled = enable;
+
+            ReadAllEnumSetting();
+            UpdateEnumSettingToForm();
         }
         #endregion
 
@@ -78,8 +105,8 @@ namespace RGBTester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
-            ApplicationSetting.ReadAllRecipe<eF_StartForm>();
+            SaveAllEnumSetting();
+            ReadAllEnumSetting();
 
             string method = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_TestMode);
 
@@ -97,8 +124,8 @@ namespace RGBTester.UI
         {
             if (!this.Visible)
             {
-                ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
-                ApplicationSetting.ReadAllRecipe<eF_StartForm>();
+                SaveAllEnumSetting();
+                ReadAllEnumSetting();
             }
             else
             {
@@ -115,15 +142,32 @@ namespace RGBTester.UI
         private void Btn_Test_Click(object sender, EventArgs e)
         {
             int value = 00;
+            long RecordTime;
 
-            Thread.Sleep(1);
             bool Red = LEA.SetLed_DAC(LEA.LED_R_LSB, LEA.LED_RightSide, value);
-            Thread.Sleep(1);
             bool Green = LEA.SetLed_DAC(LEA.LED_G_LSB, LEA.LED_RightSide, value);
-            Thread.Sleep(1);
             bool Blue = LEA.SetLed_DAC(LEA.LED_B_LSB, LEA.LED_RightSide, value);
 
-            int test = 0;
+            if (!Red || !Green || !Blue)
+                MessageBox.Show("錯誤");
+        }
+
+        private void Btn_SingleTest_Click(object sender, EventArgs e)
+        {
+            SaveAllEnumSetting();
+            ReadAllEnumSetting();
+
+            string method = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_TestMode);
+
+            if (method == "0")
+                method = "Left";
+            else if (method == "1")
+                method = "Right";
+            else
+                method = "Both";
+
+            Scope.TaskRGBTest.IsSingleTest = true;
+            StartFormLogic.StartTaskAction(method);
         }
     }
 }

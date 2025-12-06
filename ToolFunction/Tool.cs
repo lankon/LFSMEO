@@ -497,9 +497,12 @@ namespace ToolFunction
             return File;
         }
 
-        public static void WriteFile(StreamWriter File, String Msg)
+        public static void WriteFile(StreamWriter File, String Msg, bool NewLine = true)
         {
-            File.WriteLine(Msg);
+            if (NewLine)
+                File.WriteLine(Msg);
+            else
+                File.Write(Msg);
         }
 
         public static void CloseFile(StreamWriter File)

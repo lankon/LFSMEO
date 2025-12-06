@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 //using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using RGBTester.Base;
@@ -23,11 +24,13 @@ namespace RGBTester.Logic
 
             string[] splits = set_state.Split('_');
 
-            if(splits.Length == 3)
+            if(Scope.TaskRGBTest.IsSingleTest == true)
             {
-                if (splits[2] == "H")
+                int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_Select_HL_Mode);
+                
+                if (select == 0)
                     OnlyHeighMode = true;
-                else if (splits[2] == "L")
+                else if (select == 1)
                     OnlyLowMode = true;
             }
 
@@ -46,30 +49,45 @@ namespace RGBTester.Logic
 
         #region parameter
         private string Type;
+        private string TestSide;
+        private string TestColor;
         private Queue<int> qDAC_L = new Queue<int>();
         private Queue<int> qDAC_H = new Queue<int>();
-        private int DAC_Start = 0, DAC_End = 4, DAC_Step = 2;
-        private RGBTesterData TesterData_H = new RGBTesterData();
-        private RGBTesterData TesterData_L = new RGBTesterData();
-        private LinearCurveFitting LinearCurveFitting_L;
-        private LinearCurveFitting LinearCurveFitting_H;
+        private int DAC_Start = 500, DAC_End = 600, DAC_Step = 10;
+        private int Left_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Start);
+        private int Left_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_End);
+        private int Left_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Step);
+        private int Right_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Start);
+        private int Right_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_End);
+        private int Right_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Step);
         private int RepeatTime = 1;     //平均次數
+        private int LeftRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_AvgCount);    //左邊平均次數
+        private int RightRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_AvgCount);  //右邊平均次數
         private int DAQ_Vf_R = 0;       //DAQ卡Vr點位
         private int DAQ_Vf_G = 0;       //DAQ卡Vg點位
         private int DAQ_Vf_B = 0;       //DAQ卡Vb點位
         private int DAQ_Vf = 0;         //DAQ卡Vf點位
-        private int SigMag = 1;         //訊號放大倍率
+        private const int H_SigMag = 20;                //HCM訊號放大倍率(硬體)
+        private const int L_SigMag = 200;               //LCM訊號放大倍率(硬體)
+        private const int LED_SigMag = 20;              //LED訊號放大倍率(硬體)
+        private const int CurrentMeasureBias = 1;       //Bias(硬體)
         private byte Side;              //LED Side
         private byte Color;             //LED Color
-        private double Rfb_HCM = 0;     //High Current Mode阻抗
-        private double Rfb_LCM = 0;     //Low Current Mode阻抗
-        private double Rfb = 1;         //阻抗
-        private double Rin = 1;         //輸入阻抗
+        private const double Rfb_HCM = 0.53;    //High Current Mode阻抗
+        private const double Rfb_LCM = 5.1;     //Low Current Mode阻抗
+        private const double Rin = 1;   //輸入阻抗(硬體)
         private double LED_Duty;        //LED Duty
+        private long RecordTime;        //紀錄時間
+        private long CycleTime;         //Cycle Time
         private bool OnlyHeighMode = false;     //只跑Heigh Current Mode
         private bool OnlyLowMode = false;       //只跑Low Current Mode
         private IF_BaseTask SubTask;            //子流程
         private IF_StateControl F_StateControl;
+        private IF_StatusBox StatusBox;
+        private RGBTesterData TesterData_H = new RGBTesterData();
+        private RGBTesterData TesterData_L = new RGBTesterData();
+        private LinearCurveFitting LinearCurveFitting_L;
+        private LinearCurveFitting LinearCurveFitting_H;
         public enum WORK
         {
             NONE,
@@ -83,9 +101,10 @@ namespace RGBTester.Logic
             GET_ADC_HIGH,
             CALCULATE_HIGH,
 
-            END,
+            WRITE_TEST_DATA,
 
             SUCCESS,
+            END,
             FAIL,
 
             PAUSE,
@@ -97,19 +116,32 @@ namespace RGBTester.Logic
         #region private function
         private void Preset()
         {
-            for(int i=DAC_Start; i<=DAC_End; i+=DAC_Step)
-            {
-                qDAC_L.Enqueue(i);
-                qDAC_H.Enqueue(i);
-            }
+            StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
 
             string[] res = Type.Split('_');
 
-            if (res[0] == "Left")
-                Side = Deps.LightEngine.LED_LeftSide;
-            else
-                Side = Deps.LightEngine.LED_RightSide;
+            TestSide = res[0];
+            TestColor = res[1];
 
+            // Left/Right
+            if (res[0] == "Left")
+            {
+                Side = Deps.LightEngine.LED_LeftSide;
+                DAC_Start = Left_DAC_Start;
+                DAC_End = Left_DAC_End;
+                DAC_Step = Left_DAC_Step;
+                RepeatTime = LeftRepeatTime;
+            }
+            else
+            {
+                Side = Deps.LightEngine.LED_RightSide;
+                DAC_Start = Right_DAC_Start;
+                DAC_End = Right_DAC_End;
+                DAC_Step = Right_DAC_Step;
+                RepeatTime = RightRepeatTime;
+            }
+
+            // RGB
             if (res[1] == "R")
             {
                 Color = Deps.LightEngine.LED_R_LSB;
@@ -125,7 +157,12 @@ namespace RGBTester.Logic
                 Color = Deps.LightEngine.LED_B_LSB;
                 DAQ_Vf = DAQ_Vf_B;
             }
-                
+
+            for (int i = DAC_Start; i <= DAC_End; i += DAC_Step)
+            {
+                qDAC_L.Enqueue(i);
+                qDAC_H.Enqueue(i);
+            }
         }
         
         protected override void Transition(WORK target)
@@ -254,46 +291,57 @@ namespace RGBTester.Logic
                         Preset();
 
                         if(OnlyHeighMode)
+                        {
                             Transition(WORK.SET_DAC_HIGH);
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
+                        }
                         else
+                        {
                             Transition(WORK.SET_DAC_LOW);
-
-                        Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_LOW.ToString());
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_LOW.ToString());
+                        }
                     }
                     break;
 
                 #region Low
                 case WORK.SET_DAC_LOW:
                     {
+                        Tool.ResetTimeCount(out CycleTime);
+
                         //傳送廣達指令
                         int val = qDAC_L.Dequeue();
                         TesterData_L.DACpoint.Add(val);
 
-                        Deps.LightEngine.SetLed_DAC(Color, Side, val);
-
-                        Transition(WORK.GET_ADC_LOW);
+                        if (!Deps.LightEngine.SetLed_DAC(Color, Side, val))
+                        {
+                            StatusBox.ShowMessage("HDMI Board Cmd Fail");
+                            Transition(WORK.ABORT);
+                        }
+                        else
+                            Transition(WORK.GET_ADC_LOW);
                     }
                     break;
                 case WORK.GET_ADC_LOW:
                     {
-                        double sum_Vin = 0, sum_VSYS = 0, sum_Vled = 0;
-                        double sum_Vf = 0, sum_Vfb = 0;
+                        double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
                         //取得AI訊號
                         for (int i=0; i<RepeatTime; i++)
                         {
                             sum_Vin += 0;
-                            sum_VSYS += 0;
+                            sum_Iin += (0 - CurrentMeasureBias);
                             sum_Vled += 0;
-                            sum_Vf += 0;    //DAQ_Vf點位
-                            sum_Vfb += 0;
+                            sum_Vrgb += 0;
+                            sum_Iled += (0 - CurrentMeasureBias);
                         }
 
                         TesterData_L.Vin.Add(sum_Vin / RepeatTime);
-                        TesterData_L.Iin.Add(sum_VSYS / RepeatTime / Rin / SigMag);
+                        TesterData_L.Iin.Add(sum_Iin / RepeatTime / Rin / L_SigMag);
                         TesterData_L.Vled.Add(sum_Vled / RepeatTime);
-                        TesterData_L.Vf.Add((sum_Vled - sum_Vf) / RepeatTime);
-                        TesterData_L.Iled.Add(sum_Vfb / RepeatTime / Rfb / SigMag);
+                        TesterData_L.Vf.Add((sum_Vled - sum_Vrgb) / RepeatTime);
+                        TesterData_L.Iled.Add(sum_Iled / RepeatTime / Rfb_LCM / LED_SigMag);
+
+                        TesterData_L.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         //Transition(WORK.CALCULATE_LOW);
                         State = WORK.CALCULATE_LOW;
@@ -313,18 +361,12 @@ namespace RGBTester.Logic
 
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), TesterData_L.Iled.ToArray());
 
-                            string[] side = Type.Split('_');
-                            for(int i=0; i< TesterData_L.Vin.Count; i++)
-                            {
-                                Deps.File.WriteFile($"{Type}_Low,{TesterData_L.Iin[i]},{TesterData_L.Vled[i]}", side[0]);
-                            }
-
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
 
                             if (OnlyLowMode)
-                                Transition(WORK.SUCCESS);
+                                Transition(WORK.WRITE_TEST_DATA);
                             else
                                 Transition(WORK.SET_DAC_HIGH);
                         }
@@ -343,30 +385,36 @@ namespace RGBTester.Logic
                         //傳送廣達指令
                         int val = qDAC_H.Dequeue();
                         TesterData_H.DACpoint.Add(val);
-                        Deps.LightEngine.SetLed_DAC(Color, Side, val);
-                        Transition(WORK.GET_ADC_HIGH);
+
+                        if (!Deps.LightEngine.SetLed_DAC(Color, Side, val))
+                        {
+                            StatusBox.ShowMessage("HDMI Board Cmd Fail");
+                            Transition(WORK.ABORT);
+                        }
+                        else
+                            Transition(WORK.GET_ADC_HIGH);
                     }
                     break;
                 case WORK.GET_ADC_HIGH:
                     {
-                        double sum_Vin = 0, sum_VSYS = 0, sum_Vled = 0;
-                        double sum_Vf = 0, sum_Vfb = 0;
+                        double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
                         //取得AI訊號
                         for (int i = 0; i < RepeatTime; i++)
                         {
                             sum_Vin += 0;
-                            sum_VSYS += 0;
+                            sum_Iin += (0 - CurrentMeasureBias);
                             sum_Vled += 0;
-                            sum_Vf += 0;    //DAQ_Vf點位
-                            sum_Vfb += 0;
+                            sum_Vrgb += 0;
+                            sum_Iled += 0;
                         }
 
                         TesterData_H.Vin.Add(sum_Vin / RepeatTime);
-                        TesterData_H.Iin.Add(sum_VSYS / RepeatTime / Rin / SigMag);
+                        TesterData_H.Iin.Add(sum_Iin / RepeatTime / Rin / H_SigMag);
                         TesterData_H.Vled.Add(sum_Vled / RepeatTime);
-                        TesterData_H.Vf.Add((sum_Vled - sum_Vf) / RepeatTime);
-                        TesterData_H.Iled.Add(sum_Vfb / RepeatTime / Rfb / SigMag);
+                        TesterData_H.Vf.Add((sum_Vled - sum_Vrgb) / RepeatTime);
+                        TesterData_H.Iled.Add(sum_Iled / RepeatTime / Rfb_HCM / LED_SigMag);
+                        
                         //Transition(WORK.CALCULATE_HIGH);
                         State = WORK.CALCULATE_HIGH;
                         goto case WORK.CALCULATE_HIGH;
@@ -383,23 +431,79 @@ namespace RGBTester.Logic
                                 TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
                             }
 
-                            LinearCurveFitting_L = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
+                            LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
 
-                            string[] side = Type.Split('_');
-                            for (int i = 0; i < TesterData_L.Vin.Count; i++)
-                            {
-                                Deps.File.WriteFile($"{Type}_Heigh,{TesterData_H.Iin[i]},{TesterData_H.Vled[i]}", side[0]);
-                            }
+                            //string[] side = Type.Split('_');
+                            //for (int i = 0; i < TesterData_L.Vin.Count; i++)
+                            //{
+                            //    Deps.File.WriteFile($"{Type}_Heigh,{TesterData_H.Iin[i]},{TesterData_H.Vled[i]}", side[0]);
+                            //}
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_HIGH.ToString());
-                            Transition(WORK.SUCCESS);
+                            Transition(WORK.WRITE_TEST_DATA);
                         }
                         else
                         {
                             State = WORK.SET_DAC_HIGH;
                             goto case WORK.SET_DAC_HIGH;
                         }
+                    }
+                    break;
+                #endregion
+                #region 
+                case WORK.WRITE_TEST_DATA:
+                    {
+                        int data_count = Math.Max(TesterData_L.Vin.Count, TesterData_H.Vin.Count);
+                        string SN = "";
+                        string log_name = "";
+                        DateTime now = DateTime.Now;
+                        if (TestSide == "Left")
+                        {
+                            SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
+                            log_name = $"Z23A_LEDIV L{SN}_Summary{now.ToString("yyyyMMdd")}()";
+                        }
+                        else if (TestSide == "Right")
+                        {
+                            SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+                            log_name = $"Z23A_LEDIV R{SN}_Summary{now.ToString("yyyyMMdd")}()";
+                        }
+
+                        for (int i = 0; i < data_count; i++)
+                        {
+                            Deps.File.WriteFile($"BFT,{SN},{now.ToString("yyyyMMdd")},{now.ToString("HH: mm:ss")}", TestColor);
+
+                            if(i < TesterData_L.Vin.Count && i < TesterData_H.Vin.Count)
+                            {
+                                Deps.File.WriteFile($"{TesterData_L.CycleTime[i] + TesterData_H.CycleTime[i]},8888,{log_name}", TestColor, false);
+                                Deps.File.WriteTestResult(TesterData_H.DACpoint[i], TesterData_H.Vin[i], TesterData_H.Iin[i],
+                                                            TesterData_H.Pin[i], TesterData_H.Vf[i], TesterData_H.Iled[i],
+                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], 25.0,
+                                                            LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
+                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, TestColor);
+                                Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
+                                                            TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
+                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], 25.0,
+                                                            LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
+                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, TestColor);
+                            }
+                            else if (i < TesterData_H.Vin.Count)
+                            {
+                                Deps.File.WriteFile($"{TesterData_H.CycleTime[i]},8888,{log_name}", TestColor, false);
+                                Deps.File.WriteTestResult(-99, -99, -99,
+                                                            -99, -99, -99,
+                                                            -99, -99, 25.0,
+                                                            -99, -99,
+                                                            -99, -99, TestColor);
+                                Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
+                                                            TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
+                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], 25.0,
+                                                            LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
+                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, TestColor);
+                            }
+                        }
+
+                        Transition(WORK.SUCCESS);
                     }
                     break;
                 #endregion

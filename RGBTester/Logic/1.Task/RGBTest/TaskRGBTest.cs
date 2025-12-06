@@ -222,6 +222,7 @@ namespace RGBTester.Logic
                 #region Left
                 case WORK.LEFT_GLASSES_TEST:
                     {
+                        Tool.SaveLogToFile("LEFT_GLASSES_TEST", level: "INF");
                         SubTask = new SubTaskRGBTest(Deps, F_StateControl,"Left");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LEFT_GLASSES_TEST);
@@ -231,7 +232,7 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
                         
-                        if(OnlyLeftTest)
+                        if(OnlyLeftTest) 
                             CheckResult(check, SUCCESS: WORK.SUCCESS);
                         else
                             CheckResult(check, SUCCESS: WORK.RIGHT_GLASSES_TEST);
@@ -241,11 +242,12 @@ namespace RGBTester.Logic
                 #region Right
                 case WORK.RIGHT_GLASSES_TEST:
                     {
+                        Tool.SaveLogToFile("RIGHT_GLASSES_TEST", level: "INF");
                         SubTask = new SubTaskRGBTest(Deps, F_StateControl,"Right");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_RIGHT_GLASSES_TEST);
                     }
-                    break;
+                    break; 
                 case WORK.WAIT_RIGHT_GLASSES_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
@@ -256,6 +258,7 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
+                        Scope.TaskRGBTest.IsSingleTest = false;
                         Deps.File.CloseFile("Left");
                         Deps.File.CloseFile("Right");
                         SetStatus(TASK_STATUS.SUCCESS);
@@ -274,6 +277,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.ABORT:
                     {
+                        Scope.TaskRGBTest.IsSingleTest = false;
                         Deps.File.CloseFile("Left");
                         Deps.File.CloseFile("Right");
                         SetStatus(TASK_STATUS.ABORT);

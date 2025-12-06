@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using ToolFunction;
 using RGBTester.Base;
 
 namespace RGBTester.Device
@@ -35,18 +37,36 @@ namespace RGBTester.Device
         #endregion
 
         #region public function
+        public bool Open()
+        {
+            return true;
+        }
         public bool SetLed_DAC(byte rgb, byte side, int value)
         {
             byte high = (byte)(value >> 8);     // 高位元
             byte low = (byte)(value & 0xFF);    // 低位元
 
+            long targetTicks = Stopwatch.Frequency / 1000;//ms
+            var sw = Stopwatch.StartNew();
+            while (sw.ElapsedTicks < targetTicks*10) { }
+
             // ====== 發送 LSB ======
             SetLedDriverData(side, rgb, low);
 
-            Thread.Sleep(1);
+            // ====== 模擬等待回傳時間 ======
+            sw = Stopwatch.StartNew();
+            while (sw.ElapsedTicks < targetTicks * 15 / 10) { }
+
+            // ====== 每道指令需間隔的時間 ======
+            sw = Stopwatch.StartNew();
+            while (sw.ElapsedTicks < targetTicks*10) { }
 
             // ====== 發送 MSB ======
             SetLedDriverData(side, LED_RGB_MSB, high);
+
+            // ====== 模擬等待回傳時間 ======
+            sw = Stopwatch.StartNew();
+            while (sw.ElapsedTicks < targetTicks * 15 / 10) { }
 
             return true;
         }
@@ -107,6 +127,9 @@ namespace RGBTester.Device
 
         private bool SendCommand(byte[] packet)
         {
+            string command = string.Join(" ", packet.Select(b => $"0x{b:X2}"));
+            Tool.SaveLogToFile(command);
+
             return true;
         }
         #endregion

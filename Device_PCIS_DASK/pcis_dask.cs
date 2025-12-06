@@ -84,47 +84,7 @@ namespace Device_PCIS_DASK
         }
         #endregion
 
-
-
-        //public  bool Open()
-        //{
-        //    //註冊卡片
-        //    card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 0);
-
-        //    //設定觸發方式
-        //    DASK64.AI_9111_Config(card, DASK64.TRIG_INT_PACER, DASK64.P9111_TRGMOD_SOFT, 0);
-
-        //    //啟用DoubleBuffer
-        //    DASK64.AI_AsyncDblBufferMode(card, true);
-
-        //    ushort[] buffer = null;
-        //    //連續掃描
-        //    //通道數:15
-        //    //AD_Range:+-10V
-        //    //Buffer:雙緩衝模式下沒有用途
-        //    //ReadCount:9111需為1024的倍數
-        //    //SampleRate:採樣頻率(Hz)
-        //    //SyncMode:同步模式
-        //    DASK64.AI_ContScanChannels(card, 15, DASK64.AD_B_10_V, buffer, 1024, 10000, DASK64.ASYNCH_OP);
-
-        //    byte ready = 0;
-        //    byte stop = 0;
-        //    //判斷是否準備好
-        //    DASK64.AI_AsyncDblBufferHalfReady(card, out ready, out stop);
-
-        //    ushort[] return_buffer = null;
-        //    //取得回傳資料
-        //    DASK64.AI_AsyncDblBufferTransfer(card, return_buffer);
-
-        //    DASK64.AI_AsyncClear(card );
-
-        //    if (card < 0)
-        //        return false;
-
-        //    return true;
-        //}
-
-        public  void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
             //port:點位
             DASK64.DI_ReadLine(lineNo, DASK64.P9111_CHANNEL_DI, port, out ushort state);
@@ -136,7 +96,7 @@ namespace Device_PCIS_DASK
         }
         public  bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
-            if (pCI_Parm.CardType == DASK64.PCI_9111DG)
+            if (pCI_Parm.CardType == DASK64.PCI_9111DG || pCI_Parm.CardType == DASK64.PCI_9111HR)
             {
                 if (port < 0 || port >= portMaxCount)
                     return false;
@@ -155,11 +115,6 @@ namespace Device_PCIS_DASK
         }
 
         public  void UpdateOutput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
-        {
-            throw new NotImplementedException();
-        }
-
-        public  bool GetOutputStatus(byte lineNo, byte DevNo, byte port)
         {
             throw new NotImplementedException();
         }

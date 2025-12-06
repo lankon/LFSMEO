@@ -34,16 +34,19 @@ namespace RGBTester
             services.AddSingleton<F_StartForm_ButtonGroup>();
             services.AddSingleton<F_Recipe>();
             services.AddSingleton<F_DAQ_SamplingTest>();
+            services.AddSingleton<IF_StatusBox, F_StatusBox>();
 
             //[Form]
             //退出Form後即close掉,要用再new
             services.AddTransient<F_OEM_Setting>();
             services.AddTransient<F_Equipment_Setting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
+            
 
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
             services.AddSingleton<F_StartFormLogic>();
+            services.AddSingleton<F_RecipeLogic>();
 
             //[Logic]
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();

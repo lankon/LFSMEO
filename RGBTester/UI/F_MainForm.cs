@@ -69,6 +69,7 @@ namespace RGBTester.UI
 
             ServiceProvider.GetRequiredService<IBaseMainTask>();
             ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();
+            ServiceProvider.GetRequiredService<IF_StatusBox>();
         }
         private void CreateDynamicElement()
         {
@@ -98,6 +99,7 @@ namespace RGBTester.UI
             Tool.CreateFolder(Application.StartupPath + @"\Picture");
             Tool.CreateFolder(Application.StartupPath + @"\Result");
             Tool.CreateFolder(Application.StartupPath + @"\Setting");
+            Tool.CreateFolder(Application.StartupPath + @"\Setting\Package");
 
             Tool.CreateLog();
         }

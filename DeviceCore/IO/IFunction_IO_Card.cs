@@ -13,6 +13,7 @@ namespace DeviceCore
         MN200,
         AMP_204C,
         P32C32,
+        PCI_9111HR,
     }
 
     public enum EIOName

@@ -30,6 +30,9 @@ namespace RGBTester.UI
         #endregion
 
         #region private function
+        private void BtnEnableVisible(Button btn, bool flag)
+        {
+            btn.Visible = flag;            btn.Enabled = flag;        }
         private void SetHint()
         {
             toolTip1.SetToolTip(BtnPause, "Pause");
@@ -41,27 +44,27 @@ namespace RGBTester.UI
         {
             if (status == TASK_STATUS.ABORT_CONTINUE)
             {
-                BtnPause.Enabled = false;
-                BtnAbort.Enabled = true;
-                BtnContinue.Enabled = true;
+                BtnEnableVisible(BtnPause, false);
+                BtnEnableVisible(BtnAbort, true);
+                BtnEnableVisible(BtnContinue, true);
             }
             else if (status == TASK_STATUS.ABORT)
             {
-                BtnPause.Enabled = false;
-                BtnAbort.Enabled = true;
-                BtnContinue.Enabled = false;
+                BtnEnableVisible(BtnPause, false);
+                BtnEnableVisible(BtnAbort, true);
+                BtnEnableVisible(BtnContinue, false);
             }
             else if (status == TASK_STATUS.PAUSE)
             {
-                BtnPause.Enabled = true;
-                BtnAbort.Enabled = false;
-                BtnContinue.Enabled = false;
+                BtnEnableVisible(BtnPause, true);
+                BtnEnableVisible(BtnAbort, false);
+                BtnEnableVisible(BtnContinue, false);
             }
             else
             {
-                BtnPause.Enabled = false;
-                BtnAbort.Enabled = false;
-                BtnContinue.Enabled = false;
+                BtnEnableVisible(BtnPause, false);
+                BtnEnableVisible(BtnAbort, false);
+                BtnEnableVisible(BtnContinue, false);
             }
         }
         private void InvokeShowForm(Form form, int pos)

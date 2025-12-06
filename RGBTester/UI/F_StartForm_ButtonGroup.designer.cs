@@ -32,6 +32,7 @@ namespace RGBTester.UI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm_ButtonGroup));
             this.Pnl_Part1 = new System.Windows.Forms.Panel();
+            this.Btn_Recipe = new System.Windows.Forms.Button();
             this.Btn_LogIn = new System.Windows.Forms.Button();
             this.Btn_OEM_Setting = new System.Windows.Forms.Button();
             this.Btn_PreviousPnlPart1 = new System.Windows.Forms.Button();
@@ -41,7 +42,6 @@ namespace RGBTester.UI
             this.Btn_PreviousPnlPart2 = new System.Windows.Forms.Button();
             this.Btn_NextPnlPart2 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.Btn_Recipe = new System.Windows.Forms.Button();
             this.Pnl_Part1.SuspendLayout();
             this.Pnl_Part2.SuspendLayout();
             this.SuspendLayout();
@@ -58,6 +58,17 @@ namespace RGBTester.UI
             this.Pnl_Part1.Name = "Pnl_Part1";
             this.Pnl_Part1.Size = new System.Drawing.Size(1180, 65);
             this.Pnl_Part1.TabIndex = 32;
+            // 
+            // Btn_Recipe
+            // 
+            this.Btn_Recipe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Recipe.BackgroundImage")));
+            this.Btn_Recipe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Recipe.Location = new System.Drawing.Point(91, 5);
+            this.Btn_Recipe.Name = "Btn_Recipe";
+            this.Btn_Recipe.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Recipe.TabIndex = 37;
+            this.Btn_Recipe.UseVisualStyleBackColor = true;
+            this.Btn_Recipe.Click += new System.EventHandler(this.Btn_Recipe_Click);
             // 
             // Btn_LogIn
             // 
@@ -112,6 +123,7 @@ namespace RGBTester.UI
             this.Btn_ParameterSetting.Size = new System.Drawing.Size(60, 60);
             this.Btn_ParameterSetting.TabIndex = 31;
             this.Btn_ParameterSetting.UseVisualStyleBackColor = true;
+            this.Btn_ParameterSetting.Visible = false;
             this.Btn_ParameterSetting.Click += new System.EventHandler(this.Btn_ParameterSetting_Click);
             // 
             // Pnl_Part2
@@ -144,17 +156,6 @@ namespace RGBTester.UI
             this.Btn_NextPnlPart2.Text = ">";
             this.Btn_NextPnlPart2.UseVisualStyleBackColor = true;
             this.Btn_NextPnlPart2.Click += new System.EventHandler(this.Btn_NextPnlPart_Click);
-            // 
-            // Btn_Recipe
-            // 
-            this.Btn_Recipe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Recipe.BackgroundImage")));
-            this.Btn_Recipe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_Recipe.Location = new System.Drawing.Point(91, 5);
-            this.Btn_Recipe.Name = "Btn_Recipe";
-            this.Btn_Recipe.Size = new System.Drawing.Size(60, 60);
-            this.Btn_Recipe.TabIndex = 37;
-            this.Btn_Recipe.UseVisualStyleBackColor = true;
-            this.Btn_Recipe.Click += new System.EventHandler(this.Btn_Recipe_Click);
             // 
             // F_StartForm_ButtonGroup
             // 

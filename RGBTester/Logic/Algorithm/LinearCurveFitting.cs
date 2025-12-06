@@ -9,8 +9,8 @@ namespace RGBTester.Logic
     public class LinearCurveFitting
     {
         #region parameter define
-        private double mDAC = 0;
-        private double mCurrent = 0;
+        public double mDAC = 0;
+        public double mCurrent = 0;
         public double Slope { get; private set; } = 0;
         public double Offset { get; private set; } = 0;
         #endregion
