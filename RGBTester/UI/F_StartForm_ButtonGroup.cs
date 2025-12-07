@@ -46,8 +46,8 @@ namespace RGBTester.UI
 
             SetHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
-            //    Tool.ShowFormName(this);
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                Tool.ShowFormName(this);
 
             PnlPartList.Add(Pnl_Part1);
             PnlPartList.Add(Pnl_Part2);
@@ -132,6 +132,9 @@ namespace RGBTester.UI
                 Tool.HideElementOnPanel(Scope.UpButtonPanel);
                 Tool.SetForm(Scope.MainPanel, form);
                 form.Show();
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    set.ShowFormName(true);
             }
         }
 
@@ -140,10 +143,10 @@ namespace RGBTester.UI
             if (!this.Visible)
             {
                 ////儲存參數
-                //ApplicationSetting.SaveRecipeFromForm<eOEMSetting>(this);
+                //ApplicationSetting.SaveRecipeFromForm<eF_Equipment_Setting>(this);
                 //ApplicationSetting.SaveRecipeFromForm<eMachineSetting>(this);
                 ////重新讀取變數值
-                //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+                //ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
                 //ApplicationSetting.ReadAllRecipe<eMachineSetting>();
 
                 ////釋放記憶體資源

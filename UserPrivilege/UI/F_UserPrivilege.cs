@@ -39,8 +39,7 @@ namespace UserPrivilege.UI
 
             ShowHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
-            //    Tool.ShowFormName(this);
+            
         }
         void ShowHint()
         {
@@ -86,7 +85,11 @@ namespace UserPrivilege.UI
         #endregion
 
         #region public function
-        
+        public void ShowFormName(bool show)
+        {
+            if(show)
+                Tool.ShowFormName(this);
+        }
         #endregion
 
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)

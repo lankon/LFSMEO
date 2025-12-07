@@ -8,7 +8,8 @@ namespace RGBTester.Base
 {
     public enum eF_Recipe
     {
-        TxtBx_CurRecipeName,
+        //TxtBx_CurRecipeName,
+        TxtBx_RecipeName,
     }
 
     public enum eF_RecipeRecipe

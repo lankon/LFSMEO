@@ -38,25 +38,18 @@ namespace RGBTester.Logic
                     SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                 else if (res[i] == "Right")
                     SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
-
-                if (res[i] == "R")
-                {
-                    file_name = $"\\Result\\BFT_Z23A_LEDIV-R{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
-                    RedFile = Tool.CreateFile(file_name, ".csv", false);
-                }
-                else if (res[i] == "G")
-                {
-                    file_name = $"\\Result\\BFT_Z23A_LEDIV-G{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
-                    RedFile = Tool.CreateFile(file_name, ".csv", false);
-                }
-                else if (res[i] == "B")
-                {
-                    file_name = $"\\Result\\BFT_Z23A_LEDIV-B{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
-                    RedFile = Tool.CreateFile(file_name, ".csv", false);
-                }
             }
 
-            WriteTitle(res[1]);
+            file_name = $"\\Result\\BFT_Z23A_LEDIV-{describe}{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
+
+            if (describe == "R")
+                RedFile = Tool.CreateFile(file_name, ".csv", false);
+            else if (describe == "G")
+                GreenFile = Tool.CreateFile(file_name, ".csv", false);
+            else if (describe == "B")
+                BlueFile = Tool.CreateFile(file_name, ".csv", false);
+
+            WriteTitle(describe);
         }
         public void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
                                     double i_led, double p_led, double eff, double temperature,
@@ -139,11 +132,11 @@ namespace RGBTester.Logic
         public void WriteFile(string context = "", string describe = "", bool NewLine = true)
         {
             if (describe == "R")
-                Tool.WriteFile(RedFile, context);
+                Tool.WriteFile(RedFile, context, NewLine: NewLine);
             else if(describe == "G")
-                Tool.WriteFile(GreenFile, context);
+                Tool.WriteFile(GreenFile, context, NewLine: NewLine);
             else
-                Tool.WriteFile(BlueFile, context);
+                Tool.WriteFile(BlueFile, context, NewLine: NewLine);
         }
         public void CloseFile(string describe = "")
         {
@@ -162,7 +155,7 @@ namespace RGBTester.Logic
             StreamWriter file = null;
             string low_range = ",,,,,,,,0,,130,,,0,,0,,,,,,,,,,0,,130,,,0,,0,,,,,,,,";
             string high_range = ",,,,,,,,5.5,,192,,,4.0,,30~300,,,,,,,,,,5.5,,192,,,4.0,,30~300,,,,,,,,";
-            string unit = ",,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,,,mV,,mA,,,,,mA,,,,℃,,,,";
+            string unit = ",,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,";
             string title = "Station,SN,TestDate,TestTime,CycleTime(S),UserName,DirLogName,H Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c,L Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c";
 
             if (type == "R")

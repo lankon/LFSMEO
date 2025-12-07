@@ -356,7 +356,11 @@ namespace RGBTester.Logic
                             {
                                 TesterData_L.Pin.Add(TesterData_L.Vin[i] * TesterData_L.Iin[i]);
                                 TesterData_L.Pled.Add(TesterData_L.Vf[i] * TesterData_L.Iled[i] * LED_Duty);
-                                TesterData_L.Eff.Add(TesterData_L.Pled[i] / TesterData_L.Pin[i]);
+
+                                if (TesterData_L.Pin[i] == 0)
+                                    TesterData_L.Eff.Add(-99);
+                                else
+                                    TesterData_L.Eff.Add(TesterData_L.Pled[i] / TesterData_L.Pin[i]);
                             }
 
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), TesterData_L.Iled.ToArray());
@@ -471,7 +475,7 @@ namespace RGBTester.Logic
 
                         for (int i = 0; i < data_count; i++)
                         {
-                            Deps.File.WriteFile($"BFT,{SN},{now.ToString("yyyyMMdd")},{now.ToString("HH: mm:ss")}", TestColor);
+                            Deps.File.WriteFile($"BFT,{SN},{now.ToString("yyyyMMdd")},{now.ToString("HH: mm:ss")}", TestColor, false);
 
                             if(i < TesterData_L.Vin.Count && i < TesterData_H.Vin.Count)
                             {
@@ -501,6 +505,25 @@ namespace RGBTester.Logic
                                                             LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
                                                             LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, TestColor);
                             }
+                            else if (i < TesterData_L.Vin.Count)
+                            {
+                                Deps.File.WriteFile($",{TesterData_L.CycleTime[i]},8888,{log_name},", TestColor, false);
+                                Deps.File.WriteTestResult(100, -99, -99,
+                                                            -99, -99, -99,
+                                                            -99, -99, 25.0,
+                                                            -99, -99,
+                                                            -99, -99, TestColor);
+
+                                Deps.File.WriteFile(",", TestColor, false);
+
+                                Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
+                                                            TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
+                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], 25.0,
+                                                            LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
+                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, TestColor);
+                            }
+
+                            Deps.File.WriteFile("", TestColor);
                         }
 
                         Transition(WORK.SUCCESS);

@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace RGBTester.Base
 {
-    public enum eOEMSetting
-    {
-        Cmbx_ShowFormName,
-    }
+    
 }

@@ -22,6 +22,8 @@ namespace RGBTester.UI
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
+
+            InitialForm();
         }
 
         #region parameter define
@@ -29,16 +31,39 @@ namespace RGBTester.UI
         #endregion
 
         #region private function
-        void InitialApplication()
+        private void InitialForm()
         {
-            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
-            ApplicationSetting.UpdataRecipeToForm<eOEMSetting>(this);
+            ReadAllEnumSetting();
+            UpdateEnumSettingToForm();
 
             ShowHint();
+
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                Tool.ShowFormName(this);
         }
-        void ShowHint()
+        private void ShowHint()
         {
 
+        }
+        private void ReadAllEnumSetting()
+        {
+            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
+        }
+        private void UpdateEnumSettingToForm()
+        {
+            ApplicationSetting.UpdataRecipeToForm<eF_Equipment_Setting>(this);
+        }
+        private void SaveAllEnumSetting()
+        {
+            //ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
+
+            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
+        }
+        private void UpdatePage()
+        {
+            ReadAllEnumSetting();
+            UpdateEnumSettingToForm();
         }
         #endregion
 
@@ -58,8 +83,8 @@ namespace RGBTester.UI
         {
             if (!this.Visible)
             {
-                ApplicationSetting.SaveRecipeFromForm<eOEMSetting>(this);
-                ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+                ApplicationSetting.SaveRecipeFromForm<eF_Equipment_Setting>(this);
+                ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
 
                 Tool.ReleaseButtonImages(this);
 

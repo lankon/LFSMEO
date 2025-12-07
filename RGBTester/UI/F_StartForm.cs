@@ -47,7 +47,7 @@ namespace RGBTester.UI
 
             ShowHint();
 
-            if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
 
             if (!LEA.Open())
@@ -55,10 +55,10 @@ namespace RGBTester.UI
         }
         private void ReadAllEnumSetting()
         {
-            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 
-            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(recipe_name);
         }
         private void UpdateEnumSettingToForm()
@@ -70,7 +70,7 @@ namespace RGBTester.UI
         {
             ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
 
-            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
         }
         void ShowHint()

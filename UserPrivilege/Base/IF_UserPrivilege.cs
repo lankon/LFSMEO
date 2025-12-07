@@ -8,5 +8,6 @@ namespace UserPrivilege.Base
 {
     public interface IF_UserPrivilege
     {
+        void ShowFormName(bool show);
     }
 }

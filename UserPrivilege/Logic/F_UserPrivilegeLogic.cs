@@ -127,10 +127,6 @@ namespace UserPrivilege.Logic
         #endregion
 
 
-
-
-
-
         private string FixPassword(String Password)
         {
             try

@@ -32,14 +32,14 @@ namespace RGBTester.UI
         #region private function
         void InitialForm()
         {
-            //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            //ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             //ApplicationSetting.ReadAllRecipe<eMachineSetting>();
-            //ApplicationSetting.UpdataRecipeToForm<eOEMSetting>(this);
+            //ApplicationSetting.UpdataRecipeToForm<eF_Equipment_Setting>(this);
             //ApplicationSetting.UpdataRecipeToForm<eMachineSetting>(this);
 
             ShowHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
+            //if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
         }
         void ShowHint()
@@ -59,10 +59,10 @@ namespace RGBTester.UI
             if (!this.Visible)
             {
                 ////儲存參數
-                //ApplicationSetting.SaveRecipeFromForm<eOEMSetting>(this);
+                //ApplicationSetting.SaveRecipeFromForm<eF_Equipment_Setting>(this);
                 //ApplicationSetting.SaveRecipeFromForm<eMachineSetting>(this);
                 ////重新讀取變數值
-                //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+                //ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
                 //ApplicationSetting.ReadAllRecipe<eMachineSetting>();
 
                 ////釋放記憶體資源

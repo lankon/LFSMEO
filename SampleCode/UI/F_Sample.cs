@@ -26,7 +26,7 @@ namespace SampleCode.UI
         #endregion
 
         #region private function
-        void InitialForm()
+        private void InitialForm()
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();

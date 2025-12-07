@@ -79,7 +79,7 @@ namespace RGBTester.Logic
                 object res = method.Invoke(null, new object[] { recipe_name, "Reread" });
             }
 
-            ApplicationSetting.SetRecipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName, recipe_name);
+            ApplicationSetting.SetRecipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName, recipe_name);
             ApplicationSetting.SaveAllRecipe<eF_Recipe>();
             ApplicationSetting.ReadAllRecipe<eF_Recipe>();
 

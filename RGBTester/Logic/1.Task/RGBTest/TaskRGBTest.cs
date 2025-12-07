@@ -76,11 +76,21 @@ namespace RGBTester.Logic
         #region private function
         private void CreateTestFile()
         {
-            if(!OnlyLeftTest)
-                Deps.File.CreateFile("Right");
+            //if(!OnlyLeftTest)
+            //    Deps.File.CreateFile("Right");
 
-            if(!OnlyRightTest)
-                Deps.File.CreateFile("Left");
+            //if(!OnlyRightTest)
+            //    Deps.File.CreateFile("Left");
+
+            Deps.File.CreateFile("R");
+            Deps.File.CreateFile("G");
+            Deps.File.CreateFile("B");
+        }
+        private void CloseTestFile()
+        {
+            Deps.File.CloseFile("R");
+            Deps.File.CloseFile("G");
+            Deps.File.CloseFile("B");
         }
         private void Preset()
         {
@@ -148,18 +158,6 @@ namespace RGBTester.Logic
                     }
                     break;
             }
-        }
-        
-        private void ResetTimeCount(out int tick)
-        {
-            tick = Environment.TickCount;
-        }
-        private bool CheckTimeOverSec(int tick, int time)
-        {
-            var time_count = Environment.TickCount - tick;
-            bool res = time_count > time * 1000;
-
-            return res;
         }
         #endregion
 
@@ -259,8 +257,7 @@ namespace RGBTester.Logic
                 case WORK.SUCCESS:
                     {
                         Scope.TaskRGBTest.IsSingleTest = false;
-                        Deps.File.CloseFile("Left");
-                        Deps.File.CloseFile("Right");
+                        CloseTestFile();
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
@@ -278,8 +275,7 @@ namespace RGBTester.Logic
                 case WORK.ABORT:
                     {
                         Scope.TaskRGBTest.IsSingleTest = false;
-                        Deps.File.CloseFile("Left");
-                        Deps.File.CloseFile("Right");
+                        CloseTestFile();
                         SetStatus(TASK_STATUS.ABORT);
                         //SaveHistoryCurrentState(WORK.ABORT);
                     }

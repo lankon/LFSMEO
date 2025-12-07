@@ -28,12 +28,12 @@ namespace RGBTester.Logic
 
         public void ReadAllSetting()
         {
-            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             ApplicationSetting.ReadAllRecipe<eF_Recipe>();
 
             Tool.SaveLogToFile("Load Recipe File", level: "INF");
             var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
-            string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
+            string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             recipe.ReadRecipe(cur_recipe_name);
         }
 
