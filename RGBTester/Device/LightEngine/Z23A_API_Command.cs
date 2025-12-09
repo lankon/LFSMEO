@@ -12,9 +12,9 @@ using RGBTester.Base;
 
 namespace RGBTester.Device
 {
-    public class GL18Command:ILightEngineCommand
+    public class Z23A_API_Command:ILightEngineCommand
     {
-        public GL18Command()
+        public Z23A_API_Command()
         {
             string portName = "COM5";
             _serialPort = new SerialPort(portName);     // COM,
@@ -93,11 +93,7 @@ namespace RGBTester.Device
 
             return true;
         }
-
-        #endregion
-
-        #region private function
-        private bool SetLedDriverData(byte index, byte registerAddress, byte value)
+        public bool SetLedDriverData(byte index, byte registerAddress, byte value)
         {
             State = ASK_STATE.SET_DATA;
 
@@ -117,10 +113,10 @@ namespace RGBTester.Device
 
             return SendCommand(packet);
         }
-        private bool GetLedDriverData(byte index, byte registerAddress)
+        public bool GetLedDriverData(byte index, byte registerAddress)
         {
             State = ASK_STATE.GET_DATA;
-
+            
             const byte PACKAGE_LENGTH = 5;
             const byte COMMAND = 0x07;
 
@@ -136,14 +132,14 @@ namespace RGBTester.Device
 
             return SendCommand(packet);
         }
-        private bool CheckConnect()
+        public bool CheckConnect()
         {
             if (_serialPort.IsOpen)
                 return true;
             else
                 return false;
         }
-        private int GetResponse(object sender, SerialDataReceivedEventArgs e)
+        public int GetResponse(object sender, SerialDataReceivedEventArgs e)
         {
             // 等到對方送回資料時才會觸發
             string data = _serialPort.ReadExisting();
@@ -163,6 +159,9 @@ namespace RGBTester.Device
 
             return -1;
         }
+        #endregion
+
+        #region private function
         private int WaitResponse(int timeoutMs = 300)
         {
             // 等待設備回覆

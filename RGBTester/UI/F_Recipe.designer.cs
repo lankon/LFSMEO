@@ -79,6 +79,7 @@ namespace RGBTester.UI
             this.ListBx_RecipeList.TabIndex = 0;
             this.ListBx_RecipeList.SelectedIndexChanged += new System.EventHandler(this.ListBx_RecipeList_SelectedIndexChanged);
             this.ListBx_RecipeList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBx_RecipeList_KeyDown);
+            this.ListBx_RecipeList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ListBx_RecipeList_MouseDoubleClick);
             // 
             // groupBox2
             // 
@@ -108,7 +109,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_RecipeDescribe
             // 
-            this.TxtBx_RecipeDescribe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(210)))));
+            this.TxtBx_RecipeDescribe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.TxtBx_RecipeDescribe.Location = new System.Drawing.Point(6, 44);
             this.TxtBx_RecipeDescribe.Multiline = true;
             this.TxtBx_RecipeDescribe.Name = "TxtBx_RecipeDescribe";

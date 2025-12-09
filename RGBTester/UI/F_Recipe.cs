@@ -145,8 +145,8 @@ namespace RGBTester.UI
             }
             else
             {
-                Tool.SaveLogToFile("Load Recipe Success", level: "INF");
-                MessageBox.Show("Load Recipe Success", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Tool.SaveLogToFile($"Load {SelectRecipeName} Recipe Success", level: "INF");
+                MessageBox.Show($"Load {SelectRecipeName} Recipe Success", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 TxtBx_RecipeName.Text = SelectRecipeName;
                 UpdatePage();
             }
@@ -181,9 +181,10 @@ namespace RGBTester.UI
         private void ListBx_RecipeList_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
-            {
                 Btn_Delete_Click(Btn_Delete, EventArgs.Empty);
-            }
+
+            if(e.KeyCode == Keys.Enter)
+                Btn_LoadRecipe_Click(Btn_LoadRecipe, EventArgs.Empty);
         }
 
         private void Btn_SaveAsCancel_Click(object sender, EventArgs e)
@@ -194,8 +195,6 @@ namespace RGBTester.UI
         private void Btn_SaveAs_Click(object sender, EventArgs e)
         {
             Pnl_SaveAs.Visible = true;
-
-
         }
 
         private void Btn_SaveAsConfirm_Click(object sender, EventArgs e)
@@ -210,13 +209,19 @@ namespace RGBTester.UI
             RecipeLogic.CopyRecipeFolder(TxtBx_RecipeName.Text, TxtBx_SaveAsRecipeName.Text);
             ApplicationSetting.SetRecipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName, TxtBx_SaveAsRecipeName.Text);
 
+            TxtBx_RecipeName.Text = TxtBx_SaveAsRecipeName.Text;
             SaveAllEnumSetting();
             RecipeLogic.SaveRecipe(TxtBx_RecipeName.Text);
             RecipeLogic.ReadRecipe(TxtBx_RecipeName.Text);
-
+            
             UpdatePage();
 
             Pnl_SaveAs.Visible = false;
+        }
+
+        private void ListBx_RecipeList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Btn_LoadRecipe_Click(Btn_LoadRecipe, EventArgs.Empty);
         }
     }
 }

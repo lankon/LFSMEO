@@ -68,7 +68,7 @@ namespace DeviceFunction
         }
         public bool Initial_All_IO()
         {
-            bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false ;
+            bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false, Virtual = false ;
 
             foreach(IIOCard card in Cards)
             {
@@ -84,9 +84,11 @@ namespace DeviceFunction
                     UsePcisDask = true;
                 if (IO[i].GetName() == "AMP_204C")
                     UseAPS = true;
+                if (IO[i].GetName() == "Virtual")
+                    Virtual = true;
             }
 
-            if (!UseMN200 && !UseP32C32 && !UsePcisDask && !UseAPS)    //沒有任何一張IO卡
+            if (!UseMN200 && !UseP32C32 && !UsePcisDask && !UseAPS && !Virtual)    //沒有任何一張IO卡
             {
                 Tool.SaveLogToFile("IO卡Initial失敗");
                 InitialDone = false;
@@ -153,6 +155,9 @@ namespace DeviceFunction
         public double GetAInputStatus(EIOName name)
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
+
+            if (iOData == null)
+                return -1;
 
             byte card = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;

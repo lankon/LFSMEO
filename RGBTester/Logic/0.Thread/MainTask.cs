@@ -164,7 +164,7 @@ namespace RGBTester.Logic
                 throw new InvalidOperationException($"在 {typeof(T).Name} 上找不到符合 (IBaseTaskDependence, IF_StateControl, string) 的建構函式。");
             }
 
-            var dep = ServiceProvider.GetRequiredService<IBaseTaskDependence>();
+            var dep    = ServiceProvider.GetRequiredService<IBaseTaskDependence>();
 
             object[] constructorArgs = new object[] {
                 dep,

@@ -14,7 +14,8 @@ namespace Device_PCIS_DASK
         {
             if (card_type == "PCI_9111HR")
             {
-
+                pCI_Parm.CardType = DASK64.PCI_9111HR;
+                pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
             }
             else if (card_type == "PCI_9111DG")
             {
@@ -69,16 +70,20 @@ namespace Device_PCIS_DASK
             return true;
         }
 
-        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
             if (card < 0 || card > 65000)
                 return -1;
 
             ushort rawValue = 0;
             double voltage = 0;
+            ushort u_range = 0;
 
-            DASK64.AI_ReadChannel((ushort)card, port, DASK64.AD_B_5_V, out rawValue);
-            DASK64.AI_VoltScale((ushort)card, DASK64.AD_B_5_V, (short)rawValue, out voltage);
+            if (range == "+-5V")
+                u_range = DASK64.AD_B_5_V;
+
+            DASK64.AI_ReadChannel((ushort)card, port, u_range, out rawValue);
+            DASK64.AI_VoltScale((ushort)card, u_range, (short)rawValue, out voltage);
 
             return voltage;
         }

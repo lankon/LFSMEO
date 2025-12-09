@@ -8,10 +8,20 @@ using DeviceCore;
 
 namespace Device_Virtual
 {
-    class VirtualDevice : IIOCard
+    public class Virtual_IO : IIOCard
     {
+        public Virtual_IO()
+        {
+            _Param.CardType = 1;
+            _Param.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
+            _Param.Output_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
+        }
+
         #region parameter define
         Device_Parameter _Param = new Device_Parameter();
+        private int lineMaxCount = 5;
+        private int devMaxCount = 2;
+        private int portMaxCount = 16;
 
         struct Device_Parameter
         {
@@ -21,15 +31,9 @@ namespace Device_Virtual
         }
         #endregion
 
-
-        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public string GetName()
@@ -51,8 +55,7 @@ namespace Device_Virtual
         {
             _Param.Output_Status[lineNo, devNo, port] = truefalse;
 
-
-            throw new NotImplementedException();
+            return true;
         }
 
         public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
@@ -65,27 +68,13 @@ namespace Device_Virtual
             
         }
 
-        private readonly List<IORule> _rules = new List<IORule>();
-
-        private void ApplyRules()
+        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
-            //foreach (var rule in _rules)
-            //{
-            //    // 檢查該規則的輸出位址是否已經被設定
-            //    if (_simulatedOutputs.TryGetValue(rule.OutputAddress, out bool currentOutputValue))
-            //    {
-            //        // 檢查當前的輸出值是否符合規則的觸發條件
-            //        if (currentOutputValue == rule.OutputValue)
-            //        {
-            //            // 觸發規則：更新模擬輸入的狀態
-            //            _simulatedInputs[rule.InputAddress] = rule.InputValue;
-            //            Console.WriteLine($"[RULE TRIGGERED] DO-{rule.OutputAddress} {rule.OutputValue} -> DI-{rule.InputAddress} set to {rule.InputValue}");
-            //        }
-            //        // 注意：如果輸出值不符合規則條件 (例如 DO-5 OFF 了)，我們不會在這裡主動重置 DI-3
-            //        // 除非有另一條明確的規則處理 DO-5 == false 的情況。
-            //    }
-            //}
+            return 5;
         }
+
+
+        private List<IORule> _rules = new List<IORule>();
 
         public class IORule
         {
@@ -97,6 +86,7 @@ namespace Device_Virtual
             public int InputAddress { get; set; }
             public bool InputValue { get; set; }
         }
+
 
     }
 }

@@ -91,7 +91,7 @@ namespace RGBTester.UI
         private void Btn_Confirm_Click(object sender, EventArgs e)
         {
             var main_form = ServiceProvider.GetRequiredService<F_MainForm>();
-
+            
             // 顯示到最上層
             main_form.Activate();
             main_form.BringToFront();

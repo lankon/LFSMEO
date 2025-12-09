@@ -70,7 +70,10 @@ namespace RGBTester.Device
 
             return true;
         }
-        public bool SetLedDriverData(byte index, byte registerAddress, byte value)
+        #endregion
+
+        #region private function
+        private bool SetLedDriverData(byte index, byte registerAddress, byte value)
         {
             const byte PACKAGE_LENGTH = 6;
             const byte COMMAND = 0xF0;
@@ -88,7 +91,7 @@ namespace RGBTester.Device
 
             return SendCommand(packet);
         }
-        public bool GetLedDriverData(byte index, byte registerAddress)
+        private bool GetLedDriverData(byte index, byte registerAddress)
         {
             const byte PACKAGE_LENGTH = 5;
             const byte COMMAND = 0x70;
@@ -105,14 +108,11 @@ namespace RGBTester.Device
 
             return SendCommand(packet);
         }
-        public int GetResponse()
+        private int GetResponse()
         {
 
             return 0;
         }
-        #endregion
-
-        #region private function
         private byte CalculateChecksum(byte[] data)
         {
             int sum = 0;

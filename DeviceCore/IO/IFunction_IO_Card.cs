@@ -9,6 +9,7 @@ namespace DeviceCore
     public enum EIOCardType
     {
         None = 0,
+        Virtual,
         PCI_9111DG,
         MN200,
         AMP_204C,
@@ -19,21 +20,27 @@ namespace DeviceCore
     public enum EIOName
     {
         #region Input
+
         #region RGBTester
-        V_IN_L,
-        I_IN_L,
-        VF_R_L,
-        VF_G_L,
-        VF_B_L,
-        V_FB_L,
-        PP_DISP_1V2_L,
-        PP_DISP_6V0_L,
-
-
-
+        Left_Iin_HCM,
+        Left_Iin_LCM,
+        Left_Vin,
+        Right_VLED,
+        Left_ILED,
+        Right_Iin_LCM,
+        Right_Vin,
+        Right_ILED,
+        Left_VLED,
+        Left_VLED_R,
+        Left_VLED_G,
+        Left_VLED_B,
+        Right_Iin_HCM,
+        Right_VLED_R,
+        Right_VLED_G,
+        Right_VLED_B,
         #endregion
-        SafePos_Sensor,
 
+        SafePos_Sensor,
         #endregion
 
         #region Output
@@ -64,6 +71,7 @@ namespace DeviceCore
         bool Initial_All_IO();
         void LoadConfiguration(List<IOData> newIoDataList);
         double GetAInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
+        double GetAInputStatus(EIOName name);
         bool GetInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
         bool GetInputStatus(EIOName name);
         bool GetOutputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);

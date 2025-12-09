@@ -109,6 +109,7 @@
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Device\LightEngine\Z23A_API_Command.cs" />
     <Compile Include="Logic\1.Task\RGBTest\TaskRGBTest.cs" />
     <Compile Include="Logic\2.FormLogic\F_RecipeLogic.cs" />
     <Compile Include="Logic\Algorithm\LinearCurveFitting.cs" />

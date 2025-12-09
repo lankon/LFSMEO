@@ -202,6 +202,7 @@ namespace DeviceUI.IO
             this.Title_CardType.HeaderText = "Card Type";
             this.Title_CardType.Items.AddRange(new object[] {
             "None",
+            "Virtual",
             "AMP_204C",
             "MN200",
             "PCI_9111DG",

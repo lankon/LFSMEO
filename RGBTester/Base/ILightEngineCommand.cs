@@ -17,7 +17,7 @@ namespace RGBTester.Base
 
         bool Open();
         bool SetLed_DAC(byte rgb, byte side, int value);
-        bool SetLedDriverData(byte index, byte registerAddress, byte value);
-        bool GetLedDriverData(byte index, byte registerAddress);
+        //bool SetLedDriverData(byte index, byte registerAddress, byte value);
+        //bool GetLedDriverData(byte index, byte registerAddress);
     }
 }
