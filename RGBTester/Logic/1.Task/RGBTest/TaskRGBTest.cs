@@ -57,11 +57,6 @@ namespace RGBTester.Logic
             WAIT_LEFT_GLASSES_TEST,
             WAIT_RIGHT_GLASSES_TEST,
 
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
-
             END,
 
             SUCCESS,
@@ -76,21 +71,35 @@ namespace RGBTester.Logic
         #region private function
         private void CreateTestFile()
         {
-            //if(!OnlyLeftTest)
-            //    Deps.File.CreateFile("Right");
+            if(!OnlyRightTest)
+            {
+                Deps.File.CreateFile("Left_R");
+                Deps.File.CreateFile("Left_G");
+                Deps.File.CreateFile("Left_B");
+            }
 
-            //if(!OnlyRightTest)
-            //    Deps.File.CreateFile("Left");
-
-            Deps.File.CreateFile("R");
-            Deps.File.CreateFile("G");
-            Deps.File.CreateFile("B");
+            if(!OnlyLeftTest)
+            {
+                Deps.File.CreateFile("Right_R");
+                Deps.File.CreateFile("Right_G");
+                Deps.File.CreateFile("Right_B");
+            }
         }
         private void CloseTestFile()
         {
-            Deps.File.CloseFile("R");
-            Deps.File.CloseFile("G");
-            Deps.File.CloseFile("B");
+            if (!OnlyRightTest)
+            {
+                Deps.File.CloseFile("Left_R");
+                Deps.File.CloseFile("Left_G");
+                Deps.File.CloseFile("Left_B");
+            }
+
+            if (!OnlyLeftTest)
+            {
+                Deps.File.CloseFile("Right_R");
+                Deps.File.CloseFile("Right_G");
+                Deps.File.CloseFile("Right_B");
+            }
         }
         private void Preset()
         {

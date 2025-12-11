@@ -36,6 +36,7 @@ namespace Device_PCIS_DASK
         {
             public ushort CardType;                    
             public bool[,,] Input_Status;   //紀錄[LineNo,DevNo,Port]對應的Input訊號
+            public bool[,,] Output_Status;  //紀錄[LineNo,DevNo,Port]對應的Output訊號
         }
         #endregion
 
@@ -116,17 +117,65 @@ namespace Device_PCIS_DASK
 
         public  bool SetOutputStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false)
         {
-            throw new NotImplementedException();
+            ushort intput;
+            if (truefalse == true)
+                intput = 1;
+            else
+                intput = 0;
+
+            if (pCI_Parm.CardType == DASK64.PCI_9111DG || pCI_Parm.CardType == DASK64.PCI_9111HR)
+            {
+                if (port < 0 || port >= portMaxCount)
+                    return false;
+                if (devNo < 0 || devNo >= devMaxCount)
+                    return false;
+                if (lineNo < 0 || lineNo >= lineMaxCount)
+                    return false;
+
+                if (DASK64.DO_WriteLine(cardNo, DASK64.P9111_CHANNEL_DO, port, intput) == DASK64.NoError)
+                    return true;
+                else
+                    return false;
+            }
+
+            return true;
         }
 
-        public  void UpdateOutput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        public void UpdateOutput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
-            throw new NotImplementedException();
+            if (pCI_Parm.CardType == DASK64.PCI_9111DG || pCI_Parm.CardType == DASK64.PCI_9111HR)
+            {
+                if (port < 0 || port >= portMaxCount)
+                    return;
+                if (devNo < 0 || devNo >= devMaxCount)
+                    return;
+                if (lineNo < 0 || lineNo >= lineMaxCount)
+                    return;
+
+                short err = DASK64.DO_ReadPort(cardNo, DASK64.P9111_CHANNEL_DO, out uint res);
+
+                if (err != DASK64.NoError)
+                    return;
+
+                for(int i=0; i< portMaxCount; i++)
+                {
+                    Int32 dwMark = 0x1 << i;
+
+                    if ((res & dwMark) != 0)
+                        pCI_Parm.Output_Status[lineNo, devNo, i] = true;
+                    else
+                        pCI_Parm.Output_Status[lineNo, devNo, i] = false;
+                }
+            }
         }
 
         public bool GetOutputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
-            throw new NotImplementedException();
+            UpdateOutput(cardNo, lineNo, DevNo, port);
+
+            bool res = pCI_Parm.Output_Status[lineNo, DevNo, port];
+
+            return res;
         }
     }
 }

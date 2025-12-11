@@ -18,9 +18,13 @@ namespace RGBTester.Logic
         }
 
         #region paramter define
-        private StreamWriter RedFile;
-        private StreamWriter GreenFile;
-        private StreamWriter BlueFile;
+        private StreamWriter LeftRedFile;
+        private StreamWriter LeftGreenFile;
+        private StreamWriter LeftBlueFile;
+        private StreamWriter RightRedFile;
+        private StreamWriter RightGreenFile;
+        private StreamWriter RightBlueFile;
+        private StreamWriter FileWriter;
         #endregion
 
         #region public function
@@ -29,27 +33,53 @@ namespace RGBTester.Logic
             DateTime now = DateTime.Now;
             string file_name = "";
             string SN = "";
+            string Side = "";
+            string Color = "";
 
             string[] res = describe.Split('_'); //ex.Right_G
 
             for(int i=0; i<res.Length; i++)
             {
                 if (res[i] == "Left")
+                {
                     SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
+                    Side = "L";
+                }
                 else if (res[i] == "Right")
+                {
                     SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+                    Side = "R";
+                }
+
+                if (res[i] == "R")
+                    Color = "R";
+                else if (res[i] == "G")
+                    Color = "G";
+                else if (res[i] == "B")
+                    Color = "B";
             }
 
-            file_name = $"\\Result\\BFT_Z23A_LEDIV-{describe}{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
+            file_name = $"\\Result\\Z23A_LEDIV_{Side}_{Color}_{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
 
-            if (describe == "R")
-                RedFile = Tool.CreateFile(file_name, ".csv", false);
-            else if (describe == "G")
-                GreenFile = Tool.CreateFile(file_name, ".csv", false);
-            else if (describe == "B")
-                BlueFile = Tool.CreateFile(file_name, ".csv", false);
+            if (describe == "Left_R")
+                LeftRedFile = Tool.CreateFile(file_name, ".csv", false);
+            else if (describe == "Left_G")
+                LeftGreenFile = Tool.CreateFile(file_name, ".csv", false);
+            else if (describe == "Left_B")
+                LeftBlueFile = Tool.CreateFile(file_name, ".csv", false);
+            else if (describe == "Right_R")
+                RightRedFile = Tool.CreateFile(file_name, ".csv", false);
+            else if (describe == "Right_G")
+                RightGreenFile = Tool.CreateFile(file_name, ".csv", false);
+            else if (describe == "Right_B")
+                RightBlueFile = Tool.CreateFile(file_name, ".csv", false);
+            else 
+                FileWriter = Tool.CreateFile(file_name, ".csv", false);
 
-            WriteTitle(describe);
+            if (Side != "")
+                WriteTitle_RGBTester(describe);
+            else
+                WriteTitle(describe);
         }
         public void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
                                     double i_led, double p_led, double eff, double temperature,
@@ -61,14 +91,7 @@ namespace RGBTester.Logic
             bin_v_in = CheckPassFail(0, 5.5, v_in);
             bin_i_in = CheckPassFail(130, 192, i_in);
             bin_vf = CheckPassFail(0, 4, vf);
-            bin_i_led = CheckPassFail(0, 4, i_led);
-
-            //string[] contect = new string[] {dac.ToString(), v_in.ToString(), bin_v_in,
-            //                                    i_in.ToString(), bin_i_in, p_in.ToString(),
-            //                                    vf.ToString(), bin_vf,i_led.ToString(),
-            //                                    bin_i_led, p_led.ToString(), eff.ToString(),
-            //                                    temperature.ToString(), x.ToString(), y.ToString(),
-            //                                    m.ToString(),c.ToString()};
+            bin_i_led = CheckPassFail(30, 300, i_led);
 
             string context = $"{dac},{v_in},{bin_v_in},{i_in},{bin_i_in},{p_in},{vf}," +
                              $"{bin_vf},{i_led},{bin_i_led},{p_led},{eff},{temperature},{x}," +
@@ -77,93 +100,69 @@ namespace RGBTester.Logic
             WriteFile(context, color, false);
         }
 
-        //public void WriteTestResult(string h_dac, double h_v_in, double h_i_in, double h_p_in, double h_vf,
-        //                            double h_i_led, double h_p_led, double h_eff, double h_temp,
-        //                            double h_x, double h_y, double h_m, double h_c,
-        //                            string l_dac, double l_v_in, double l_i_in, double l_p_in, double l_vf,
-        //                            double l_i_led, double l_p_led, double l_eff, double l_temp,
-        //                            double l_x, double l_y, double l_m, double l_c,
-        //                            double cycle_time, string side, string color, string current_mode)
-        //{
-        //    StreamWriter file;
-        //    DateTime now = DateTime.Now;
-        //    string SN = "";
-        //    string log_name = "";
-
-        //    if(side == "Left")
-        //    {
-        //        SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-        //        log_name = $"Z23A_LEDIV L{SN}_Summary{now.ToString("yyyyMMdd")}()";
-        //    }
-        //    else if(side == "Right")
-        //    {
-        //        SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
-        //        log_name = $"Z23A_LEDIV R{SN}_Summary{now.ToString("yyyyMMdd")}()";
-        //    }
-
-        //    if (color == "R")
-        //        file = RedFile;
-        //    else if (color == "G")
-        //        file = GreenFile;
-        //    else if (color == "B")
-        //        file = BlueFile;
-
-        //    // [Check Pass/Fail]
-        //    bool bin_h_v_in, bin_h_i_in, bin_h_vf, bin_h_i_led;
-        //    bool bin_l_v_in, bin_l_i_in, bin_l_vf, bin_l_i_led;
-        //    bin_h_v_in = CheckPassFail(0, 5.5, h_v_in);
-        //    bin_h_i_in = CheckPassFail(130, 192, h_i_in);
-        //    bin_h_vf = CheckPassFail(0, 4, h_vf);
-        //    bin_h_i_led = CheckPassFail(0, 4, h_i_led);
-
-        //    //bin_l_v_in = CheckPassFail(0, 5.5, l_v_in);
-        //    //bin_l_i_in = CheckPassFail(130, 192, l_i_in);
-        //    //bin_l_vf = CheckPassFail(0, 4, l_vf);
-        //    //bin_l_i_led = CheckPassFail(0, 4, l_i_led);
-
-
-
-
-        //    string[] item = new string[] {"BFT" ,SN, now.ToString("yyyyMMdd"), now.ToString("HH:mm:ss"),
-        //                                   (cycle_time/1000).ToString(), "88888", log_name, h_dac, h_v_in.ToString(),
-        //                                    bin_h_v_in.ToString()};
-
-        //}
         public void WriteFile(string context = "", string describe = "", bool NewLine = true)
         {
-            if (describe == "R")
-                Tool.WriteFile(RedFile, context, NewLine: NewLine);
-            else if(describe == "G")
-                Tool.WriteFile(GreenFile, context, NewLine: NewLine);
+            if (describe == "Left_R")
+                Tool.WriteFile(LeftRedFile, context, NewLine: NewLine);
+            else if(describe == "Left_G")
+                Tool.WriteFile(LeftGreenFile, context, NewLine: NewLine);
+            else if(describe == "Left_B")
+                Tool.WriteFile(LeftBlueFile, context, NewLine: NewLine);
+            else if (describe == "Right_R")
+                Tool.WriteFile(RightRedFile, context, NewLine: NewLine);
+            else if (describe == "Right_G")
+                Tool.WriteFile(RightGreenFile, context, NewLine: NewLine);
+            else if(describe == "Right_B")
+                Tool.WriteFile(RightBlueFile, context, NewLine: NewLine);
             else
-                Tool.WriteFile(BlueFile, context, NewLine: NewLine);
+                Tool.WriteFile(FileWriter, context, NewLine: NewLine);
         }
         public void CloseFile(string describe = "")
         {
-            if (describe == "R" && RedFile != null)
-                Tool.CloseFile(RedFile);
-            else if (describe == "G" && GreenFile != null)
-                Tool.CloseFile(GreenFile);
-            else if (describe == "B" && BlueFile != null)
-                Tool.CloseFile(BlueFile);
+            if (describe == "Left_R" && LeftRedFile != null)
+                Tool.CloseFile(LeftRedFile);
+            else if (describe == "Left_G" && LeftGreenFile != null)
+                Tool.CloseFile(LeftGreenFile);
+            else if (describe == "Left_B" && LeftBlueFile != null)
+                Tool.CloseFile(LeftBlueFile);
+            else if (describe == "Right_R" && RightRedFile != null)
+                Tool.CloseFile(RightRedFile);
+            else if (describe == "Right_G" && RightGreenFile != null)
+                Tool.CloseFile(RightGreenFile);
+            else if (describe == "Right_B" && RightBlueFile != null)
+                Tool.CloseFile(RightBlueFile);
         }
         #endregion
 
         #region private function
         private void WriteTitle(string type)
         {
+            StreamWriter file = FileWriter;
+            string title = "P24 OTP Addr ,Field Name,Description,Unit,Data";
+
+            Tool.WriteFile(file, title);
+            Tool.WriteFile(file, ",,,,");
+        }
+        private void WriteTitle_RGBTester(string type)
+        {
             StreamWriter file = null;
-            string low_range = ",,,,,,,,0,,130,,,0,,0,,,,,,,,,,0,,130,,,0,,0,,,,,,,,";
-            string high_range = ",,,,,,,,5.5,,192,,,4.0,,30~300,,,,,,,,,,5.5,,192,,,4.0,,30~300,,,,,,,,";
+            string low_range = ",,,,,,,,0,,130,,,0,,30,,,,,,,,,,0,,130,,,0,,30,,,,,,,,";
+            string high_range = ",,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,";
             string unit = ",,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,";
             string title = "Station,SN,TestDate,TestTime,CycleTime(S),UserName,DirLogName,H Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c,L Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c";
 
-            if (type == "R")
-                file = RedFile;
-            else if (type == "G")
-                file = GreenFile;
-            else if (type == "B")
-                file = BlueFile;
+            if (type == "Left_R")
+                file = LeftRedFile;
+            else if (type == "Left_G")
+                file = LeftGreenFile;
+            else if (type == "Left_B")
+                file = LeftBlueFile;
+            else if (type == "Right_R")
+                file = RightRedFile;
+            else if (type == "Right_G")
+                file = RightGreenFile;
+            else if (type == "Right_B")
+                file = RightBlueFile;
 
             Tool.WriteFile(file, low_range);
             Tool.WriteFile(file, high_range);

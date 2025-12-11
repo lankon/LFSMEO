@@ -58,18 +58,17 @@ namespace RGBTester.UI
         private void InitialApplication()
         {
             SetHint();
-
             CreateDynamicElement();
-
             CreateFolder();
 
+            MainFormLogic.DeleteExpireFileInFolder();
             MainFormLogic.ReadAllSetting();
-
             MainFormLogic.Initial_IO_Function();
 
             ServiceProvider.GetRequiredService<IBaseMainTask>();
             ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();
             ServiceProvider.GetRequiredService<IF_StatusBox>();
+            ServiceProvider.GetRequiredService<IF_ProgressBar>();
         }
         private void CreateDynamicElement()
         {
@@ -99,6 +98,7 @@ namespace RGBTester.UI
             Tool.CreateFolder(Application.StartupPath + @"\Picture");
             Tool.CreateFolder(Application.StartupPath + @"\Result");
             Tool.CreateFolder(Application.StartupPath + @"\Setting");
+            Tool.CreateFolder(Application.StartupPath + @"\Backup");
             Tool.CreateFolder(Application.StartupPath + @"\Setting\Package");
 
             Tool.CreateLog();
@@ -125,9 +125,13 @@ namespace RGBTester.UI
         {
             Tool.HideElementOnPanel(Scope.MainPanel);
 
-            var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
-            Tool.SetForm(Scope.MainPanel, startForm);
-            startForm.Show();
+            var startForm = ServiceProvider.GetRequiredService<IF_StartForm>();
+
+            if(startForm is Form form)
+            {
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
 
             var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
             Tool.SetForm(Scope.UpButtonPanel, group);

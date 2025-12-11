@@ -26,6 +26,7 @@ namespace RGBTester.Logic
 
         #region parameter
         private bool Terminate = false;
+        private int IntervalTime = Environment.TickCount;
         private IServiceProvider ServiceProvider;
         public IF_BaseTask BaseTask;
         private IRGBTesterMachine Machine;
@@ -138,6 +139,18 @@ namespace RGBTester.Logic
         {
             return result_status;
         }
+        private void BackupSetting()
+        {
+            if(Tool.CheckTimeOverSec(IntervalTime, 3600))
+            {
+                string s_folder = AppDomain.CurrentDomain.BaseDirectory + "\\Setting";
+                string b_folder = AppDomain.CurrentDomain.BaseDirectory + "\\Backup";
+
+                Tool.ZipBackupFolder(s_folder, b_folder);
+
+                IntervalTime = Environment.TickCount;
+            }
+        }
         #endregion
 
         #region public function
@@ -164,7 +177,7 @@ namespace RGBTester.Logic
                 throw new InvalidOperationException($"在 {typeof(T).Name} 上找不到符合 (IBaseTaskDependence, IF_StateControl, string) 的建構函式。");
             }
 
-            var dep    = ServiceProvider.GetRequiredService<IBaseTaskDependence>();
+            var dep = ServiceProvider.GetRequiredService<IBaseTaskDependence>();
 
             object[] constructorArgs = new object[] {
                 dep,
@@ -299,7 +312,10 @@ namespace RGBTester.Logic
                 }
 
                 if (state != WORK.WAIT_TASK)
+                {
                     Thread.Sleep(20);
+                    BackupSetting();
+                }
                 else
                     Thread.Yield(); // 告訴排程器讓其他執行緒有機會運行
             }

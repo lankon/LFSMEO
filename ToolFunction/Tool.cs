@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Data;
 using System.IO;
+using System.IO.Compression;
 
 namespace ToolFunction
 {
@@ -474,6 +475,10 @@ namespace ToolFunction
         }
     }
 
+
+    /// <summary>
+    /// File Processing
+    /// </summary>
     public static partial class Tool
     {
         #region 寫檔
@@ -527,6 +532,115 @@ namespace ToolFunction
             else
             {
                 //SaveLogToFile("資料夾已存在");
+            }
+        }
+        #endregion
+
+        #region 刪除過期資料夾
+        public static int DeleteExpireFolder(string targetDirectory, int retentionDays)
+        {
+            if (!Directory.Exists(targetDirectory)) return 0;
+
+            DateTime cutoffDate = DateTime.Now.AddDays(-retentionDays);
+
+            var topLevelDirectories = Directory.EnumerateDirectories(targetDirectory)
+                .Select(p => new DirectoryInfo(p))
+                .Where(d => d.LastWriteTime < cutoffDate);
+
+            foreach (var dirInfo in topLevelDirectories)
+            {
+                try
+                {
+                    // 關鍵一步：設置 recursive: true
+                    dirInfo.Delete(true);
+                    Tool.SaveLogToFile($"刪除過期資料夾：{dirInfo.FullName}");
+                }
+                catch (IOException)
+                {
+                    Tool.SaveLogToFile($"警告：無法刪除資料夾 {dirInfo.FullName}，可能正在使用中。");
+                }
+                catch (Exception ex)
+                {
+                    Tool.SaveLogToFile($"刪除資料夾 {dirInfo.FullName} 時發生錯誤：{ex.Message}");
+                }
+            }
+
+            return 0;
+        }
+        public static int DeleteExpireFiles(string targetDirectory, int retentionDays)
+        {
+            // 檢查目標資料夾是否存在
+            if (!Directory.Exists(targetDirectory)) return 0;
+
+            DateTime cutoffDate = DateTime.Now.AddDays(-retentionDays);
+            int deletedCount = 0;
+
+            // 1. 取得所有過期檔案的列表
+            // 關鍵修改：使用 Directory.EnumerateFiles 且設定 SearchOption.AllDirectories 進行遞迴搜尋
+            var expireFiles = Directory.EnumerateFiles(targetDirectory, "*", SearchOption.AllDirectories)
+                .Select(p => new FileInfo(p))
+                .Where(f => f.LastWriteTime < cutoffDate);
+
+            // 2. 遍歷並刪除過期檔案
+            foreach (var fileInfo in expireFiles)
+            {
+                try
+                {
+                    fileInfo.Delete(); // 刪除檔案，不需要遞迴參數
+                    deletedCount++;
+                    // 替換成您的日誌紀錄方法
+                    // Console.WriteLine($"已刪除過期檔案：{fileInfo.FullName}");
+                    Tool.SaveLogToFile($"已刪除過期檔案：{fileInfo.FullName}");
+                }
+                catch (IOException)
+                {
+                    // 處理檔案可能正在被使用的錯誤
+                    Tool.SaveLogToFile($"警告：無法刪除檔案 {fileInfo.FullName}，可能正在使用中。");
+                }
+                catch (Exception ex)
+                {
+                    Tool.SaveLogToFile($"刪除檔案 {fileInfo.FullName} 時發生錯誤：{ex.Message}");
+                }
+            }
+
+            // 可選：執行完畢後，呼叫刪除空資料夾的函式，以清理殘留的空目錄
+            // DeleteEmptySubDirectories(targetDirectory); 
+
+            return deletedCount;
+        }
+        #endregion
+
+        #region 備分資料夾
+        public static string ZipBackupFolder(string sourcePath, string targetRootPath)
+        {
+            // 1. 建立目標檔案名稱 (包含日期和 .zip 副檔名)
+            string dateString = DateTime.Now.ToString("yyyyMMdd");
+            string sourceFolderName = new DirectoryInfo(sourcePath).Name;
+
+            // 範例檔案名：MyProjectData_20251210.zip
+            string zipFileName = $"{sourceFolderName}_{dateString}.zip";
+            string destinationFilePath = Path.Combine(targetRootPath, zipFileName);
+
+            // 2. 執行壓縮操作
+            try
+            {
+                if (File.Exists(destinationFilePath))
+                    return "";
+
+                // CreateFromDirectory 是一個內建的靜態方法，會自動處理遞迴壓縮
+                ZipFile.CreateFromDirectory(
+                    sourcePath,              // 來源資料夾
+                    destinationFilePath,     // 目標檔案路徑
+                    CompressionLevel.Fastest, // 壓縮等級 (可選 Optimal 或 NoCompression)
+                    true                     // 包含根目錄 (sourcePath)
+                );
+
+                return destinationFilePath;
+            }
+            catch (Exception ex)
+            {
+                Tool.SaveLogToFile($"壓縮備份失敗: {ex.Message}");
+                return null;
             }
         }
         #endregion

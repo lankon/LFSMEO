@@ -45,6 +45,12 @@ namespace RGBTester.Logic
             }
         }
 
+        public string GetTemperature()
+        {
+            var lea = ServiceProvider.GetRequiredService<ILightEngineCommand>();
+            return lea.GetTemperature();
+        }
+
         public int StartTaskAction(string method = "")
         {
             int res = CheckTestCondition();

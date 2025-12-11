@@ -44,6 +44,17 @@ namespace RGBTester.Logic
             RGBTesterMachine.DIOL.Initial_All_IO();
         }
 
+        public int DeleteExpireFileInFolder()
+        {
+            string app_path = AppDomain.CurrentDomain.BaseDirectory;
+
+            string delete_foler = app_path + "\\History";
+
+            Tool.DeleteExpireFiles(delete_foler, 90);
+
+            return 0;
+        }
+
         
 
         public void SetForm(IF_MainForm f_MainForm)

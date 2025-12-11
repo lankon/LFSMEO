@@ -30,11 +30,12 @@ namespace RGBTester
 
             //[Form]
             services.AddSingleton<F_MainForm>();
-            services.AddSingleton<F_StartForm>();
+            services.AddSingleton<IF_StartForm, F_StartForm>();
             services.AddSingleton<F_StartForm_ButtonGroup>();
             services.AddSingleton<F_Recipe>();
             services.AddSingleton<F_DAQ_SamplingTest>();
             services.AddSingleton<IF_StatusBox, F_StatusBox>();
+            services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
 
             //[Form]
             //退出Form後即close掉,要用再new

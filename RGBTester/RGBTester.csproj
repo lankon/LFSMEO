@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="INIDLL">
+      <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\INIDLL.dll</HintPath>
+    </Reference>
+    <Reference Include="LogRecord">
+      <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\LogRecord.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.10\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -96,6 +102,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WVs_UART">
+      <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\WVs_UART.dll</HintPath>
+    </Reference>
+    <Reference Include="Z23A_API">
+      <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_API.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\eF_Recipe.cs" />
@@ -103,7 +115,9 @@
     <Compile Include="Base\eF_Equipment_Setting.cs" />
     <Compile Include="Base\eOEMSetting.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
+    <Compile Include="Base\IF_StartForm.cs" />
     <Compile Include="Base\IF_MainForm.cs" />
+    <Compile Include="Base\IF_ProgressBar.cs" />
     <Compile Include="Base\IF_StatusBox.cs" />
     <Compile Include="Base\IF_StateControl.cs" />
     <Compile Include="Base\ILightEngineCommand.cs" />
@@ -177,6 +191,12 @@
     <Compile Include="UI\F_StartForm_ButtonGroup.designer.cs">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_ProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_ProgressBar.designer.cs">
+      <DependentUpon>F_ProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_StatusBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StartForm_ButtonGroup.resx">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_ProgressBar.resx">
+      <DependentUpon>F_ProgressBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StatusBox.resx">
       <DependentUpon>F_StatusBox.cs</DependentUpon>

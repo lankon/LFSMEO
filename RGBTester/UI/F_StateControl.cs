@@ -32,7 +32,9 @@ namespace RGBTester.UI
         #region private function
         private void BtnEnableVisible(Button btn, bool flag)
         {
-            btn.Visible = flag;            btn.Enabled = flag;        }
+            btn.Visible = flag;
+            btn.Enabled = flag;
+        }
         private void SetHint()
         {
             toolTip1.SetToolTip(BtnPause, "Pause");

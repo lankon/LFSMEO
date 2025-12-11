@@ -55,6 +55,7 @@ namespace RGBTester.Logic
         private string TestColor;                       //流程測試顏色(R/G/B)
         private Queue<int> qDAC_L = new Queue<int>();
         private Queue<int> qDAC_H = new Queue<int>();
+        private int TotalState_L = 0, TotalState_H = 0;
         private int DAC_Start = 500, DAC_End = 600, DAC_Step = 10;
         private int Left_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Start);
         private int Left_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_End);
@@ -73,6 +74,8 @@ namespace RGBTester.Logic
         private const double Rfb_LCM = 5.1;             //Low Current Mode阻抗(硬體)
         private const double Rin = 0.5;                 //輸入阻抗(硬體)
         private const double LED_Duty = 1;              //LED Duty(硬體)
+        private double LCM_Temperature;                 //HCM測試完後溫度
+        private double HCM_Temperature;                 //LCM測試完後溫度
         private byte Side;                              //LED Board通訊指令(硬體)_Side
         private byte Color;                             //LED Board通訊指令(硬體)_Color
         private long CycleTime;                         //每筆DAC花費時間
@@ -81,6 +84,7 @@ namespace RGBTester.Logic
         private IF_BaseTask SubTask;                    
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
+        private IF_ProgressBar ProgressBar;
         private EIOName DAQ_Vf, DAQ_Iin_LCM, DAQ_Iin_HCM;
         private EIOName DAQ_Vin, DAQ_ILED, DAQ_VLED;
         private RGBTesterData TesterData_H = new RGBTesterData();
@@ -116,6 +120,7 @@ namespace RGBTester.Logic
         private void Preset()
         {
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+            ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
 
             string[] res = Type.Split('_');
 
@@ -155,6 +160,9 @@ namespace RGBTester.Logic
                 qDAC_L.Enqueue(i);
                 qDAC_H.Enqueue(i);
             }
+
+            TotalState_H = qDAC_H.Count;
+            TotalState_L = qDAC_L.Count;
         }
         
         protected override void Transition(WORK target)
@@ -217,6 +225,15 @@ namespace RGBTester.Logic
                     break;
             }
         }
+        private void UpdateProgressBar(Queue<int> state, int total_state)
+        {
+            if(state.Count % 10 == 0)   //每幾步更新一次UI
+            {
+                double res = (double)state.Count / (double)total_state * 100;
+                int progress = 100 - (int)res;
+                ProgressBar.UpateProgress(progress);
+            }
+        }
         #endregion
 
         #region public function
@@ -270,12 +287,26 @@ namespace RGBTester.Logic
 
                         if(OnlyHeighMode)
                         {
-                            Transition(WORK.SET_DAC_HIGH);
+                            if(!Deps.LightEngine.SetLed_CurrentMode("HCM"))
+                            {
+                                StatusBox.ShowMessage("HDMI Board Set HCM Fail");
+                                Transition(WORK.ABORT);
+                            }
+                            else
+                                Transition(WORK.SET_DAC_HIGH);
+
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
                         }
                         else
                         {
-                            Transition(WORK.SET_DAC_LOW);
+                            if (!Deps.LightEngine.SetLed_CurrentMode("LCM"))
+                            {
+                                StatusBox.ShowMessage("HDMI Board Set LCM Fail");
+                                Transition(WORK.ABORT);
+                            }
+                            else
+                                Transition(WORK.SET_DAC_LOW);
+
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_LOW.ToString());
                         }
                     }
@@ -284,6 +315,8 @@ namespace RGBTester.Logic
                 #region Low
                 case WORK.SET_DAC_LOW:
                     {
+                        UpdateProgressBar(qDAC_L, TotalState_L);
+
                         Tool.ResetTimeCount(out CycleTime);
 
                         //傳送廣達指令
@@ -341,7 +374,12 @@ namespace RGBTester.Logic
                                     TesterData_L.Eff.Add(TesterData_L.Pled[i] / TesterData_L.Pin[i]);
                             }
 
+                            LCM_Temperature = double.Parse(Deps.LightEngine.GetTemperature());
+
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), TesterData_L.Iled.ToArray());
+
+                            var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
+                            IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
@@ -350,7 +388,15 @@ namespace RGBTester.Logic
                             if (OnlyLowMode)
                                 Transition(WORK.WRITE_TEST_DATA);
                             else
-                                Transition(WORK.SET_DAC_HIGH);
+                            {
+                                if (!Deps.LightEngine.SetLed_CurrentMode("HCM"))
+                                {
+                                    StatusBox.ShowMessage("HDMI Board Set HCM Fail");
+                                    Transition(WORK.ABORT);
+                                }
+                                else
+                                    Transition(WORK.SET_DAC_HIGH);
+                            }
                         }
                         else
                         {
@@ -364,12 +410,14 @@ namespace RGBTester.Logic
                 #region High
                 case WORK.SET_DAC_HIGH:
                     {
-                        //傳送廣達指令
+                        UpdateProgressBar(qDAC_H, TotalState_H);
+
                         int val = qDAC_H.Dequeue();
                         TesterData_H.DACpoint.Add(val);
 
                         Tool.ResetTimeCount(out CycleTime);
 
+                        //傳送廣達指令
                         if (!Deps.LightEngine.SetLed_DAC(Color, Side, val))
                         {
                             StatusBox.ShowMessage("HDMI Board Cmd Fail");
@@ -421,7 +469,12 @@ namespace RGBTester.Logic
                                     TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
                             }
 
+                            HCM_Temperature = double.Parse(Deps.LightEngine.GetTemperature());
+
                             LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
+
+                            var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
+                            IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_HIGH.ToString());
@@ -455,58 +508,62 @@ namespace RGBTester.Logic
 
                         for (int i = 0; i < data_count; i++)
                         {
-                            Deps.File.WriteFile($"BFT,{SN},{now.ToString("yyyyMMdd")},{now.ToString("HH: mm:ss")}", TestColor, false);
+                            Deps.File.WriteFile($"BFT,{SN},{now.ToString("yyyyMMdd")},{now.ToString("HH: mm:ss")}", Type, false);
 
                             if(i < TesterData_L.Vin.Count && i < TesterData_H.Vin.Count)
                             {
-                                Deps.File.WriteFile($",{TesterData_L.CycleTime[i] + TesterData_H.CycleTime[i]},8888,{log_name},", TestColor, false);
+                                Deps.File.WriteFile($",{TesterData_L.CycleTime[i] + TesterData_H.CycleTime[i]},8888,{log_name},", Type, false);
                                 Deps.File.WriteTestResult(TesterData_H.DACpoint[i], TesterData_H.Vin[i], TesterData_H.Iin[i],
                                                             TesterData_H.Pin[i], TesterData_H.Vf[i], TesterData_H.Iled[i],
-                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], 25.0,
+                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], HCM_Temperature,
                                                             LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
-                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, TestColor);
+                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
 
-                                Deps.File.WriteFile(",", TestColor, false);
+                                Deps.File.WriteFile(",", Type, false);
 
                                 Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
                                                             TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
-                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], 25.0,
+                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], LCM_Temperature,
                                                             LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, TestColor);
+                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
                             }
                             else if (i < TesterData_H.Vin.Count)
                             {
-                                Deps.File.WriteFile($",{TesterData_H.CycleTime[i]},8888,{log_name}", TestColor, false);
+                                Deps.File.WriteFile($",{TesterData_H.CycleTime[i]},8888,{log_name}", Type, false);
+
+                                Deps.File.WriteTestResult(TesterData_H.DACpoint[i], TesterData_H.Vin[i], TesterData_H.Iin[i],
+                                                            TesterData_H.Pin[i], TesterData_H.Vf[i], TesterData_H.Iled[i],
+                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], HCM_Temperature,
+                                                            LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
+                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
+
+                                Deps.File.WriteFile(",", Type, false);
+
                                 Deps.File.WriteTestResult(-99, -99, -99,
                                                             -99, -99, -99,
-                                                            -99, -99, 25.0,
+                                                            -99, -99, -99,
                                                             -99, -99,
-                                                            -99, -99, TestColor);
-                                Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
-                                                            TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
-                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], 25.0,
-                                                            LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, TestColor);
+                                                            -99, -99, Type);
                             }
                             else if (i < TesterData_L.Vin.Count)
                             {
-                                Deps.File.WriteFile($",{TesterData_L.CycleTime[i]},8888,{log_name},", TestColor, false);
+                                Deps.File.WriteFile($",{TesterData_L.CycleTime[i]},8888,{log_name},", Type, false);
                                 Deps.File.WriteTestResult(-99, -99, -99,
                                                             -99, -99, -99,
-                                                            -99, -99, 25.0,
+                                                            -99, -99, -99,
                                                             -99, -99,
-                                                            -99, -99, TestColor);
+                                                            -99, -99, Type);
 
-                                Deps.File.WriteFile(",", TestColor, false);
+                                Deps.File.WriteFile(",", Type, false);
 
                                 Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
                                                             TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
-                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], 25.0,
+                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], LCM_Temperature,
                                                             LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, TestColor);
+                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
                             }
 
-                            Deps.File.WriteFile("", TestColor);
+                            Deps.File.WriteFile("", Type);
                         }
 
                         Transition(WORK.SUCCESS);
@@ -516,6 +573,7 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
+                        ProgressBar.HideForm();
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
@@ -532,6 +590,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.ABORT:
                     {
+                        ProgressBar.HideForm();
                         SetStatus(TASK_STATUS.ABORT);
                     }
                     break;

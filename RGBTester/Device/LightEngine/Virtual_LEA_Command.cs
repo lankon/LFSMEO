@@ -70,6 +70,16 @@ namespace RGBTester.Device
 
             return true;
         }
+        public bool SetLed_CurrentMode(string mode)
+        {
+            Tool.SaveLogToFile($"Set LED Board {mode}", level: "DBG");
+            return true;
+        }
+
+        public string GetTemperature()
+        {
+            return "25";
+        }
         #endregion
 
         #region private function
@@ -132,6 +142,8 @@ namespace RGBTester.Device
 
             return true;
         }
+
+        
         #endregion
     }
 }

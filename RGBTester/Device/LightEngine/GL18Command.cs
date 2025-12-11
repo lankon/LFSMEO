@@ -245,6 +245,16 @@ namespace RGBTester.Device
                 return false;
             }
         }
+
+        public bool SetLed_CurrentMode(string mode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetTemperature()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

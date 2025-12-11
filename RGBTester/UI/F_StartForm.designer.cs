@@ -34,18 +34,18 @@ namespace RGBTester.UI
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.textBox16 = new System.Windows.Forms.TextBox();
-            this.textBox17 = new System.Windows.Forms.TextBox();
-            this.textBox18 = new System.Windows.Forms.TextBox();
-            this.textBox19 = new System.Windows.Forms.TextBox();
-            this.textBox20 = new System.Windows.Forms.TextBox();
-            this.textBox21 = new System.Windows.Forms.TextBox();
-            this.textBox22 = new System.Windows.Forms.TextBox();
-            this.textBox23 = new System.Windows.Forms.TextBox();
-            this.textBox24 = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftRedSlope_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftRedSlope_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftGreenSlope_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftGreenSlope_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftBlueSlope_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftRedOffset_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftRedOffset_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftGreenOffset_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftGreenOffset_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftBlueOffset_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftBlueOffset_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftBlueSlope_L = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
@@ -75,18 +75,18 @@ namespace RGBTester.UI
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox25 = new System.Windows.Forms.TextBox();
-            this.textBox26 = new System.Windows.Forms.TextBox();
-            this.textBox27 = new System.Windows.Forms.TextBox();
-            this.textBox28 = new System.Windows.Forms.TextBox();
-            this.textBox29 = new System.Windows.Forms.TextBox();
-            this.textBox30 = new System.Windows.Forms.TextBox();
-            this.textBox31 = new System.Windows.Forms.TextBox();
-            this.textBox32 = new System.Windows.Forms.TextBox();
-            this.textBox33 = new System.Windows.Forms.TextBox();
-            this.textBox34 = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightRedSlope_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightRedSlope_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightGreenSlope_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightGreenSlope_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightBlueSlope_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightRedOffset_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightRedOffset_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightGreenOffset_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightGreenOffset_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightBlueOffset_H = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightBlueOffset_L = new System.Windows.Forms.TextBox();
+            this.TxtBx_RightBlueSlope_L = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
@@ -130,7 +130,7 @@ namespace RGBTester.UI
             this.label44 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
             this.Btn_GetTemperature = new System.Windows.Forms.Button();
-            this.textBox35 = new System.Windows.Forms.TextBox();
+            this.TxtBx_LeftTemperature = new System.Windows.Forms.TextBox();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
@@ -179,18 +179,18 @@ namespace RGBTester.UI
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.Controls.Add(this.label6, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.textBox1, 2, 1);
-            this.tableLayoutPanel2.Controls.Add(this.textBox7, 2, 2);
-            this.tableLayoutPanel2.Controls.Add(this.textBox15, 2, 3);
-            this.tableLayoutPanel2.Controls.Add(this.textBox16, 2, 4);
-            this.tableLayoutPanel2.Controls.Add(this.textBox17, 2, 5);
-            this.tableLayoutPanel2.Controls.Add(this.textBox18, 4, 1);
-            this.tableLayoutPanel2.Controls.Add(this.textBox19, 4, 2);
-            this.tableLayoutPanel2.Controls.Add(this.textBox20, 4, 3);
-            this.tableLayoutPanel2.Controls.Add(this.textBox21, 4, 4);
-            this.tableLayoutPanel2.Controls.Add(this.textBox22, 4, 5);
-            this.tableLayoutPanel2.Controls.Add(this.textBox23, 4, 6);
-            this.tableLayoutPanel2.Controls.Add(this.textBox24, 2, 6);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftRedSlope_H, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftRedSlope_L, 2, 2);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftGreenSlope_H, 2, 3);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftGreenSlope_L, 2, 4);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftBlueSlope_H, 2, 5);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftRedOffset_H, 4, 1);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftRedOffset_L, 4, 2);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftGreenOffset_H, 4, 3);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftGreenOffset_L, 4, 4);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftBlueOffset_H, 4, 5);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftBlueOffset_L, 4, 6);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LeftBlueSlope_L, 2, 6);
             this.tableLayoutPanel2.Controls.Add(this.label28, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label29, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.label30, 0, 5);
@@ -230,101 +230,101 @@ namespace RGBTester.UI
             this.label6.Text = "Slope_H";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBox1
+            // TxtBx_LeftRedSlope_H
             // 
-            this.textBox1.Location = new System.Drawing.Point(204, 34);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(116, 29);
-            this.textBox1.TabIndex = 7;
+            this.TxtBx_LeftRedSlope_H.Location = new System.Drawing.Point(204, 34);
+            this.TxtBx_LeftRedSlope_H.Name = "TxtBx_LeftRedSlope_H";
+            this.TxtBx_LeftRedSlope_H.ReadOnly = true;
+            this.TxtBx_LeftRedSlope_H.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_LeftRedSlope_H.TabIndex = 7;
             // 
-            // textBox7
+            // TxtBx_LeftRedSlope_L
             // 
-            this.textBox7.Location = new System.Drawing.Point(204, 72);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.ReadOnly = true;
-            this.textBox7.Size = new System.Drawing.Size(116, 29);
-            this.textBox7.TabIndex = 9;
+            this.TxtBx_LeftRedSlope_L.Location = new System.Drawing.Point(204, 72);
+            this.TxtBx_LeftRedSlope_L.Name = "TxtBx_LeftRedSlope_L";
+            this.TxtBx_LeftRedSlope_L.ReadOnly = true;
+            this.TxtBx_LeftRedSlope_L.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_LeftRedSlope_L.TabIndex = 9;
             // 
-            // textBox15
+            // TxtBx_LeftGreenSlope_H
             // 
-            this.textBox15.Location = new System.Drawing.Point(204, 110);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.ReadOnly = true;
-            this.textBox15.Size = new System.Drawing.Size(116, 29);
-            this.textBox15.TabIndex = 12;
+            this.TxtBx_LeftGreenSlope_H.Location = new System.Drawing.Point(204, 110);
+            this.TxtBx_LeftGreenSlope_H.Name = "TxtBx_LeftGreenSlope_H";
+            this.TxtBx_LeftGreenSlope_H.ReadOnly = true;
+            this.TxtBx_LeftGreenSlope_H.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_LeftGreenSlope_H.TabIndex = 12;
             // 
-            // textBox16
+            // TxtBx_LeftGreenSlope_L
             // 
-            this.textBox16.Location = new System.Drawing.Point(204, 148);
-            this.textBox16.Name = "textBox16";
-            this.textBox16.ReadOnly = true;
-            this.textBox16.Size = new System.Drawing.Size(116, 29);
-            this.textBox16.TabIndex = 21;
+            this.TxtBx_LeftGreenSlope_L.Location = new System.Drawing.Point(204, 148);
+            this.TxtBx_LeftGreenSlope_L.Name = "TxtBx_LeftGreenSlope_L";
+            this.TxtBx_LeftGreenSlope_L.ReadOnly = true;
+            this.TxtBx_LeftGreenSlope_L.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_LeftGreenSlope_L.TabIndex = 21;
             // 
-            // textBox17
+            // TxtBx_LeftBlueSlope_H
             // 
-            this.textBox17.Location = new System.Drawing.Point(204, 186);
-            this.textBox17.Name = "textBox17";
-            this.textBox17.ReadOnly = true;
-            this.textBox17.Size = new System.Drawing.Size(116, 29);
-            this.textBox17.TabIndex = 22;
+            this.TxtBx_LeftBlueSlope_H.Location = new System.Drawing.Point(204, 186);
+            this.TxtBx_LeftBlueSlope_H.Name = "TxtBx_LeftBlueSlope_H";
+            this.TxtBx_LeftBlueSlope_H.ReadOnly = true;
+            this.TxtBx_LeftBlueSlope_H.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_LeftBlueSlope_H.TabIndex = 22;
             // 
-            // textBox18
+            // TxtBx_LeftRedOffset_H
             // 
-            this.textBox18.Location = new System.Drawing.Point(454, 34);
-            this.textBox18.Name = "textBox18";
-            this.textBox18.ReadOnly = true;
-            this.textBox18.Size = new System.Drawing.Size(119, 29);
-            this.textBox18.TabIndex = 23;
+            this.TxtBx_LeftRedOffset_H.Location = new System.Drawing.Point(454, 34);
+            this.TxtBx_LeftRedOffset_H.Name = "TxtBx_LeftRedOffset_H";
+            this.TxtBx_LeftRedOffset_H.ReadOnly = true;
+            this.TxtBx_LeftRedOffset_H.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_LeftRedOffset_H.TabIndex = 23;
             // 
-            // textBox19
+            // TxtBx_LeftRedOffset_L
             // 
-            this.textBox19.Location = new System.Drawing.Point(454, 72);
-            this.textBox19.Name = "textBox19";
-            this.textBox19.ReadOnly = true;
-            this.textBox19.Size = new System.Drawing.Size(119, 29);
-            this.textBox19.TabIndex = 24;
+            this.TxtBx_LeftRedOffset_L.Location = new System.Drawing.Point(454, 72);
+            this.TxtBx_LeftRedOffset_L.Name = "TxtBx_LeftRedOffset_L";
+            this.TxtBx_LeftRedOffset_L.ReadOnly = true;
+            this.TxtBx_LeftRedOffset_L.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_LeftRedOffset_L.TabIndex = 24;
             // 
-            // textBox20
+            // TxtBx_LeftGreenOffset_H
             // 
-            this.textBox20.Location = new System.Drawing.Point(454, 110);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.ReadOnly = true;
-            this.textBox20.Size = new System.Drawing.Size(119, 29);
-            this.textBox20.TabIndex = 25;
+            this.TxtBx_LeftGreenOffset_H.Location = new System.Drawing.Point(454, 110);
+            this.TxtBx_LeftGreenOffset_H.Name = "TxtBx_LeftGreenOffset_H";
+            this.TxtBx_LeftGreenOffset_H.ReadOnly = true;
+            this.TxtBx_LeftGreenOffset_H.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_LeftGreenOffset_H.TabIndex = 25;
             // 
-            // textBox21
+            // TxtBx_LeftGreenOffset_L
             // 
-            this.textBox21.Location = new System.Drawing.Point(454, 148);
-            this.textBox21.Name = "textBox21";
-            this.textBox21.ReadOnly = true;
-            this.textBox21.Size = new System.Drawing.Size(119, 29);
-            this.textBox21.TabIndex = 26;
+            this.TxtBx_LeftGreenOffset_L.Location = new System.Drawing.Point(454, 148);
+            this.TxtBx_LeftGreenOffset_L.Name = "TxtBx_LeftGreenOffset_L";
+            this.TxtBx_LeftGreenOffset_L.ReadOnly = true;
+            this.TxtBx_LeftGreenOffset_L.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_LeftGreenOffset_L.TabIndex = 26;
             // 
-            // textBox22
+            // TxtBx_LeftBlueOffset_H
             // 
-            this.textBox22.Location = new System.Drawing.Point(454, 186);
-            this.textBox22.Name = "textBox22";
-            this.textBox22.ReadOnly = true;
-            this.textBox22.Size = new System.Drawing.Size(119, 29);
-            this.textBox22.TabIndex = 27;
+            this.TxtBx_LeftBlueOffset_H.Location = new System.Drawing.Point(454, 186);
+            this.TxtBx_LeftBlueOffset_H.Name = "TxtBx_LeftBlueOffset_H";
+            this.TxtBx_LeftBlueOffset_H.ReadOnly = true;
+            this.TxtBx_LeftBlueOffset_H.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_LeftBlueOffset_H.TabIndex = 27;
             // 
-            // textBox23
+            // TxtBx_LeftBlueOffset_L
             // 
-            this.textBox23.Location = new System.Drawing.Point(454, 224);
-            this.textBox23.Name = "textBox23";
-            this.textBox23.ReadOnly = true;
-            this.textBox23.Size = new System.Drawing.Size(119, 29);
-            this.textBox23.TabIndex = 32;
+            this.TxtBx_LeftBlueOffset_L.Location = new System.Drawing.Point(454, 224);
+            this.TxtBx_LeftBlueOffset_L.Name = "TxtBx_LeftBlueOffset_L";
+            this.TxtBx_LeftBlueOffset_L.ReadOnly = true;
+            this.TxtBx_LeftBlueOffset_L.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_LeftBlueOffset_L.TabIndex = 32;
             // 
-            // textBox24
+            // TxtBx_LeftBlueSlope_L
             // 
-            this.textBox24.Location = new System.Drawing.Point(204, 224);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.ReadOnly = true;
-            this.textBox24.Size = new System.Drawing.Size(116, 29);
-            this.textBox24.TabIndex = 33;
+            this.TxtBx_LeftBlueSlope_L.Location = new System.Drawing.Point(204, 224);
+            this.TxtBx_LeftBlueSlope_L.Name = "TxtBx_LeftBlueSlope_L";
+            this.TxtBx_LeftBlueSlope_L.ReadOnly = true;
+            this.TxtBx_LeftBlueSlope_L.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_LeftBlueSlope_L.TabIndex = 33;
             // 
             // label28
             // 
@@ -627,18 +627,18 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel3.Controls.Add(this.label8, 1, 1);
-            this.tableLayoutPanel3.Controls.Add(this.textBox8, 2, 1);
-            this.tableLayoutPanel3.Controls.Add(this.textBox9, 2, 2);
-            this.tableLayoutPanel3.Controls.Add(this.textBox25, 2, 3);
-            this.tableLayoutPanel3.Controls.Add(this.textBox26, 2, 4);
-            this.tableLayoutPanel3.Controls.Add(this.textBox27, 2, 5);
-            this.tableLayoutPanel3.Controls.Add(this.textBox28, 4, 1);
-            this.tableLayoutPanel3.Controls.Add(this.textBox29, 4, 2);
-            this.tableLayoutPanel3.Controls.Add(this.textBox30, 4, 3);
-            this.tableLayoutPanel3.Controls.Add(this.textBox31, 4, 4);
-            this.tableLayoutPanel3.Controls.Add(this.textBox32, 4, 5);
-            this.tableLayoutPanel3.Controls.Add(this.textBox33, 4, 6);
-            this.tableLayoutPanel3.Controls.Add(this.textBox34, 2, 6);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightRedSlope_H, 2, 1);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightRedSlope_L, 2, 2);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightGreenSlope_H, 2, 3);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightGreenSlope_L, 2, 4);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightBlueSlope_H, 2, 5);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightRedOffset_H, 4, 1);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightRedOffset_L, 4, 2);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightGreenOffset_H, 4, 3);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightGreenOffset_L, 4, 4);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightBlueOffset_H, 4, 5);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightBlueOffset_L, 4, 6);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_RightBlueSlope_L, 2, 6);
             this.tableLayoutPanel3.Controls.Add(this.label9, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.label17, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.label31, 0, 5);
@@ -678,101 +678,101 @@ namespace RGBTester.UI
             this.label8.Text = "Slope_H";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBox8
+            // TxtBx_RightRedSlope_H
             // 
-            this.textBox8.Location = new System.Drawing.Point(204, 34);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ReadOnly = true;
-            this.textBox8.Size = new System.Drawing.Size(116, 29);
-            this.textBox8.TabIndex = 7;
+            this.TxtBx_RightRedSlope_H.Location = new System.Drawing.Point(204, 34);
+            this.TxtBx_RightRedSlope_H.Name = "TxtBx_RightRedSlope_H";
+            this.TxtBx_RightRedSlope_H.ReadOnly = true;
+            this.TxtBx_RightRedSlope_H.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_RightRedSlope_H.TabIndex = 7;
             // 
-            // textBox9
+            // TxtBx_RightRedSlope_L
             // 
-            this.textBox9.Location = new System.Drawing.Point(204, 72);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.ReadOnly = true;
-            this.textBox9.Size = new System.Drawing.Size(116, 29);
-            this.textBox9.TabIndex = 9;
+            this.TxtBx_RightRedSlope_L.Location = new System.Drawing.Point(204, 72);
+            this.TxtBx_RightRedSlope_L.Name = "TxtBx_RightRedSlope_L";
+            this.TxtBx_RightRedSlope_L.ReadOnly = true;
+            this.TxtBx_RightRedSlope_L.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_RightRedSlope_L.TabIndex = 9;
             // 
-            // textBox25
+            // TxtBx_RightGreenSlope_H
             // 
-            this.textBox25.Location = new System.Drawing.Point(204, 110);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.ReadOnly = true;
-            this.textBox25.Size = new System.Drawing.Size(116, 29);
-            this.textBox25.TabIndex = 12;
+            this.TxtBx_RightGreenSlope_H.Location = new System.Drawing.Point(204, 110);
+            this.TxtBx_RightGreenSlope_H.Name = "TxtBx_RightGreenSlope_H";
+            this.TxtBx_RightGreenSlope_H.ReadOnly = true;
+            this.TxtBx_RightGreenSlope_H.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_RightGreenSlope_H.TabIndex = 12;
             // 
-            // textBox26
+            // TxtBx_RightGreenSlope_L
             // 
-            this.textBox26.Location = new System.Drawing.Point(204, 148);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.ReadOnly = true;
-            this.textBox26.Size = new System.Drawing.Size(116, 29);
-            this.textBox26.TabIndex = 21;
+            this.TxtBx_RightGreenSlope_L.Location = new System.Drawing.Point(204, 148);
+            this.TxtBx_RightGreenSlope_L.Name = "TxtBx_RightGreenSlope_L";
+            this.TxtBx_RightGreenSlope_L.ReadOnly = true;
+            this.TxtBx_RightGreenSlope_L.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_RightGreenSlope_L.TabIndex = 21;
             // 
-            // textBox27
+            // TxtBx_RightBlueSlope_H
             // 
-            this.textBox27.Location = new System.Drawing.Point(204, 186);
-            this.textBox27.Name = "textBox27";
-            this.textBox27.ReadOnly = true;
-            this.textBox27.Size = new System.Drawing.Size(116, 29);
-            this.textBox27.TabIndex = 22;
+            this.TxtBx_RightBlueSlope_H.Location = new System.Drawing.Point(204, 186);
+            this.TxtBx_RightBlueSlope_H.Name = "TxtBx_RightBlueSlope_H";
+            this.TxtBx_RightBlueSlope_H.ReadOnly = true;
+            this.TxtBx_RightBlueSlope_H.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_RightBlueSlope_H.TabIndex = 22;
             // 
-            // textBox28
+            // TxtBx_RightRedOffset_H
             // 
-            this.textBox28.Location = new System.Drawing.Point(454, 34);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.ReadOnly = true;
-            this.textBox28.Size = new System.Drawing.Size(119, 29);
-            this.textBox28.TabIndex = 23;
+            this.TxtBx_RightRedOffset_H.Location = new System.Drawing.Point(454, 34);
+            this.TxtBx_RightRedOffset_H.Name = "TxtBx_RightRedOffset_H";
+            this.TxtBx_RightRedOffset_H.ReadOnly = true;
+            this.TxtBx_RightRedOffset_H.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_RightRedOffset_H.TabIndex = 23;
             // 
-            // textBox29
+            // TxtBx_RightRedOffset_L
             // 
-            this.textBox29.Location = new System.Drawing.Point(454, 72);
-            this.textBox29.Name = "textBox29";
-            this.textBox29.ReadOnly = true;
-            this.textBox29.Size = new System.Drawing.Size(119, 29);
-            this.textBox29.TabIndex = 24;
+            this.TxtBx_RightRedOffset_L.Location = new System.Drawing.Point(454, 72);
+            this.TxtBx_RightRedOffset_L.Name = "TxtBx_RightRedOffset_L";
+            this.TxtBx_RightRedOffset_L.ReadOnly = true;
+            this.TxtBx_RightRedOffset_L.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_RightRedOffset_L.TabIndex = 24;
             // 
-            // textBox30
+            // TxtBx_RightGreenOffset_H
             // 
-            this.textBox30.Location = new System.Drawing.Point(454, 110);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.ReadOnly = true;
-            this.textBox30.Size = new System.Drawing.Size(119, 29);
-            this.textBox30.TabIndex = 25;
+            this.TxtBx_RightGreenOffset_H.Location = new System.Drawing.Point(454, 110);
+            this.TxtBx_RightGreenOffset_H.Name = "TxtBx_RightGreenOffset_H";
+            this.TxtBx_RightGreenOffset_H.ReadOnly = true;
+            this.TxtBx_RightGreenOffset_H.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_RightGreenOffset_H.TabIndex = 25;
             // 
-            // textBox31
+            // TxtBx_RightGreenOffset_L
             // 
-            this.textBox31.Location = new System.Drawing.Point(454, 148);
-            this.textBox31.Name = "textBox31";
-            this.textBox31.ReadOnly = true;
-            this.textBox31.Size = new System.Drawing.Size(119, 29);
-            this.textBox31.TabIndex = 26;
+            this.TxtBx_RightGreenOffset_L.Location = new System.Drawing.Point(454, 148);
+            this.TxtBx_RightGreenOffset_L.Name = "TxtBx_RightGreenOffset_L";
+            this.TxtBx_RightGreenOffset_L.ReadOnly = true;
+            this.TxtBx_RightGreenOffset_L.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_RightGreenOffset_L.TabIndex = 26;
             // 
-            // textBox32
+            // TxtBx_RightBlueOffset_H
             // 
-            this.textBox32.Location = new System.Drawing.Point(454, 186);
-            this.textBox32.Name = "textBox32";
-            this.textBox32.ReadOnly = true;
-            this.textBox32.Size = new System.Drawing.Size(119, 29);
-            this.textBox32.TabIndex = 27;
+            this.TxtBx_RightBlueOffset_H.Location = new System.Drawing.Point(454, 186);
+            this.TxtBx_RightBlueOffset_H.Name = "TxtBx_RightBlueOffset_H";
+            this.TxtBx_RightBlueOffset_H.ReadOnly = true;
+            this.TxtBx_RightBlueOffset_H.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_RightBlueOffset_H.TabIndex = 27;
             // 
-            // textBox33
+            // TxtBx_RightBlueOffset_L
             // 
-            this.textBox33.Location = new System.Drawing.Point(454, 224);
-            this.textBox33.Name = "textBox33";
-            this.textBox33.ReadOnly = true;
-            this.textBox33.Size = new System.Drawing.Size(119, 29);
-            this.textBox33.TabIndex = 32;
+            this.TxtBx_RightBlueOffset_L.Location = new System.Drawing.Point(454, 224);
+            this.TxtBx_RightBlueOffset_L.Name = "TxtBx_RightBlueOffset_L";
+            this.TxtBx_RightBlueOffset_L.ReadOnly = true;
+            this.TxtBx_RightBlueOffset_L.Size = new System.Drawing.Size(119, 29);
+            this.TxtBx_RightBlueOffset_L.TabIndex = 32;
             // 
-            // textBox34
+            // TxtBx_RightBlueSlope_L
             // 
-            this.textBox34.Location = new System.Drawing.Point(204, 224);
-            this.textBox34.Name = "textBox34";
-            this.textBox34.ReadOnly = true;
-            this.textBox34.Size = new System.Drawing.Size(116, 29);
-            this.textBox34.TabIndex = 33;
+            this.TxtBx_RightBlueSlope_L.Location = new System.Drawing.Point(204, 224);
+            this.TxtBx_RightBlueSlope_L.Name = "TxtBx_RightBlueSlope_L";
+            this.TxtBx_RightBlueSlope_L.ReadOnly = true;
+            this.TxtBx_RightBlueSlope_L.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_RightBlueSlope_L.TabIndex = 33;
             // 
             // label9
             // 
@@ -1200,7 +1200,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel6.Controls.Add(this.label44, 1, 0);
             this.tableLayoutPanel6.Controls.Add(this.label45, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.Btn_GetTemperature, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.textBox35, 1, 1);
+            this.tableLayoutPanel6.Controls.Add(this.TxtBx_LeftTemperature, 1, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -1249,15 +1249,16 @@ namespace RGBTester.UI
             this.Btn_GetTemperature.TabIndex = 7;
             this.Btn_GetTemperature.Text = "Get";
             this.Btn_GetTemperature.UseVisualStyleBackColor = true;
+            this.Btn_GetTemperature.Click += new System.EventHandler(this.Btn_GetTemperature_Click);
             // 
-            // textBox35
+            // TxtBx_LeftTemperature
             // 
-            this.textBox35.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.textBox35.Location = new System.Drawing.Point(73, 39);
-            this.textBox35.Name = "textBox35";
-            this.textBox35.ReadOnly = true;
-            this.textBox35.Size = new System.Drawing.Size(104, 29);
-            this.textBox35.TabIndex = 8;
+            this.TxtBx_LeftTemperature.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_LeftTemperature.Location = new System.Drawing.Point(73, 39);
+            this.TxtBx_LeftTemperature.Name = "TxtBx_LeftTemperature";
+            this.TxtBx_LeftTemperature.ReadOnly = true;
+            this.TxtBx_LeftTemperature.Size = new System.Drawing.Size(104, 29);
+            this.TxtBx_LeftTemperature.TabIndex = 8;
             // 
             // Btn_Start
             // 
@@ -1419,8 +1420,8 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox TxtBx_LeftRedSlope_H;
+        private System.Windows.Forms.TextBox TxtBx_LeftRedSlope_L;
         private System.Windows.Forms.TextBox TxtBx_Left_AvgCount;
         private System.Windows.Forms.TextBox TxtBx_Left_DAC_Step;
         private System.Windows.Forms.TextBox TxtBx_Left_DAC_End;
@@ -1445,16 +1446,16 @@ namespace RGBTester.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox Cmbx_TestMode;
-        private System.Windows.Forms.TextBox textBox15;
-        private System.Windows.Forms.TextBox textBox16;
-        private System.Windows.Forms.TextBox textBox17;
-        private System.Windows.Forms.TextBox textBox18;
-        private System.Windows.Forms.TextBox textBox19;
-        private System.Windows.Forms.TextBox textBox20;
-        private System.Windows.Forms.TextBox textBox21;
-        private System.Windows.Forms.TextBox textBox22;
-        private System.Windows.Forms.TextBox textBox23;
-        private System.Windows.Forms.TextBox textBox24;
+        private System.Windows.Forms.TextBox TxtBx_LeftGreenSlope_H;
+        private System.Windows.Forms.TextBox TxtBx_LeftGreenSlope_L;
+        private System.Windows.Forms.TextBox TxtBx_LeftBlueSlope_H;
+        private System.Windows.Forms.TextBox TxtBx_LeftRedOffset_H;
+        private System.Windows.Forms.TextBox TxtBx_LeftRedOffset_L;
+        private System.Windows.Forms.TextBox TxtBx_LeftGreenOffset_H;
+        private System.Windows.Forms.TextBox TxtBx_LeftGreenOffset_L;
+        private System.Windows.Forms.TextBox TxtBx_LeftBlueOffset_H;
+        private System.Windows.Forms.TextBox TxtBx_LeftBlueOffset_L;
+        private System.Windows.Forms.TextBox TxtBx_LeftBlueSlope_L;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
@@ -1471,18 +1472,18 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox25;
-        private System.Windows.Forms.TextBox textBox26;
-        private System.Windows.Forms.TextBox textBox27;
-        private System.Windows.Forms.TextBox textBox28;
-        private System.Windows.Forms.TextBox textBox29;
-        private System.Windows.Forms.TextBox textBox30;
-        private System.Windows.Forms.TextBox textBox31;
-        private System.Windows.Forms.TextBox textBox32;
-        private System.Windows.Forms.TextBox textBox33;
-        private System.Windows.Forms.TextBox textBox34;
+        private System.Windows.Forms.TextBox TxtBx_RightRedSlope_H;
+        private System.Windows.Forms.TextBox TxtBx_RightRedSlope_L;
+        private System.Windows.Forms.TextBox TxtBx_RightGreenSlope_H;
+        private System.Windows.Forms.TextBox TxtBx_RightGreenSlope_L;
+        private System.Windows.Forms.TextBox TxtBx_RightBlueSlope_H;
+        private System.Windows.Forms.TextBox TxtBx_RightRedOffset_H;
+        private System.Windows.Forms.TextBox TxtBx_RightRedOffset_L;
+        private System.Windows.Forms.TextBox TxtBx_RightGreenOffset_H;
+        private System.Windows.Forms.TextBox TxtBx_RightGreenOffset_L;
+        private System.Windows.Forms.TextBox TxtBx_RightBlueOffset_H;
+        private System.Windows.Forms.TextBox TxtBx_RightBlueOffset_L;
+        private System.Windows.Forms.TextBox TxtBx_RightBlueSlope_L;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label31;
@@ -1505,7 +1506,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.Button Btn_GetTemperature;
         private System.Windows.Forms.TextBox textBox36;
-        private System.Windows.Forms.TextBox textBox35;
+        private System.Windows.Forms.TextBox TxtBx_LeftTemperature;
         private System.Windows.Forms.Panel Pnl_HighLowMode;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.ComboBox Cmbx_Select_HL_Mode;

@@ -36,7 +36,7 @@ namespace RGBTester.Logic
         }
 
         #region parameter
-        private IF_BaseTask SubTask;                  //子流程
+        private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         private string Type;
         public enum WORK
@@ -52,11 +52,6 @@ namespace RGBTester.Logic
             WAIT_LED_R_TEST,
             WAIT_LED_G_TEST,
             WAIT_LED_B_TEST,
-
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
 
             END,
 
@@ -132,18 +127,6 @@ namespace RGBTester.Logic
                     }
                     break;
             }
-        }
-        
-        private void ResetTimeCount(out int tick)
-        {
-            tick = Environment.TickCount;
-        }
-        private bool CheckTimeOverSec(int tick, int time)
-        {
-            var time_count = Environment.TickCount - tick;
-            bool res = time_count > time * 1000;
-
-            return res;
         }
         #endregion
 
