@@ -91,6 +91,15 @@ namespace Device_Virtual
 
             return 0;
         }
+        public int Clear_AI_VirtualData()
+        {
+            for(int i=0; i<AI_Virtual.Length; i++)
+            {
+                AI_Virtual[i].Clear();
+            }
+
+            return 0;
+        }
 
 
 

@@ -21,7 +21,7 @@ namespace RGBTester
             services.AddSingleton<IRGBTesterMachine, RGBTesterMachine>();
 
             //[Device]
-            services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
+            services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();

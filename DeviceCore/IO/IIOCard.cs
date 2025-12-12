@@ -17,5 +17,6 @@ namespace DeviceCore
         bool SetOutputStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false);
         double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "");
         int Add_AI_VirtualData(byte port, double value);
+        int Clear_AI_VirtualData();
     }
 }

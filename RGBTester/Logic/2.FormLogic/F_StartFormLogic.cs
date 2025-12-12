@@ -152,6 +152,7 @@ namespace RGBTester.Logic
                 box.ShowMessage("Test Condition Setting Fail");
             }
 
+            Machine.DIOL.Clear_AI_VirtualData();
             ReadVirtual_AI_Data();
 
             return res;

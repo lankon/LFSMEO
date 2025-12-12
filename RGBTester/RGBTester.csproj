@@ -34,12 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="INIDLL">
-      <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\INIDLL.dll</HintPath>
-    </Reference>
-    <Reference Include="LogRecord">
-      <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\LogRecord.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.10\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -102,10 +96,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WVs_UART">
-      <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\WVs_UART.dll</HintPath>
-    </Reference>
-    <Reference Include="Z23A_API">
+    <Reference Include="Z23A_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_API.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -149,10 +141,10 @@
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGBTesterMachine.cs" />
-    <Compile Include="UI\F_Equipment_Setting.cs">
+    <Compile Include="UI\OEM\F_Equipment_Setting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_Equipment_Setting.designer.cs">
+    <Compile Include="UI\OEM\F_Equipment_Setting.designer.cs">
       <DependentUpon>F_Equipment_Setting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\F_MainForm.cs">
@@ -161,10 +153,10 @@
     <Compile Include="UI\F_MainForm.designer.cs">
       <DependentUpon>F_MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_OEM_Setting.cs">
+    <Compile Include="UI\OEM\F_OEM_Setting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_OEM_Setting.designer.cs">
+    <Compile Include="UI\OEM\F_OEM_Setting.designer.cs">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\F_Recipe.cs">
@@ -173,10 +165,10 @@
     <Compile Include="UI\F_Recipe.designer.cs">
       <DependentUpon>F_Recipe.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_DAQ_SamplingTest.cs">
+    <Compile Include="UI\OEM\F_DAQ_SamplingTest.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_DAQ_SamplingTest.designer.cs">
+    <Compile Include="UI\OEM\F_DAQ_SamplingTest.designer.cs">
       <DependentUpon>F_DAQ_SamplingTest.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\F_StartForm.cs">
@@ -210,25 +202,27 @@
       <DependentUpon>F_StateControl.cs</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Device\LightEngine\Z23A_API.dll" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_Equipment_Setting.resx">
+    <EmbeddedResource Include="UI\OEM\F_Equipment_Setting.resx">
       <DependentUpon>F_Equipment_Setting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_MainForm.resx">
       <DependentUpon>F_MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_OEM_Setting.resx">
+    <EmbeddedResource Include="UI\OEM\F_OEM_Setting.resx">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_Recipe.resx">
       <DependentUpon>F_Recipe.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_DAQ_SamplingTest.resx">
+    <EmbeddedResource Include="UI\OEM\F_DAQ_SamplingTest.resx">
       <DependentUpon>F_DAQ_SamplingTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StartForm.resx">

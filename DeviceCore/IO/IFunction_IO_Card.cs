@@ -78,5 +78,6 @@ namespace DeviceCore
         bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false);
         bool SetOutputStatus(EIOName name, bool truefalse);
         int Add_AI_VirtualData(EIOName name, double truefalse);
+        int Clear_AI_VirtualData();
     }
 }

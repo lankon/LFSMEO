@@ -283,6 +283,19 @@ namespace DeviceFunction
 
             return 0;
         }
+
+        public int Clear_AI_VirtualData()
+        {
+            for (int j = 0; j < IO.Count; j++)
+            {
+                if (IO[j].GetName() != EIOCardType.Virtual.ToString())
+                    continue;
+
+                IO[j].Clear_AI_VirtualData();
+            }
+
+            return 0;
+        }
         #endregion
     }
 }

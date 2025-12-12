@@ -182,5 +182,10 @@ namespace Device_PCIS_DASK
         {
             throw new NotImplementedException();
         }
+
+        public int Clear_AI_VirtualData()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
