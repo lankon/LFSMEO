@@ -76,6 +76,7 @@ namespace RGBTester.Logic
                 Deps.File.CreateFile("Left_R");
                 Deps.File.CreateFile("Left_G");
                 Deps.File.CreateFile("Left_B");
+                Deps.File.CreateFile("Left_Calibration");
             }
 
             if(!OnlyLeftTest)
@@ -83,6 +84,7 @@ namespace RGBTester.Logic
                 Deps.File.CreateFile("Right_R");
                 Deps.File.CreateFile("Right_G");
                 Deps.File.CreateFile("Right_B");
+                Deps.File.CreateFile("Right_Calibration");
             }
         }
         private void CloseTestFile()
@@ -92,6 +94,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Left_R");
                 Deps.File.CloseFile("Left_G");
                 Deps.File.CloseFile("Left_B");
+                Deps.File.CloseFile("Left_Calibration");
             }
 
             if (!OnlyLeftTest)
@@ -99,6 +102,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Right_R");
                 Deps.File.CloseFile("Right_G");
                 Deps.File.CloseFile("Right_B");
+                Deps.File.CloseFile("Right_Calibration");
             }
         }
         private void Preset()
@@ -232,13 +236,19 @@ namespace RGBTester.Logic
                         Tool.SaveLogToFile("LEFT_GLASSES_TEST", level: "INF");
                         SubTask = new SubTaskRGBTest(Deps, F_StateControl,"Left");
                         SetSubTaskProcessing(true);
+
+                        Deps.File.ResetCalibrationData();
+
                         Transition(WORK.WAIT_LEFT_GLASSES_TEST);
                     }
                     break;
                 case WORK.WAIT_LEFT_GLASSES_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        
+
+                        if (check == TASK_STATUS.SUCCESS)
+                            Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN), "Left_Calibration");
+
                         if(OnlyLeftTest) 
                             CheckResult(check, SUCCESS: WORK.SUCCESS);
                         else
@@ -258,6 +268,10 @@ namespace RGBTester.Logic
                 case WORK.WAIT_RIGHT_GLASSES_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
+
+                        if (check == TASK_STATUS.SUCCESS)
+                            Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN), "Right_Calibration");
+
                         CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }
                     break;

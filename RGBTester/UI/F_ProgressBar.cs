@@ -41,7 +41,7 @@ namespace RGBTester.UI
         private void InvokeShowForm(Form form)
         {
             this.TopMost = true;            // 顯示在最上層（避免被遮）
-            this.ShowInTaskbar = false;     //不顯示於工具列
+            this.ShowInTaskbar = false;     // 不顯示於工具列
             this.Owner = form;              // 指定主窗
             this.StartPosition = FormStartPosition.Manual;
 

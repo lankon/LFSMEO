@@ -14,7 +14,7 @@ namespace UserPrivilege.Logic
     public class F_UserPrivilegeLogic:IF_UserPrivilegeLogic
     {
         #region parameter define
-        private eUserLevel CurLevel = eUserLevel.OEM;
+        private eUserLevel CurLevel = eUserLevel.OP;
         private List<Dictionary<string, object>> AccountPasswordData;
         #endregion
 
@@ -125,7 +125,6 @@ namespace UserPrivilege.Logic
             return eUserLevel.NONE;
         }
         #endregion
-
 
         private string FixPassword(String Password)
         {

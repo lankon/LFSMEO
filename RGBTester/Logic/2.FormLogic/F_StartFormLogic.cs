@@ -10,6 +10,7 @@ using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
 using System.Threading;
+using System.IO;
 
 namespace RGBTester.Logic
 {
@@ -71,6 +72,46 @@ namespace RGBTester.Logic
 
             return 0;
         }
+
+        public int ReadVirtual_AI_Data()
+        {
+            string filePath = AppDomain.CurrentDomain.BaseDirectory + "\\Setting\\Virtual_AI_Data.csv";
+
+            if (!File.Exists(filePath))
+                return -1;
+
+            EIOName[] eIONames = new EIOName[] { EIOName.Left_Iin_HCM, EIOName.Left_Iin_LCM, EIOName.Left_Vin,
+                                                 EIOName.Right_VLED, EIOName.Left_ILED, EIOName.Right_Iin_LCM,
+                                                 EIOName.Right_Vin, EIOName.Right_ILED, EIOName.Left_VLED,
+                                                 EIOName.Left_VLED_R, EIOName.Left_VLED_G, EIOName.Left_VLED_B,
+                                                 EIOName.Right_Iin_HCM, EIOName.Right_VLED_R, EIOName.Right_VLED_G,
+                                                 EIOName.Right_VLED_B};
+
+            string[] lines = File.ReadAllLines(filePath);
+
+            IEnumerable<string> dataLines = lines.Skip(1);
+
+            foreach (string line in dataLines)
+            {
+                // 如果是空行或無效行，則跳過
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                // 使用逗號分隔符號分割字串
+                string[] values = line.Split(',');
+
+                if (values.Length < 2) continue; // 確保至少有 DAC 索引和一個通道值
+
+                for(int i=1; i<values.Length-1; i++)
+                {
+                    if(double.TryParse(values[i], out double d_value))
+                        Machine.DIOL.Add_AI_VirtualData(eIONames[i], d_value);
+                    else
+                        Machine.DIOL.Add_AI_VirtualData(eIONames[i], 99);
+                }
+            }
+
+            return 0;
+        }
         #endregion
 
         #region private function
@@ -110,6 +151,8 @@ namespace RGBTester.Logic
                 var box = ServiceProvider.GetRequiredService<IF_StatusBox>();
                 box.ShowMessage("Test Condition Setting Fail");
             }
+
+            ReadVirtual_AI_Data();
 
             return res;
         }

@@ -177,5 +177,10 @@ namespace Device_PCIS_DASK
 
             return res;
         }
+
+        public int Add_AI_VirtualData(byte port, double value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -286,6 +286,11 @@ namespace Device_MN200
         {
             throw new NotImplementedException();
         }
+
+        public int Add_AI_VirtualData(byte port, double value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

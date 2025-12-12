@@ -263,6 +263,26 @@ namespace DeviceFunction
 
             return true;
         }
+
+        public int Add_AI_VirtualData(EIOName name, double value)
+        {
+            ioListDict.TryGetValue(name.ToString(), out IOData iOData);
+
+            byte cardNo = (byte)iOData.Title_CardNum;
+            byte lineNo = (byte)iOData.Title_LineNum;
+            byte devNo = (byte)iOData.Title_DevNum;
+            byte port = (byte)iOData.Title_IO_Num;
+
+            for (int j = 0; j < IO.Count; j++)
+            {
+                if (IO[j].GetName() != iOData.Title_CardType)
+                    continue;
+
+                IO[j].Add_AI_VirtualData(port, value);
+            }
+
+            return 0;
+        }
         #endregion
     }
 }

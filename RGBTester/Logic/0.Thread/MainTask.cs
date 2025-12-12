@@ -26,6 +26,7 @@ namespace RGBTester.Logic
 
         #region parameter
         private bool Terminate = false;
+        private bool FirstTimeRunBackup = true;
         private int IntervalTime = Environment.TickCount;
         private IServiceProvider ServiceProvider;
         public IF_BaseTask BaseTask;
@@ -141,7 +142,7 @@ namespace RGBTester.Logic
         }
         private void BackupSetting()
         {
-            if(Tool.CheckTimeOverSec(IntervalTime, 3600))
+            if(Tool.CheckTimeOverSec(IntervalTime, 3600) || FirstTimeRunBackup)
             {
                 string s_folder = AppDomain.CurrentDomain.BaseDirectory + "\\Setting";
                 string b_folder = AppDomain.CurrentDomain.BaseDirectory + "\\Backup";
@@ -149,6 +150,7 @@ namespace RGBTester.Logic
                 Tool.ZipBackupFolder(s_folder, b_folder);
 
                 IntervalTime = Environment.TickCount;
+                FirstTimeRunBackup = false;
             }
         }
         #endregion

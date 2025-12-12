@@ -18,6 +18,7 @@ namespace Device_Virtual
         }
 
         #region parameter define
+        Queue<double>[] AI_Virtual;
         Device_Parameter _Param = new Device_Parameter();
         private int lineMaxCount = 5;
         private int devMaxCount = 2;
@@ -48,6 +49,11 @@ namespace Device_Virtual
 
         public bool Open()
         {
+            AI_Virtual = new Queue<double>[portMaxCount];
+
+            for (int i = 0; i < portMaxCount; i++)
+                AI_Virtual[i] = new Queue<double>();
+            
             return true;
         }
 
@@ -60,18 +66,32 @@ namespace Device_Virtual
 
         public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
-            
+
         }
 
         public void UpdateOutput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
-            
+
         }
 
         public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
-            return 5;
+            if (AI_Virtual[port] == null)
+                return 5;
+            
+            if(AI_Virtual[port].Count <= 0)
+                return 5;
+            else
+                return AI_Virtual[port].Dequeue();
         }
+
+        public int Add_AI_VirtualData(byte port, double value)
+        {
+            AI_Virtual[port].Enqueue(value);
+
+            return 0;
+        }
+
 
 
         private List<IORule> _rules = new List<IORule>();
