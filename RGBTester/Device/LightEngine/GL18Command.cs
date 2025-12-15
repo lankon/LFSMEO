@@ -255,6 +255,11 @@ namespace RGBTester.Device
         {
             throw new NotImplementedException();
         }
+
+        public int[] Get_DAC()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

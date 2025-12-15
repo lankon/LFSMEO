@@ -19,5 +19,6 @@ namespace RGBTester.Base
         bool SetLed_DAC(byte rgb, byte side, int value);
         bool SetLed_CurrentMode(string mode);
         string GetTemperature();
+        int[] Get_DAC();
     }
 }

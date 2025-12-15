@@ -106,6 +106,18 @@ namespace RGBTester.Device
             else
                 return "-99";
         }
+        public int[] Get_DAC()
+        {
+            int[] error = new int[] { -99, -99, -99 };
+
+            //var res = api.RAA491901_Get_Current_Mode();
+            Tuple<Z23A_FW.Error_Code, int[]> res = api.RAA491901_Get_DAC_Value(Z23A_FW.Color.COLOR_ALL);
+
+            if (res.Item1 == Z23A_FW.Error_Code.STATUS_OK)
+                return res.Item2;
+            else
+                return error;
+        }
         #endregion
 
         #region private function

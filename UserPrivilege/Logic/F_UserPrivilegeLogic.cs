@@ -26,6 +26,13 @@ namespace UserPrivilege.Logic
             else
                 return false;
         }
+        public bool AtLeastOEM()
+        {
+            if (CurLevel == eUserLevel.OEM)
+                return true;
+            else
+                return false;
+        }
         public void SetCurLevel(eUserLevel level)
         {
             CurLevel = level;

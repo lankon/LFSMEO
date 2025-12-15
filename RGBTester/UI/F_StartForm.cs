@@ -150,6 +150,7 @@ namespace RGBTester.UI
         private void UpdatePage()
         {
             bool enable = UserLevel.AtLeastEng();
+            bool enable_oem = UserLevel.AtLeastOEM();
 
             Btn_SingleTest.Enabled = enable;
             Pnl_HighLowMode.Enabled = enable;
@@ -162,6 +163,7 @@ namespace RGBTester.UI
             TxtBx_Right_DAC_End.Enabled = enable;
             TxtBx_Right_DAC_Step.Enabled = enable;
             TxtBx_Right_AvgCount.Enabled = enable;
+            Pnl_OEM_Test.Visible = enable_oem;
 
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
@@ -252,6 +254,20 @@ namespace RGBTester.UI
         private void Btn_GetTemperature_Click(object sender, EventArgs e)
         {
             TxtBx_LeftTemperature.Text = StartFormLogic.GetTemperature();
+        }
+
+        private void Btn_Set_DAC_Click(object sender, EventArgs e)
+        {
+            StartFormLogic.Set_DAC_Test();
+        }
+
+        private void Btn_Get_DAC_Click(object sender, EventArgs e)
+        {
+            int[] res = StartFormLogic.Get_DAC_Value();
+
+            TxtBx_DAC_Red.Text = res[0].ToString();
+            TxtBx_DAC_Green.Text = res[1].ToString();
+            TxtBx_DAC_Blue.Text = res[2].ToString();
         }
     }
 }

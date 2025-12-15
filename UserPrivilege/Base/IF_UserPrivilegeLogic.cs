@@ -15,5 +15,6 @@ namespace UserPrivilege.Base
         void SetCurLevel(eUserLevel level);
         eUserLevel GetCurLevel();
         bool AtLeastEng();
+        bool AtLeastOEM();
     }
 }

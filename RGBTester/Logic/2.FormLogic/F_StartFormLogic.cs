@@ -52,6 +52,18 @@ namespace RGBTester.Logic
             return lea.GetTemperature();
         }
 
+        public int[] Get_DAC_Value()
+        {
+            var lea = ServiceProvider.GetRequiredService<ILightEngineCommand>();
+            return lea.Get_DAC();
+        }
+
+        public void Set_DAC_Test()
+        {
+            var lea = ServiceProvider.GetRequiredService<ILightEngineCommand>();
+            lea.SetLed_DAC(lea.LED_R_LSB, lea.LED_LeftSide, 100);
+        }
+
         public int StartTaskAction(string method = "")
         {
             int res = CheckTestCondition();

@@ -80,6 +80,12 @@ namespace RGBTester.Device
         {
             return "25";
         }
+        public int[] Get_DAC()
+        {
+            int[] res = new int[] { 255, 255, 255 };
+
+            return res;
+        }
         #endregion
 
         #region private function
@@ -142,8 +148,6 @@ namespace RGBTester.Device
 
             return true;
         }
-
-        
         #endregion
     }
 }
