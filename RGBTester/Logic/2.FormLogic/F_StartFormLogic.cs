@@ -48,20 +48,20 @@ namespace RGBTester.Logic
 
         public string GetTemperature()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineCommand>();
+            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
             return lea.GetTemperature();
         }
 
         public int[] Get_DAC_Value()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineCommand>();
+            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
             return lea.Get_DAC();
         }
 
         public void Set_DAC_Test()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineCommand>();
-            lea.SetLed_DAC(lea.LED_R_LSB, lea.LED_LeftSide, 100);
+            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            lea.SetLed_DAC(lea.LED_R, lea.LED_LeftSide, 100);
         }
 
         public int StartTaskAction(string method = "")

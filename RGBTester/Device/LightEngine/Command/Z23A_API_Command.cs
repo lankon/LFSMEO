@@ -21,6 +21,7 @@ namespace RGBTester.Device
 
         #region parameter define
         Z23A_FW api;
+        public string ProductName { get; private set; } = eLEAType.Z23A_API.ToString();
 
         // [使用API時不用定義]
         public byte LED_R_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_R;

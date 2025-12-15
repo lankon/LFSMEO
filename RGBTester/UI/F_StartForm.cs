@@ -21,7 +21,7 @@ namespace RGBTester.UI
     public partial class F_StartForm : Form, IF_StartForm
     {
         public F_StartForm(F_StartFormLogic f_StartFormLogic, IRGBTesterMachine rGBTesterMachine,
-                            ILightEngineCommand lea, IF_UserPrivilegeLogic f_UserPrivilegeLogic)
+                            ILightEngineFunction lea, IF_UserPrivilegeLogic f_UserPrivilegeLogic)
         {
             InitializeComponent();
 
@@ -35,7 +35,7 @@ namespace RGBTester.UI
         #region parameter define
         F_StartFormLogic StartFormLogic;
         IRGBTesterMachine RGBTesterMachine;
-        ILightEngineCommand LEA;
+        ILightEngineFunction LEA;
         IF_UserPrivilegeLogic UserLevel;
         private static readonly Dictionary<(string Side, string Color, string Mode), TextBox> _slopeTextBoxes = new Dictionary<(string, string, string), TextBox>();
         #endregion
@@ -51,6 +51,7 @@ namespace RGBTester.UI
             if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
 
+            LEA.Set_LEA_Type();
             if (!LEA.Open())
                 MessageBox.Show("LED Board Connect Fail！","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
         }
@@ -164,6 +165,7 @@ namespace RGBTester.UI
             TxtBx_Right_DAC_Step.Enabled = enable;
             TxtBx_Right_AvgCount.Enabled = enable;
             Pnl_OEM_Test.Visible = enable_oem;
+            LyPnl_ProductType.Visible = enable_oem;
 
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
@@ -218,19 +220,6 @@ namespace RGBTester.UI
         {
             ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
             ApplicationSetting.ReadAllRecipe<eF_StartForm>();
-        }
-
-        private void Btn_Test_Click(object sender, EventArgs e)
-        {
-            int value = 00;
-            long RecordTime;
-
-            bool Red = LEA.SetLed_DAC(LEA.LED_R_LSB, LEA.LED_RightSide, value);
-            bool Green = LEA.SetLed_DAC(LEA.LED_G_LSB, LEA.LED_RightSide, value);
-            bool Blue = LEA.SetLed_DAC(LEA.LED_B_LSB, LEA.LED_RightSide, value);
-
-            if (!Red || !Green || !Blue)
-                MessageBox.Show("錯誤");
         }
 
         private void Btn_SingleTest_Click(object sender, EventArgs e)

@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 
 namespace RGBTester.Base
 {
-    public interface ILightEngineCommand
+    public enum eLEAType
     {
-        string ProductName { get; }
-
-        byte LED_R_LSB { get; }
-        byte LED_G_LSB { get; }
-        byte LED_B_LSB { get; }
-        byte LED_RGB_MSB { get; }
+        VIRTUAL,
+        Z23A_API,
+        GL18,
+    }
+    
+    public interface ILightEngineFunction
+    {
+        byte LED_R { get; }
+        byte LED_G { get; }
+        byte LED_B { get; }
         byte LED_RightSide { get; }
         byte LED_LeftSide { get; }
 
+        void Set_LEA_Type();
         bool Open();
         bool SetLed_DAC(byte rgb, byte side, int value);
         bool SetLed_CurrentMode(string mode);

@@ -136,12 +136,14 @@ namespace RGBTester.UI
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.Btn_Test = new System.Windows.Forms.Button();
             this.Pnl_HighLowMode = new System.Windows.Forms.Panel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_Select_HL_Mode = new System.Windows.Forms.ComboBox();
             this.label46 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.LyPnl_ProductType = new System.Windows.Forms.TableLayoutPanel();
+            this.Cmbx_ProductType = new System.Windows.Forms.ComboBox();
+            this.label50 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -156,6 +158,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.SuspendLayout();
             this.Pnl_HighLowMode.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
+            this.LyPnl_ProductType.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -1328,17 +1331,6 @@ namespace RGBTester.UI
             this.label15.Text = "Test Mode";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // Btn_Test
-            // 
-            this.Btn_Test.Location = new System.Drawing.Point(1010, 13);
-            this.Btn_Test.Name = "Btn_Test";
-            this.Btn_Test.Size = new System.Drawing.Size(94, 34);
-            this.Btn_Test.TabIndex = 5;
-            this.Btn_Test.Text = "button1";
-            this.Btn_Test.UseVisualStyleBackColor = true;
-            this.Btn_Test.Visible = false;
-            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
-            // 
             // Pnl_HighLowMode
             // 
             this.Pnl_HighLowMode.Controls.Add(this.tableLayoutPanel7);
@@ -1385,13 +1377,52 @@ namespace RGBTester.UI
             this.label46.Text = "High/Low Mode";
             this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // LyPnl_ProductType
+            // 
+            this.LyPnl_ProductType.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.LyPnl_ProductType.ColumnCount = 2;
+            this.LyPnl_ProductType.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.94152F));
+            this.LyPnl_ProductType.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.05848F));
+            this.LyPnl_ProductType.Controls.Add(this.Cmbx_ProductType, 1, 0);
+            this.LyPnl_ProductType.Controls.Add(this.label50, 0, 0);
+            this.LyPnl_ProductType.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.LyPnl_ProductType.Location = new System.Drawing.Point(785, 13);
+            this.LyPnl_ProductType.Name = "LyPnl_ProductType";
+            this.LyPnl_ProductType.RowCount = 1;
+            this.LyPnl_ProductType.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_ProductType.Size = new System.Drawing.Size(345, 40);
+            this.LyPnl_ProductType.TabIndex = 7;
+            // 
+            // Cmbx_ProductType
+            // 
+            this.Cmbx_ProductType.FormattingEnabled = true;
+            this.Cmbx_ProductType.Items.AddRange(new object[] {
+            "Virtual",
+            "Z23A",
+            "GL18"});
+            this.Cmbx_ProductType.Location = new System.Drawing.Point(210, 6);
+            this.Cmbx_ProductType.Name = "Cmbx_ProductType";
+            this.Cmbx_ProductType.Size = new System.Drawing.Size(129, 28);
+            this.Cmbx_ProductType.TabIndex = 5;
+            this.Cmbx_ProductType.Text = "High";
+            // 
+            // label50
+            // 
+            this.label50.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label50.Location = new System.Drawing.Point(6, 3);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(195, 30);
+            this.label50.TabIndex = 4;
+            this.label50.Text = "Product Type";
+            this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.LyPnl_ProductType);
             this.Controls.Add(this.Pnl_HighLowMode);
-            this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.tableLayoutPanel5);
             this.Controls.Add(this.Pnl_MainButton);
             this.Controls.Add(this.groupBox2);
@@ -1421,6 +1452,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.ResumeLayout(false);
             this.Pnl_HighLowMode.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
+            this.LyPnl_ProductType.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1513,7 +1545,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Label label43;
-        private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Panel Pnl_ShowTemperature;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label44;
@@ -1537,5 +1568,8 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button Btn_Set_DAC;
+        private System.Windows.Forms.TableLayoutPanel LyPnl_ProductType;
+        private System.Windows.Forms.ComboBox Cmbx_ProductType;
+        private System.Windows.Forms.Label label50;
     }
 }

@@ -38,6 +38,9 @@ namespace RGBTester.Device
         public byte LED_G_LSB { get; private set; } = 0x14;
         public byte LED_B_LSB { get; private set; } = 0x15;
         public byte LED_RGB_MSB { get; private set; } = 0x17;
+
+        public string ProductName => throw new NotImplementedException();
+
         private ManualResetEventSlim responseEvent = new ManualResetEventSlim(false);
         private int lastResponse = -1;
         //public event Action<int> OnResponseReceived;

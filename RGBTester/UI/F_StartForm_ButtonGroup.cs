@@ -83,7 +83,7 @@ namespace RGBTester.UI
         {
             var UserPrivilege = ServiceProvider.GetRequiredService<IF_UserPrivilegeLogic>();
 
-            if (UserPrivilege.AtLeastEng())
+            if (UserPrivilege.AtLeastOEM())
             {
                 Btn_OEM_Setting.Enabled = true;
             }

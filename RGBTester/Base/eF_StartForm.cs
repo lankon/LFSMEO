@@ -12,6 +12,7 @@ namespace RGBTester.Base
         Cmbx_Select_HL_Mode,
         TxtBx_Left_SN,
         TxtBx_Right_SN,
+        Cmbx_ProductType,
     }
     public enum eF_StartFormRecipe
     {

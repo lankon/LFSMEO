@@ -141,17 +141,17 @@ namespace RGBTester.Logic
 
             if (TestColor == "R")
             {
-                Color = Deps.LightEngine.LED_R_LSB;
+                Color = Deps.LightEngine.LED_R;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_R : EIOName.Right_VLED_R;
             }
             else if(TestColor == "G")
             {
-                Color = Deps.LightEngine.LED_G_LSB;
+                Color = Deps.LightEngine.LED_G;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_G : EIOName.Right_VLED_G;
             }
             else if(TestColor == "B")
             {
-                Color = Deps.LightEngine.LED_B_LSB;
+                Color = Deps.LightEngine.LED_B;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_B : EIOName.Right_VLED_B;
             }
 

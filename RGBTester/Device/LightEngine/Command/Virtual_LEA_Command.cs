@@ -28,6 +28,7 @@ namespace RGBTester.Device
 
         #region parameter define
         private SerialPort _serialPort;
+        public string ProductName { get; private set; } = eLEAType.VIRTUAL.ToString();
         public byte LED_RightSide { get; private set; } = 0x00;
         public byte LED_LeftSide { get; private set; } = 0x01;
         public byte LED_R_LSB { get; private set; } = 0x13;
