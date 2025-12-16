@@ -16,11 +16,11 @@ namespace RGBTester.Logic
         #endregion
 
         #region public function
-        public LinearCurveFitting(int[] DACpoint, double[] voltage_point)
+        public LinearCurveFitting(int[] DACpoint, double[] current_point)
         {
             Mean_DAC_Point(DACpoint);
-            MeanCurrent(voltage_point);
-            CalculateSlope(DACpoint, voltage_point);
+            MeanCurrent(current_point);
+            CalculateSlope(DACpoint, current_point);
             CalculateOffset();
         }
         #endregion
@@ -36,28 +36,23 @@ namespace RGBTester.Logic
             }
 
             mDAC = (double)sum / DACpoint.Length;
-
-            //return mDAC;
         }
 
-        private void MeanCurrent(double[] voltage)
+        private void MeanCurrent(double[] current)
         {
             double sum = 0;
 
-            for (int i = 0; i < voltage.Length; i++)
+            for (int i = 0; i < current.Length; i++)
             {
-                sum += voltage[i];
+                sum += current[i];
             }
 
-            // I = V / R
-            mCurrent = sum / voltage.Length;
-
-            //return mCurrent;
+            mCurrent = sum / current.Length;
         }
 
-        private double CalculateSlope(int[] DACpoint, double[] voltage_point)
+        private double CalculateSlope(int[] DACpoint, double[] current_point)
         {
-            double covariance = CalculateCovariance(DACpoint, voltage_point);
+            double covariance = CalculateCovariance(DACpoint, current_point);
             double variance = CalculateVariance(DACpoint);
 
             if (variance == 0) return 0; // 防止除以零
@@ -74,16 +69,16 @@ namespace RGBTester.Logic
 
             return Offset;
         }
-        private double CalculateCovariance(int[] DACpoint, double[] voltage_point)
+        private double CalculateCovariance(int[] DACpoint, double[] current_point)
         {
-            if (DACpoint.Length != voltage_point.Length)
+            if (DACpoint.Length != current_point.Length)
                 return -99;
 
             double M1 = 0;
 
             for (int i = 0; i < DACpoint.Length; i++)
             {
-                double current_i = voltage_point[i];
+                double current_i = current_point[i];
 
                 M1 += (DACpoint[i] - mDAC) * (current_i - mCurrent);
             }

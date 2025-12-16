@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\IF_IO_Card.cs" />
+    <Compile Include="IO\IIOCardVirtual.cs" />
     <Compile Include="Motion\eMotionSetting.cs" />
     <Compile Include="IChillerControl.cs" />
     <Compile Include="IO\IFunction_IO_Card.cs" />

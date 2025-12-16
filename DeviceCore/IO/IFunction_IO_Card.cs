@@ -44,7 +44,7 @@ namespace DeviceCore
         #endregion
 
         #region Output
-
+        Vacuum_Pump,
         #endregion
     }
 
@@ -77,7 +77,12 @@ namespace DeviceCore
         bool GetOutputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
         bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false);
         bool SetOutputStatus(EIOName name, bool truefalse);
+        
+        //[Virtual IO Function]
         int Add_AI_VirtualData(EIOName name, double truefalse);
         int Clear_AI_VirtualData();
+        void AddIORule(int outputCardNo, int outputLineNo, int outputDevNo, int outputPort, bool outputValue,
+                              params (int inputCardNo, int inputLineNo, int inputDevNo, int inputPort, bool inputValue)[] effects);
+        int AddIORule(EIOName out_name, bool out_value, params (EIOName in_name, bool int_value)[] effects);
     }
 }

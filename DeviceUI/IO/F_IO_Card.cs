@@ -240,13 +240,10 @@ namespace DeviceUI.IO
                 //判斷IO卡
                 EIOCardType eIOCardType = EIOCardType.None;
 
-                if (DGV_IO.Rows[e.RowIndex].Cells["Title_CardType"].Value.ToString() == "AMP_204C")
-                    eIOCardType = EIOCardType.AMP_204C;
-                else if (DGV_IO.Rows[e.RowIndex].Cells["Title_CardType"].Value.ToString() == "MN200")
-                    eIOCardType = EIOCardType.MN200;
-                else if (DGV_IO.Rows[e.RowIndex].Cells["Title_CardType"].Value.ToString() == "P32C32")
-                    eIOCardType = EIOCardType.P32C32;
+                string cardTypeStr = DGV_IO.Rows[e.RowIndex].Cells["Title_CardType"].Value?.ToString();
 
+                if (!string.IsNullOrEmpty(cardTypeStr) && Enum.TryParse<EIOCardType>(cardTypeStr, out var parsedType))
+                    eIOCardType = parsedType;
 
                 // 取得目前儲存格值
                 var value = DGV_IO.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();

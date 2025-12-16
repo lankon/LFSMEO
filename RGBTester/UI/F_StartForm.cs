@@ -35,7 +35,7 @@ namespace RGBTester.UI
         #region parameter define
         F_StartFormLogic StartFormLogic;
         IRGBTesterMachine RGBTesterMachine;
-        ILightEngineFunction LEA;
+        ILightEngineFunction LEA;   
         IF_UserPrivilegeLogic UserLevel;
         private static readonly Dictionary<(string Side, string Color, string Mode), TextBox> _slopeTextBoxes = new Dictionary<(string, string, string), TextBox>();
         #endregion

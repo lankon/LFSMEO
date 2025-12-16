@@ -103,35 +103,7 @@ namespace DeviceFunction
 
             return true;
         }
-        //public void Update_IO_List(DataGridView DGV, List<IOData> io_list)
-        //{
-        //    io_list.Clear();
-        //    IO_List.Clear();
-
-        //    foreach (DataGridViewRow row in DGV.Rows)
-        //    {
-        //        if (row.IsNewRow) continue;
-
-        //        var data = new IOData()
-        //        {
-        //            Title_IO = row.Cells["Title_IO"]?.Value?.ToString(),
-        //            Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
-        //            Title_Description = row.Cells["Title_Description"]?.Value?.ToString(),
-        //            Title_CardType = row.Cells["Title_CardType"]?.Value?.ToString(),
-        //            Title_IO_Num = Convert.ToInt32(row.Cells["Title_IO_Num"]?.Value ?? "-1"),
-        //            Title_Status = row.Cells["Title_Status"]?.Value?.ToString(),
-        //            Title_Inverse = row.Cells["Title_Inverse"]?.Value?.ToString(),
-        //            Title_CardNum = Convert.ToInt32(row.Cells["Title_CardNum"]?.Value ?? "-1"),
-        //            Title_LineNum = Convert.ToInt32(row.Cells["Title_LineNum"]?.Value ?? "-1"),
-        //            Title_DevNum = Convert.ToInt32(row.Cells["Title_DevNum"]?.Value ?? "-1"),
-        //        };
-
-        //        io_list.Add(data);
-        //        IO_List.Add(data);
-        //    }
-
-        //    ioListDict = IO_List.GroupBy(x => x.Title_Name).ToDictionary(g => g.Key, g => g.First());
-        //}
+        
         public void LoadConfiguration(List<IOData> newIoDataList)
         {
             IO_List.Clear();
@@ -278,7 +250,8 @@ namespace DeviceFunction
                 if (IO[j].GetName() != iOData.Title_CardType)
                     continue;
 
-                IO[j].Add_AI_VirtualData(port, value);
+                if (IO[j] is IIOCardVirtual card_virtual)
+                    card_virtual.Add_AI_VirtualData(port, value);
             }
 
             return 0;
@@ -291,7 +264,56 @@ namespace DeviceFunction
                 if (IO[j].GetName() != EIOCardType.Virtual.ToString())
                     continue;
 
-                IO[j].Clear_AI_VirtualData();
+                if (IO[j] is IIOCardVirtual card_virtual)
+                    card_virtual.Clear_AI_VirtualData();
+            }
+
+            return 0;
+        }
+
+        public void AddIORule(int outputCardNo, int outputLineNo, int outputDevNo, int outputPort, bool outputValue,
+                              params (int inputCardNo, int inputLineNo, int inputDevNo, int inputPort, bool inputValue)[] effects)
+        {
+            for (int j = 0; j < IO.Count; j++)
+            {
+                if (IO[j].GetName() != EIOCardType.Virtual.ToString())
+                    continue;
+
+                if (IO[j] is IIOCardVirtual card_virtual)
+                    card_virtual.AddIORule(outputCardNo, outputLineNo, outputDevNo, outputPort, outputValue, effects);
+            }
+        }
+
+        public int AddIORule(EIOName out_name, bool out_value, params(EIOName in_name, bool int_value)[] effects)
+        {
+            ioListDict.TryGetValue(out_name.ToString(), out IOData iOData);
+
+            byte cardNo = (byte)iOData.Title_CardNum;
+            byte lineNo = (byte)iOData.Title_LineNum;
+            byte devNo = (byte)iOData.Title_DevNum;
+            byte port = (byte)iOData.Title_IO_Num;
+
+            //[Input Data]
+            IOData[] effects_io = new IOData[effects.Length];
+            (int,int,int,int,bool)[] effects_data = new (int, int, int, int, bool)[effects.Length];
+            for (int i=0; i<effects.Length; i++)
+            {
+                ioListDict.TryGetValue(effects[i].in_name.ToString(), out effects_io[i]);
+
+                effects_data[i] = (effects_io[i].Title_CardNum,
+                                    effects_io[i].Title_LineNum,
+                                    effects_io[i].Title_DevNum,
+                                    effects_io[i].Title_IO_Num,
+                                    effects[i].int_value);
+            }
+                
+            for (int j = 0; j < IO.Count; j++)
+            {
+                if (IO[j].GetName() != iOData.Title_CardType)
+                    continue;
+
+                if (IO[j] is IIOCardVirtual card_virtual)
+                    card_virtual.AddIORule(cardNo, lineNo, devNo, port, out_value, effects_data);
             }
 
             return 0;

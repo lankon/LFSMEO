@@ -43,10 +43,15 @@ namespace RGBTester.Device
             api = new Z23A_FW();
             string res = api.Initial_UART_Settings();
 
-            if (res == "Initial UART success")
-                return true;
-            else
+            if (res != "Initial UART success")
                 return false;
+
+            res = api.Get_FW_Version();
+
+            if (res == "UART_ERR_COM")
+                return false;
+
+            return true;
         }
         public bool SetLed_DAC(byte rgb, byte side, int value)
         {

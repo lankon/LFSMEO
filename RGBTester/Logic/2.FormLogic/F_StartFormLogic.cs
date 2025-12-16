@@ -60,8 +60,17 @@ namespace RGBTester.Logic
 
         public void Set_DAC_Test()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
-            lea.SetLed_DAC(lea.LED_R, lea.LED_LeftSide, 100);
+            //var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            //lea.SetLed_DAC(lea.LED_R, lea.LED_LeftSide, 100);
+
+            //Machine.DIOL.AddIORule(0, 0, 0, 0, true, (0,0,0,5,false), (0,0,0,7,true));
+            //Machine.DIOL.AddIORule(0, 0, 0, 0, false, (0, 0, 0, 5, true), (0, 0, 0, 7, false));
+
+            Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, true, (EIOName.Left_Iin_HCM, false), (EIOName.Right_Iin_HCM, true));
+            Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, false, (EIOName.Left_Iin_HCM, true), (EIOName.Right_Iin_HCM, false));
+
+
+            Machine.DIOL.SetOutputStatus(EIOName.Vacuum_Pump, false);
         }
 
         public int StartTaskAction(string method = "")
