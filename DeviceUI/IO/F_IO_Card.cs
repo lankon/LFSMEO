@@ -54,6 +54,26 @@ namespace DeviceUI.IO
 
             return input_res;
         }
+        private double IOCard_GetAIValue(int i)
+        {
+            double input_res = 0.0;
+
+            if (IOList[i].Title_IO == "Input" &&
+                Enum.TryParse<EIOCardType>(IOList[i].Title_CardType, out var cardType))
+            {
+                if (cardType == EIOCardType.None)
+                    return input_res;
+
+                input_res = DIOL.GetAInputStatus(cardType,
+                                                (byte)IOList[i].Title_CardNum,
+                                                (byte)IOList[i].Title_LineNum,
+                                                (byte)IOList[i].Title_DevNum,
+                                                (byte)IOList[i].Title_IO_Num,
+                                                IOList[i].Title_Range, i);
+            }
+
+            return input_res;
+        }
         private bool IOCard_GetOutputStatus(int i)
         {
             bool output_res = false;
@@ -100,6 +120,7 @@ namespace DeviceUI.IO
         }
         private void UpdatePage()
         {
+            Timer_IO.Enabled = true;
             UpdateOutputStatus_UI();
         }
         #endregion
@@ -197,24 +218,37 @@ namespace DeviceUI.IO
 
         private void Timer_IO_Tick(object sender, EventArgs e)
         {
+            //要再想一下怎麼做比較好,Timer離開畫面時必須關掉
+            
             if (!DIOL.InitialDone)
                 return;
 
             for (int i = 0; i < IOList.Count; i++)
             {
-                bool input_res = false;
-
-                input_res = IOCard_GetInputStatus(i);
-
-                if (input_res && DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() != "Output")
+                //[Digital Input]
+                if (DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() == "Input" && DGV_IO.Rows[i].Cells["Title_Range"].Value.ToString() == "Digital")
                 {
-                    DGV_IO.Rows[i].Cells["Title_Status"].Value = "ON";
-                    DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.SkyBlue;
+                    bool input_res = IOCard_GetInputStatus(i);
+
+                    if (input_res)
+                    {
+                        DGV_IO.Rows[i].Cells["Title_Status"].Value = "ON";
+                        DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.SkyBlue;
+                    }
+                    else if (input_res == false)
+                    {
+                        DGV_IO.Rows[i].Cells["Title_Status"].Value = "OFF";
+                        DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.White;
+                    }
                 }
-                else if (input_res == false && DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() != "Output")
+
+                //[Analog Input]
+                if (DGV_IO.Rows[i].Cells["Title_IO"].Value.ToString() == "Input" && DGV_IO.Rows[i].Cells["Title_Range"].Value.ToString() != "Digital")
                 {
-                    DGV_IO.Rows[i].Cells["Title_Status"].Value = "OFF";
-                    DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.White;
+                    double ai_res = IOCard_GetAIValue(i);
+
+                    DGV_IO.Rows[i].Cells["Title_Status"].Value = ai_res.ToString();
+                    DGV_IO.Rows[i].Cells["Title_Status"].Style.BackColor = Color.SkyBlue;
                 }
             }
         }
@@ -274,6 +308,8 @@ namespace DeviceUI.IO
         {
             if (!this.Visible)
             {
+                Timer_IO.Enabled = false;
+                
                 //SaveAllEnumSetting();
                 //ReadAllEnumSetting();
             }

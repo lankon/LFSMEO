@@ -72,7 +72,7 @@ namespace RGBTester.Device
             if (res == true)
                 Tool.SaveLogToFile("Light Engine Initial Success");
             else
-                Tool.SaveLogToFile("Light Engine Initial Fail");
+                Tool.SaveLogToFile("Light Engine Initial Fail", level:"ERR");
 
             return res;
         }

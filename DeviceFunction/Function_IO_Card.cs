@@ -112,14 +112,14 @@ namespace DeviceFunction
                         .GroupBy(x => x.Title_Name)
                         .ToDictionary(g => g.Key, g => g.First());
         }
-        public double GetAInputStatus(EIOCardType CardType, byte card, byte lineNo, byte devNo, byte port, int iList)
+        public double GetAInputStatus(EIOCardType CardType, byte card, byte lineNo, byte devNo, byte port,string range, int iList)
         {
             for (int i = 0; i < IO.Count; i++)
             {
                 if (IO[i].GetName() != CardType.ToString())
                     continue;
 
-                return IO[i].GetAInput(card, lineNo, devNo, port);
+                return IO[i].GetAInput(card, lineNo, devNo, port, range);
             }
 
             return -1;
@@ -142,7 +142,7 @@ namespace DeviceFunction
                 if (IO[j].GetName() != iOData.Title_CardType || range == "Digital")
                     continue;
 
-                return IO[j].GetAInput(card, lineNo, devNo, port);
+                return IO[j].GetAInput(card, lineNo, devNo, port, range);
             }
 
             return -1;

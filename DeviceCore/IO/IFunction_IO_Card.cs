@@ -70,7 +70,7 @@ namespace DeviceCore
         void Set_IO_Form(IF_IO_Card f_io);
         bool Initial_All_IO();
         void LoadConfiguration(List<IOData> newIoDataList);
-        double GetAInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
+        double GetAInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port,string range, int iList);
         double GetAInputStatus(EIOName name);
         bool GetInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
         bool GetInputStatus(EIOName name);

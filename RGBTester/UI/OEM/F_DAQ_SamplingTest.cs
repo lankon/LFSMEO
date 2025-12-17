@@ -87,7 +87,7 @@ namespace RGBTester.UI
             List<string[]> buffer = new List<string[]>();
             int AvgCount = Int32.Parse(TxtBx_AveraingCount.Text);
 
-            _ = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, 0, 0);
+            _ = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, 0, "+-5V",0);
 
             DGV_DAQ_Result.Rows.Clear();
 
@@ -100,7 +100,7 @@ namespace RGBTester.UI
                 context = new string[channel_count];
                 for (byte i = 0; i < channel_count; i++)
                 {
-                    double res = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, i, 0);
+                    double res = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, i, "+-5V", 0);
                     context[i] = res.ToString();
                     result[i] += res;
                 }

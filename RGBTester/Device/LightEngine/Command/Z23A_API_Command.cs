@@ -21,6 +21,7 @@ namespace RGBTester.Device
 
         #region parameter define
         Z23A_FW api;
+        private bool IsInitial = false;
         public string ProductName { get; private set; } = eLEAType.Z23A_API.ToString();
 
         // [使用API時不用定義]
@@ -40,9 +41,18 @@ namespace RGBTester.Device
         #region public function
         public bool Open()
         {
-            api = new Z23A_FW();
-            string res = api.Initial_UART_Settings();
-
+            string res = "";
+            
+            try
+            {
+                api = new Z23A_FW();
+                res = api.Initial_UART_Settings();
+            }
+            catch
+            {
+                return false;
+            }
+            
             if (res != "Initial UART success")
                 return false;
 
@@ -51,10 +61,13 @@ namespace RGBTester.Device
             if (res == "UART_ERR_COM")
                 return false;
 
+            IsInitial = true;
             return true;
         }
         public bool SetLed_DAC(byte rgb, byte side, int value)
         {
+            if(IsInitial == false) return false;
+            
             Z23A_FW.Color color = Z23A_FW.Color.COLOR_ALL;
             int value_R = 0, value_G = 0, value_B = 0;
 
@@ -89,6 +102,8 @@ namespace RGBTester.Device
 
         public bool SetLed_CurrentMode(string mode)
         {
+            if (IsInitial == false) return false;
+
             Z23A_FW.Current_Mode current_Mode = Z23A_FW.Current_Mode.LOW_MODE;
 
             if (mode == "HCM")   //High Current Mode
@@ -105,6 +120,8 @@ namespace RGBTester.Device
         }
         public string GetTemperature()
         {
+            if (IsInitial == false) return "-99";
+
             Tuple<Z23A_FW.Error_Code, double> res = api.TMP_Get_Temperature();
 
             if (res.Item1 == Z23A_FW.Error_Code.STATUS_OK)
@@ -115,6 +132,8 @@ namespace RGBTester.Device
         public int[] Get_DAC()
         {
             int[] error = new int[] { -99, -99, -99 };
+
+            if (IsInitial == false) return error;
 
             //var res = api.RAA491901_Get_Current_Mode();
             Tuple<Z23A_FW.Error_Code, int[]> res = api.RAA491901_Get_DAC_Value(Z23A_FW.Color.COLOR_ALL);

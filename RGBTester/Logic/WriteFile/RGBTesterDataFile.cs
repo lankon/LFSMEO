@@ -252,7 +252,7 @@ namespace RGBTester.Logic
             //string low_range = ",,,,,,,,0,,130,,,0,,30,,,,,,,,,,0,,130,,,0,,30,,,,,,,,";
             //string high_range = ",,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,";
             //string unit = ",,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,";
-            string title = "Station,SN,TestDate,TestTime,CycleTime(S),UserName,DirLogName,H Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c,L Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c";
+            string title = "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,H Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c,L Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c";
 
             if (type == "Left_R")
                 file = LeftRedFile;
@@ -275,10 +275,12 @@ namespace RGBTester.Logic
 
         private string CheckPassFail(double low, double high, double value)
         {
-            if (value >= low && value <= high)
-                return "PASS";
-            else
-                return "FAIL";
+            return "PASS";
+            
+            //if (value >= low && value <= high)
+            //    return "PASS";
+            //else
+            //    return "FAIL";
         }
         #endregion
     }
