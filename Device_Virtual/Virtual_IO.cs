@@ -44,7 +44,6 @@ namespace Device_Virtual
         #endregion
 
         #region public function
-
         public bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
             if (port < 0 || port >= portMaxCount)
@@ -59,7 +58,7 @@ namespace Device_Virtual
 
         public string GetName()
         {
-            return "Virtual";
+            return EIOCardType.Virtual.ToString();
         }
 
         public bool GetOutputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
@@ -82,7 +81,6 @@ namespace Device_Virtual
         public bool SetOutputStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false)
         {
             _Param.Output_Status[lineNo, devNo, port] = truefalse;
-
 
             // 將多維座標轉成唯一 OutputAddress（你可根據專案需求自訂算法）
             int outputAddress = GetAddress(lineNo, devNo, port);
@@ -161,7 +159,6 @@ namespace Device_Virtual
         }
         #endregion
 
-
         #region private function
         private int GetAddress(int lineNo, int devNo, int port)
         {
@@ -176,7 +173,5 @@ namespace Device_Virtual
             return (lineNo, devNo, port);
         }
         #endregion
-
-
     }
 }

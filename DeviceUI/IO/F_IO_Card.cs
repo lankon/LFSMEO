@@ -70,8 +70,7 @@ namespace DeviceUI.IO
 
             return output_res;
         }
-        
-        public void Update_IO_List(DataGridView DGV, List<IOData> io_list)
+        private void Update_IO_List(DataGridView DGV, List<IOData> io_list)
         {
             io_list.Clear();
 
@@ -99,26 +98,18 @@ namespace DeviceUI.IO
 
             DIOL.LoadConfiguration(io_list);
         }
+        private void UpdatePage()
+        {
+            UpdateOutputStatus_UI();
+        }
         #endregion
 
         #region public function
-        public void SetF_IO_Card(Panel pnl, F_IO_Card form)
-        {
-            form.Dock = DockStyle.Fill;
-            form.Visible = true;
-            form.TopLevel = false;
-            form.Top = 0;
-            form.Left = 0;
-            form.TopMost = true;
-
-            pnl.Controls.Add(form);
-
-            form.Hide();
-        }
         public void Update_IO_List()
         {
             Update_IO_List(DGV_IO, IOList);
         }
+
         public void UpdateOutputStatus_UI()
         {
             for (int i = 0; i < IOList.Count; i++)
@@ -160,7 +151,7 @@ namespace DeviceUI.IO
             Tool.DataGrid_DeleteRow(DGV_IO);
 
             Update_IO_List(DGV_IO, IOList);
-
+             
             Timer_IO.Enabled = true;
         }
 
@@ -276,6 +267,19 @@ namespace DeviceUI.IO
 
                 DGV_IO.ClearSelection();
                 DGV_IO.CurrentCell = null;
+            }
+        }
+
+        private void F_IO_Card_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!this.Visible)
+            {
+                //SaveAllEnumSetting();
+                //ReadAllEnumSetting();
+            }
+            else
+            {
+                UpdatePage();
             }
         }
     }
