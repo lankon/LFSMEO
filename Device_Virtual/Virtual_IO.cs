@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -114,6 +116,10 @@ namespace Device_Virtual
 
         public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
+            long targetTicks = Stopwatch.Frequency / 1000_000;//us
+            var sw = Stopwatch.StartNew();
+            while (sw.ElapsedTicks < targetTicks * 40) { }
+
             if (AI_Virtual[port] == null)
                 return 5;
             

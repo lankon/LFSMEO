@@ -125,9 +125,9 @@ namespace RGBTester.Logic
                 for(int i=1; i<values.Length-1; i++)
                 {
                     if(double.TryParse(values[i], out double d_value))
-                        Machine.DIOL.Add_AI_VirtualData(eIONames[i], d_value);
+                        Machine.DIOL.Add_AI_VirtualData(eIONames[i-1], d_value);
                     else
-                        Machine.DIOL.Add_AI_VirtualData(eIONames[i], 99);
+                        Machine.DIOL.Add_AI_VirtualData(eIONames[i-1], 99);
                 }
             }
 

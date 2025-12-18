@@ -66,6 +66,8 @@ namespace RGBTester.Logic
         private int LeftRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_AvgCount);
         private int RightRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_AvgCount);
         private int RepeatTime = 1;                     //取樣平均次數
+        private const int OneTimeTestChannel = 5;       //一次DAQ取樣通道數(硬體)
+        private const int Period_DAQ_Count = 11*1000/40/OneTimeTestChannel;     //一個週期內DAQ取樣次數(硬體)  11ms(90Hz) / 40us(DAQ SP Rate) / 5(通道數)
         private const int H_SigMag = 20;                //HCM訊號放大倍率(硬體)
         private const int L_SigMag = 200;               //LCM訊號放大倍率(硬體)
         private const int LED_SigMag = 20;              //LED訊號放大倍率(硬體)
@@ -73,7 +75,10 @@ namespace RGBTester.Logic
         private const double Rfb_HCM = 0.53;            //High Current Mode阻抗(硬體)
         private const double Rfb_LCM = 5.1;             //Low Current Mode阻抗(硬體)
         private const double Rin = 0.5;                 //輸入阻抗(硬體)
-        private const double LED_Duty = 1;              //LED Duty(硬體)
+        private const double LED_R_Duty = 0.4;          //Red LED Duty(硬體)
+        private const double LED_G_Duty = 0.18;         //Green LED Duty(硬體)
+        private const double LED_B_Duty = 0.12;         //Blue LED Duty(硬體)
+        private double LED_Duty = 1;                    //LED Duty(硬體)
         private double LCM_Temperature;                 //HCM測試完後溫度
         private double HCM_Temperature;                 //LCM測試完後溫度
         private byte Side;                              //LED Board通訊指令(硬體)_Side
@@ -91,6 +96,16 @@ namespace RGBTester.Logic
         private RGBTesterData TesterData_L = new RGBTesterData();
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
+
+        private class AvgData
+        {
+            public double Avg_Vin;
+            public double Avg_Iin;
+            public double Avg_Vled;
+            public double Avg_Vf;
+            public double Avg_Iled;
+        }
+
         public enum WORK
         {
             NONE,
@@ -142,16 +157,19 @@ namespace RGBTester.Logic
             if (TestColor == "R")
             {
                 Color = Deps.LightEngine.LED_R;
+                LED_Duty = LED_R_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_R : EIOName.Right_VLED_R;
             }
             else if(TestColor == "G")
             {
                 Color = Deps.LightEngine.LED_G;
+                LED_Duty = LED_G_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_G : EIOName.Right_VLED_G;
             }
             else if(TestColor == "B")
             {
                 Color = Deps.LightEngine.LED_B;
+                LED_Duty = LED_B_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_B : EIOName.Right_VLED_B;
             }
 
@@ -163,6 +181,36 @@ namespace RGBTester.Logic
 
             TotalState_H = qDAC_H.Count;
             TotalState_L = qDAC_L.Count;
+        }
+
+        private AvgData PeriodAvgValueCalculate()
+        {
+            double[] Vin = new double[Period_DAQ_Count];
+            double[] Iin = new double[Period_DAQ_Count];
+            double[] Vled = new double[Period_DAQ_Count];
+            double[] Vf = new double[Period_DAQ_Count];
+            double[] Iled = new double[Period_DAQ_Count];
+
+            for (int i = 0; i < Period_DAQ_Count; i++)
+            {
+                //一次取5個通道有增加或減少的話會影響Period_DAQ_Count
+                Vin[i] = Deps.DIOL.GetAInputStatus(DAQ_Vin);
+                Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_LCM) - CurrentMeasureBias);
+                Vled[i] = Deps.DIOL.GetAInputStatus(DAQ_VLED);
+                Vf[i] = Deps.DIOL.GetAInputStatus(DAQ_Vf);
+                Iled[i] = (Deps.DIOL.GetAInputStatus(DAQ_ILED) - CurrentMeasureBias);
+            }
+
+            double threshold = 0.7;
+            DataFilter dataFilter = new DataFilter();
+            AvgData avgData = new AvgData();
+            avgData.Avg_Vin = dataFilter.GetPreciseHighLevel(Vin.ToList(), threshold, 0.002);
+            avgData.Avg_Iin = dataFilter.GetPreciseHighLevel(Iin.ToList(), threshold);
+            avgData.Avg_Vled = dataFilter.GetPreciseHighLevel(Vled.ToList(), threshold);
+            avgData.Avg_Vf = dataFilter.GetPreciseHighLevel(Vf.ToList(), threshold);
+            avgData.Avg_Iled = dataFilter.GetPreciseHighLevel(Iled.ToList(), threshold);
+
+            return avgData;
         }
         
         protected override void Transition(WORK target)
@@ -336,14 +384,18 @@ namespace RGBTester.Logic
                     {
                         double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
+                        AvgData LowAvgData = new AvgData();
+
                         //取得AI訊號
                         for (int i=0; i<RepeatTime; i++)
                         {
-                            sum_Vin += Deps.DIOL.GetAInputStatus(DAQ_Vin);
-                            sum_Iin += (Deps.DIOL.GetAInputStatus(DAQ_Iin_LCM) - CurrentMeasureBias);
-                            sum_Vled += Deps.DIOL.GetAInputStatus(DAQ_VLED);
-                            sum_Vrgb += Deps.DIOL.GetAInputStatus(DAQ_Vf);
-                            sum_Iled += (Deps.DIOL.GetAInputStatus(DAQ_ILED) - CurrentMeasureBias);
+                            LowAvgData = PeriodAvgValueCalculate();
+
+                            sum_Vin += LowAvgData.Avg_Vin;
+                            sum_Iin += LowAvgData.Avg_Iin;
+                            sum_Vled += LowAvgData.Avg_Vled;
+                            sum_Vrgb += LowAvgData.Avg_Vf;
+                            sum_Iled += LowAvgData.Avg_Iled;
                         }
 
                         TesterData_L.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
@@ -433,14 +485,17 @@ namespace RGBTester.Logic
                     {
                         double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
+                        AvgData HighAvgData = new AvgData();
                         //取得AI訊號
                         for (int i = 0; i < RepeatTime; i++)
                         {
-                            sum_Vin += Deps.DIOL.GetAInputStatus(DAQ_Vin);
-                            sum_Iin += (Deps.DIOL.GetAInputStatus(DAQ_Iin_HCM) - CurrentMeasureBias);
-                            sum_Vled += Deps.DIOL.GetAInputStatus(DAQ_VLED);
-                            sum_Vrgb += Deps.DIOL.GetAInputStatus(DAQ_Vf);
-                            sum_Iled += (Deps.DIOL.GetAInputStatus(DAQ_ILED) - CurrentMeasureBias);
+                            HighAvgData = PeriodAvgValueCalculate();
+
+                            sum_Vin += HighAvgData.Avg_Vin;
+                            sum_Iin += HighAvgData.Avg_Iin;
+                            sum_Vled += HighAvgData.Avg_Vled;
+                            sum_Vrgb += HighAvgData.Avg_Vf;
+                            sum_Iled += HighAvgData.Avg_Iled;
                         }
 
                         TesterData_H.CycleTime.Add(Tool.GetTime(CycleTime, "us"));

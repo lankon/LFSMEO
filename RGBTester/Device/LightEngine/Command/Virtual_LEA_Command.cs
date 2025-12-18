@@ -73,7 +73,7 @@ namespace RGBTester.Device
         }
         public bool SetLed_CurrentMode(string mode)
         {
-            Tool.SaveLogToFile($"Set LED Board {mode}", level: "DBG");
+            //Tool.SaveLogToFile($"Set LED Board {mode}", level: "DBG");
             return true;
         }
 
@@ -145,7 +145,7 @@ namespace RGBTester.Device
         private bool SendCommand(byte[] packet)
         {
             string command = string.Join(" ", packet.Select(b => $"0x{b:X2}"));
-            Tool.SaveLogToFile(command);
+            //Tool.SaveLogToFile(command);
 
             return true;
         }
