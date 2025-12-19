@@ -126,34 +126,6 @@ namespace ToolFunction
 
         public static ILogger CreateLog(String Name = "History\\Log_", String Type = ".log")
         {
-            //String path;
-            //path = System.IO.Directory.GetCurrentDirectory();
-            //path = path + "\\" + Name;
-            //path += Type;
-
-            //if (Name == "History\\Log_")
-            //{
-            //    Log.Logger = new LoggerConfiguration()
-            //    .MinimumLevel.Debug()
-            //    .WriteTo.Async(a => a.File(path: path,
-            //                               rollingInterval: RollingInterval.Day,
-            //                               outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            //                   ).CreateLogger();
-
-            //    return Log.Logger;
-            //}
-            //else
-            //{
-            //    var logger = new LoggerConfiguration()
-            //    .MinimumLevel.Debug()
-            //    .WriteTo.Async(a => a.File(path: path,
-            //                               rollingInterval: RollingInterval.Day,
-            //                               outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            //                   ).CreateLogger();
-
-            //    return logger;
-            //}
-
             String path;
             path = System.IO.Directory.GetCurrentDirectory();
             path = path + "\\" + Name;

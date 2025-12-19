@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 using ToolFunction;
 
-namespace DeviceCore
+namespace DeviceFunction
 {
     public class F_MotionSettingLogic
     {

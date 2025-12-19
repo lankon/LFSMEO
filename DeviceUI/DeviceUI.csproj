@@ -139,6 +139,10 @@
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DeviceFunction\DeviceFunction.csproj">
+      <Project>{8ff1cdcb-02f4-41d7-be1e-69c93e2e9e96}</Project>
+      <Name>DeviceFunction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
       <Name>ToolFunction</Name>

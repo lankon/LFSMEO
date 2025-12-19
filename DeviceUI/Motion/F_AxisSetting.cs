@@ -4,6 +4,8 @@ using ToolFunction;
 using DeviceCore;
 using System.Collections.Generic;
 
+using DeviceFunction;
+
 namespace DeviceUI.Motion
 {
     public partial class F_AxisSetting : Form, IF_AxisSetting
@@ -14,8 +16,8 @@ namespace DeviceUI.Motion
 
             MotionSettingLogic = f_MotionSettingLogic;
 
-            ApplicationSetting.ReadAllRecipe<eMotionSetting>();
-            ApplicationSetting.UpdataRecipeToForm<eMotionSetting>(this);
+            ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
+            ApplicationSetting.UpdataRecipeToForm<eF_AxisSetting>(this);
 
             InitialForm();
         }
@@ -33,7 +35,7 @@ namespace DeviceUI.Motion
         {
             SetHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == 1)
+            //if (ApplicationSetting.Get_Int_Recipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
         }
         #endregion
@@ -41,31 +43,31 @@ namespace DeviceUI.Motion
         #region public function
         public void UpdateParmeter()
         {
-            ApplicationSetting.ReadAllRecipe<eMotionSetting>();
-            ApplicationSetting.UpdataRecipeToForm<eMotionSetting>(this);
+            ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
+            ApplicationSetting.UpdataRecipeToForm<eF_AxisSetting>(this);
         }
         public void SaveAxisParameter()
         {
-            ApplicationSetting.SaveRecipeFromForm<eMotionSetting>(this);
-            ApplicationSetting.ReadAllRecipe<eMotionSetting>();
+            ApplicationSetting.SaveRecipeFromForm<eF_AxisSetting>(this);
+            ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
 
             int num = MotionSettingLogic.GetCurrentBtnNum();
             string set;
 
             Dictionary<string, string> param = new Dictionary<string, string>();
 
-            eMotionSetting[] total_param = new eMotionSetting[]
+            eF_AxisSetting[] total_param = new eF_AxisSetting[]
             {
-                eMotionSetting.Cmbx_AxisType,
-                eMotionSetting.TxtBx_AxisStation,
-                eMotionSetting.Cmbx_AxisUse,
-                eMotionSetting.Cmbx_AxisLimitLogic,
-                eMotionSetting.Cmbx_AxisLimitStopMode,
+                eF_AxisSetting.Cmbx_AxisType,
+                eF_AxisSetting.TxtBx_AxisStation,
+                eF_AxisSetting.Cmbx_AxisUse,
+                eF_AxisSetting.Cmbx_AxisLimitLogic,
+                eF_AxisSetting.Cmbx_AxisLimitStopMode,
             };
 
             for (int i = 0; i < total_param.Length; i++)
             {
-                set = ApplicationSetting.Get_String_Recipe<eMotionSetting>((int)total_param[i]);
+                set = ApplicationSetting.Get_String_Recipe<eF_AxisSetting>((int)total_param[i]);
                 param.Add(total_param[i].ToString(), set);
             }
 

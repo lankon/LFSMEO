@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Function_IO_Card.cs" />
     <Compile Include="Function_Motion_Card.cs" />
+    <Compile Include="F_MotionSettingLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

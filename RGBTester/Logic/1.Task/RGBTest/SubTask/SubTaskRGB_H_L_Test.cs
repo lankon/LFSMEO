@@ -410,7 +410,7 @@ namespace RGBTester.Logic
                         State = WORK.CALCULATE_LOW;
                         goto case WORK.CALCULATE_LOW;
                     }
-                    break;
+                    //break;
                 case WORK.CALCULATE_LOW:
                     {
                         if (qDAC_L.Count == 0)
@@ -510,7 +510,7 @@ namespace RGBTester.Logic
                         State = WORK.CALCULATE_HIGH;
                         goto case WORK.CALCULATE_HIGH;
                     }
-                    break;
+                    //break;
                 case WORK.CALCULATE_HIGH:
                     {
                         if (qDAC_H.Count == 0)

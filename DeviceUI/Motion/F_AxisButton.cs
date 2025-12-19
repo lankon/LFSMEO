@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using ToolFunction;
 using DeviceCore;
+using DeviceFunction;
 
 namespace DeviceUI.Motion
 {
@@ -40,7 +41,7 @@ namespace DeviceUI.Motion
 
             SetHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == 1)
+            //if (ApplicationSetting.Get_Int_Recipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
 
             PnlPartList.Add(Pnl_Part1);

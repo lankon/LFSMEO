@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DeviceCore
 {
-    public enum eMotionSetting
+    public enum eF_AxisSetting
     {
         Cmbx_AxisType,
         TxtBx_AxisStation,

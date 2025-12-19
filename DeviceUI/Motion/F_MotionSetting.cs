@@ -38,12 +38,12 @@ namespace DeviceUI.Motion
         #region private function
         private void InitialForm()
         {
-            ApplicationSetting.ReadAllRecipe<eMotionSetting>();
-            ApplicationSetting.UpdataRecipeToForm<eMotionSetting>(this);
+            ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
+            ApplicationSetting.UpdataRecipeToForm<eF_AxisSetting>(this);
 
             ShowHint();
 
-            //if (ApplicationSetting.Get_Bool_Recipe<eMotionSetting>((int)eMotionSetting.Cmbx_ShowFormName) == true)
+            //if (ApplicationSetting.Get_Bool_Recipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_ShowFormName) == true)
             //    Tool.ShowFormName(this, 1);    //可開選項設定是否顯示
 
         }
@@ -54,7 +54,7 @@ namespace DeviceUI.Motion
         #endregion
 
         #region public function
-        public void DockAxisSetting(Type child_form)
+        private void DockAxisSetting(Type child_form)
         {
             object service = ServiceProvider.GetRequiredService(child_form);
 
@@ -64,7 +64,7 @@ namespace DeviceUI.Motion
                 childForm.Show();
             }
         }
-        public void DockAxisButton(Type child_form)
+        private void DockAxisButton(Type child_form)
         {
             object service = ServiceProvider.GetRequiredService(child_form);
 
@@ -82,9 +82,9 @@ namespace DeviceUI.Motion
             if (!this.Visible)
             {
                 //儲存參數
-                ApplicationSetting.SaveRecipeFromForm<eMotionSetting>(this);
+                ApplicationSetting.SaveRecipeFromForm<eF_AxisSetting>(this);
                 //重新讀取變數值
-                ApplicationSetting.ReadAllRecipe<eMotionSetting>();
+                ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
 
                 //釋放記憶體資源
                 //Tool.ReleaseButtonImages(this);
