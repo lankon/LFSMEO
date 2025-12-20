@@ -97,6 +97,7 @@
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -130,6 +131,7 @@
     <Compile Include="Device\LightEngine\LightEngineFunction.cs" />
     <Compile Include="Device\LightEngine\Command\Z23A_API_Command.cs" />
     <Compile Include="Logic\1.Task\RGBTest\TaskRGBTest.cs" />
+    <Compile Include="Logic\2.FormLogic\F_DAQ_ChartLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_RecipeLogic.cs" />
     <Compile Include="Logic\Algorithm\DataFilter.cs" />
     <Compile Include="Logic\Algorithm\LinearCurveFitting.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Base\IBaseTask.cs" />
     <Compile Include="Device\LightEngine\Command\Virtual_LEA_Command.cs" />
     <Compile Include="Device\LightEngine\Command\GL18Command.cs" />
+    <Compile Include="Logic\Algorithm\RGBTesterFunction.cs" />
     <Compile Include="Logic\WriteFile\RGBTesterDataFile.cs" />
     <Compile Include="Logic\WriteFile\RGBTesterData.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskRGB_H_L_Test.cs" />
@@ -155,6 +158,12 @@
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGBTesterMachine.cs" />
+    <Compile Include="UI\F_DAQ_Chart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_DAQ_Chart.designer.cs">
+      <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\OEM\F_Equipment_Setting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +232,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_DAQ_Chart.resx">
+      <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OEM\F_Equipment_Setting.resx">
       <DependentUpon>F_Equipment_Setting.cs</DependentUpon>

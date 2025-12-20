@@ -247,7 +247,11 @@ namespace RGBTester.UI
 
         private void Btn_Set_DAC_Click(object sender, EventArgs e)
         {
-            StartFormLogic.Set_DAC_Test();
+            Int32.TryParse(TxtBx_DAC_Red.Text, out int dac_r);
+            Int32.TryParse(TxtBx_DAC_Green.Text, out int dac_g);
+            Int32.TryParse(TxtBx_DAC_Blue.Text, out int dac_b);
+
+            StartFormLogic.Set_DAC_Test(dac_r, dac_g, dac_b);
         }
 
         private void Btn_Get_DAC_Click(object sender, EventArgs e)

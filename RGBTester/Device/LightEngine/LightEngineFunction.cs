@@ -62,6 +62,8 @@ namespace RGBTester.Device
                     LED_R = lea.LED_R_LSB;
                     LED_G = lea.LED_G_LSB;
                     LED_B = lea.LED_B_LSB;
+                    LED_RightSide = lea.LED_RightSide;
+                    LED_LeftSide = lea.LED_LeftSide;
                 }
             }
         }

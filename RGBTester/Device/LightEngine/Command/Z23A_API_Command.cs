@@ -33,9 +33,9 @@ namespace RGBTester.Device
 
         public byte LED_RGB_MSB { get; private set; } = 0x00;       //沒有用到
 
-        public byte LED_RightSide{ get; private set; } = 0x00;      //沒有用到
+        public byte LED_RightSide{ get; private set; } = 0x79;      //Z23A沒有左右邊,但流程需要,所以給一個區分左右邊的值      
 
-        public byte LED_LeftSide { get; private set; } = 0x00;      //沒有用到
+        public byte LED_LeftSide { get; private set; } = 0x80;      //Z23A沒有左右邊,但流程需要,所以給一個區分左右邊的值
         #endregion
 
         #region public function

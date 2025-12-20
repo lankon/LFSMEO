@@ -38,6 +38,7 @@ namespace RGBTester
             services.AddSingleton<F_DAQ_SamplingTest>();
             services.AddSingleton<IF_StatusBox, F_StatusBox>();
             services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
+            services.AddSingleton<F_DAQ_Chart>();
 
             //[Form]
             //退出Form後即close掉,要用再new
@@ -50,10 +51,11 @@ namespace RGBTester
             services.AddSingleton<F_MainFormLogic>();
             services.AddSingleton<F_StartFormLogic>();
             services.AddSingleton<F_RecipeLogic>();
+            services.AddSingleton<F_DAQ_ChartLogic>();
 
             //[Logic]
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();
-
+            services.AddSingleton<RGBTesterFunction>();
 
 
             return services;

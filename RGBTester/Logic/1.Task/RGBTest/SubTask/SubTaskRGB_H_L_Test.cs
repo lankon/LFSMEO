@@ -183,7 +183,7 @@ namespace RGBTester.Logic
             TotalState_L = qDAC_L.Count;
         }
 
-        private AvgData PeriodAvgValueCalculate()
+        private AvgData PeriodAvgValueCalculate(string current_mode)
         {
             double[] Vin = new double[Period_DAQ_Count];
             double[] Iin = new double[Period_DAQ_Count];
@@ -195,6 +195,12 @@ namespace RGBTester.Logic
             {
                 //一次取5個通道有增加或減少的話會影響Period_DAQ_Count
                 Vin[i] = Deps.DIOL.GetAInputStatus(DAQ_Vin);
+
+                if(current_mode == "LCM")
+                    Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_LCM) - CurrentMeasureBias);
+                else
+                    Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_HCM) - CurrentMeasureBias);
+
                 Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_LCM) - CurrentMeasureBias);
                 Vled[i] = Deps.DIOL.GetAInputStatus(DAQ_VLED);
                 Vf[i] = Deps.DIOL.GetAInputStatus(DAQ_Vf);
@@ -389,7 +395,7 @@ namespace RGBTester.Logic
                         //取得AI訊號
                         for (int i=0; i<RepeatTime; i++)
                         {
-                            LowAvgData = PeriodAvgValueCalculate();
+                            LowAvgData = PeriodAvgValueCalculate("LCM");
 
                             sum_Vin += LowAvgData.Avg_Vin;
                             sum_Iin += LowAvgData.Avg_Iin;
@@ -489,7 +495,7 @@ namespace RGBTester.Logic
                         //取得AI訊號
                         for (int i = 0; i < RepeatTime; i++)
                         {
-                            HighAvgData = PeriodAvgValueCalculate();
+                            HighAvgData = PeriodAvgValueCalculate("HCM");
 
                             sum_Vin += HighAvgData.Avg_Vin;
                             sum_Iin += HighAvgData.Avg_Iin;

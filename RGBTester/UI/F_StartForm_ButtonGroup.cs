@@ -85,11 +85,13 @@ namespace RGBTester.UI
 
             if (UserPrivilege.AtLeastOEM())
             {
+                Btn_DAQ_Chart.Visible = true;
                 Btn_OEM_Setting.Enabled = true;
             }
             else
             {
                 Btn_OEM_Setting.Enabled = false;
+                Btn_DAQ_Chart.Visible = false;
             }
         }
         #endregion
@@ -167,6 +169,15 @@ namespace RGBTester.UI
             Tool.HideElementOnPanel(Scope.MainPanel);
             Tool.SetForm(Scope.MainPanel, recipe);
             recipe.Show();
+        }
+
+        private void Btn_DAQ_Chart_Click(object sender, EventArgs e)
+        {
+            var chart = ServiceProvider.GetRequiredService<F_DAQ_Chart>();
+
+            Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.SetForm(Scope.MainPanel, chart);
+            chart.Show();
         }
     }
 }
