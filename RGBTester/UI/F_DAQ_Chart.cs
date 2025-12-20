@@ -96,6 +96,8 @@ namespace RGBTester.UI
             chart1.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
             chart1.ChartAreas[0].AxisY.MajorTickMark.Enabled = false;
 
+            chart1.ChartAreas[0].AxisY.CustomLabels.Clear();
+
             var area = chart1.ChartAreas[0];
             // 1. 整體背景設定
             area.BackColor = Color.Black;                          // 繪圖區黑色
@@ -186,8 +188,8 @@ namespace RGBTester.UI
 
             // 加入動態標籤 (顯示該通道實際的最大/最小範圍)
             axisY.CustomLabels.Add(offset - 0.2, offset + 0.2, "0V", 0, LabelMarkStyle.None);
-            axisY.CustomLabels.Add(offset + labelMax - 0.2, offset + labelMax + 0.2, $"+{maxAmp:F1}V", 0, LabelMarkStyle.None);
-            axisY.CustomLabels.Add(offset - labelMax - 0.2, offset - labelMax + 0.2, $"-{maxAmp:F1}V", 0, LabelMarkStyle.None);
+            axisY.CustomLabels.Add(offset + labelMax - 0.2, offset + labelMax + 0.2, $"+{maxAmp:F3}V", 0, LabelMarkStyle.None);
+            axisY.CustomLabels.Add(offset - labelMax - 0.2, offset - labelMax + 0.2, $"-{maxAmp:F3}V", 0, LabelMarkStyle.None);
         }
         private void AddZeroLines()
         {
@@ -240,18 +242,18 @@ namespace RGBTester.UI
             //(double offsetStep, double maxValue) = DAQ_ChartLogic.CalculateOffset(result);
             for (int pt = 0; pt < result.Vin.Length; pt++)
             {
-                chart1.Series[0].Points.AddXY(pt + 1, result.Vin[pt] / result.Vin.Max() + _offsetStep * 0);
-                chart1.Series[1].Points.AddXY(pt + 1, result.Iin[pt] / result.Iin.Max() + _offsetStep * 1);
-                chart1.Series[2].Points.AddXY(pt + 1, result.Vled[pt] / result.Vled.Max() + _offsetStep * 2);
-                chart1.Series[3].Points.AddXY(pt + 1, result.Vf[pt] / result.Vf.Max() + _offsetStep * 3);
-                chart1.Series[4].Points.AddXY(pt + 1, result.Iled[pt] / result.Iled.Max() + _offsetStep * 4);
+                chart1.Series[0].Points.AddXY(pt + 1, result.Vin[pt] / result.Vin.Max(v => Math.Abs(v)) + _offsetStep * 0);
+                chart1.Series[1].Points.AddXY(pt + 1, result.Iin[pt] / result.Iin.Max(v => Math.Abs(v)) + _offsetStep * 1);
+                chart1.Series[2].Points.AddXY(pt + 1, result.Vled[pt] / result.Vled.Max(v => Math.Abs(v)) + _offsetStep * 2);
+                chart1.Series[3].Points.AddXY(pt + 1, result.Vf[pt] / result.Vf.Max(v => Math.Abs(v)) + _offsetStep * 3);
+                chart1.Series[4].Points.AddXY(pt + 1, result.Iled[pt] / result.Iled.Max(v => Math.Abs(v)) + _offsetStep * 4);
             }
-
-            AddYAxisLabels(_offsetStep * 0, result.Vin.Max());
-            AddYAxisLabels(_offsetStep * 1, result.Iin.Max());
-            AddYAxisLabels(_offsetStep * 2, result.Vled.Max());
-            AddYAxisLabels(_offsetStep * 3, result.Vf.Max());
-            AddYAxisLabels(_offsetStep * 4, result.Iled.Max());
+            
+            AddYAxisLabels(_offsetStep * 0, result.Vin.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 1, result.Iin.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 2, result.Vled.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 3, result.Vf.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 4, result.Iled.Max(v => Math.Abs(v)));
         }
         #endregion
 
@@ -291,6 +293,8 @@ namespace RGBTester.UI
 
         private void Btn_CaptureData_Click(object sender, EventArgs e)
         {
+            SetupChart();
+
             ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
             string current_mode = Select_HL_Mode.Text;
             Int32.TryParse(DAC_Value.Text, out int vaule); 

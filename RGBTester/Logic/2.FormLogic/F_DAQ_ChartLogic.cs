@@ -57,7 +57,7 @@ namespace RGBTester.Logic
                 return;
             }
 
-            if(!lea.SetLed_DAC(test_side, color, value))
+            if(!lea.SetLed_DAC(color, test_side, value))
             {
                 status_box.ShowMessage("Set Light Engine DAC Fail");
                 return;
@@ -83,13 +83,13 @@ namespace RGBTester.Logic
                 Vin[i] = RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Vin);
 
                 if(test_mode == "HCM")
-                    Iin[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Iin_HCM) - hw_param.CurrentMeasureBias);
+                    Iin[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Iin_HCM));
                 else if(test_mode == "LCM")
-                    Iin[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Iin_LCM) - hw_param.CurrentMeasureBias);
+                    Iin[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Iin_LCM));
                 
                 Vled[i] = RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_VLED);
                 Vf[i] = RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Vf);
-                Iled[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_ILED) - hw_param.CurrentMeasureBias);
+                Iled[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_ILED));
             }
 
             return new DAQDataResult
