@@ -21,6 +21,15 @@ namespace RGBTester.Logic
         IServiceProvider ServiceProvider;
         #endregion
 
+        public class AvgData
+        {
+            public double Avg_Vin;
+            public double Avg_Iin;
+            public double Avg_Vled;
+            public double Avg_Vf;
+            public double Avg_Iled;
+        }
+
         public class TestHardwareParam
         {
             public int DAQ_SampleRate { get { return 40; } }            //單位us, DAQ取樣頻率25KHz

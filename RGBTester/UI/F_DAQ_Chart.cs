@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 using ToolFunction;
+using static RGBTester.Logic.F_DAQ_ChartLogic;
 
 namespace RGBTester.UI
 {
@@ -136,6 +137,7 @@ namespace RGBTester.UI
             // 5. 調整對齊位置（例如放在圖表右上角內部）
             legend.Docking = Docking.Top; // 或者使用 Docking.InsideChartArea
             legend.Alignment = StringAlignment.Far; // 靠右
+            legend.LegendStyle = LegendStyle.Row;    // 這行很重要，讓圖例橫向排列
 
             // 2. 建立 5 個通道 (Series)
             Color[] colors = { Color.Red, Color.Blue, Color.Green, Color.Orange, Color.Purple };
@@ -153,43 +155,44 @@ namespace RGBTester.UI
             //AddYAxisLabels();
             //AddZeroLines();
         }
-        private void AddYAxisLabels()
-        {
-            var axisY = chart1.ChartAreas[0].AxisY;
-            axisY.CustomLabels.Clear(); // 清除舊標籤
-
-            for (int i = 0; i < 5; i++)
-            {
-                double center = i * _offsetStep; // 這是該通道的 0V 位置
-
-                // 1. 在中心點加入 "0V" 標籤
-                // Add 參數：(起始值, 結束值, 文字, 列數, 標籤樣式)
-                axisY.CustomLabels.Add(center - 1, center + 1, "0V", 0, LabelMarkStyle.None);
-
-                // 2. (選配) 加入通道名稱，讓它顯示在 0V 旁邊
-                //axisY.CustomLabels.Add(center - 4, center - 2, $"CH{i + 1}", 1, LabelMarkStyle.None);
-
-                // 3. (選配) 加入邊界標籤
-                axisY.CustomLabels.Add(center + 5 - 1, center + 5 + 1, "+5V", 0, LabelMarkStyle.None);
-                axisY.CustomLabels.Add(center - 5 - 1, center - 5 + 1, "-5V", 0, LabelMarkStyle.None);
-            }
-
-            // 重新啟用標籤顯示
-            axisY.LabelStyle.Enabled = true;
-        }
         private void AddYAxisLabels(double offset, double maxAmp)
         {
             var axisY = chart1.ChartAreas[0].AxisY;
-            //axisY.CustomLabels.Clear(); // 清除舊標籤
             double labelMax = 1;
-
-
-            //axisY.CustomLabels.Add(1 - 0.2, 1 + 0.2, "5V", 0, LabelMarkStyle.None);
 
             // 加入動態標籤 (顯示該通道實際的最大/最小範圍)
             axisY.CustomLabels.Add(offset - 0.2, offset + 0.2, "0V", 0, LabelMarkStyle.None);
             axisY.CustomLabels.Add(offset + labelMax - 0.2, offset + labelMax + 0.2, $"+{maxAmp:F3}V", 0, LabelMarkStyle.None);
             axisY.CustomLabels.Add(offset - labelMax - 0.2, offset - labelMax + 0.2, $"-{maxAmp:F3}V", 0, LabelMarkStyle.None);
+        }
+        private void UpdateChart(DAQDataResult result)
+        {
+            for (int pt = 0; pt < result.Vin.Length; pt++)
+            {
+                chart1.Series[0].Points.AddXY(pt + 1, result.Vin[pt] / result.Vin.Max(v => Math.Abs(v)) + _offsetStep * 0);
+                chart1.Series[1].Points.AddXY(pt + 1, result.Iin[pt] / result.Iin.Max(v => Math.Abs(v)) + _offsetStep * 1);
+                chart1.Series[2].Points.AddXY(pt + 1, result.Vled[pt] / result.Vled.Max(v => Math.Abs(v)) + _offsetStep * 2);
+                chart1.Series[3].Points.AddXY(pt + 1, result.Vf[pt] / result.Vf.Max(v => Math.Abs(v)) + _offsetStep * 3);
+                chart1.Series[4].Points.AddXY(pt + 1, result.Iled[pt] / result.Iled.Max(v => Math.Abs(v)) + _offsetStep * 4);
+            }
+
+            AddYAxisLabels(_offsetStep * 0, result.Vin.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 1, result.Iin.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 2, result.Vled.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 3, result.Vf.Max(v => Math.Abs(v)));
+            AddYAxisLabels(_offsetStep * 4, result.Iled.Max(v => Math.Abs(v)));
+
+            UpdateAvgResult(result);
+        }
+        private void UpdateAvgResult(DAQDataResult result)
+        {
+            var avgFunc = DAQ_ChartLogic.CalculateCaptureDataAvg(result);
+
+            Labl_Result1.Text = avgFunc.Avg_Vin.ToString("F3");
+            Labl_Result2.Text = avgFunc.Avg_Iin.ToString("F3");
+            Labl_Result3.Text = avgFunc.Avg_Vled.ToString("F3");
+            Labl_Result4.Text = avgFunc.Avg_Vf.ToString("F3");
+            Labl_Result5.Text = avgFunc.Avg_Iled.ToString("F3");
         }
         private void AddZeroLines()
         {
@@ -237,23 +240,29 @@ namespace RGBTester.UI
             chart1.ChartAreas[0].AxisX.Minimum = chart1.Series[0].Points[0].XValue;
             chart1.ChartAreas[0].AxisX.Maximum = _dataCount;
         }
-        private void UpdateChart(F_DAQ_ChartLogic.DAQDataResult result)
+        private void AddYAxisLabels()
         {
-            //(double offsetStep, double maxValue) = DAQ_ChartLogic.CalculateOffset(result);
-            for (int pt = 0; pt < result.Vin.Length; pt++)
+            var axisY = chart1.ChartAreas[0].AxisY;
+            axisY.CustomLabels.Clear(); // 清除舊標籤
+
+            for (int i = 0; i < 5; i++)
             {
-                chart1.Series[0].Points.AddXY(pt + 1, result.Vin[pt] / result.Vin.Max(v => Math.Abs(v)) + _offsetStep * 0);
-                chart1.Series[1].Points.AddXY(pt + 1, result.Iin[pt] / result.Iin.Max(v => Math.Abs(v)) + _offsetStep * 1);
-                chart1.Series[2].Points.AddXY(pt + 1, result.Vled[pt] / result.Vled.Max(v => Math.Abs(v)) + _offsetStep * 2);
-                chart1.Series[3].Points.AddXY(pt + 1, result.Vf[pt] / result.Vf.Max(v => Math.Abs(v)) + _offsetStep * 3);
-                chart1.Series[4].Points.AddXY(pt + 1, result.Iled[pt] / result.Iled.Max(v => Math.Abs(v)) + _offsetStep * 4);
+                double center = i * _offsetStep; // 這是該通道的 0V 位置
+
+                // 1. 在中心點加入 "0V" 標籤
+                // Add 參數：(起始值, 結束值, 文字, 列數, 標籤樣式)
+                axisY.CustomLabels.Add(center - 1, center + 1, "0V", 0, LabelMarkStyle.None);
+
+                // 2. (選配) 加入通道名稱，讓它顯示在 0V 旁邊
+                //axisY.CustomLabels.Add(center - 4, center - 2, $"CH{i + 1}", 1, LabelMarkStyle.None);
+
+                // 3. (選配) 加入邊界標籤
+                axisY.CustomLabels.Add(center + 5 - 1, center + 5 + 1, "+5V", 0, LabelMarkStyle.None);
+                axisY.CustomLabels.Add(center - 5 - 1, center - 5 + 1, "-5V", 0, LabelMarkStyle.None);
             }
-            
-            AddYAxisLabels(_offsetStep * 0, result.Vin.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 1, result.Iin.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 2, result.Vled.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 3, result.Vf.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 4, result.Iled.Max(v => Math.Abs(v)));
+
+            // 重新啟用標籤顯示
+            axisY.LabelStyle.Enabled = true;
         }
         #endregion
 
@@ -315,6 +324,20 @@ namespace RGBTester.UI
             DAQ_ChartLogic.SetLedCondition(lea_side, lea_color, vaule, current_mode);
             F_DAQ_ChartLogic.DAQDataResult data = DAQ_ChartLogic.Get_DAQ_Data(lea_side, lea_color, current_mode);
             UpdateChart(data);
+        }
+
+        private void Btn_SaveData_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog dlg = new SaveFileDialog())
+            {
+                dlg.Filter = "PNG Image|*.png";
+                dlg.Title = "儲存 Chart 圖片";
+                dlg.FileName = $"DAQChart_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    chart1.SaveImage(dlg.FileName, ChartImageFormat.Png);
+                }
+            }
         }
     }
 }

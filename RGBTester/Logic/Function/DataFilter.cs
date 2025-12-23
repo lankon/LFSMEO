@@ -18,6 +18,9 @@ namespace RGBTester.Logic
 
             List<double> dataAboveThreshold = data.Where(v => v > data.Max()* Threshold_Ratio).ToList();
 
+            if(dataAboveThreshold.Count == 0)
+                return data.Max();
+
             // 1. 找出數據範圍
             double min = dataAboveThreshold.Min();
             double max = dataAboveThreshold.Max();
@@ -26,7 +29,7 @@ namespace RGBTester.Logic
             int binCount = 50;
             int[] bins = new int[binCount];
             double binSize = (max - min) / binCount;
-            double tolerance = (max - min) * 0.1;
+            //double tolerance = (max - min) * 0.1;
 
             if (binSize == 0) return min; // 數據全部一樣
 
@@ -35,7 +38,7 @@ namespace RGBTester.Logic
                 if (binSize < Resolution)
                 {
                     binSize = Resolution;
-                    tolerance = tolerance * 3;
+                    //tolerance = Resolution;
                 }
             }
 
@@ -54,8 +57,11 @@ namespace RGBTester.Logic
             double mostFrequentValue = min + (maxBinIndex * binSize) + (binSize / 2);
 
             var filteredData = dataAboveThreshold.Where(v =>
-                Math.Abs(v - mostFrequentValue) < tolerance
+                Math.Abs(v - mostFrequentValue) < mostFrequentValue*0.01
             ).ToList();
+
+            if(filteredData.Count == 0)
+                return mostFrequentValue;
 
             return filteredData.Average();
         }

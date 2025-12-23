@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RGBTester.Base;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -20,8 +21,6 @@ namespace RGBTester.Logic
         }
 
         #region parameter define
-        IF_MainForm MainForm;
-        IBaseMainTask MainTask;
         IRGBTesterMachine RGBTesterMachine;
         IServiceProvider ServiceProvider;
 
@@ -34,18 +33,6 @@ namespace RGBTester.Logic
             public double[] Iled { get; set; }
         }
         #endregion
-
-        public void ReadAllSetting()
-        {
-            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
-            ApplicationSetting.ReadAllRecipe<eF_Recipe>();
-
-            Tool.SaveLogToFile("Load Recipe File", level: "INF");
-            var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
-            string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
-            recipe.ReadRecipe(cur_recipe_name);
-        }
-
         public void SetLedCondition(byte test_side, byte color, int value, string test_mode)
         {
             ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
@@ -88,11 +75,11 @@ namespace RGBTester.Logic
                     Iin[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Iin_LCM));
                 
                 Vled[i] = RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_VLED);
-                Vf[i] = RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Vf);
+                Vf[i] = Vled[i] - RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Vf);
                 Iled[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_ILED));
             }
 
-            return new DAQDataResult
+            DAQDataResult result = new DAQDataResult
             {
                 Vin = Vin,
                 Iin = Iin,
@@ -100,24 +87,101 @@ namespace RGBTester.Logic
                 Vf = Vf,
                 Iled = Iled
             };
+
+            Save_DAQ_Data(result, $"{AppDomain.CurrentDomain.BaseDirectory}\\Result\\DAQData_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
+            return result;
         }
 
-        //public (double,double) CalculateOffset(DAQDataResult data)
+        public void Save_DAQ_Data(DAQDataResult data, string file_path)
+        {
+            List<string> lines = new List<string>();
+            lines.Add("Index,Vin,Iin,Vled,Vf,Iled");
+            for (int i = 0; i < data.Vin.Length; i++)
+            {
+                string line = $"{i},{data.Vin[i]},{data.Iin[i]},{data.Vled[i]},{data.Vf[i]},{data.Iled[i]}";
+                lines.Add(line);
+            }
+            File.WriteAllLines(file_path, lines);
+        }
+
+        /// <summary>
+        /// 測試篩選資料結果
+        /// </summary>
+        /// <returns></returns>
+        public RGBTesterFunction.AvgData CalculateCaptureDataAvg(DAQDataResult data)
+        {
+            DataFilter dataFilter = new DataFilter();
+
+            double Vin_value = dataFilter.GetPreciseHighLevel(data.Vin.ToList(), 0.95, 0.002);
+            double Iin_value = dataFilter.GetPreciseHighLevel(data.Iin.ToList(), 0.95, 0.002);
+            double Vled_value = dataFilter.GetPreciseHighLevel(data.Vled.ToList(), 0.95, 0.002);
+            double Vf_value = dataFilter.GetPreciseHighLevel(data.Vf.ToList(), 0.95, 0.002);
+            double Iled_value = dataFilter.GetPreciseHighLevel(data.Iled.ToList(), 0.95, 0.002);
+
+            RGBTesterFunction.AvgData avgData = new RGBTesterFunction.AvgData
+            {
+                Avg_Vin = Vin_value,
+                Avg_Iin = Iin_value,
+                Avg_Vled = Vled_value,
+                Avg_Vf = Vf_value,
+                Avg_Iled = Iled_value
+            };
+
+            return avgData;
+        }
+
+
+        //public RGBTesterFunction.AvgData CalculateCaptureDataAvg()
         //{
-        //    List<double> max_value = new List<double>();
+        //    string filePath = AppDomain.CurrentDomain.BaseDirectory + "\\Setting\\TestData.csv";
 
-        //    max_value.Add(data.Vin.Max());
-        //    max_value.Add(data.Vin.Max());
-        //    max_value.Add(data.Vled.Max());
-        //    max_value.Add(data.Vf.Max());
-        //    max_value.Add(data.Iled.Max());
-        //    double maxAmp = max_value.Max();
+        //    if (!File.Exists(filePath))
+        //        return -1;
 
-        //    if (maxAmp < 0.1) maxAmp = 0.5;
+        //    DataFilter dataFilter = new DataFilter();
+        //    List<double>[] data_list = new List<double>[5];
+        //    for (int i = 0; i < data_list.Length; i++)
+        //    {
+        //        data_list[i] = new List<double>();
+        //    }
 
-        //    double offsetStep = maxAmp * 2.2;   //各通道高度offset
+        //    string[] lines = File.ReadAllLines(filePath);
 
-        //    return (offsetStep,maxAmp);
+        //    IEnumerable<string> dataLines = lines.Skip(1);
+
+        //    foreach (string line in dataLines)
+        //    {
+        //        // 如果是空行或無效行，則跳過
+        //        if (string.IsNullOrWhiteSpace(line)) continue;
+
+        //        // 使用逗號分隔符號分割字串
+        //        string[] values = line.Split(',');
+
+        //        if (values.Length < 2) continue; // 確保至少有 DAC 索引和一個通道值
+
+        //        data_list[0].Add(double.Parse(values[1]));
+        //        data_list[1].Add(double.Parse(values[2]));
+        //        data_list[2].Add(double.Parse(values[3]));
+        //        data_list[3].Add(double.Parse(values[4]));
+        //        data_list[4].Add(double.Parse(values[5]));
+        //    }
+
+        //    double Vin_value = dataFilter.GetPreciseHighLevel(data_list[0].ToList(), 0.95, 0.002);
+        //    double Iin_value = dataFilter.GetPreciseHighLevel(data_list[1].ToList(), 0.95, 0.002);
+        //    double Vled_value = dataFilter.GetPreciseHighLevel(data_list[2].ToList(), 0.95, 0.002);
+        //    double Vf_value = dataFilter.GetPreciseHighLevel(data_list[3].ToList(), 0.95, 0.002);
+        //    double Iled_value = dataFilter.GetPreciseHighLevel(data_list[4].ToList(), 0.95, 0.002);
+
+        //    RGBTesterFunction.AvgData avgData = new RGBTesterFunction.AvgData
+        //    {
+        //        Avg_Vin = Vin_value,
+        //        Avg_Iin = Iin_value,
+        //        Avg_Vled = Vled_value,
+        //        Avg_Vf = Vf_value,
+        //        Avg_Iled = Iled_value
+        //    };
+
+        //    return avgData;
         //}
     }
 }
