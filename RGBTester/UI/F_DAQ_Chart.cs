@@ -29,10 +29,10 @@ namespace RGBTester.UI
         }
 
         #region parameter define
-        private int _maxPoints = 50; // 橫軸顯示的點數
-        private int _dataCount = 0;  // 目前累計的點數
-        private double _offsetStep = 3; // 每個通道錯開的距離
-        private Random _random = new Random();
+        private int _maxPoints = 50;        // 橫軸顯示的點數
+        private int _dataCount = 0;         // 目前累計的點數
+        private double visualScale = 0.9;   // 視覺放大倍率
+        private double _offsetStep = 3;     // 每個通道錯開的距離
         private F_DAQ_ChartLogic DAQ_ChartLogic;
         private IServiceProvider ServiceProvider;
         #endregion
@@ -151,39 +151,55 @@ namespace RGBTester.UI
                 series.Color = colors[i];
                 chart1.Series.Add(series);
             }
-
-            //AddYAxisLabels();
-            //AddZeroLines();
         }
-        private void AddYAxisLabels(double offset, double maxAmp)
-        {
-            var axisY = chart1.ChartAreas[0].AxisY;
-            double labelMax = 1;
-
-            // 加入動態標籤 (顯示該通道實際的最大/最小範圍)
-            axisY.CustomLabels.Add(offset - 0.2, offset + 0.2, "0V", 0, LabelMarkStyle.None);
-            axisY.CustomLabels.Add(offset + labelMax - 0.2, offset + labelMax + 0.2, $"+{maxAmp:F3}V", 0, LabelMarkStyle.None);
-            axisY.CustomLabels.Add(offset - labelMax - 0.2, offset - labelMax + 0.2, $"-{maxAmp:F3}V", 0, LabelMarkStyle.None);
-        }
+        
         private void UpdateChart(DAQDataResult result)
         {
-            for (int pt = 0; pt < result.Vin.Length; pt++)
-            {
-                chart1.Series[0].Points.AddXY(pt + 1, result.Vin[pt] / result.Vin.Max(v => Math.Abs(v)) + _offsetStep * 0);
-                chart1.Series[1].Points.AddXY(pt + 1, result.Iin[pt] / result.Iin.Max(v => Math.Abs(v)) + _offsetStep * 1);
-                chart1.Series[2].Points.AddXY(pt + 1, result.Vled[pt] / result.Vled.Max(v => Math.Abs(v)) + _offsetStep * 2);
-                chart1.Series[3].Points.AddXY(pt + 1, result.Vf[pt] / result.Vf.Max(v => Math.Abs(v)) + _offsetStep * 3);
-                chart1.Series[4].Points.AddXY(pt + 1, result.Iled[pt] / result.Iled.Max(v => Math.Abs(v)) + _offsetStep * 4);
-            }
-
-            AddYAxisLabels(_offsetStep * 0, result.Vin.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 1, result.Iin.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 2, result.Vled.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 3, result.Vf.Max(v => Math.Abs(v)));
-            AddYAxisLabels(_offsetStep * 4, result.Iled.Max(v => Math.Abs(v)));
+            ProcessChannel(0, result.Vin);
+            ProcessChannel(1, result.Iin);
+            ProcessChannel(2, result.Vled);
+            ProcessChannel(3, result.Vf);
+            ProcessChannel(4, result.Iled);
 
             UpdateAvgResult(result);
         }
+
+        private void AddYAxisLabels(double offset, double maxAmp, double minAmp, double midAmp)
+        {
+            var axisY = chart1.ChartAreas[0].AxisY;
+
+            axisY.CustomLabels.Add(offset - 0.2, offset + 0.2, $"{midAmp:F3}", 0, LabelMarkStyle.None);
+            axisY.CustomLabels.Add(offset + visualScale - 0.2, offset + visualScale + 0.2, $"{maxAmp:F3}", 0, LabelMarkStyle.None);
+            axisY.CustomLabels.Add(offset - visualScale - 0.2, offset - visualScale + 0.2, $"{minAmp:F3}", 0, LabelMarkStyle.None);
+        }
+
+        private void ProcessChannel(int channelIndex, double[] data)
+        {
+            if (data == null || data.Length == 0) return;
+
+            double minVal = data.Min();
+            double maxVal = data.Max();
+            double range = maxVal - minVal;
+
+            double offset = _offsetStep * channelIndex;
+
+            // 設定一個最小顯示範圍，避免過度放大雜訊
+            double displayRange = Math.Max(range, 0.01);
+            double midVal = (maxVal + minVal) / 2.0;
+
+            for (int pt = 0; pt < data.Length; pt++)
+            {
+                // 核心公式： ( (數值 - 中心值) / (範圍/2) ) * 視覺縮放 + 通道偏移
+                // 這會把波形強行拉開，以 midVal 為中心上下震盪
+                double normalizedVal = ((data[pt] - midVal) / (displayRange / 2.0)) * visualScale;
+
+                // 加上通道偏移量
+                chart1.Series[channelIndex].Points.AddXY(pt + 1, normalizedVal + offset);
+            }
+
+            AddYAxisLabels(offset, maxVal, minVal, midVal);
+        }
+
         private void UpdateAvgResult(DAQDataResult result)
         {
             var avgFunc = DAQ_ChartLogic.CalculateCaptureDataAvg(result);
