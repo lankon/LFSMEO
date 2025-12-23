@@ -155,6 +155,8 @@ namespace RGBTester.UI
         
         private void UpdateChart(DAQDataResult result)
         {
+            SetupChart();
+
             ProcessChannel(0, result.Vin);
             ProcessChannel(1, result.Iin);
             ProcessChannel(2, result.Vled);
