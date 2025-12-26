@@ -152,6 +152,7 @@ namespace RGBTester.UI
         {
             bool enable = UserLevel.AtLeastEng();
             bool enable_oem = UserLevel.AtLeastOEM();
+            bool IsLeft = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_TestMode) == 0;
 
             Btn_SingleTest.Enabled = enable;
             Pnl_HighLowMode.Enabled = enable;
@@ -166,6 +167,8 @@ namespace RGBTester.UI
             TxtBx_Right_AvgCount.Enabled = enable;
             Pnl_OEM_Test.Visible = enable_oem;
             LyPnl_ProductType.Visible = enable_oem;
+            TxtBx_Left_SN.Enabled = IsLeft || ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_TestMode) == 2;
+            TxtBx_Right_SN.Enabled = !IsLeft || ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_TestMode) == 2;
 
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
@@ -261,6 +264,13 @@ namespace RGBTester.UI
             TxtBx_DAC_Red.Text = res[0].ToString();
             TxtBx_DAC_Green.Text = res[1].ToString();
             TxtBx_DAC_Blue.Text = res[2].ToString();
+        }
+
+        private void Cmbx_TestMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool IsLeft = Cmbx_TestMode.SelectedIndex == 0;
+            TxtBx_Left_SN.Enabled = IsLeft || Cmbx_TestMode.SelectedIndex == 2;
+            TxtBx_Right_SN.Enabled = !IsLeft || Cmbx_TestMode.SelectedIndex == 2;
         }
     }
 }

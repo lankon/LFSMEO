@@ -77,7 +77,7 @@ namespace RGBTester.Logic
                     Calibration = "Calibration";
             }
 
-            file_name = $"\\Result\\Z23A_LEDIV_{Side}_{Color}_{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
+            file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_{Side}_{Color}_{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
 
             if (describe == "Left_R")
                 LeftRedFile = Tool.CreateFile(file_name, ".csv", false);
@@ -93,12 +93,12 @@ namespace RGBTester.Logic
                 RightBlueFile = Tool.CreateFile(file_name, ".csv", false);
             else if(describe == "Left_Calibration")
             {
-                file_name = $"\\Result\\Z23A_LEDIV_L_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
+                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_L_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
                 LeftCalibrationFile = Tool.CreateFile(file_name, ".csv", false);
             }
             else if (describe == "Right_Calibration")
             {
-                file_name = $"\\Result\\Z23A_LEDIV_R_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
+                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_R_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
                 RightCalibrationFile = Tool.CreateFile(file_name, ".csv", false);
             }
                 

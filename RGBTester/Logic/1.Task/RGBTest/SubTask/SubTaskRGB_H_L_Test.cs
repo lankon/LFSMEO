@@ -68,8 +68,8 @@ namespace RGBTester.Logic
         private int RepeatTime = 1;                     //取樣平均次數
         private int Period_DAQ_Count = 0;               //一個週期內DAQ取樣次數
         private double LED_Duty = 1;                    //LED Duty(硬體)
-        private double LCM_Temperature;                 //HCM測試完後溫度
-        private double HCM_Temperature;                 //LCM測試完後溫度
+        //private double LCM_Temperature;                 //HCM測試完後溫度
+        //private double HCM_Temperature;                 //LCM測試完後溫度
         private byte Side;                              //LED Board通訊指令(硬體)_Side
         private byte Color;                             //LED Board通訊指令(硬體)_Color
         private long CycleTime;                         //每筆DAC花費時間
@@ -394,6 +394,7 @@ namespace RGBTester.Logic
                             sum_Iled += LowAvgData.Avg_Iled;
                         }
 
+                        TesterData_L.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
                         TesterData_L.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_L.Vin.Add(sum_Vin / RepeatTime);
@@ -421,8 +422,6 @@ namespace RGBTester.Logic
                                 else
                                     TesterData_L.Eff.Add(TesterData_L.Pled[i] / TesterData_L.Pin[i]);
                             }
-
-                            LCM_Temperature = double.Parse(Deps.LightEngine.GetTemperature());
 
                             LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), TesterData_L.Iled.ToArray());
 
@@ -494,6 +493,7 @@ namespace RGBTester.Logic
                             sum_Iled += HighAvgData.Avg_Iled;
                         }
 
+                        TesterData_H.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
                         TesterData_H.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_H.Vin.Add(sum_Vin / RepeatTime);
@@ -522,7 +522,7 @@ namespace RGBTester.Logic
                                     TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
                             }
 
-                            HCM_Temperature = double.Parse(Deps.LightEngine.GetTemperature());
+                            
 
                             LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
 
@@ -570,7 +570,7 @@ namespace RGBTester.Logic
                                 Deps.File.WriteFile($",{TesterData_L.CycleTime[i] + TesterData_H.CycleTime[i]},8888,{log_name},", Type, false);
                                 Deps.File.WriteTestResult(TesterData_H.DACpoint[i], TesterData_H.Vin[i], TesterData_H.Iin[i],
                                                             TesterData_H.Pin[i], TesterData_H.Vf[i], TesterData_H.Iled[i],
-                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], HCM_Temperature,
+                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], TesterData_H.Temperature[i],
                                                             LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
                                                             LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
 
@@ -578,7 +578,7 @@ namespace RGBTester.Logic
 
                                 Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
                                                             TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
-                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], LCM_Temperature,
+                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], TesterData_L.Temperature[i],
                                                             LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
                                                             LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
                             }
@@ -588,7 +588,7 @@ namespace RGBTester.Logic
 
                                 Deps.File.WriteTestResult(TesterData_H.DACpoint[i], TesterData_H.Vin[i], TesterData_H.Iin[i],
                                                             TesterData_H.Pin[i], TesterData_H.Vf[i], TesterData_H.Iled[i],
-                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], HCM_Temperature,
+                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], TesterData_H.Temperature[i],
                                                             LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
                                                             LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
 
@@ -613,7 +613,7 @@ namespace RGBTester.Logic
 
                                 Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
                                                             TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
-                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], LCM_Temperature,
+                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], TesterData_L.Temperature[i],
                                                             LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
                                                             LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
                             }

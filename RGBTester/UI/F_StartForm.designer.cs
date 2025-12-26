@@ -115,8 +115,8 @@ namespace RGBTester.UI
             this.TxtBx_Right_SN = new System.Windows.Forms.TextBox();
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
             this.Pnl_OEM_Test = new System.Windows.Forms.Panel();
-            this.Btn_Set_DAC = new System.Windows.Forms.Button();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.Btn_Set_DAC = new System.Windows.Forms.Button();
             this.TxtBx_DAC_Red = new System.Windows.Forms.TextBox();
             this.TxtBx_DAC_Blue = new System.Windows.Forms.TextBox();
             this.label47 = new System.Windows.Forms.Label();
@@ -1080,18 +1080,6 @@ namespace RGBTester.UI
             this.Pnl_OEM_Test.TabIndex = 9;
             this.Pnl_OEM_Test.Visible = false;
             // 
-            // Btn_Set_DAC
-            // 
-            this.Btn_Set_DAC.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Set_DAC.Location = new System.Drawing.Point(298, 3);
-            this.Btn_Set_DAC.Name = "Btn_Set_DAC";
-            this.tableLayoutPanel8.SetRowSpan(this.Btn_Set_DAC, 2);
-            this.Btn_Set_DAC.Size = new System.Drawing.Size(63, 67);
-            this.Btn_Set_DAC.TabIndex = 10;
-            this.Btn_Set_DAC.Text = "Set DAC";
-            this.Btn_Set_DAC.UseVisualStyleBackColor = true;
-            this.Btn_Set_DAC.Click += new System.EventHandler(this.Btn_Set_DAC_Click);
-            // 
             // tableLayoutPanel8
             // 
             this.tableLayoutPanel8.ColumnCount = 5;
@@ -1116,6 +1104,18 @@ namespace RGBTester.UI
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(364, 73);
             this.tableLayoutPanel8.TabIndex = 6;
+            // 
+            // Btn_Set_DAC
+            // 
+            this.Btn_Set_DAC.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Set_DAC.Location = new System.Drawing.Point(298, 3);
+            this.Btn_Set_DAC.Name = "Btn_Set_DAC";
+            this.tableLayoutPanel8.SetRowSpan(this.Btn_Set_DAC, 2);
+            this.Btn_Set_DAC.Size = new System.Drawing.Size(63, 67);
+            this.Btn_Set_DAC.TabIndex = 10;
+            this.Btn_Set_DAC.Text = "Set DAC";
+            this.Btn_Set_DAC.UseVisualStyleBackColor = true;
+            this.Btn_Set_DAC.Click += new System.EventHandler(this.Btn_Set_DAC_Click);
             // 
             // TxtBx_DAC_Red
             // 
@@ -1320,6 +1320,7 @@ namespace RGBTester.UI
             this.Cmbx_TestMode.Size = new System.Drawing.Size(129, 28);
             this.Cmbx_TestMode.TabIndex = 5;
             this.Cmbx_TestMode.Text = "LEFT";
+            this.Cmbx_TestMode.SelectedIndexChanged += new System.EventHandler(this.Cmbx_TestMode_SelectedIndexChanged);
             // 
             // label15
             // 

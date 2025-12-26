@@ -25,5 +25,6 @@ namespace RGBTester.Logic
 
         // [Record]
         public List<double> CycleTime = new List<double>();
+        public List<double> Temperature = new List<double>();
     }
 }
