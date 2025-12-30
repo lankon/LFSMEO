@@ -278,6 +278,34 @@ namespace RGBTester.Logic
                 ProgressBar.UpateProgress(progress);
             }
         }
+        private void Write_LCM_Result(int index)
+        {
+            double milli = 1000;
+
+            Deps.File.WriteTestResult(TesterData_L.DACpoint[index], TesterData_L.Vin[index], TesterData_L.Iin[index] * milli,
+                                    TesterData_L.Pin[index] * milli, TesterData_L.Vf[index], TesterData_L.Iled[index] * milli,
+                                    TesterData_L.Pled[index] * milli, TesterData_L.Eff[index] * 100, TesterData_L.Temperature[index],
+                                    LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
+                                    LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
+        }
+        private void Write_NonData_Result()
+        {
+            Deps.File.WriteTestResult(-99, -99, -99,
+                                        -99, -99, -99,
+                                        -99, -99, -99,
+                                        -99, -99,
+                                        -99, -99, Type);
+        }
+        private void Write_HCM_Result(int index)
+        {
+            double milli = 1000;
+
+            Deps.File.WriteTestResult(TesterData_H.DACpoint[index], TesterData_H.Vin[index], TesterData_H.Iin[index] * milli,
+                                                            TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], TesterData_H.Iled[index] * milli,
+                                                            TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
+                                                            LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
+                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
+        }
         #endregion
 
         #region public function
@@ -522,8 +550,6 @@ namespace RGBTester.Logic
                                     TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
                             }
 
-                            
-
                             LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
 
                             var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
@@ -568,54 +594,23 @@ namespace RGBTester.Logic
                             if(i < TesterData_L.Vin.Count && i < TesterData_H.Vin.Count)
                             {
                                 Deps.File.WriteFile($",{TesterData_L.CycleTime[i] + TesterData_H.CycleTime[i]},8888,{log_name},", Type, false);
-                                Deps.File.WriteTestResult(TesterData_H.DACpoint[i], TesterData_H.Vin[i], TesterData_H.Iin[i],
-                                                            TesterData_H.Pin[i], TesterData_H.Vf[i], TesterData_H.Iled[i],
-                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], TesterData_H.Temperature[i],
-                                                            LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
-                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
-
+                                Write_HCM_Result(i);
                                 Deps.File.WriteFile(",", Type, false);
-
-                                Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
-                                                            TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
-                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], TesterData_L.Temperature[i],
-                                                            LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
+                                Write_LCM_Result(i);
                             }
                             else if (i < TesterData_H.Vin.Count)
                             {
                                 Deps.File.WriteFile($",{TesterData_H.CycleTime[i]},8888,{log_name},", Type, false);
-
-                                Deps.File.WriteTestResult(TesterData_H.DACpoint[i], TesterData_H.Vin[i], TesterData_H.Iin[i],
-                                                            TesterData_H.Pin[i], TesterData_H.Vf[i], TesterData_H.Iled[i],
-                                                            TesterData_H.Pled[i], TesterData_H.Eff[i], TesterData_H.Temperature[i],
-                                                            LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
-                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
-
+                                Write_HCM_Result(i);
                                 Deps.File.WriteFile(",", Type, false);
-
-                                Deps.File.WriteTestResult(-99, -99, -99,
-                                                            -99, -99, -99,
-                                                            -99, -99, -99,
-                                                            -99, -99,
-                                                            -99, -99, Type);
+                                Write_NonData_Result();
                             }
                             else if (i < TesterData_L.Vin.Count)
                             {
                                 Deps.File.WriteFile($",{TesterData_L.CycleTime[i]},8888,{log_name},", Type, false);
-                                Deps.File.WriteTestResult(-99, -99, -99,
-                                                            -99, -99, -99,
-                                                            -99, -99, -99,
-                                                            -99, -99,
-                                                            -99, -99, Type);
-
+                                Write_NonData_Result();
                                 Deps.File.WriteFile(",", Type, false);
-
-                                Deps.File.WriteTestResult(TesterData_L.DACpoint[i], TesterData_L.Vin[i], TesterData_L.Iin[i],
-                                                            TesterData_L.Pin[i], TesterData_L.Vf[i], TesterData_L.Iled[i],
-                                                            TesterData_L.Pled[i], TesterData_L.Eff[i], TesterData_L.Temperature[i],
-                                                            LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-                                                            LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
+                                Write_LCM_Result(i);
                             }
 
                             Deps.File.WriteFile("", Type);

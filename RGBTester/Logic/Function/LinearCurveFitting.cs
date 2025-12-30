@@ -98,7 +98,5 @@ namespace RGBTester.Logic
             return M2;
         }
         #endregion
-
-
     }
 }

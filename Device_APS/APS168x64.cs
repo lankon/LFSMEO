@@ -414,7 +414,7 @@ namespace Device_APS.APS168_W64
 	    public UInt16 IP;
 	    public UInt16 SP;
 	    public UInt16 BP;
-		  public UInt16 MsgQueueSts;
+		public UInt16 MsgQueueSts;
 	}
 		
 	//New ADCNC structure define

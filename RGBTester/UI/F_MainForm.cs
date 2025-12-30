@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RGBTester.Base;
+using RGBTester.Logic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
-using Microsoft.Extensions.DependencyInjection;
-
 using ToolFunction;
-using RGBTester.Base;
-using RGBTester.Logic;
 
 
 namespace RGBTester.UI
@@ -64,6 +65,7 @@ namespace RGBTester.UI
             MainFormLogic.DeleteExpireFileInFolder();
             MainFormLogic.ReadAllSetting();
             MainFormLogic.Initial_IO_Function();
+            Labl_Version.Text = MainFormLogic.GetVersion();
 
             ServiceProvider.GetRequiredService<IBaseMainTask>();
             ServiceProvider.GetRequiredService<IBaseMainTaskMulti>();

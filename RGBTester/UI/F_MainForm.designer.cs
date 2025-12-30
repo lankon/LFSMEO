@@ -37,6 +37,7 @@ namespace RGBTester.UI
             this.Btn_Home = new System.Windows.Forms.Button();
             this.Btn_CloseApp = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.Labl_Version = new System.Windows.Forms.Label();
             this.Pnl_Function.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,11 +89,24 @@ namespace RGBTester.UI
             this.Btn_CloseApp.UseVisualStyleBackColor = true;
             this.Btn_CloseApp.Click += new System.EventHandler(this.Btn_CloseApp_Click);
             // 
+            // Labl_Version
+            // 
+            this.Labl_Version.AutoSize = true;
+            this.Labl_Version.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_Version.ForeColor = System.Drawing.Color.Blue;
+            this.Labl_Version.Location = new System.Drawing.Point(3, 740);
+            this.Labl_Version.Name = "Labl_Version";
+            this.Labl_Version.Size = new System.Drawing.Size(118, 20);
+            this.Labl_Version.TabIndex = 31;
+            this.Labl_Version.Text = "Version:1.0.0.0";
+            this.Labl_Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // F_MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.ClientSize = new System.Drawing.Size(1350, 750);
+            this.ClientSize = new System.Drawing.Size(1350, 762);
+            this.Controls.Add(this.Labl_Version);
             this.Controls.Add(this.Pnl_Function);
             this.Controls.Add(this.Pnl_Group);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -101,6 +115,7 @@ namespace RGBTester.UI
             this.Text = "Form1";
             this.Pnl_Function.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -112,6 +127,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_Home;
         private System.Windows.Forms.Button Btn_CloseApp;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label Labl_Version;
     }
 }
 

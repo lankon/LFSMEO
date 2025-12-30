@@ -1,13 +1,14 @@
-﻿using System;
+﻿using DeviceCore;
+using Microsoft.Extensions.DependencyInjection;
+using RGBTester.Base;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using ToolFunction;
-
-using RGBTester.Base;
-using DeviceCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -31,7 +32,7 @@ namespace RGBTester.Logic
             ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             ApplicationSetting.ReadAllRecipe<eF_Recipe>();
 
-            Tool.SaveLogToFile("Load Recipe File", level: "INF");
+            Tool.SaveLogToFile("Load Recipe File");
             var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
             string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             recipe.ReadRecipe(cur_recipe_name);
@@ -55,7 +56,14 @@ namespace RGBTester.Logic
             return 0;
         }
 
-        
+        public string GetVersion()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            Tool.SaveLogToFile("軟體版本:" + fvi.FileVersion);
+
+            return "Version:" + fvi.FileVersion;
+        }
 
         public void SetForm(IF_MainForm f_MainForm)
         {

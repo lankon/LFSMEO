@@ -119,9 +119,9 @@ namespace RGBTester.Logic
             bin_vf = CheckPassFail(0, 4, vf);
             bin_i_led = CheckPassFail(30, 300, i_led);
 
-            string context = $"{dac},{v_in},{bin_v_in},{i_in},{bin_i_in},{p_in},{vf}," +
-                             $"{bin_vf},{i_led},{bin_i_led},{p_led},{eff},{temperature},{x}," +
-                             $"{y},{m},{c}";
+            string context = $"{dac},{v_in:F1},{bin_v_in},{i_in:F1},{bin_i_in},{p_in:F1},{vf:F1}," +
+                             $"{bin_vf},{i_led:F1},{bin_i_led},{p_led:F1},{eff:F1},{temperature:F1},{x:F1}," +
+                             $"{y:F1},{m:F1},{c:F1}";
 
             WriteFile(context, color, false);
         }
@@ -252,7 +252,7 @@ namespace RGBTester.Logic
             //string low_range = ",,,,,,,,0,,130,,,0,,30,,,,,,,,,,0,,130,,,0,,30,,,,,,,,";
             //string high_range = ",,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,";
             //string unit = ",,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,";
-            string title = "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,H Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c,L Side Mode_DAC,Vin,Status,Iin,Status,Pin,Vf,Status,Iled,Status,Pled,Eff,Temperature,x,y,m,c";
+            string title = "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,H Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c,L Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c";
 
             if (type == "Left_R")
                 file = LeftRedFile;
