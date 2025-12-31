@@ -201,7 +201,8 @@ namespace RGBTester.Logic
             DataFilter dataFilter = new DataFilter();
             RGBTesterFunction.AvgData avgData = new RGBTesterFunction.AvgData();
             avgData.Avg_Vin = dataFilter.GetPreciseHighLevel(Vin.ToList(), threshold, 0.005);
-            avgData.Avg_Iin = dataFilter.GetPreciseHighLevel(Iin.ToList(), threshold,0.005);
+            //avgData.Avg_Iin = dataFilter.GetPreciseHighLevel(Iin.ToList(), threshold,0.005);
+            avgData.Avg_Iin = Iin.Average();
             avgData.Avg_Vled = 0.0;//目前用不到 dataFilter.GetPreciseHighLevel(Vled.ToList(), threshold);
             avgData.Avg_Vf = dataFilter.GetPreciseHighLevel(Vf.ToList(), threshold,0.005);
             avgData.Avg_Iled = dataFilter.GetPreciseHighLevel(Iled.ToList(), threshold,0.005);
@@ -451,7 +452,8 @@ namespace RGBTester.Logic
                                     TesterData_L.Eff.Add(TesterData_L.Pled[i] / TesterData_L.Pin[i]);
                             }
 
-                            LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), TesterData_L.Iled.ToArray());
+                            LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), 
+                                                                          TesterData_L.Iled.Select(x => x * 1000).ToArray());
 
                             var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
                             IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
@@ -527,7 +529,7 @@ namespace RGBTester.Logic
                         TesterData_H.Vin.Add(sum_Vin / RepeatTime);
                         TesterData_H.Iin.Add(sum_Iin / RepeatTime / HW_Param.Rin / HW_Param.H_SigMag);
                         TesterData_H.Vled.Add(sum_Vled / RepeatTime);
-                        TesterData_H.Vf.Add((sum_Vled - sum_Vrgb) / RepeatTime);
+                        TesterData_H.Vf.Add(sum_Vrgb / RepeatTime);
                         TesterData_H.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_HCM / HW_Param.LED_SigMag);
                         
                         //Transition(WORK.CALCULATE_HIGH);
@@ -550,7 +552,8 @@ namespace RGBTester.Logic
                                     TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
                             }
 
-                            LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(), TesterData_H.Iled.ToArray());
+                            LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(),
+                                                                          TesterData_H.Iled.Select(x => x * 1000).ToArray());
 
                             var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
                             IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);

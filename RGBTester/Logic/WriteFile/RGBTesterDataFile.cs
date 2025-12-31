@@ -119,9 +119,9 @@ namespace RGBTester.Logic
             bin_vf = CheckPassFail(0, 4, vf);
             bin_i_led = CheckPassFail(30, 300, i_led);
 
-            string context = $"{dac},{v_in:F1},{bin_v_in},{i_in:F1},{bin_i_in},{p_in:F1},{vf:F1}," +
-                             $"{bin_vf},{i_led:F1},{bin_i_led},{p_led:F1},{eff:F1},{temperature:F1},{x:F1}," +
-                             $"{y:F1},{m:F1},{c:F1}";
+            string context = $"{dac},{v_in:F2},{bin_v_in},{i_in:F2},{bin_i_in},{p_in:F2},{vf:F2}," +
+                             $"{bin_vf},{i_led:F2},{bin_i_led},{p_led:F2},{eff:F2},{temperature:F2},{x:F2}," +
+                             $"{y:F2},{m:F3},{c:F2}";
 
             WriteFile(context, color, false);
         }

@@ -196,7 +196,7 @@ namespace RGBTester.UI
                 double normalizedVal = ((data[pt] - midVal) / (displayRange / 2.0)) * visualScale;
 
                 // 加上通道偏移量
-                chart1.Series[channelIndex].Points.AddXY(pt + 1, normalizedVal + offset);
+                chart1.Series[channelIndex].Points.AddXY((pt + 1)*0.04*5, normalizedVal + offset);
             }
 
             AddYAxisLabels(offset, maxVal, minVal, midVal);
