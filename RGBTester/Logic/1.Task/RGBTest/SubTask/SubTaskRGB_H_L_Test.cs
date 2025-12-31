@@ -56,6 +56,7 @@ namespace RGBTester.Logic
         private Queue<int> qDAC_L = new Queue<int>();
         private Queue<int> qDAC_H = new Queue<int>();
         private int TotalState_L = 0, TotalState_H = 0; //計算進度用
+        private int Current_DAC = 0;                    //目前測試DAC
         private int DAC_Start = 500, DAC_End = 600, DAC_Step = 10;
         private int Left_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Start);
         private int Left_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_End);
@@ -307,6 +308,22 @@ namespace RGBTester.Logic
                                                             LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
                                                             LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
         }
+        private bool CheckContact(double measure_current)
+        {
+            double current;
+            if (Current_DAC > 10 && Current_DAC < 50 && TestColor == "R")
+            {
+                current = HW_Param.HCM_MaxCurrent * Current_DAC / 1023;
+
+                if (Math.Abs((measure_current - current) / current * 100) > 10)
+                {
+                    Tool.SaveLogToFile($"Contact Fail,DAC:{Current_DAC},Iled:{measure_current}", level: "ERR");
+                    return false;
+                }
+            }
+
+            return true;
+        }
         #endregion
 
         #region public function
@@ -409,6 +426,9 @@ namespace RGBTester.Logic
                     {
                         double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
+                       //取得溫度
+                        TesterData_L.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
+
                         RGBTesterFunction.AvgData LowAvgData = new RGBTesterFunction.AvgData();
 
                         //取得AI訊號
@@ -423,7 +443,6 @@ namespace RGBTester.Logic
                             sum_Iled += LowAvgData.Avg_Iled;
                         }
 
-                        TesterData_L.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
                         TesterData_L.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_L.Vin.Add(sum_Vin / RepeatTime);
@@ -492,6 +511,7 @@ namespace RGBTester.Logic
                         UpdateProgressBar(qDAC_H, TotalState_H);
 
                         int val = qDAC_H.Dequeue();
+                        Current_DAC = val;
                         TesterData_H.DACpoint.Add(val);
 
                         Tool.ResetTimeCount(out CycleTime);
@@ -510,6 +530,9 @@ namespace RGBTester.Logic
                     {
                         double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
+                        //取得溫度
+                        TesterData_H.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
+
                         RGBTesterFunction.AvgData HighAvgData = new RGBTesterFunction.AvgData();
                         //取得AI訊號
                         for (int i = 0; i < RepeatTime; i++)
@@ -523,7 +546,6 @@ namespace RGBTester.Logic
                             sum_Iled += HighAvgData.Avg_Iled;
                         }
 
-                        TesterData_H.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
                         TesterData_H.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_H.Vin.Add(sum_Vin / RepeatTime);
@@ -531,7 +553,15 @@ namespace RGBTester.Logic
                         TesterData_H.Vled.Add(sum_Vled / RepeatTime);
                         TesterData_H.Vf.Add(sum_Vrgb / RepeatTime);
                         TesterData_H.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_HCM / HW_Param.LED_SigMag);
-                        
+
+                        int count = TesterData_H.Iled.Count;
+                        if (!CheckContact(TesterData_H.Iled[count-1] - TesterData_H.Iled[0]))
+                        {
+                            StatusBox.ShowMessage("Contact Fail Please Check!");
+                            Transition(WORK.ABORT);
+                            break;
+                        }
+
                         //Transition(WORK.CALCULATE_HIGH);
                         State = WORK.CALCULATE_HIGH;
                         goto case WORK.CALCULATE_HIGH;
