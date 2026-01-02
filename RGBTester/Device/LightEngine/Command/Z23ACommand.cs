@@ -1,20 +1,20 @@
-﻿using System;
+﻿using RGBTester.Base;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-
 using ToolFunction;
-using RGBTester.Base;
 
 namespace RGBTester.Device
 {
-    public class GL18Command:ILightEngineCommand
+    public class Z23ACommand : ILightEngineCommand
     {
-        public GL18Command()
+        public Z23ACommand()
         {
             string portName = "COM5";
             _serialPort = new SerialPort(portName);     // COM,
@@ -34,11 +34,11 @@ namespace RGBTester.Device
         private ASK_STATE State = ASK_STATE.NONE;
         public byte LED_RightSide { get; private set; } = 0x00;
         public byte LED_LeftSide { get; private set; } = 0x01;
-        public byte LED_R_LSB { get; private set; } = 0x13;
-        public byte LED_G_LSB { get; private set; } = 0x14;
-        public byte LED_B_LSB { get; private set; } = 0x15;
-        public byte LED_RGB_MSB { get; private set; } = 0x17;
-
+        public byte LED_R_LSB { get; private set; } = 0x19;
+        public byte LED_G_LSB { get; private set; } = 0x1A;
+        public byte LED_B_LSB { get; private set; } = 0x1B;
+        public byte LED_RGB_MSB { get; private set; } = 0x1D;
+        private byte ResponseByte = 0x00;
         public string ProductName => throw new NotImplementedException();
 
         private ManualResetEventSlim responseEvent = new ManualResetEventSlim(false);
@@ -97,6 +97,62 @@ namespace RGBTester.Device
             return true;
         }
 
+        public int[] Get_DAC()
+        {
+            int[] error = new int[] { -99 };
+
+            byte GetBlueVoltageLimit_LSB = 0x1B;
+            byte GetBlueVoltageLimit_MSB = 0x1D;
+            
+            GetLedDriverData(LED_RightSide, GetBlueVoltageLimit_LSB);
+
+            int res = 0;
+            res = WaitResponse(300);
+            if (res < 0)
+                return error;
+
+            GetLedDriverData(LED_RightSide, GetBlueVoltageLimit_MSB);
+
+            res = WaitResponse(300);
+            if (res < 0)
+                return error;
+
+            return new int[] { 255, 255, 255 };
+        }
+
+        public double Get_VoltageLimit(byte rgb, byte side)
+        {
+            double VoltageLimit = -99;
+            byte GetBlueVoltageLimit_LSB = 0x1B;
+            byte GetBlueVoltageLimit_MSB = 0x1D;
+            byte ResponseByte_MSB = 0x00;
+            byte ResponseByte_LSB = 0x00;
+
+            GetLedDriverData(LED_RightSide, GetBlueVoltageLimit_LSB);
+
+            int res = 0;
+            res = WaitResponse(300);
+            if (res < 0)
+                return -99;
+            ResponseByte_LSB = ResponseByte;
+
+            GetLedDriverData(LED_RightSide, GetBlueVoltageLimit_MSB);
+
+            res = WaitResponse(300);
+            if (res < 0)
+                return -99;
+            ResponseByte_MSB = ResponseByte;
+
+            int msb = (ResponseByte_MSB & 0x0C) >> 2;
+            int vLedDac = (msb << 8) | ResponseByte_LSB;
+            VoltageLimit = 1.0 + ((double)vLedDac / 1023.0 * 4.5);
+
+            return VoltageLimit;
+        }
+        public bool Set_VoltageLimtit(byte rgb, byte side, int value)
+        {
+            return false;
+        }
         #endregion
 
         #region private function
@@ -105,7 +161,7 @@ namespace RGBTester.Device
             State = ASK_STATE.SET_DATA;
 
             const byte PACKAGE_LENGTH = 6;
-            const byte COMMAND = 0x87;
+            const byte COMMAND = 0xF0;
 
             byte[] commandData = { PACKAGE_LENGTH, COMMAND, index, registerAddress, value };
             byte[] packet = new byte[PACKAGE_LENGTH];
@@ -125,14 +181,14 @@ namespace RGBTester.Device
             State = ASK_STATE.GET_DATA;
 
             const byte PACKAGE_LENGTH = 5;
-            const byte COMMAND = 0x07;
+            const byte COMMAND = 0x70;
 
             byte[] commandData = { COMMAND, index, registerAddress };
             byte[] packet = new byte[PACKAGE_LENGTH];
 
             packet[0] = PACKAGE_LENGTH;     // PL
             packet[1] = COMMAND;            // CMD
-            packet[2] = index;              // Index (0x00 或 0x01)
+            packet[2] = index;              // Index (0x00(右) 或 0x01(左))
             packet[3] = registerAddress;    // Data 1 (位址)
 
             packet[4] = CalculateChecksum(commandData);
@@ -145,26 +201,6 @@ namespace RGBTester.Device
                 return true;
             else
                 return false;
-        }
-        private int GetResponse(object sender, SerialDataReceivedEventArgs e)
-        {
-            // 等到對方送回資料時才會觸發
-            string data = _serialPort.ReadExisting();
-
-            byte[] buffer = new byte[1];
-
-            int bytes = _serialPort.BytesToRead;
-            if (bytes > 0)
-            {
-                if (bytes > buffer.Length)
-                    buffer = new byte[bytes];
-
-                _serialPort.Read(buffer, 0, bytes);
-
-                return CheckResponse(buffer);
-            }
-
-            return -1;
         }
         private int WaitResponse(int timeoutMs = 300)
         {
@@ -202,8 +238,9 @@ namespace RGBTester.Device
                 else
                     return -1;
             }
-            else if(State == ASK_STATE.GET_DATA && buffer.Length == 6)
+            else if(State == ASK_STATE.GET_DATA && buffer.Length == 5)
             {
+                ResponseByte = buffer[3];
                 return 0;
             }
 
@@ -259,15 +296,7 @@ namespace RGBTester.Device
             throw new NotImplementedException();
         }
 
-        public int[] Get_DAC()
-        {
-            throw new NotImplementedException();
-        }
-
-        public double Get_VoltageLimit(byte rgb, byte side)
-        {
-            throw new NotImplementedException();
-        }
+        
         #endregion
     }
 }

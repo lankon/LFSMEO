@@ -149,6 +149,11 @@ namespace RGBTester.Device
 
             return true;
         }
+
+        public double Get_VoltageLimit(byte rgb, byte side)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

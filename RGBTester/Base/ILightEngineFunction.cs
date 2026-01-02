@@ -27,5 +27,6 @@ namespace RGBTester.Base
         bool SetLed_CurrentMode(string mode);
         string GetTemperature();
         int[] Get_DAC();
+        double Get_VoltageLimit(byte rgb, byte side);
     }
 }

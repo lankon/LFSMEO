@@ -122,6 +122,11 @@ namespace RGBTester.Device
         {
             return LEA.Get_DAC();
         }
+
+        public double Get_VoltageLimit(byte rgb, byte side)
+        {
+            return LEA.Get_VoltageLimit(rgb, side);
+        }
         #endregion
 
         #region private function

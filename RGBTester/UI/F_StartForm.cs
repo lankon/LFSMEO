@@ -272,5 +272,10 @@ namespace RGBTester.UI
             TxtBx_Left_SN.Enabled = IsLeft || Cmbx_TestMode.SelectedIndex == 2;
             TxtBx_Right_SN.Enabled = !IsLeft || Cmbx_TestMode.SelectedIndex == 2;
         }
+
+        private void Btn_Test_Click(object sender, EventArgs e)
+        {
+            LEA.Get_VoltageLimit(LEA.LED_B, LEA.LED_LeftSide);
+        }
     }
 }

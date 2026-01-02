@@ -116,7 +116,6 @@ namespace RGBTester.UI
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
             this.Pnl_OEM_Test = new System.Windows.Forms.Panel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.Btn_Set_DAC = new System.Windows.Forms.Button();
             this.TxtBx_DAC_Red = new System.Windows.Forms.TextBox();
             this.TxtBx_DAC_Blue = new System.Windows.Forms.TextBox();
             this.label47 = new System.Windows.Forms.Label();
@@ -124,6 +123,7 @@ namespace RGBTester.UI
             this.Btn_Get_DAC = new System.Windows.Forms.Button();
             this.TxtBx_DAC_Green = new System.Windows.Forms.TextBox();
             this.label49 = new System.Windows.Forms.Label();
+            this.Btn_Set_DAC = new System.Windows.Forms.Button();
             this.Btn_SingleTest = new System.Windows.Forms.Button();
             this.Pnl_ShowTemperature = new System.Windows.Forms.Panel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -144,6 +144,7 @@ namespace RGBTester.UI
             this.LyPnl_ProductType = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_ProductType = new System.Windows.Forms.ComboBox();
             this.label50 = new System.Windows.Forms.Label();
+            this.Btn_Test = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -1073,10 +1074,11 @@ namespace RGBTester.UI
             // Pnl_OEM_Test
             // 
             this.Pnl_OEM_Test.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_OEM_Test.Controls.Add(this.Btn_Test);
             this.Pnl_OEM_Test.Controls.Add(this.tableLayoutPanel8);
             this.Pnl_OEM_Test.Location = new System.Drawing.Point(469, 4);
             this.Pnl_OEM_Test.Name = "Pnl_OEM_Test";
-            this.Pnl_OEM_Test.Size = new System.Drawing.Size(369, 75);
+            this.Pnl_OEM_Test.Size = new System.Drawing.Size(445, 75);
             this.Pnl_OEM_Test.TabIndex = 9;
             this.Pnl_OEM_Test.Visible = false;
             // 
@@ -1104,18 +1106,6 @@ namespace RGBTester.UI
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(364, 73);
             this.tableLayoutPanel8.TabIndex = 6;
-            // 
-            // Btn_Set_DAC
-            // 
-            this.Btn_Set_DAC.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Set_DAC.Location = new System.Drawing.Point(298, 3);
-            this.Btn_Set_DAC.Name = "Btn_Set_DAC";
-            this.tableLayoutPanel8.SetRowSpan(this.Btn_Set_DAC, 2);
-            this.Btn_Set_DAC.Size = new System.Drawing.Size(63, 67);
-            this.Btn_Set_DAC.TabIndex = 10;
-            this.Btn_Set_DAC.Text = "Set DAC";
-            this.Btn_Set_DAC.UseVisualStyleBackColor = true;
-            this.Btn_Set_DAC.Click += new System.EventHandler(this.Btn_Set_DAC_Click);
             // 
             // TxtBx_DAC_Red
             // 
@@ -1182,6 +1172,18 @@ namespace RGBTester.UI
             this.label49.TabIndex = 10;
             this.label49.Text = "Blue";
             this.label49.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Btn_Set_DAC
+            // 
+            this.Btn_Set_DAC.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Set_DAC.Location = new System.Drawing.Point(298, 3);
+            this.Btn_Set_DAC.Name = "Btn_Set_DAC";
+            this.tableLayoutPanel8.SetRowSpan(this.Btn_Set_DAC, 2);
+            this.Btn_Set_DAC.Size = new System.Drawing.Size(63, 67);
+            this.Btn_Set_DAC.TabIndex = 10;
+            this.Btn_Set_DAC.Text = "Set DAC";
+            this.Btn_Set_DAC.UseVisualStyleBackColor = true;
+            this.Btn_Set_DAC.Click += new System.EventHandler(this.Btn_Set_DAC_Click);
             // 
             // Btn_SingleTest
             // 
@@ -1417,6 +1419,17 @@ namespace RGBTester.UI
             this.label50.Text = "Product Type";
             this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // Btn_Test
+            // 
+            this.Btn_Test.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Test.Location = new System.Drawing.Point(370, 3);
+            this.Btn_Test.Name = "Btn_Test";
+            this.Btn_Test.Size = new System.Drawing.Size(63, 67);
+            this.Btn_Test.TabIndex = 11;
+            this.Btn_Test.Text = "Test";
+            this.Btn_Test.UseVisualStyleBackColor = true;
+            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1572,5 +1585,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.TableLayoutPanel LyPnl_ProductType;
         private System.Windows.Forms.ComboBox Cmbx_ProductType;
         private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Button Btn_Test;
     }
 }
