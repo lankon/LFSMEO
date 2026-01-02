@@ -201,9 +201,8 @@ namespace RGBTester.Logic
             double threshold = 0.95;
             DataFilter dataFilter = new DataFilter();
             RGBTesterFunction.AvgData avgData = new RGBTesterFunction.AvgData();
-            avgData.Avg_Vin = dataFilter.GetPreciseHighLevel(Vin.ToList(), threshold, 0.005);
-            //avgData.Avg_Iin = dataFilter.GetPreciseHighLevel(Iin.ToList(), threshold,0.005);
-            avgData.Avg_Iin = Iin.Average();
+            avgData.Avg_Vin = Vin.Average();//dataFilter.GetPreciseHighLevel(Vin.ToList(), threshold, 0.005);
+            avgData.Avg_Iin = Iin.Average();//dataFilter.GetPreciseHighLevel(Iin.ToList(), threshold,0.005);
             avgData.Avg_Vled = 0.0;//目前用不到 dataFilter.GetPreciseHighLevel(Vled.ToList(), threshold);
             avgData.Avg_Vf = dataFilter.GetPreciseHighLevel(Vf.ToList(), threshold,0.005);
             avgData.Avg_Iled = dataFilter.GetPreciseHighLevel(Iled.ToList(), threshold,0.005);
