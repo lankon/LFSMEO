@@ -16,7 +16,9 @@ namespace RGBTester.Logic
         {
             if (data.Count == 0) return 0;
 
-            List<double> dataAboveThreshold = data.Where(v => v > data.Max()* Threshold_Ratio).ToList();
+            double[] sortedData = data.OrderBy(x => x).ToArray();
+            int index = (int)(sortedData.Length * 0.96);
+            List<double> dataAboveThreshold = data.Where(v => v > sortedData[index] * Threshold_Ratio).ToList();
 
             if(dataAboveThreshold.Count == 0)
                 return data.Max();
