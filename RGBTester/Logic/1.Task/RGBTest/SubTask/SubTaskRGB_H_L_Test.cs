@@ -310,13 +310,13 @@ namespace RGBTester.Logic
         private bool CheckContact(double measure_current)
         {
             double current;
-            if (Current_DAC > 10 && Current_DAC < 50 && TestColor == "R")
+            if (Current_DAC > 200 && Current_DAC < 300 && TestColor == "R")
             {
-                current = HW_Param.HCM_MaxCurrent * Current_DAC / 1023;
+                current = HW_Param.HCM_MaxCurrent * Current_DAC / 1023 / 1000;  //A
 
                 if (Math.Abs((measure_current - current) / current * 100) > 10)
                 {
-                    Tool.SaveLogToFile($"Contact Fail,DAC:{Current_DAC},Iled:{measure_current}", level: "ERR");
+                    Tool.SaveLogToFile($"Contact Fail,DAC:{Current_DAC},Iled:{measure_current*1000}mA,Target I:{current*1000}mA", level: "ERR");
                     return false;
                 }
             }
@@ -554,7 +554,7 @@ namespace RGBTester.Logic
                         TesterData_H.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_HCM / HW_Param.LED_SigMag);
 
                         int count = TesterData_H.Iled.Count;
-                        if (!CheckContact(TesterData_H.Iled[count-1] - TesterData_H.Iled[0]))
+                        if (!CheckContact(TesterData_H.Iled[count - 1] - TesterData_H.Iled[0]))
                         {
                             StatusBox.ShowMessage("Contact Fail Please Check!");
                             Transition(WORK.ABORT);

@@ -16,7 +16,7 @@ namespace RGBTester.Device
     {
         public Z23ACommand()
         {
-            string portName = "COM5";
+            string portName = "COM8";
             _serialPort = new SerialPort(portName);     // COM,
             _serialPort.BaudRate = 115200;              // 胞率
             _serialPort.DataBits = 8;                   // 8 個資料位元
@@ -39,7 +39,7 @@ namespace RGBTester.Device
         public byte LED_B_LSB { get; private set; } = 0x1B;
         public byte LED_RGB_MSB { get; private set; } = 0x1D;
         private byte ResponseByte = 0x00;
-        public string ProductName => throw new NotImplementedException();
+        public string ProductName => eLEAType.Z23A_API.ToString();
 
         private ManualResetEventSlim responseEvent = new ManualResetEventSlim(false);
         private int lastResponse = -1;
@@ -128,24 +128,24 @@ namespace RGBTester.Device
             byte ResponseByte_MSB = 0x00;
             byte ResponseByte_LSB = 0x00;
 
-            GetLedDriverData(LED_RightSide, GetBlueVoltageLimit_LSB);
+            GetLedDriverData(LED_RightSide, 0x13);
 
-            int res = 0;
-            res = WaitResponse(300);
-            if (res < 0)
-                return -99;
-            ResponseByte_LSB = ResponseByte;
+            //int res = 0;
+            //res = WaitResponse(300);
+            //if (res < 0)
+            //    return -99;
+            //ResponseByte_LSB = ResponseByte;
 
-            GetLedDriverData(LED_RightSide, GetBlueVoltageLimit_MSB);
+            //GetLedDriverData(LED_LeftSide, GetBlueVoltageLimit_MSB);
 
-            res = WaitResponse(300);
-            if (res < 0)
-                return -99;
-            ResponseByte_MSB = ResponseByte;
+            //res = WaitResponse(300);
+            //if (res < 0)
+            //    return -99;
+            //ResponseByte_MSB = ResponseByte;
 
-            int msb = (ResponseByte_MSB & 0x0C) >> 2;
-            int vLedDac = (msb << 8) | ResponseByte_LSB;
-            VoltageLimit = 1.0 + ((double)vLedDac / 1023.0 * 4.5);
+            //int msb = (ResponseByte_MSB & 0x0C) >> 2;
+            //int vLedDac = (msb << 8) | ResponseByte_LSB;
+            //VoltageLimit = 1.0 + ((double)vLedDac / 1023.0 * 4.5);
 
             return VoltageLimit;
         }
@@ -183,14 +183,14 @@ namespace RGBTester.Device
             const byte PACKAGE_LENGTH = 5;
             const byte COMMAND = 0x70;
 
-            byte[] commandData = { COMMAND, index, registerAddress };
+            byte[] commandData = { PACKAGE_LENGTH, COMMAND, index, registerAddress };
             byte[] packet = new byte[PACKAGE_LENGTH];
 
             packet[0] = PACKAGE_LENGTH;     // PL
             packet[1] = COMMAND;            // CMD
             packet[2] = index;              // Index (0x00(右) 或 0x01(左))
             packet[3] = registerAddress;    // Data 1 (位址)
-
+            
             packet[4] = CalculateChecksum(commandData);
 
             return SendCommand(packet);
