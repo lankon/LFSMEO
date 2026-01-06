@@ -154,6 +154,16 @@ namespace RGBTester.Device
         {
             throw new NotImplementedException();
         }
+
+        public bool ResetLED()
+        {
+            return true;
+        }
+
+        public bool Set_RegisterValue(byte adr, byte len, byte[] value)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

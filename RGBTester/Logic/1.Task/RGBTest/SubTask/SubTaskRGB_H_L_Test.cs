@@ -57,13 +57,33 @@ namespace RGBTester.Logic
         private Queue<int> qDAC_H = new Queue<int>();
         private int TotalState_L = 0, TotalState_H = 0; //計算進度用
         private int Current_DAC = 0;                    //目前測試DAC
-        private int DAC_Start = 500, DAC_End = 600, DAC_Step = 10;
-        private int Left_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Start);
-        private int Left_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_End);
-        private int Left_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Step);
-        private int Right_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Start);
-        private int Right_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_End);
-        private int Right_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Step);
+        private int DAC_Start = 500, DAC_End_HCM = 600, DAC_End_LCM = 600, DAC_Step = 10;
+        //[Left DAC Setting]
+        private int Left_R_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_DAC_Start);
+        private int Left_G_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_DAC_Start);
+        private int Left_B_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_DAC_Start);
+        private int Left_R_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_DAC_Step);
+        private int Left_G_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_DAC_Step);
+        private int Left_B_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_DAC_Step);
+        private int Left_R_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_HCM_DAC_End);
+        private int Left_G_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_HCM_DAC_End);
+        private int Left_B_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_HCM_DAC_End);
+        private int Left_R_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_LCM_DAC_End);
+        private int Left_G_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_LCM_DAC_End);
+        private int Left_B_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_LCM_DAC_End);
+        //[Right DAC Setting]
+        private int Right_R_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_DAC_Start);
+        private int Right_G_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_DAC_Start);
+        private int Right_B_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_DAC_Start);
+        private int Right_R_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_DAC_Step);
+        private int Right_G_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_DAC_Step);
+        private int Right_B_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_DAC_Step);
+        private int Right_R_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_HCM_DAC_End);
+        private int Right_G_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_HCM_DAC_End);
+        private int Right_B_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_HCM_DAC_End);
+        private int Right_R_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_LCM_DAC_End);
+        private int Right_G_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_LCM_DAC_End);
+        private int Right_B_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_LCM_DAC_End);
         private int LeftRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_AvgCount);
         private int RightRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_AvgCount);
         private int RepeatTime = 1;                     //取樣平均次數
@@ -136,9 +156,6 @@ namespace RGBTester.Logic
 
             bool isLeft = (TestSide == "Left");
             Side = isLeft ? Deps.LightEngine.LED_LeftSide : Deps.LightEngine.LED_RightSide;
-            DAC_Start = isLeft ? Left_DAC_Start : Right_DAC_Start;
-            DAC_End = isLeft ? Left_DAC_End : Right_DAC_End;
-            DAC_Step = isLeft ? Left_DAC_Step : Right_DAC_Step;
             RepeatTime = isLeft ? LeftRepeatTime : RightRepeatTime;
             DAQ_Vin = isLeft ? EIOName.Left_Vin : EIOName.Right_Vin;
             DAQ_ILED = isLeft ? EIOName.Left_ILED : EIOName.Right_ILED;
@@ -151,25 +168,40 @@ namespace RGBTester.Logic
                 Color = Deps.LightEngine.LED_R;
                 LED_Duty = HW_Param.LED_R_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_R : EIOName.Right_VLED_R;
+
+                DAC_Start = isLeft ? Left_R_DAC_Start : Right_R_DAC_Start;
+                DAC_Step = isLeft ? Left_R_DAC_Step : Right_R_DAC_Step;
+                DAC_End_HCM = isLeft ? Left_R_HCM_DAC_End : Right_R_HCM_DAC_End;
+                DAC_End_LCM = isLeft ? Left_R_LCM_DAC_End : Right_R_LCM_DAC_End;
             }
             else if(TestColor == "G")
             {
                 Color = Deps.LightEngine.LED_G;
                 LED_Duty = HW_Param.LED_G_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_G : EIOName.Right_VLED_G;
+
+                DAC_Start = isLeft ? Left_G_DAC_Start : Right_G_DAC_Start;
+                DAC_Step = isLeft ? Left_G_DAC_Step : Right_G_DAC_Step;
+                DAC_End_HCM = isLeft ? Left_G_HCM_DAC_End : Right_G_HCM_DAC_End;
+                DAC_End_LCM = isLeft ? Left_G_LCM_DAC_End : Right_G_LCM_DAC_End;
             }
             else if(TestColor == "B")
             {
                 Color = Deps.LightEngine.LED_B;
                 LED_Duty = HW_Param.LED_B_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_B : EIOName.Right_VLED_B;
+
+                DAC_Start = isLeft ? Left_B_DAC_Start : Right_B_DAC_Start;
+                DAC_Step = isLeft ? Left_B_DAC_Step : Right_B_DAC_Step;
+                DAC_End_HCM = isLeft ? Left_B_HCM_DAC_End : Right_B_HCM_DAC_End;
+                DAC_End_LCM = isLeft ? Left_B_LCM_DAC_End : Right_B_LCM_DAC_End;
             }
 
-            for (int i = DAC_Start; i <= DAC_End; i += DAC_Step)
-            {
-                qDAC_L.Enqueue(i);
+            for (int i = DAC_Start; i <= DAC_End_HCM; i += DAC_Step)
                 qDAC_H.Enqueue(i);
-            }
+
+            for (int i = DAC_Start; i <= DAC_End_LCM; i += DAC_Step)
+                qDAC_L.Enqueue(i);
 
             TotalState_H = qDAC_H.Count;
             TotalState_L = qDAC_L.Count;
@@ -288,6 +320,8 @@ namespace RGBTester.Logic
                                     TesterData_L.Pled[index] * milli, TesterData_L.Eff[index] * 100, TesterData_L.Temperature[index],
                                     LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
                                     LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
+
+            CheckIledResult(TesterData_L.Iled[index] * milli, "LCM");
         }
         private void Write_NonData_Result()
         {
@@ -306,15 +340,23 @@ namespace RGBTester.Logic
                                                             TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
                                                             LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
                                                             LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
+
+            CheckIledResult(TesterData_H.Iled[index] * milli, "HCM");
         }
         private bool CheckContact(double measure_current)
         {
-            double current;
-            if (Current_DAC > 200 && Current_DAC < 300 && TestColor == "R")
-            {
-                current = HW_Param.HCM_MaxCurrent * Current_DAC / 1023 / 1000;  //A
+            int type = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_ProductType);
+            eLEAType select_type = eLEAType.VIRTUAL;
 
-                if (Math.Abs((measure_current - current) / current * 100) > 10)
+            if (type == (int)eLEAType.VIRTUAL)
+                return true;
+
+            double current;
+            if (Current_DAC >= 200 && Current_DAC <= 300 && TestColor == "R")
+            {
+                current = HW_Param.LCM_MaxCurrent * Current_DAC / 1023 / 1000;  //A
+
+                if (Math.Abs((measure_current - current) / current * 100) > 15)
                 {
                     Tool.SaveLogToFile($"Contact Fail,DAC:{Current_DAC},Iled:{measure_current*1000}mA,Target I:{current*1000}mA", level: "ERR");
                     return false;
@@ -323,6 +365,37 @@ namespace RGBTester.Logic
 
             return true;
         }
+        private void CheckTestResult(double res, string mode)
+        {
+            if(mode == "HCM")
+            {
+                if (Math.Abs((res - 0.3) / 0.3 * 100) > 10)
+                {
+                    Scope.TestFail = true;
+                }
+            }
+            else
+            {
+                if (Math.Abs((res - 0.03) / 0.03 * 100) > 10)
+                {
+                    Scope.TestFail = true;
+                }
+            }
+        }
+        private void CheckIledResult(double res, string mode)
+        {
+            if (mode == "HCM")
+            {
+                if(res > 350)
+                    Scope.TestFail = true;
+            }
+            else
+            {
+                if(res > 35)
+                    Scope.TestFail= true;
+            }
+        }
+
         #endregion
 
         #region public function
@@ -410,6 +483,7 @@ namespace RGBTester.Logic
 
                         //傳送廣達指令
                         int val = qDAC_L.Dequeue();
+                        Current_DAC = val;
                         TesterData_L.DACpoint.Add(val);
 
                         if (!Deps.LightEngine.SetLed_DAC(Color, Side, val))
@@ -450,6 +524,14 @@ namespace RGBTester.Logic
                         TesterData_L.Vf.Add(sum_Vrgb / RepeatTime); //(sum_Vled - sum_Vrgb)
                         TesterData_L.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_LCM / HW_Param.LED_SigMag);
 
+                        int count = TesterData_L.Iled.Count;
+                        if (!CheckContact(TesterData_L.Iled[count - 1] - TesterData_L.Iled[0]))
+                        {
+                            StatusBox.ShowMessage("Contact Fail Please Check!");
+                            Transition(WORK.ABORT);
+                            break;
+                        }
+
                         //Transition(WORK.CALCULATE_LOW);
                         State = WORK.CALCULATE_LOW;
                         goto case WORK.CALCULATE_LOW;
@@ -477,6 +559,7 @@ namespace RGBTester.Logic
                             IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
 
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
+                            CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
@@ -553,13 +636,8 @@ namespace RGBTester.Logic
                         TesterData_H.Vf.Add(sum_Vrgb / RepeatTime);
                         TesterData_H.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_HCM / HW_Param.LED_SigMag);
 
-                        int count = TesterData_H.Iled.Count;
-                        if (!CheckContact(TesterData_H.Iled[count - 1] - TesterData_H.Iled[0]))
-                        {
-                            StatusBox.ShowMessage("Contact Fail Please Check!");
-                            Transition(WORK.ABORT);
-                            break;
-                        }
+                        
+                        
 
                         //Transition(WORK.CALCULATE_HIGH);
                         State = WORK.CALCULATE_HIGH;
@@ -588,6 +666,7 @@ namespace RGBTester.Logic
                             IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
 
                             Deps.File.SetCalibrationData(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
+                            CheckTestResult(LinearCurveFitting_H.Slope, "HCM");
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_HIGH.ToString());

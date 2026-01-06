@@ -128,19 +128,19 @@ namespace RGBTester.Logic
         public void WriteCalibrationResult(string sn, string describe = "")
         {
             //[High Current Mode]
-            WriteFile($"0x0400,led1_offset_nA_h,LED1 offset for high res,nA,{R_Offset_HCM}", describe);
-            WriteFile($"0x0404,led1_slope_nA_cnt_h,LED1 slope for high res,nA/DACstep,{R_Slope_HCM}", describe);
-            WriteFile($"0x0408,led2_offset_nA_h,LED2 offset for high res,nA,{G_Offset_HCM}", describe);
-            WriteFile($"0x040C,led2_slope_nA_cnt_h,LED2 slope for high res,nA/DACstep,{G_Slope_HCM}", describe);
-            WriteFile($"0x0410,led3_offset_nA_h,LED3 offset for high res,nA,{B_Offset_HCM}", describe);
-            WriteFile($"0x0414,led3_slope_nA_cnt_h,LED3 slope for high res,nA/DACstep,{B_Slope_HCM}", describe);
+            WriteFile($"0x0400,led1_offset_mA_h,LED1 offset for high res,mA,{R_Offset_HCM:F4}", describe);
+            WriteFile($"0x0404,led1_slope_mA_cnt_h,LED1 slope for high res,mA/DACstep,{R_Slope_HCM:F4}", describe);
+            WriteFile($"0x0408,led2_offset_mA_h,LED2 offset for high res,mA,{G_Offset_HCM:F4}", describe);
+            WriteFile($"0x040C,led2_slope_mA_cnt_h,LED2 slope for high res,mA/DACstep,{G_Slope_HCM:F4}", describe);
+            WriteFile($"0x0410,led3_offset_mA_h,LED3 offset for high res,mA,{B_Offset_HCM:F4}", describe);
+            WriteFile($"0x0414,led3_slope_mA_cnt_h,LED3 slope for high res,mA/DACstep,{B_Slope_HCM:F4}", describe);
             //[Low Current Mode]
-            WriteFile($"0x0400,led1_offset_nA_h,LED1 offset for low res,nA,{R_Offset_LCM}", describe);
-            WriteFile($"0x0404,led1_slope_nA_cnt_h,LED1 slope for low res,nA/DACstep,{R_Slope_LCM}", describe);
-            WriteFile($"0x0408,led2_offset_nA_h,LED2 offset for low res,nA,{G_Offset_LCM}", describe);
-            WriteFile($"0x040C,led2_slope_nA_cnt_h,LED2 slope for low res,nA/DACstep,{G_Slope_LCM}", describe);
-            WriteFile($"0x0410,led3_offset_nA_h,LED3 offset for low res,nA,{B_Offset_LCM}", describe);
-            WriteFile($"0x0414,led3_slope_nA_cnt_h,LED3 slope for low res,nA/DACstep,{B_Slope_LCM}", describe);
+            WriteFile($"0x0400,led1_offset_mA_h,LED1 offset for low res,mA,{R_Offset_LCM:F4}", describe);
+            WriteFile($"0x0404,led1_slope_mA_cnt_h,LED1 slope for low res,mA/DACstep,{R_Slope_LCM:F4}", describe);
+            WriteFile($"0x0408,led2_offset_mA_h,LED2 offset for low res,mA,{G_Offset_LCM:F4}", describe);
+            WriteFile($"0x040C,led2_slope_mA_cnt_h,LED2 slope for low res,mA/DACstep,{G_Slope_LCM:F4}", describe);
+            WriteFile($"0x0410,led3_offset_mA_h,LED3 offset for low res,mA,{B_Offset_LCM:F4}", describe);
+            WriteFile($"0x0414,led3_slope_mA_cnt_h,LED3 slope for low res,mA/DACstep,{B_Slope_LCM:F4}", describe);
             //[SN]
             WriteFile($"0x0440,,Serial Number,,{sn}", describe);
         }

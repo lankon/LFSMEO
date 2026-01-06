@@ -11,6 +11,7 @@ using DeviceCore;
 using RGBTester.Base;
 using System.Threading;
 using System.IO;
+using RGBTester.Device;
 
 namespace RGBTester.Logic
 {
@@ -140,6 +141,23 @@ namespace RGBTester.Logic
 
             return 0;
         }
+        public void Test()
+        {
+            var cmd = ServiceProvider.GetRequiredService<ILightEngineCommand>();
+            byte[] res1, res2, res3;
+
+            byte[] intput = new byte[1];
+            intput[0] = 0x24;
+
+            if(cmd is Z23A_API_Command)
+            {
+                cmd.Set_RegisterValue(0x02, 1, intput);
+                intput[0] = 0xFF;
+                cmd.Set_RegisterValue(0x018, 1, intput);
+                intput[0] = 0xC0;
+                cmd.Set_RegisterValue(0x1E, 1, intput);
+            }
+        }
         #endregion
 
         #region private function
@@ -147,32 +165,32 @@ namespace RGBTester.Logic
         {
             int res = 0;
             
-            int LeftAvg = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_AvgCount);
-            int LeftStart = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Start);
-            int LeftEnd = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_End);
-            int LeftStep = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Step);
-            int RightAvg = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_AvgCount);
-            int RightStart = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Start);
-            int RightEnd = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_End);
-            int RightStep = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Step);
+            //int LeftAvg = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_AvgCount);
+            //int LeftStart = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Start);
+            //int LeftEnd = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_End);
+            //int LeftStep = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_DAC_Step);
+            //int RightAvg = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_AvgCount);
+            //int RightStart = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Start);
+            //int RightEnd = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_End);
+            //int RightStep = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_DAC_Step);
 
-            if (LeftAvg <= 0 || LeftStart < 0 || LeftEnd <= 0 || LeftStep<= 0 ||
-                RightAvg <= 0 || RightStart < 0 || RightEnd <= 0 || RightStep <= 0)
-            {
-                Tool.SaveLogToFile("測試條件輸入小於等於零");
+            //if (LeftAvg <= 0 || LeftStart < 0 || LeftEnd <= 0 || LeftStep<= 0 ||
+            //    RightAvg <= 0 || RightStart < 0 || RightEnd <= 0 || RightStep <= 0)
+            //{
+            //    Tool.SaveLogToFile("測試條件輸入小於等於零");
 
-                var box1 = ServiceProvider.GetRequiredService<IF_StatusBox>();
-                box1.ShowMessage("Test Condition Setting Fail");
+            //    var box1 = ServiceProvider.GetRequiredService<IF_StatusBox>();
+            //    box1.ShowMessage("Test Condition Setting Fail");
                 
-                res = -1;
-                return res;
-            }
+            //    res = -1;
+            //    return res;
+            //}
 
-            if(((LeftStart - LeftEnd) % LeftStep != 0) || ((RightStart - RightEnd) % RightStep != 0))
-            {
-                Tool.SaveLogToFile("Step無法整除");
-                res = -2;
-            }
+            //if(((LeftStart - LeftEnd) % LeftStep != 0) || ((RightStart - RightEnd) % RightStep != 0))
+            //{
+            //    Tool.SaveLogToFile("Step無法整除");
+            //    res = -2;
+            //}
 
             if(res < 0)
             {

@@ -23,5 +23,7 @@ namespace RGBTester.Base
         string GetTemperature();
         int[] Get_DAC();
         double Get_VoltageLimit(byte rgb, byte side);
+        bool ResetLED();
+        bool Set_RegisterValue(byte adr, byte len, byte[] value);
     }
 }

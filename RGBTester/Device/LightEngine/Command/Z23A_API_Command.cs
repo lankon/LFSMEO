@@ -144,9 +144,39 @@ namespace RGBTester.Device
                 return error;
         }
 
+        public bool ResetLED()
+        {
+            Z23A_FW.Error_Code res = api.RAA491901_Set_Startup_State(Z23A_FW.RAA_State.DISABLE_STATE);
+
+            if(res != Z23A_FW.Error_Code.STATUS_OK)
+                return false;
+
+            res = api.RAA491901_Set_Startup_State(Z23A_FW.RAA_State.ENABLE_STATE);
+
+            if (res != Z23A_FW.Error_Code.STATUS_OK)
+                return false;
+
+            Tuple<Z23A_FW.Error_Code, Z23A_FW.RAA_State> state = api.RAA491901_Get_Startup_State();
+
+            if (state.Item2 == Z23A_FW.RAA_State.ENABLE_STATE)
+                return true;
+            else
+                return false;
+        }
+
         public double Get_VoltageLimit(byte rgb, byte side)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Set_RegisterValue(byte adr, byte len, byte[] value)
+        {
+            Z23A_FW.Error_Code res = api.RAA491901_Set_Register_Value(adr, len, value);
+
+            if (res == Z23A_FW.Error_Code.STATUS_OK)
+                return true;
+            else
+                return false;
         }
         #endregion
 

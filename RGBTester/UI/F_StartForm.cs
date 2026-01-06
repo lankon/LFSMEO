@@ -14,6 +14,7 @@ using UserPrivilege.Base;
 using RGBTester.Base;
 
 using RGBTester.Logic;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace RGBTester.UI
@@ -157,13 +158,9 @@ namespace RGBTester.UI
             Btn_SingleTest.Enabled = enable;
             Pnl_HighLowMode.Enabled = enable;
             Pnl_ShowTemperature.Enabled = enable;
-            TxtBx_Left_DAC_Start.Enabled = enable;
-            TxtBx_Left_DAC_End.Enabled = enable;
-            TxtBx_Left_DAC_Step.Enabled = enable;
+            TbCtrl_Left_DAC_Setting.Enabled = enable;
             TxtBx_Left_AvgCount.Enabled = enable;
-            TxtBx_Right_DAC_Start.Enabled = enable;
-            TxtBx_Right_DAC_End.Enabled = enable;
-            TxtBx_Right_DAC_Step.Enabled = enable;
+            TbCtrl_Right_DAC_Setting.Enabled = enable;
             TxtBx_Right_AvgCount.Enabled = enable;
             Pnl_OEM_Test.Visible = enable_oem;
             LyPnl_ProductType.Visible = enable_oem;
@@ -275,7 +272,9 @@ namespace RGBTester.UI
 
         private void Btn_Test_Click(object sender, EventArgs e)
         {
-            LEA.Get_VoltageLimit(LEA.LED_B, LEA.LED_LeftSide);
+            //LEA.Get_VoltageLimit(LEA.LED_B, LEA.LED_LeftSide);
+            //LEA.ResetLED();
+            //StartFormLogic.Test();
         }
     }
 }

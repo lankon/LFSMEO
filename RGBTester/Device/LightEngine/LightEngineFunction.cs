@@ -102,7 +102,6 @@ namespace RGBTester.Device
             else
                 return false;
         }
-
         public bool SetLed_CurrentMode(string mode)
         {
             Tool.SaveLogToFile($"Set LED {mode}");
@@ -126,6 +125,10 @@ namespace RGBTester.Device
         public double Get_VoltageLimit(byte rgb, byte side)
         {
             return LEA.Get_VoltageLimit(rgb, side);
+        }
+        public bool ResetLED()
+        {
+            return LEA.ResetLED();
         }
         #endregion
 

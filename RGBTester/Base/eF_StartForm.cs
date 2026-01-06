@@ -16,14 +16,40 @@ namespace RGBTester.Base
     }
     public enum eF_StartFormRecipe
     {
-        TxtBx_Right_DAC_Start,
-        TxtBx_Right_DAC_End,
-        TxtBx_Right_DAC_Step,
         TxtBx_Right_AvgCount,
 
-        TxtBx_Left_DAC_Start,
-        TxtBx_Left_DAC_End,
-        TxtBx_Left_DAC_Step,
+        //[Right]
+        TxtBx_Right_R_DAC_Start,
+        TxtBx_Right_R_DAC_Step,
+        TxtBx_Right_R_HCM_DAC_End,
+        TxtBx_Right_R_LCM_DAC_End,
+
+        TxtBx_Right_G_DAC_Start,
+        TxtBx_Right_G_DAC_Step,
+        TxtBx_Right_G_HCM_DAC_End,
+        TxtBx_Right_G_LCM_DAC_End,
+
+        TxtBx_Right_B_DAC_Start,
+        TxtBx_Right_B_DAC_Step,
+        TxtBx_Right_B_HCM_DAC_End,
+        TxtBx_Right_B_LCM_DAC_End,
+
+        //[Left]
         TxtBx_Left_AvgCount,
+
+        TxtBx_Left_R_DAC_Start,
+        TxtBx_Left_R_DAC_Step,
+        TxtBx_Left_R_HCM_DAC_End,
+        TxtBx_Left_R_LCM_DAC_End,
+
+        TxtBx_Left_G_DAC_Start,
+        TxtBx_Left_G_DAC_Step,
+        TxtBx_Left_G_HCM_DAC_End,
+        TxtBx_Left_G_LCM_DAC_End,
+
+        TxtBx_Left_B_DAC_Start,
+        TxtBx_Left_B_DAC_Step,
+        TxtBx_Left_B_HCM_DAC_End,
+        TxtBx_Left_B_LCM_DAC_End,
     }
 }

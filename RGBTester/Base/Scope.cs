@@ -12,6 +12,7 @@ namespace RGBTester.Base
     {
         public static Panel MainPanel;          //F_MainForm:Pnl_Group
         public static Panel UpButtonPanel;      //F_MainForm:Pnl_Group1
+        public static bool TestFail;
 
     }
 }

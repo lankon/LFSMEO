@@ -8,6 +8,8 @@ using System.Windows.Forms;
 
 using ToolFunction;
 using RGBTester.Base;
+using RGBTester.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -38,6 +40,7 @@ namespace RGBTester.Logic
         #region parameter
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
+        private IF_StatusBox StatusBox;
         private string Type;
         public enum WORK
         {
@@ -128,6 +131,11 @@ namespace RGBTester.Logic
                     break;
             }
         }
+        private void Preset()
+        {
+            Scope.TestFail = false;
+            StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+        }
         #endregion
 
         #region public function
@@ -177,6 +185,7 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
+                        Preset();
                         Transition(WORK.LED_R_TEST);
                     }
                     break;
@@ -185,6 +194,14 @@ namespace RGBTester.Logic
                 case WORK.LED_R_TEST:
                     {
                         Tool.SaveLogToFile("LED_R_Test", level: "INF");
+                        
+                        if (!Deps.LightEngine.ResetLED())
+                        {
+                            StatusBox.ShowMessage("Reset LED Fail");
+                            Transition(WORK.ABORT);
+                            break;
+                        }
+
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type+"_R");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_R_TEST);
@@ -201,6 +218,14 @@ namespace RGBTester.Logic
                 case WORK.LED_G_TEST:
                     {
                         Tool.SaveLogToFile("LED_G_TEST", level: "INF");
+
+                        if (!Deps.LightEngine.ResetLED())
+                        {
+                            StatusBox.ShowMessage("Reset LED Fail");
+                            Transition(WORK.ABORT);
+                            break;
+                        }
+
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_G_TEST);
@@ -217,6 +242,14 @@ namespace RGBTester.Logic
                 case WORK.LED_B_TEST:
                     {
                         Tool.SaveLogToFile("LED_B_TEST", level: "INF");
+
+                        if (!Deps.LightEngine.ResetLED())
+                        {
+                            StatusBox.ShowMessage("Reset LED Fail");
+                            Transition(WORK.ABORT);
+                            break;
+                        }
+
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_B_TEST);
@@ -232,6 +265,9 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
+                        if(Scope.TestFail == true)
+                            StatusBox.ShowMessage("GRR Fail");
+                        
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
