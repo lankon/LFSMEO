@@ -67,6 +67,7 @@ namespace RGBTester.Device
                 }
             }
         }
+
         public bool Open()
         {
             bool res = LEA.Open();
@@ -78,6 +79,12 @@ namespace RGBTester.Device
 
             return res;
         }
+        public bool ResetLED()
+        {
+            return LEA.ResetLED();
+        }
+
+        //[Set Function]
         public bool SetLed_DAC(byte rgb, byte side, int value)
         {
             string color = "";
@@ -111,25 +118,28 @@ namespace RGBTester.Device
             else
                 return false;
         }
+        public bool Set_RegisterValue(byte adr, byte len, byte[] value)
+        {
+            if (LEA.Set_RegisterValue(adr, len, value))
+                return true;
+            else
+                return false;
+        }
 
+        //[Get Function]
         public string GetTemperature()
         {
             return LEA.GetTemperature();
         }
-
         public int[] Get_DAC()
         {
             return LEA.Get_DAC();
         }
-
         public double Get_VoltageLimit(byte rgb, byte side)
         {
             return LEA.Get_VoltageLimit(rgb, side);
         }
-        public bool ResetLED()
-        {
-            return LEA.ResetLED();
-        }
+        
         #endregion
 
         #region private function

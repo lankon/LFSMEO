@@ -18,12 +18,16 @@ namespace RGBTester.Base
         byte LED_LeftSide { get; }
 
         bool Open();
+        bool ResetLED();
+
         bool SetLed_DAC(byte rgb, byte side, int value);
         bool SetLed_CurrentMode(string mode);
+        bool Set_RegisterValue(byte adr, byte len, byte[] value);
+
         string GetTemperature();
         int[] Get_DAC();
         double Get_VoltageLimit(byte rgb, byte side);
-        bool ResetLED();
-        bool Set_RegisterValue(byte adr, byte len, byte[] value);
+        
+        
     }
 }

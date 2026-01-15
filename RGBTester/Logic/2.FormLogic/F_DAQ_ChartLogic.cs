@@ -37,6 +37,9 @@ namespace RGBTester.Logic
         {
             ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
             IF_StatusBox status_box = ServiceProvider.GetRequiredService<IF_StatusBox>();
+            RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
+
+            func.Set_LED_Rigester();
 
             if (!lea.SetLed_CurrentMode(test_mode))
             {

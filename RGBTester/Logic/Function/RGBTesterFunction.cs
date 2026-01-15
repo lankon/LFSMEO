@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using ToolFunction;
 
 namespace RGBTester.Logic
 {
@@ -19,6 +20,7 @@ namespace RGBTester.Logic
 
         #region parameter define
         IServiceProvider ServiceProvider;
+        ILightEngineFunction LEA;
         #endregion
 
         public class AvgData
@@ -86,6 +88,20 @@ namespace RGBTester.Logic
             }
 
             return dAQ_IO_Point;
+        }
+        public void Set_LED_Rigester()
+        {
+            LEA = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            
+            byte[] intput = new byte[1];
+            //intput[0] = 0x24;
+            //Deps.LightEngine.Set_RegisterValue(0x02, 1, intput);
+            intput[0] = 0xFF;
+            LEA.Set_RegisterValue(0x018, 1, intput);
+            intput[0] = 0xC0;
+            LEA.Set_RegisterValue(0x1E, 1, intput);
+
+            Tool.SaveLogToFile("Set LED Voltage Value", level: "DBG");
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DeviceCore;
 using ToolFunction;
 using RGBTester.Base;
+using System.Runtime.CompilerServices;
 
 namespace RGBTester.Logic
 {
@@ -56,6 +57,7 @@ namespace RGBTester.Logic
         private Queue<int> qDAC_L = new Queue<int>();
         private Queue<int> qDAC_H = new Queue<int>();
         private int TotalState_L = 0, TotalState_H = 0; //計算進度用
+        private int StartClampingCount = 0;             //記錄開始Clamping後的計數
         private int Current_DAC = 0;                    //目前測試DAC
         private int DAC_Start = 500, DAC_End_HCM = 600, DAC_End_LCM = 600, DAC_Step = 10;
         //[Left DAC Setting]
@@ -89,13 +91,12 @@ namespace RGBTester.Logic
         private int RepeatTime = 1;                     //取樣平均次數
         private int Period_DAQ_Count = 0;               //一個週期內DAQ取樣次數
         private double LED_Duty = 1;                    //LED Duty(硬體)
-        //private double LCM_Temperature;                 //HCM測試完後溫度
-        //private double HCM_Temperature;                 //LCM測試完後溫度
         private byte Side;                              //LED Board通訊指令(硬體)_Side
         private byte Color;                             //LED Board通訊指令(硬體)_Color
         private long CycleTime;                         //每筆DAC花費時間
         private bool OnlyHeighMode = false;             //只跑Heigh Current Mode
         private bool OnlyLowMode = false;               //只跑Low Current Mode
+        private bool IsClamping = false;                //是否發生Clamping
         private IF_BaseTask SubTask;                    
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
@@ -107,14 +108,6 @@ namespace RGBTester.Logic
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
         private RGBTesterFunction.TestHardwareParam HW_Param = new RGBTesterFunction.TestHardwareParam();
-        //private class AvgData
-        //{
-        //    public double Avg_Vin;
-        //    public double Avg_Iin;
-        //    public double Avg_Vled;
-        //    public double Avg_Vf;
-        //    public double Avg_Iled;
-        //}
 
         public enum WORK
         {
@@ -128,6 +121,7 @@ namespace RGBTester.Logic
             SET_DAC_HIGH,
             GET_ADC_HIGH,
             CALCULATE_HIGH,
+            RESET_LED_BOARD,
 
             WRITE_TEST_DATA,
 
@@ -205,6 +199,9 @@ namespace RGBTester.Logic
 
             TotalState_H = qDAC_H.Count;
             TotalState_L = qDAC_L.Count;
+
+            RGBTesterFunction func = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            func.Set_LED_Rigester();
         }
 
         private RGBTesterFunction.AvgData PeriodAvgValueCalculate(string current_mode)
@@ -369,14 +366,14 @@ namespace RGBTester.Logic
         {
             if(mode == "HCM")
             {
-                if (Math.Abs((res - 0.3) / 0.3 * 100) > 10)
+                if (((res - 0.3) / 0.3 * 100) < -10)
                 {
                     Scope.TestFail = true;
                 }
             }
             else
             {
-                if (Math.Abs((res - 0.03) / 0.03 * 100) > 10)
+                if (((res - 0.03) / 0.03 * 100) < -10)
                 {
                     Scope.TestFail = true;
                 }
@@ -395,7 +392,31 @@ namespace RGBTester.Logic
                     Scope.TestFail= true;
             }
         }
+        private void CheckClamping(double Vled, List<int> DAC, List<double> ILed)
+        {
+            if (ILed.Count < 10)     //測試點數不足無法判斷,直接回傳沒有Clamping
+            {
+                IsClamping = false;
+                return;
+            }
 
+            if (IsClamping)   //已經發生Clamping狀態,不再判斷
+                return;
+
+            double[] TempILed = ILed.Skip(ILed.Count - 10).Select(x => x * 1000).ToArray();
+            int[] TempDAC = DAC.Skip(DAC.Count - 10).ToArray();
+            var fitting = new LinearCurveFitting(TempDAC, TempILed);
+
+            //判斷Clamping條件:Vled過低,Iled對DAC斜率過低
+            if (Vled < 3 && fitting.Slope < 0.01 && IsClamping == false)
+            {
+                int StartClampingDAC = DAC[DAC.Count - 10];
+                StartClampingCount = DAC.Count - 10;
+                IsClamping = true;
+                Tool.SaveLogToFile($"Clamping Detected! Start DAC:{StartClampingDAC}", level: "WRN");
+                return;
+            }
+        }
         #endregion
 
         #region public function
@@ -552,11 +573,22 @@ namespace RGBTester.Logic
                                     TesterData_L.Eff.Add(TesterData_L.Pled[i] / TesterData_L.Pin[i]);
                             }
 
-                            LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(), 
-                                                                          TesterData_L.Iled.Select(x => x * 1000).ToArray());
+                            if(IsClamping == true)
+                            {
+                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Take(StartClampingCount).ToArray(),
+                                                                              TesterData_L.Iled.Take(StartClampingCount).Select(x => x * 1000).ToArray());
+                            }
+                            else
+                            {
+                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(),
+                                                                              TesterData_L.Iled.Select(x => x * 1000).ToArray());
+                            }
 
                             var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
-                            IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
+                            if(IsClamping == false)
+                                IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, false);
+                            else
+                                IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, true);
 
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
                             CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
@@ -580,6 +612,8 @@ namespace RGBTester.Logic
                         }
                         else
                         {
+                            CheckClamping(TesterData_L.Vled.Last(), TesterData_L.DACpoint, TesterData_L.Iled);
+
                             //Transition(WORK.SET_DAC_LOW);
                             State = WORK.SET_DAC_LOW;
                             goto case WORK.SET_DAC_LOW;
@@ -636,9 +670,6 @@ namespace RGBTester.Logic
                         TesterData_H.Vf.Add(sum_Vrgb / RepeatTime);
                         TesterData_H.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_HCM / HW_Param.LED_SigMag);
 
-                        
-                        
-
                         //Transition(WORK.CALCULATE_HIGH);
                         State = WORK.CALCULATE_HIGH;
                         goto case WORK.CALCULATE_HIGH;
@@ -659,24 +690,52 @@ namespace RGBTester.Logic
                                     TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
                             }
 
-                            LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(),
-                                                                          TesterData_H.Iled.Select(x => x * 1000).ToArray());
+                            if (IsClamping == true)
+                            {
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount).ToArray(),
+                                                                              TesterData_H.Iled.Take(StartClampingCount).Select(x => x * 1000).ToArray());
+                            }
+                            else
+                            {
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(),
+                                                                              TesterData_H.Iled.Select(x => x * 1000).ToArray());
+                            } 
 
                             var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
-                            IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
+                            if (IsClamping == false)
+                                IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, false);
+                            else
+                                IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, true);
 
                             Deps.File.SetCalibrationData(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
                             CheckTestResult(LinearCurveFitting_H.Slope, "HCM");
 
+                            if(!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
+                                StatusBox.ShowMessage("HCM Set DAC 0 Fail");
+
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_HIGH.ToString());
-                            Transition(WORK.WRITE_TEST_DATA);
+                            Transition(WORK.RESET_LED_BOARD);
                         }
                         else
                         {
+                            CheckClamping(TesterData_H.Vled.Last(), TesterData_H.DACpoint, TesterData_H.Iled);
+
                             State = WORK.SET_DAC_HIGH;
                             goto case WORK.SET_DAC_HIGH;
                         }
+                    }
+                    break;
+                case WORK.RESET_LED_BOARD:
+                    {
+                        if (!Deps.LightEngine.ResetLED())
+                        {
+                            StatusBox.ShowMessage("Reset LED Fail");
+                            Transition(WORK.ABORT);
+                            break;
+                        }
+                        else
+                            Transition(WORK.WRITE_TEST_DATA);
                     }
                     break;
                 #endregion

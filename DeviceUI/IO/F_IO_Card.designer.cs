@@ -34,6 +34,13 @@ namespace DeviceUI.IO
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_IO = new System.Windows.Forms.DataGridView();
+            this.Btn_Save = new System.Windows.Forms.Button();
+            this.Btn_RowDown = new System.Windows.Forms.Button();
+            this.Btn_RowUp = new System.Windows.Forms.Button();
+            this.Btn_Remove = new System.Windows.Forms.Button();
+            this.Btn_Add = new System.Windows.Forms.Button();
+            this.Btn_Load = new System.Windows.Forms.Button();
+            this.Timer_IO = new System.Windows.Forms.Timer(this.components);
             this.Title_IO = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,13 +52,6 @@ namespace DeviceUI.IO
             this.Title_CardNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_LineNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_DevNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Btn_Save = new System.Windows.Forms.Button();
-            this.Btn_RowDown = new System.Windows.Forms.Button();
-            this.Btn_RowUp = new System.Windows.Forms.Button();
-            this.Btn_Remove = new System.Windows.Forms.Button();
-            this.Btn_Add = new System.Windows.Forms.Button();
-            this.Btn_Load = new System.Windows.Forms.Button();
-            this.Timer_IO = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_IO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,92 +98,6 @@ namespace DeviceUI.IO
             this.DGV_IO.TabIndex = 13;
             this.DGV_IO.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_IO_CellClick);
             this.DGV_IO.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_IO_CellValueChanged);
-            // 
-            // Title_IO
-            // 
-            this.Title_IO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Title_IO.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Title_IO.HeaderText = "I/O";
-            this.Title_IO.Items.AddRange(new object[] {
-            "None",
-            "Input",
-            "Output"});
-            this.Title_IO.Name = "Title_IO";
-            this.Title_IO.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_IO.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Title_Name
-            // 
-            this.Title_Name.HeaderText = "Name";
-            this.Title_Name.Name = "Title_Name";
-            this.Title_Name.Width = 162;
-            // 
-            // Title_Description
-            // 
-            this.Title_Description.HeaderText = "Description";
-            this.Title_Description.Name = "Title_Description";
-            this.Title_Description.Width = 162;
-            // 
-            // Title_CardType
-            // 
-            this.Title_CardType.HeaderText = "Card Type";
-            this.Title_CardType.Items.AddRange(new object[] {
-            "None",
-            "Virtual",
-            "AMP_204C",
-            "MN200",
-            "PCI_9111DG",
-            "P32C32",
-            "PCI_9111HR"});
-            this.Title_CardType.Name = "Title_CardType";
-            this.Title_CardType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_CardType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Title_CardType.Width = 120;
-            // 
-            // Title_IO_Num
-            // 
-            this.Title_IO_Num.HeaderText = "I/O No.";
-            this.Title_IO_Num.Name = "Title_IO_Num";
-            this.Title_IO_Num.Width = 120;
-            // 
-            // Title_Status
-            // 
-            this.Title_Status.HeaderText = "Status";
-            this.Title_Status.Name = "Title_Status";
-            this.Title_Status.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // Title_Range
-            // 
-            this.Title_Range.HeaderText = "Range";
-            this.Title_Range.Items.AddRange(new object[] {
-            "Digital",
-            "+-5V"});
-            this.Title_Range.Name = "Title_Range";
-            // 
-            // Title_Inverse
-            // 
-            this.Title_Inverse.HeaderText = "Inverse";
-            this.Title_Inverse.Name = "Title_Inverse";
-            this.Title_Inverse.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_Inverse.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Title_CardNum
-            // 
-            this.Title_CardNum.HeaderText = "Card No.";
-            this.Title_CardNum.Name = "Title_CardNum";
-            this.Title_CardNum.Width = 120;
-            // 
-            // Title_LineNum
-            // 
-            this.Title_LineNum.HeaderText = "Line No.";
-            this.Title_LineNum.Name = "Title_LineNum";
-            // 
-            // Title_DevNum
-            // 
-            this.Title_DevNum.HeaderText = "Dev No.";
-            this.Title_DevNum.Name = "Title_DevNum";
             // 
             // Btn_Save
             // 
@@ -255,6 +169,93 @@ namespace DeviceUI.IO
             // 
             this.Timer_IO.Interval = 150;
             this.Timer_IO.Tick += new System.EventHandler(this.Timer_IO_Tick);
+            // 
+            // Title_IO
+            // 
+            this.Title_IO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Title_IO.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Title_IO.HeaderText = "I/O";
+            this.Title_IO.Items.AddRange(new object[] {
+            "None",
+            "Input",
+            "Output"});
+            this.Title_IO.Name = "Title_IO";
+            this.Title_IO.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_IO.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Title_Name
+            // 
+            this.Title_Name.HeaderText = "Name";
+            this.Title_Name.Name = "Title_Name";
+            this.Title_Name.Width = 162;
+            // 
+            // Title_Description
+            // 
+            this.Title_Description.HeaderText = "Description";
+            this.Title_Description.Name = "Title_Description";
+            this.Title_Description.Width = 162;
+            // 
+            // Title_CardType
+            // 
+            this.Title_CardType.HeaderText = "Card Type";
+            this.Title_CardType.Items.AddRange(new object[] {
+            "None",
+            "Virtual",
+            "AMP_204C",
+            "MN200",
+            "PCI_9111DG",
+            "P32C32",
+            "PCI_9111HR"});
+            this.Title_CardType.Name = "Title_CardType";
+            this.Title_CardType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_CardType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Title_CardType.Width = 120;
+            // 
+            // Title_IO_Num
+            // 
+            this.Title_IO_Num.HeaderText = "I/O No.";
+            this.Title_IO_Num.Name = "Title_IO_Num";
+            this.Title_IO_Num.Width = 120;
+            // 
+            // Title_Status
+            // 
+            this.Title_Status.HeaderText = "Status";
+            this.Title_Status.Name = "Title_Status";
+            this.Title_Status.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Title_Range
+            // 
+            this.Title_Range.HeaderText = "Range";
+            this.Title_Range.Items.AddRange(new object[] {
+            "Digital",
+            "+-5V",
+            "+10V"});
+            this.Title_Range.Name = "Title_Range";
+            // 
+            // Title_Inverse
+            // 
+            this.Title_Inverse.HeaderText = "Inverse";
+            this.Title_Inverse.Name = "Title_Inverse";
+            this.Title_Inverse.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_Inverse.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Title_CardNum
+            // 
+            this.Title_CardNum.HeaderText = "Card No.";
+            this.Title_CardNum.Name = "Title_CardNum";
+            this.Title_CardNum.Width = 120;
+            // 
+            // Title_LineNum
+            // 
+            this.Title_LineNum.HeaderText = "Line No.";
+            this.Title_LineNum.Name = "Title_LineNum";
+            // 
+            // Title_DevNum
+            // 
+            this.Title_DevNum.HeaderText = "Dev No.";
+            this.Title_DevNum.Name = "Title_DevNum";
             // 
             // F_IO_Card
             // 

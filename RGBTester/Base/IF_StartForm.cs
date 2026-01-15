@@ -8,6 +8,6 @@ namespace RGBTester.Base
 {
     public interface IF_StartForm
     {
-        void ShowSlopeOffsetResult(string side, string color, string mode, double value, double value1);
+        void ShowSlopeOffsetResult(string side, string color, string mode, double value, double value1, bool clamping = false);
     }
 }

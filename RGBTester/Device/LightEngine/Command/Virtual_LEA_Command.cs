@@ -162,7 +162,7 @@ namespace RGBTester.Device
 
         public bool Set_RegisterValue(byte adr, byte len, byte[] value)
         {
-            throw new NotImplementedException();
+            return true;
         }
         #endregion
     }

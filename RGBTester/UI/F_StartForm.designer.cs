@@ -32,6 +32,42 @@ namespace RGBTester.UI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_SN = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_AvgCount = new System.Windows.Forms.TextBox();
+            this.TbCtrl_Left_DAC_Setting = new System.Windows.Forms.TabControl();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_R_DAC_Start = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_R_LCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_R_HCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_R_DAC_Step = new System.Windows.Forms.TextBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
+            this.label61 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_G_DAC_Start = new System.Windows.Forms.TextBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_G_LCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label63 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_G_HCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label64 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_G_DAC_Step = new System.Windows.Forms.TextBox();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
+            this.label65 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_B_DAC_Start = new System.Windows.Forms.TextBox();
+            this.label66 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_B_LCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label67 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_B_HCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label68 = new System.Windows.Forms.Label();
+            this.TxtBx_Left_B_DAC_Step = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.TxtBx_LeftRedSlope_H = new System.Windows.Forms.TextBox();
@@ -69,6 +105,15 @@ namespace RGBTester.UI
             this.TxtBx_Right_AvgCount = new System.Windows.Forms.TextBox();
             this.TbCtrl_Right_DAC_Setting = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_R_DAC_Start = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_R_LCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_R_HCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_R_DAC_Step = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.label54 = new System.Windows.Forms.Label();
@@ -80,6 +125,15 @@ namespace RGBTester.UI
             this.label56 = new System.Windows.Forms.Label();
             this.TxtBx_Right_G_DAC_Step = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_B_DAC_Start = new System.Windows.Forms.TextBox();
+            this.label51 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_B_LCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label57 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_B_HCM_DAC_End = new System.Windows.Forms.TextBox();
+            this.label59 = new System.Windows.Forms.Label();
+            this.TxtBx_Right_B_DAC_Step = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.TxtBx_RightRedSlope_H = new System.Windows.Forms.TextBox();
@@ -141,69 +195,25 @@ namespace RGBTester.UI
             this.LyPnl_ProductType = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_ProductType = new System.Windows.Forms.ComboBox();
             this.label50 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_R_DAC_Start = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_R_LCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_R_HCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_R_DAC_Step = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
-            this.label14 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_B_DAC_Start = new System.Windows.Forms.TextBox();
-            this.label51 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_B_LCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label57 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_B_HCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label59 = new System.Windows.Forms.Label();
-            this.TxtBx_Right_B_DAC_Step = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_SN = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_AvgCount = new System.Windows.Forms.TextBox();
-            this.TbCtrl_Left_DAC_Setting = new System.Windows.Forms.TabControl();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_R_DAC_Start = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_R_LCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_R_HCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label60 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_R_DAC_Step = new System.Windows.Forms.TextBox();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
-            this.label61 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_G_DAC_Start = new System.Windows.Forms.TextBox();
-            this.label62 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_G_LCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label63 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_G_HCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label64 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_G_DAC_Step = new System.Windows.Forms.TextBox();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
-            this.label65 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_B_DAC_Start = new System.Windows.Forms.TextBox();
-            this.label66 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_B_LCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label67 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_B_HCM_DAC_End = new System.Windows.Forms.TextBox();
-            this.label68 = new System.Windows.Forms.Label();
-            this.TxtBx_Left_B_DAC_Step = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.TbCtrl_Left_DAC_Setting.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tableLayoutPanel12.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tableLayoutPanel13.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.tableLayoutPanel14.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.TbCtrl_Right_DAC_Setting.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.Pnl_MainButton.SuspendLayout();
             this.Pnl_OEM_Test.SuspendLayout();
@@ -214,16 +224,6 @@ namespace RGBTester.UI
             this.Pnl_HighLowMode.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.LyPnl_ProductType.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel11.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.TbCtrl_Left_DAC_Setting.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tableLayoutPanel12.SuspendLayout();
-            this.tabPage5.SuspendLayout();
-            this.tableLayoutPanel13.SuspendLayout();
-            this.tabPage6.SuspendLayout();
-            this.tableLayoutPanel14.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -238,6 +238,400 @@ namespace RGBTester.UI
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Left Glasses";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.18072F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.81927F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 158F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Left_SN, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Left_AvgCount, 3, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(7, 23);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(579, 39);
+            this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(6, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 30);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "SN";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_SN
+            // 
+            this.TxtBx_Left_SN.Location = new System.Drawing.Point(66, 6);
+            this.TxtBx_Left_SN.Name = "TxtBx_Left_SN";
+            this.TxtBx_Left_SN.Size = new System.Drawing.Size(221, 29);
+            this.TxtBx_Left_SN.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(296, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(152, 32);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Averaging Count";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_AvgCount
+            // 
+            this.TxtBx_Left_AvgCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_AvgCount.Location = new System.Drawing.Point(457, 6);
+            this.TxtBx_Left_AvgCount.Name = "TxtBx_Left_AvgCount";
+            this.TxtBx_Left_AvgCount.Size = new System.Drawing.Size(116, 29);
+            this.TxtBx_Left_AvgCount.TabIndex = 10;
+            // 
+            // TbCtrl_Left_DAC_Setting
+            // 
+            this.TbCtrl_Left_DAC_Setting.Controls.Add(this.tabPage4);
+            this.TbCtrl_Left_DAC_Setting.Controls.Add(this.tabPage5);
+            this.TbCtrl_Left_DAC_Setting.Controls.Add(this.tabPage6);
+            this.TbCtrl_Left_DAC_Setting.Location = new System.Drawing.Point(7, 66);
+            this.TbCtrl_Left_DAC_Setting.Name = "TbCtrl_Left_DAC_Setting";
+            this.TbCtrl_Left_DAC_Setting.SelectedIndex = 0;
+            this.TbCtrl_Left_DAC_Setting.Size = new System.Drawing.Size(579, 156);
+            this.TbCtrl_Left_DAC_Setting.TabIndex = 6;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.tabPage4.Controls.Add(this.tableLayoutPanel12);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(571, 123);
+            this.tabPage4.TabIndex = 0;
+            this.tabPage4.Text = "Red";
+            // 
+            // tableLayoutPanel12
+            // 
+            this.tableLayoutPanel12.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel12.ColumnCount = 4;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_DAC_Start, 1, 0);
+            this.tableLayoutPanel12.Controls.Add(this.label4, 2, 1);
+            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_LCM_DAC_End, 3, 1);
+            this.tableLayoutPanel12.Controls.Add(this.label5, 0, 1);
+            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_HCM_DAC_End, 3, 0);
+            this.tableLayoutPanel12.Controls.Add(this.label60, 2, 0);
+            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_DAC_Step, 1, 1);
+            this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
+            this.tableLayoutPanel12.RowCount = 3;
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(565, 117);
+            this.tableLayoutPanel12.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Location = new System.Drawing.Point(6, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(152, 35);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "DAC Start";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_R_DAC_Start
+            // 
+            this.TxtBx_Left_R_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_R_DAC_Start.Location = new System.Drawing.Point(169, 6);
+            this.TxtBx_Left_R_DAC_Start.Name = "TxtBx_Left_R_DAC_Start";
+            this.TxtBx_Left_R_DAC_Start.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_R_DAC_Start.TabIndex = 6;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(287, 41);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(152, 35);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "DAC End LCM";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_R_LCM_DAC_End
+            // 
+            this.TxtBx_Left_R_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_R_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
+            this.TxtBx_Left_R_LCM_DAC_End.Name = "TxtBx_Left_R_LCM_DAC_End";
+            this.TxtBx_Left_R_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_R_LCM_DAC_End.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Location = new System.Drawing.Point(6, 41);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(152, 35);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "DAC Step";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_R_HCM_DAC_End
+            // 
+            this.TxtBx_Left_R_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_R_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
+            this.TxtBx_Left_R_HCM_DAC_End.Name = "TxtBx_Left_R_HCM_DAC_End";
+            this.TxtBx_Left_R_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_R_HCM_DAC_End.TabIndex = 7;
+            // 
+            // label60
+            // 
+            this.label60.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label60.Location = new System.Drawing.Point(287, 3);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(152, 35);
+            this.label60.TabIndex = 1;
+            this.label60.Text = "DAC End HCM";
+            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_R_DAC_Step
+            // 
+            this.TxtBx_Left_R_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_R_DAC_Step.Location = new System.Drawing.Point(169, 44);
+            this.TxtBx_Left_R_DAC_Step.Name = "TxtBx_Left_R_DAC_Step";
+            this.TxtBx_Left_R_DAC_Step.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_R_DAC_Step.TabIndex = 8;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.tabPage5.Controls.Add(this.tableLayoutPanel13);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(571, 123);
+            this.tabPage5.TabIndex = 1;
+            this.tabPage5.Text = "Green";
+            // 
+            // tableLayoutPanel13
+            // 
+            this.tableLayoutPanel13.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel13.ColumnCount = 4;
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel13.Controls.Add(this.label61, 0, 0);
+            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_DAC_Start, 1, 0);
+            this.tableLayoutPanel13.Controls.Add(this.label62, 2, 1);
+            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_LCM_DAC_End, 3, 1);
+            this.tableLayoutPanel13.Controls.Add(this.label63, 0, 1);
+            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_HCM_DAC_End, 3, 0);
+            this.tableLayoutPanel13.Controls.Add(this.label64, 2, 0);
+            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_DAC_Step, 1, 1);
+            this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel13.Name = "tableLayoutPanel13";
+            this.tableLayoutPanel13.RowCount = 3;
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(565, 117);
+            this.tableLayoutPanel13.TabIndex = 2;
+            // 
+            // label61
+            // 
+            this.label61.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label61.Location = new System.Drawing.Point(6, 3);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(152, 35);
+            this.label61.TabIndex = 0;
+            this.label61.Text = "DAC Start";
+            this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_G_DAC_Start
+            // 
+            this.TxtBx_Left_G_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_G_DAC_Start.Location = new System.Drawing.Point(169, 6);
+            this.TxtBx_Left_G_DAC_Start.Name = "TxtBx_Left_G_DAC_Start";
+            this.TxtBx_Left_G_DAC_Start.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_G_DAC_Start.TabIndex = 6;
+            // 
+            // label62
+            // 
+            this.label62.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label62.Location = new System.Drawing.Point(287, 41);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(152, 35);
+            this.label62.TabIndex = 10;
+            this.label62.Text = "DAC End LCM";
+            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_G_LCM_DAC_End
+            // 
+            this.TxtBx_Left_G_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_G_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
+            this.TxtBx_Left_G_LCM_DAC_End.Name = "TxtBx_Left_G_LCM_DAC_End";
+            this.TxtBx_Left_G_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_G_LCM_DAC_End.TabIndex = 12;
+            // 
+            // label63
+            // 
+            this.label63.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label63.Location = new System.Drawing.Point(6, 41);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(152, 35);
+            this.label63.TabIndex = 14;
+            this.label63.Text = "DAC Step";
+            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_G_HCM_DAC_End
+            // 
+            this.TxtBx_Left_G_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_G_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
+            this.TxtBx_Left_G_HCM_DAC_End.Name = "TxtBx_Left_G_HCM_DAC_End";
+            this.TxtBx_Left_G_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_G_HCM_DAC_End.TabIndex = 7;
+            // 
+            // label64
+            // 
+            this.label64.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label64.Location = new System.Drawing.Point(287, 3);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(152, 35);
+            this.label64.TabIndex = 1;
+            this.label64.Text = "DAC End HCM";
+            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_G_DAC_Step
+            // 
+            this.TxtBx_Left_G_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_G_DAC_Step.Location = new System.Drawing.Point(169, 44);
+            this.TxtBx_Left_G_DAC_Step.Name = "TxtBx_Left_G_DAC_Step";
+            this.TxtBx_Left_G_DAC_Step.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_G_DAC_Step.TabIndex = 8;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.tabPage6.Controls.Add(this.tableLayoutPanel14);
+            this.tabPage6.Location = new System.Drawing.Point(4, 29);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(571, 123);
+            this.tabPage6.TabIndex = 2;
+            this.tabPage6.Text = "Blue";
+            // 
+            // tableLayoutPanel14
+            // 
+            this.tableLayoutPanel14.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel14.ColumnCount = 4;
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.Controls.Add(this.label65, 0, 0);
+            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_DAC_Start, 1, 0);
+            this.tableLayoutPanel14.Controls.Add(this.label66, 2, 1);
+            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_LCM_DAC_End, 3, 1);
+            this.tableLayoutPanel14.Controls.Add(this.label67, 0, 1);
+            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_HCM_DAC_End, 3, 0);
+            this.tableLayoutPanel14.Controls.Add(this.label68, 2, 0);
+            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_DAC_Step, 1, 1);
+            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
+            this.tableLayoutPanel14.RowCount = 3;
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(565, 117);
+            this.tableLayoutPanel14.TabIndex = 4;
+            // 
+            // label65
+            // 
+            this.label65.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label65.Location = new System.Drawing.Point(6, 3);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(152, 35);
+            this.label65.TabIndex = 0;
+            this.label65.Text = "DAC Start";
+            this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_B_DAC_Start
+            // 
+            this.TxtBx_Left_B_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_B_DAC_Start.Location = new System.Drawing.Point(169, 6);
+            this.TxtBx_Left_B_DAC_Start.Name = "TxtBx_Left_B_DAC_Start";
+            this.TxtBx_Left_B_DAC_Start.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_B_DAC_Start.TabIndex = 6;
+            // 
+            // label66
+            // 
+            this.label66.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label66.Location = new System.Drawing.Point(287, 41);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(152, 35);
+            this.label66.TabIndex = 10;
+            this.label66.Text = "DAC End LCM";
+            this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_B_LCM_DAC_End
+            // 
+            this.TxtBx_Left_B_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_B_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
+            this.TxtBx_Left_B_LCM_DAC_End.Name = "TxtBx_Left_B_LCM_DAC_End";
+            this.TxtBx_Left_B_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_B_LCM_DAC_End.TabIndex = 12;
+            // 
+            // label67
+            // 
+            this.label67.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label67.Location = new System.Drawing.Point(6, 41);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(152, 35);
+            this.label67.TabIndex = 14;
+            this.label67.Text = "DAC Step";
+            this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_B_HCM_DAC_End
+            // 
+            this.TxtBx_Left_B_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_B_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
+            this.TxtBx_Left_B_HCM_DAC_End.Name = "TxtBx_Left_B_HCM_DAC_End";
+            this.TxtBx_Left_B_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_B_HCM_DAC_End.TabIndex = 7;
+            // 
+            // label68
+            // 
+            this.label68.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label68.Location = new System.Drawing.Point(287, 3);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(152, 35);
+            this.label68.TabIndex = 1;
+            this.label68.Text = "DAC End HCM";
+            this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Left_B_DAC_Step
+            // 
+            this.TxtBx_Left_B_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Left_B_DAC_Step.Location = new System.Drawing.Point(169, 44);
+            this.TxtBx_Left_B_DAC_Step.Name = "TxtBx_Left_B_DAC_Step";
+            this.TxtBx_Left_B_DAC_Step.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Left_B_DAC_Step.TabIndex = 8;
             // 
             // tableLayoutPanel2
             // 
@@ -302,6 +696,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_LeftRedSlope_H
             // 
+            this.TxtBx_LeftRedSlope_H.BackColor = System.Drawing.SystemColors.Control;
             this.TxtBx_LeftRedSlope_H.Location = new System.Drawing.Point(204, 34);
             this.TxtBx_LeftRedSlope_H.Name = "TxtBx_LeftRedSlope_H";
             this.TxtBx_LeftRedSlope_H.ReadOnly = true;
@@ -648,6 +1043,104 @@ namespace RGBTester.UI
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Red";
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel4.ColumnCount = 4;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.label10, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_DAC_Start, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label11, 2, 1);
+            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_LCM_DAC_End, 3, 1);
+            this.tableLayoutPanel4.Controls.Add(this.label12, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_HCM_DAC_End, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label13, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_DAC_Step, 1, 1);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(565, 117);
+            this.tableLayoutPanel4.TabIndex = 3;
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label10.Location = new System.Drawing.Point(6, 3);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(152, 35);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "DAC Start";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_R_DAC_Start
+            // 
+            this.TxtBx_Right_R_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_R_DAC_Start.Location = new System.Drawing.Point(169, 6);
+            this.TxtBx_Right_R_DAC_Start.Name = "TxtBx_Right_R_DAC_Start";
+            this.TxtBx_Right_R_DAC_Start.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_R_DAC_Start.TabIndex = 6;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label11.Location = new System.Drawing.Point(287, 41);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(152, 35);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "DAC End LCM";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_R_LCM_DAC_End
+            // 
+            this.TxtBx_Right_R_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_R_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
+            this.TxtBx_Right_R_LCM_DAC_End.Name = "TxtBx_Right_R_LCM_DAC_End";
+            this.TxtBx_Right_R_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_R_LCM_DAC_End.TabIndex = 12;
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label12.Location = new System.Drawing.Point(6, 41);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(152, 35);
+            this.label12.TabIndex = 14;
+            this.label12.Text = "DAC Step";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_R_HCM_DAC_End
+            // 
+            this.TxtBx_Right_R_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_R_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
+            this.TxtBx_Right_R_HCM_DAC_End.Name = "TxtBx_Right_R_HCM_DAC_End";
+            this.TxtBx_Right_R_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_R_HCM_DAC_End.TabIndex = 7;
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label13.Location = new System.Drawing.Point(287, 3);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(152, 35);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "DAC End HCM";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_R_DAC_Step
+            // 
+            this.TxtBx_Right_R_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_R_DAC_Step.Location = new System.Drawing.Point(169, 44);
+            this.TxtBx_Right_R_DAC_Step.Name = "TxtBx_Right_R_DAC_Step";
+            this.TxtBx_Right_R_DAC_Step.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_R_DAC_Step.TabIndex = 8;
+            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
@@ -767,6 +1260,104 @@ namespace RGBTester.UI
             this.tabPage3.Size = new System.Drawing.Size(571, 123);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Blue";
+            // 
+            // tableLayoutPanel11
+            // 
+            this.tableLayoutPanel11.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel11.ColumnCount = 4;
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel11.Controls.Add(this.label14, 0, 0);
+            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_DAC_Start, 1, 0);
+            this.tableLayoutPanel11.Controls.Add(this.label51, 2, 1);
+            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_LCM_DAC_End, 3, 1);
+            this.tableLayoutPanel11.Controls.Add(this.label57, 0, 1);
+            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_HCM_DAC_End, 3, 0);
+            this.tableLayoutPanel11.Controls.Add(this.label59, 2, 0);
+            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_DAC_Step, 1, 1);
+            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
+            this.tableLayoutPanel11.RowCount = 3;
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(565, 117);
+            this.tableLayoutPanel11.TabIndex = 4;
+            // 
+            // label14
+            // 
+            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Location = new System.Drawing.Point(6, 3);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(152, 35);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "DAC Start";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_B_DAC_Start
+            // 
+            this.TxtBx_Right_B_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_B_DAC_Start.Location = new System.Drawing.Point(169, 6);
+            this.TxtBx_Right_B_DAC_Start.Name = "TxtBx_Right_B_DAC_Start";
+            this.TxtBx_Right_B_DAC_Start.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_B_DAC_Start.TabIndex = 6;
+            // 
+            // label51
+            // 
+            this.label51.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label51.Location = new System.Drawing.Point(287, 41);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(152, 35);
+            this.label51.TabIndex = 10;
+            this.label51.Text = "DAC End LCM";
+            this.label51.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_B_LCM_DAC_End
+            // 
+            this.TxtBx_Right_B_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_B_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
+            this.TxtBx_Right_B_LCM_DAC_End.Name = "TxtBx_Right_B_LCM_DAC_End";
+            this.TxtBx_Right_B_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_B_LCM_DAC_End.TabIndex = 12;
+            // 
+            // label57
+            // 
+            this.label57.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label57.Location = new System.Drawing.Point(6, 41);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(152, 35);
+            this.label57.TabIndex = 14;
+            this.label57.Text = "DAC Step";
+            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_B_HCM_DAC_End
+            // 
+            this.TxtBx_Right_B_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_B_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
+            this.TxtBx_Right_B_HCM_DAC_End.Name = "TxtBx_Right_B_HCM_DAC_End";
+            this.TxtBx_Right_B_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_B_HCM_DAC_End.TabIndex = 7;
+            // 
+            // label59
+            // 
+            this.label59.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label59.Location = new System.Drawing.Point(287, 3);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(152, 35);
+            this.label59.TabIndex = 1;
+            this.label59.Text = "DAC End HCM";
+            this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Right_B_DAC_Step
+            // 
+            this.TxtBx_Right_B_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Right_B_DAC_Step.Location = new System.Drawing.Point(169, 44);
+            this.TxtBx_Right_B_DAC_Step.Name = "TxtBx_Right_B_DAC_Step";
+            this.TxtBx_Right_B_DAC_Step.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_Right_B_DAC_Step.TabIndex = 8;
             // 
             // tableLayoutPanel3
             // 
@@ -1458,596 +2049,6 @@ namespace RGBTester.UI
             this.label50.Text = "Product Type";
             this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel4.ColumnCount = 4;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.label10, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_DAC_Start, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.label11, 2, 1);
-            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_LCM_DAC_End, 3, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label12, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_HCM_DAC_End, 3, 0);
-            this.tableLayoutPanel4.Controls.Add(this.label13, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.TxtBx_Right_R_DAC_Step, 1, 1);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 3;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(565, 117);
-            this.tableLayoutPanel4.TabIndex = 3;
-            // 
-            // label10
-            // 
-            this.label10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label10.Location = new System.Drawing.Point(6, 3);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(152, 35);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "DAC Start";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_R_DAC_Start
-            // 
-            this.TxtBx_Right_R_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_R_DAC_Start.Location = new System.Drawing.Point(169, 6);
-            this.TxtBx_Right_R_DAC_Start.Name = "TxtBx_Right_R_DAC_Start";
-            this.TxtBx_Right_R_DAC_Start.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_R_DAC_Start.TabIndex = 6;
-            // 
-            // label11
-            // 
-            this.label11.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label11.Location = new System.Drawing.Point(287, 41);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(152, 35);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "DAC End LCM";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_R_LCM_DAC_End
-            // 
-            this.TxtBx_Right_R_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_R_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
-            this.TxtBx_Right_R_LCM_DAC_End.Name = "TxtBx_Right_R_LCM_DAC_End";
-            this.TxtBx_Right_R_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_R_LCM_DAC_End.TabIndex = 12;
-            // 
-            // label12
-            // 
-            this.label12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label12.Location = new System.Drawing.Point(6, 41);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(152, 35);
-            this.label12.TabIndex = 14;
-            this.label12.Text = "DAC Step";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_R_HCM_DAC_End
-            // 
-            this.TxtBx_Right_R_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_R_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
-            this.TxtBx_Right_R_HCM_DAC_End.Name = "TxtBx_Right_R_HCM_DAC_End";
-            this.TxtBx_Right_R_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_R_HCM_DAC_End.TabIndex = 7;
-            // 
-            // label13
-            // 
-            this.label13.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label13.Location = new System.Drawing.Point(287, 3);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(152, 35);
-            this.label13.TabIndex = 1;
-            this.label13.Text = "DAC End HCM";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_R_DAC_Step
-            // 
-            this.TxtBx_Right_R_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_R_DAC_Step.Location = new System.Drawing.Point(169, 44);
-            this.TxtBx_Right_R_DAC_Step.Name = "TxtBx_Right_R_DAC_Step";
-            this.TxtBx_Right_R_DAC_Step.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_R_DAC_Step.TabIndex = 8;
-            // 
-            // tableLayoutPanel11
-            // 
-            this.tableLayoutPanel11.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel11.ColumnCount = 4;
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.Controls.Add(this.label14, 0, 0);
-            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_DAC_Start, 1, 0);
-            this.tableLayoutPanel11.Controls.Add(this.label51, 2, 1);
-            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_LCM_DAC_End, 3, 1);
-            this.tableLayoutPanel11.Controls.Add(this.label57, 0, 1);
-            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_HCM_DAC_End, 3, 0);
-            this.tableLayoutPanel11.Controls.Add(this.label59, 2, 0);
-            this.tableLayoutPanel11.Controls.Add(this.TxtBx_Right_B_DAC_Step, 1, 1);
-            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
-            this.tableLayoutPanel11.RowCount = 3;
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(565, 117);
-            this.tableLayoutPanel11.TabIndex = 4;
-            // 
-            // label14
-            // 
-            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label14.Location = new System.Drawing.Point(6, 3);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(152, 35);
-            this.label14.TabIndex = 0;
-            this.label14.Text = "DAC Start";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_B_DAC_Start
-            // 
-            this.TxtBx_Right_B_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_B_DAC_Start.Location = new System.Drawing.Point(169, 6);
-            this.TxtBx_Right_B_DAC_Start.Name = "TxtBx_Right_B_DAC_Start";
-            this.TxtBx_Right_B_DAC_Start.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_B_DAC_Start.TabIndex = 6;
-            // 
-            // label51
-            // 
-            this.label51.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label51.Location = new System.Drawing.Point(287, 41);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(152, 35);
-            this.label51.TabIndex = 10;
-            this.label51.Text = "DAC End LCM";
-            this.label51.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_B_LCM_DAC_End
-            // 
-            this.TxtBx_Right_B_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_B_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
-            this.TxtBx_Right_B_LCM_DAC_End.Name = "TxtBx_Right_B_LCM_DAC_End";
-            this.TxtBx_Right_B_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_B_LCM_DAC_End.TabIndex = 12;
-            // 
-            // label57
-            // 
-            this.label57.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label57.Location = new System.Drawing.Point(6, 41);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(152, 35);
-            this.label57.TabIndex = 14;
-            this.label57.Text = "DAC Step";
-            this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_B_HCM_DAC_End
-            // 
-            this.TxtBx_Right_B_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_B_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
-            this.TxtBx_Right_B_HCM_DAC_End.Name = "TxtBx_Right_B_HCM_DAC_End";
-            this.TxtBx_Right_B_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_B_HCM_DAC_End.TabIndex = 7;
-            // 
-            // label59
-            // 
-            this.label59.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label59.Location = new System.Drawing.Point(287, 3);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(152, 35);
-            this.label59.TabIndex = 1;
-            this.label59.Text = "DAC End HCM";
-            this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Right_B_DAC_Step
-            // 
-            this.TxtBx_Right_B_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Right_B_DAC_Step.Location = new System.Drawing.Point(169, 44);
-            this.TxtBx_Right_B_DAC_Step.Name = "TxtBx_Right_B_DAC_Step";
-            this.TxtBx_Right_B_DAC_Step.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Right_B_DAC_Step.TabIndex = 8;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.18072F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.81927F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 158F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Left_SN, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Left_AvgCount, 3, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(7, 23);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(579, 39);
-            this.tableLayoutPanel1.TabIndex = 7;
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(6, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 30);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "SN";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_SN
-            // 
-            this.TxtBx_Left_SN.Location = new System.Drawing.Point(66, 6);
-            this.TxtBx_Left_SN.Name = "TxtBx_Left_SN";
-            this.TxtBx_Left_SN.Size = new System.Drawing.Size(221, 29);
-            this.TxtBx_Left_SN.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(296, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(152, 32);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Averaging Count";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_AvgCount
-            // 
-            this.TxtBx_Left_AvgCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_AvgCount.Location = new System.Drawing.Point(457, 6);
-            this.TxtBx_Left_AvgCount.Name = "TxtBx_Left_AvgCount";
-            this.TxtBx_Left_AvgCount.Size = new System.Drawing.Size(116, 29);
-            this.TxtBx_Left_AvgCount.TabIndex = 10;
-            // 
-            // TbCtrl_Left_DAC_Setting
-            // 
-            this.TbCtrl_Left_DAC_Setting.Controls.Add(this.tabPage4);
-            this.TbCtrl_Left_DAC_Setting.Controls.Add(this.tabPage5);
-            this.TbCtrl_Left_DAC_Setting.Controls.Add(this.tabPage6);
-            this.TbCtrl_Left_DAC_Setting.Location = new System.Drawing.Point(7, 66);
-            this.TbCtrl_Left_DAC_Setting.Name = "TbCtrl_Left_DAC_Setting";
-            this.TbCtrl_Left_DAC_Setting.SelectedIndex = 0;
-            this.TbCtrl_Left_DAC_Setting.Size = new System.Drawing.Size(579, 156);
-            this.TbCtrl_Left_DAC_Setting.TabIndex = 6;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.tabPage4.Controls.Add(this.tableLayoutPanel12);
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(571, 123);
-            this.tabPage4.TabIndex = 0;
-            this.tabPage4.Text = "Red";
-            // 
-            // tableLayoutPanel12
-            // 
-            this.tableLayoutPanel12.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel12.ColumnCount = 4;
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel12.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_DAC_Start, 1, 0);
-            this.tableLayoutPanel12.Controls.Add(this.label4, 2, 1);
-            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_LCM_DAC_End, 3, 1);
-            this.tableLayoutPanel12.Controls.Add(this.label5, 0, 1);
-            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_HCM_DAC_End, 3, 0);
-            this.tableLayoutPanel12.Controls.Add(this.label60, 2, 0);
-            this.tableLayoutPanel12.Controls.Add(this.TxtBx_Left_R_DAC_Step, 1, 1);
-            this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
-            this.tableLayoutPanel12.RowCount = 3;
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(565, 117);
-            this.tableLayoutPanel12.TabIndex = 3;
-            // 
-            // label3
-            // 
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(6, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(152, 35);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "DAC Start";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_R_DAC_Start
-            // 
-            this.TxtBx_Left_R_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_R_DAC_Start.Location = new System.Drawing.Point(169, 6);
-            this.TxtBx_Left_R_DAC_Start.Name = "TxtBx_Left_R_DAC_Start";
-            this.TxtBx_Left_R_DAC_Start.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_R_DAC_Start.TabIndex = 6;
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(287, 41);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(152, 35);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "DAC End LCM";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_R_LCM_DAC_End
-            // 
-            this.TxtBx_Left_R_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_R_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
-            this.TxtBx_Left_R_LCM_DAC_End.Name = "TxtBx_Left_R_LCM_DAC_End";
-            this.TxtBx_Left_R_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_R_LCM_DAC_End.TabIndex = 12;
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(6, 41);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(152, 35);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "DAC Step";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_R_HCM_DAC_End
-            // 
-            this.TxtBx_Left_R_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_R_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
-            this.TxtBx_Left_R_HCM_DAC_End.Name = "TxtBx_Left_R_HCM_DAC_End";
-            this.TxtBx_Left_R_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_R_HCM_DAC_End.TabIndex = 7;
-            // 
-            // label60
-            // 
-            this.label60.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label60.Location = new System.Drawing.Point(287, 3);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(152, 35);
-            this.label60.TabIndex = 1;
-            this.label60.Text = "DAC End HCM";
-            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_R_DAC_Step
-            // 
-            this.TxtBx_Left_R_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_R_DAC_Step.Location = new System.Drawing.Point(169, 44);
-            this.TxtBx_Left_R_DAC_Step.Name = "TxtBx_Left_R_DAC_Step";
-            this.TxtBx_Left_R_DAC_Step.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_R_DAC_Step.TabIndex = 8;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.tabPage5.Controls.Add(this.tableLayoutPanel13);
-            this.tabPage5.Location = new System.Drawing.Point(4, 29);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(571, 123);
-            this.tabPage5.TabIndex = 1;
-            this.tabPage5.Text = "Green";
-            // 
-            // tableLayoutPanel13
-            // 
-            this.tableLayoutPanel13.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel13.ColumnCount = 4;
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.Controls.Add(this.label61, 0, 0);
-            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_DAC_Start, 1, 0);
-            this.tableLayoutPanel13.Controls.Add(this.label62, 2, 1);
-            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_LCM_DAC_End, 3, 1);
-            this.tableLayoutPanel13.Controls.Add(this.label63, 0, 1);
-            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_HCM_DAC_End, 3, 0);
-            this.tableLayoutPanel13.Controls.Add(this.label64, 2, 0);
-            this.tableLayoutPanel13.Controls.Add(this.TxtBx_Left_G_DAC_Step, 1, 1);
-            this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel13.Name = "tableLayoutPanel13";
-            this.tableLayoutPanel13.RowCount = 3;
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(565, 117);
-            this.tableLayoutPanel13.TabIndex = 2;
-            // 
-            // label61
-            // 
-            this.label61.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label61.Location = new System.Drawing.Point(6, 3);
-            this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(152, 35);
-            this.label61.TabIndex = 0;
-            this.label61.Text = "DAC Start";
-            this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_G_DAC_Start
-            // 
-            this.TxtBx_Left_G_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_G_DAC_Start.Location = new System.Drawing.Point(169, 6);
-            this.TxtBx_Left_G_DAC_Start.Name = "TxtBx_Left_G_DAC_Start";
-            this.TxtBx_Left_G_DAC_Start.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_G_DAC_Start.TabIndex = 6;
-            // 
-            // label62
-            // 
-            this.label62.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label62.Location = new System.Drawing.Point(287, 41);
-            this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(152, 35);
-            this.label62.TabIndex = 10;
-            this.label62.Text = "DAC End LCM";
-            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_G_LCM_DAC_End
-            // 
-            this.TxtBx_Left_G_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_G_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
-            this.TxtBx_Left_G_LCM_DAC_End.Name = "TxtBx_Left_G_LCM_DAC_End";
-            this.TxtBx_Left_G_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_G_LCM_DAC_End.TabIndex = 12;
-            // 
-            // label63
-            // 
-            this.label63.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label63.Location = new System.Drawing.Point(6, 41);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(152, 35);
-            this.label63.TabIndex = 14;
-            this.label63.Text = "DAC Step";
-            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_G_HCM_DAC_End
-            // 
-            this.TxtBx_Left_G_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_G_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
-            this.TxtBx_Left_G_HCM_DAC_End.Name = "TxtBx_Left_G_HCM_DAC_End";
-            this.TxtBx_Left_G_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_G_HCM_DAC_End.TabIndex = 7;
-            // 
-            // label64
-            // 
-            this.label64.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label64.Location = new System.Drawing.Point(287, 3);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(152, 35);
-            this.label64.TabIndex = 1;
-            this.label64.Text = "DAC End HCM";
-            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_G_DAC_Step
-            // 
-            this.TxtBx_Left_G_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_G_DAC_Step.Location = new System.Drawing.Point(169, 44);
-            this.TxtBx_Left_G_DAC_Step.Name = "TxtBx_Left_G_DAC_Step";
-            this.TxtBx_Left_G_DAC_Step.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_G_DAC_Step.TabIndex = 8;
-            // 
-            // tabPage6
-            // 
-            this.tabPage6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.tabPage6.Controls.Add(this.tableLayoutPanel14);
-            this.tabPage6.Location = new System.Drawing.Point(4, 29);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(571, 123);
-            this.tabPage6.TabIndex = 2;
-            this.tabPage6.Text = "Blue";
-            // 
-            // tableLayoutPanel14
-            // 
-            this.tableLayoutPanel14.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel14.ColumnCount = 4;
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel14.Controls.Add(this.label65, 0, 0);
-            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_DAC_Start, 1, 0);
-            this.tableLayoutPanel14.Controls.Add(this.label66, 2, 1);
-            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_LCM_DAC_End, 3, 1);
-            this.tableLayoutPanel14.Controls.Add(this.label67, 0, 1);
-            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_HCM_DAC_End, 3, 0);
-            this.tableLayoutPanel14.Controls.Add(this.label68, 2, 0);
-            this.tableLayoutPanel14.Controls.Add(this.TxtBx_Left_B_DAC_Step, 1, 1);
-            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
-            this.tableLayoutPanel14.RowCount = 3;
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(565, 117);
-            this.tableLayoutPanel14.TabIndex = 4;
-            // 
-            // label65
-            // 
-            this.label65.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label65.Location = new System.Drawing.Point(6, 3);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(152, 35);
-            this.label65.TabIndex = 0;
-            this.label65.Text = "DAC Start";
-            this.label65.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_B_DAC_Start
-            // 
-            this.TxtBx_Left_B_DAC_Start.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_B_DAC_Start.Location = new System.Drawing.Point(169, 6);
-            this.TxtBx_Left_B_DAC_Start.Name = "TxtBx_Left_B_DAC_Start";
-            this.TxtBx_Left_B_DAC_Start.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_B_DAC_Start.TabIndex = 6;
-            // 
-            // label66
-            // 
-            this.label66.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label66.Location = new System.Drawing.Point(287, 41);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(152, 35);
-            this.label66.TabIndex = 10;
-            this.label66.Text = "DAC End LCM";
-            this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_B_LCM_DAC_End
-            // 
-            this.TxtBx_Left_B_LCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_B_LCM_DAC_End.Location = new System.Drawing.Point(450, 44);
-            this.TxtBx_Left_B_LCM_DAC_End.Name = "TxtBx_Left_B_LCM_DAC_End";
-            this.TxtBx_Left_B_LCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_B_LCM_DAC_End.TabIndex = 12;
-            // 
-            // label67
-            // 
-            this.label67.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label67.Location = new System.Drawing.Point(6, 41);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(152, 35);
-            this.label67.TabIndex = 14;
-            this.label67.Text = "DAC Step";
-            this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_B_HCM_DAC_End
-            // 
-            this.TxtBx_Left_B_HCM_DAC_End.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_B_HCM_DAC_End.Location = new System.Drawing.Point(450, 6);
-            this.TxtBx_Left_B_HCM_DAC_End.Name = "TxtBx_Left_B_HCM_DAC_End";
-            this.TxtBx_Left_B_HCM_DAC_End.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_B_HCM_DAC_End.TabIndex = 7;
-            // 
-            // label68
-            // 
-            this.label68.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label68.Location = new System.Drawing.Point(287, 3);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(152, 35);
-            this.label68.TabIndex = 1;
-            this.label68.Text = "DAC End HCM";
-            this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_B_DAC_Step
-            // 
-            this.TxtBx_Left_B_DAC_Step.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_Left_B_DAC_Step.Location = new System.Drawing.Point(169, 44);
-            this.TxtBx_Left_B_DAC_Step.Name = "TxtBx_Left_B_DAC_Step";
-            this.TxtBx_Left_B_DAC_Step.Size = new System.Drawing.Size(109, 29);
-            this.TxtBx_Left_B_DAC_Step.TabIndex = 8;
-            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -2065,6 +2066,18 @@ namespace RGBTester.UI
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.F_StartForm_FormClosing);
             this.VisibleChanged += new System.EventHandler(this.F_StartForm_VisibleChanged);
             this.groupBox1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.TbCtrl_Left_DAC_Setting.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tableLayoutPanel12.ResumeLayout(false);
+            this.tableLayoutPanel12.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tableLayoutPanel13.ResumeLayout(false);
+            this.tableLayoutPanel13.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tableLayoutPanel14.ResumeLayout(false);
+            this.tableLayoutPanel14.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -2072,10 +2085,14 @@ namespace RGBTester.UI
             this.tableLayoutPanel9.PerformLayout();
             this.TbCtrl_Right_DAC_Setting.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.tableLayoutPanel11.ResumeLayout(false);
+            this.tableLayoutPanel11.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.Pnl_MainButton.ResumeLayout(false);
@@ -2089,22 +2106,6 @@ namespace RGBTester.UI
             this.Pnl_HighLowMode.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.LyPnl_ProductType.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
-            this.tableLayoutPanel11.ResumeLayout(false);
-            this.tableLayoutPanel11.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            this.TbCtrl_Left_DAC_Setting.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tableLayoutPanel12.ResumeLayout(false);
-            this.tableLayoutPanel12.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
-            this.tableLayoutPanel13.ResumeLayout(false);
-            this.tableLayoutPanel13.PerformLayout();
-            this.tabPage6.ResumeLayout(false);
-            this.tableLayoutPanel14.ResumeLayout(false);
-            this.tableLayoutPanel14.PerformLayout();
             this.ResumeLayout(false);
 
         }

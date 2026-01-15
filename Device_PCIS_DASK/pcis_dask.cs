@@ -82,6 +82,8 @@ namespace Device_PCIS_DASK
 
             if (range == "+-5V")
                 u_range = DASK64.AD_B_5_V;
+            else if (range == "+10V")
+                u_range = DASK64.AD_B_10_V;
 
             DASK64.AI_ReadChannel((ushort)card, port, u_range, out rawValue);
             DASK64.AI_VoltScale((ushort)card, u_range, (short)rawValue, out voltage);

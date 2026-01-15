@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using RGBTester.Base;
+using RGBTester.Device;
+using RGBTester.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using ToolFunction;
-using RGBTester.Base;
-using RGBTester.UI;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -194,14 +194,6 @@ namespace RGBTester.Logic
                 case WORK.LED_R_TEST:
                     {
                         Tool.SaveLogToFile("LED_R_Test", level: "INF");
-                        
-                        if (!Deps.LightEngine.ResetLED())
-                        {
-                            StatusBox.ShowMessage("Reset LED Fail");
-                            Transition(WORK.ABORT);
-                            break;
-                        }
-
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type+"_R");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_R_TEST);
@@ -218,14 +210,6 @@ namespace RGBTester.Logic
                 case WORK.LED_G_TEST:
                     {
                         Tool.SaveLogToFile("LED_G_TEST", level: "INF");
-
-                        if (!Deps.LightEngine.ResetLED())
-                        {
-                            StatusBox.ShowMessage("Reset LED Fail");
-                            Transition(WORK.ABORT);
-                            break;
-                        }
-
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_G_TEST);
@@ -242,14 +226,6 @@ namespace RGBTester.Logic
                 case WORK.LED_B_TEST:
                     {
                         Tool.SaveLogToFile("LED_B_TEST", level: "INF");
-
-                        if (!Deps.LightEngine.ResetLED())
-                        {
-                            StatusBox.ShowMessage("Reset LED Fail");
-                            Transition(WORK.ABORT);
-                            break;
-                        }
-
                         SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_B_TEST);

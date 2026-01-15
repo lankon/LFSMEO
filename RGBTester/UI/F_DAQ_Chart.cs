@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -306,16 +307,6 @@ namespace RGBTester.UI
             {
                 UpdatePage();
             }
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)    //連續更新暫時用不到
-        {
-            //double[] mockValues = new double[5];
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    mockValues[i] = _random.NextDouble() * 1 - 0.5; // 產生 -5~5 隨機數
-            //}
-            //UpdateChart(mockValues);
         }
 
         private void Btn_CaptureData_Click(object sender, EventArgs e)

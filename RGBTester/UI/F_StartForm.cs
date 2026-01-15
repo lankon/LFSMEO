@@ -82,71 +82,90 @@ namespace RGBTester.UI
             toolTip1.SetToolTip(Btn_SingleTest, "Test");
             toolTip1.SetToolTip(Btn_GetTemperature, "Get Temperature");
         }
-        private void UpdateSlopeOffset(string side, string color, string mode, double value_slope, double value_offset)
+        private void ShowClampingResult(bool clamping, TextBox txt_bx)
+        {
+            if(!clamping)
+                txt_bx.BackColor = SystemColors.Control;
+            else
+                txt_bx.BackColor = Color.Red;
+        }
+        private void UpdateSlopeOffset(string side, string color, string mode, double value_slope, double value_offset, bool clamping = false)
         {
             //[Left/RGB/High]
             if(side == "Left" && color == "R" && mode == "HCM")
             {
                 TxtBx_LeftRedOffset_H.Text = value_offset.ToString();
                 TxtBx_LeftRedSlope_H.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_LeftRedSlope_H);
             }
             else if (side == "Left" && color == "G" && mode == "HCM")
             {
                 TxtBx_LeftGreenOffset_H.Text = value_offset.ToString();
                 TxtBx_LeftGreenSlope_H.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_LeftGreenSlope_H);
             }
             else if (side == "Left" && color == "B" && mode == "HCM")
             {
                 TxtBx_LeftBlueOffset_H.Text = value_offset.ToString();
                 TxtBx_LeftBlueSlope_H.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_LeftBlueSlope_H);
             }
             //[Left/RGB/Low]
             else if (side == "Left" && color == "R" && mode == "LCM")
             {
                 TxtBx_LeftRedOffset_L.Text = value_offset.ToString();
                 TxtBx_LeftRedSlope_L.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_LeftRedSlope_L);
             }
             else if (side == "Left" && color == "G" && mode == "LCM")
             {
                 TxtBx_LeftGreenOffset_L.Text = value_offset.ToString();
                 TxtBx_LeftGreenSlope_L.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_LeftGreenSlope_L);
             }
             else if (side == "Left" && color == "B" && mode == "LCM")
             {
                 TxtBx_LeftBlueOffset_L.Text = value_offset.ToString();
                 TxtBx_LeftBlueSlope_L.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_LeftBlueSlope_L);
             }
             //[Right/RGB/Gigh]
             else if (side == "Right" && color == "R" && mode == "HCM")
             {
                 TxtBx_RightRedOffset_H.Text = value_offset.ToString();
                 TxtBx_RightRedSlope_H.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_RightRedSlope_H);
             }
             else if (side == "Right" && color == "G" && mode == "HCM")
             {
                 TxtBx_RightGreenOffset_H.Text = value_offset.ToString();
                 TxtBx_RightGreenSlope_H.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_RightGreenSlope_H);
             }
             else if (side == "Right" && color == "B" && mode == "HCM")
             {
                 TxtBx_RightBlueOffset_H.Text = value_offset.ToString();
                 TxtBx_RightBlueSlope_H.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_RightBlueSlope_H);
             }
             //[Right/RGB/Low]
             else if (side == "Right" && color == "R" && mode == "LCM")
             {
                 TxtBx_RightRedOffset_L.Text = value_offset.ToString();
                 TxtBx_RightRedSlope_L.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_RightRedSlope_L);
             }
             else if (side == "Right" && color == "G" && mode == "LCM")
             {
                 TxtBx_RightGreenOffset_L.Text = value_offset.ToString();
                 TxtBx_RightGreenSlope_L.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_RightGreenSlope_L);
             }
             else if (side == "Right" && color == "B" && mode == "LCM")
             {
                 TxtBx_RightBlueOffset_L.Text = value_offset.ToString();
                 TxtBx_RightBlueSlope_L.Text = value_slope.ToString();
+                ShowClampingResult(clamping, TxtBx_RightBlueSlope_L);
             }
         }
         private void UpdatePage()
@@ -173,15 +192,15 @@ namespace RGBTester.UI
         #endregion
 
         #region public function
-        public void ShowSlopeOffsetResult(string side, string color, string mode, double value, double value1)
+        public void ShowSlopeOffsetResult(string side, string color, string mode, double value, double value1, bool clamping = false)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(() => UpdateSlopeOffset(side,color,mode, value, value1)));
+                Invoke(new Action(() => UpdateSlopeOffset(side,color,mode, value, value1,clamping)));
             }
             else
             {
-                UpdateSlopeOffset(side, color, mode, value, value1);
+                UpdateSlopeOffset(side, color, mode, value, value1, clamping);
             }
         }
         #endregion
@@ -272,8 +291,8 @@ namespace RGBTester.UI
 
         private void Btn_Test_Click(object sender, EventArgs e)
         {
-            //LEA.Get_VoltageLimit(LEA.LED_B, LEA.LED_LeftSide);
-            //LEA.ResetLED();
+            LEA.Get_VoltageLimit(LEA.LED_B, LEA.LED_LeftSide);
+            LEA.ResetLED();
             //StartFormLogic.Test();
         }
     }
