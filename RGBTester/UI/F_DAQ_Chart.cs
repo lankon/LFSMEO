@@ -337,11 +337,17 @@ namespace RGBTester.UI
 
         private void Btn_SaveData_Click(object sender, EventArgs e)
         {
+            string test_side = TestMode.Text;
+            string test_color = TestColor.Text;
+            string HL_mode = Select_HL_Mode.Text;
+            string dac = DAC_Value.Text;
+            
             using (SaveFileDialog dlg = new SaveFileDialog())
             {
                 dlg.Filter = "PNG Image|*.png";
                 dlg.Title = "儲存 Chart 圖片";
-                dlg.FileName = $"DAQChart_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                
+                dlg.FileName = $"DAQChart_{test_side}_{test_color}_{HL_mode}_{dac}_{DateTime.Now:yyyyMMdd_HHmmss}.png";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     chart1.SaveImage(dlg.FileName, ChartImageFormat.Png);
