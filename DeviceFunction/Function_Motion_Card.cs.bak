@@ -226,25 +226,15 @@ namespace DeviceFunction
         // Initial Function
         public bool Initial_All_Motion()
         {
-            bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false, Virtual = false;
+            bool Use_MN200, Use_APS;
 
-            foreach (IMotionCard card in Cards)
-            {
-                if (card.Open() == true)
-                    DML.Add(card);
-            }
+            IMotionCard mN200 = null;//= new MN200();
+            IMotionCard APS = null;// = new APS();
 
-            for (int i = 0; i < DML.Count; i++)
-            {
-                if (DML[i].GetName() == "MN200")
-                    UseMN200 = true;
-                if (DML[i].GetName() == "AMP_204C" || DML[i].GetName() == "PCIE_8332")
-                    UseAPS = true;
-                if (DML[i].GetName() == "Virtual")
-                    Virtual = true;
-            }
+            Use_MN200 = OpenMotionCard(mN200, "MN200");
+            Use_APS = OpenMotionCard(APS, "APS");
 
-            if (!UseMN200 && !UseAPS)    //沒有任何一張Motion卡
+            if (!Use_MN200 && !Use_APS)    //沒有任何一張Motion卡
             {
                 Tool.SaveLogToFile("Motion卡Initial失敗");
                 return false;

@@ -45,11 +45,6 @@ namespace RGBTester.Logic
             RGBTesterMachine.DIOL.Initial_All_IO();
         }
 
-        public void Initial_Motion_Function()
-        {
-            RGBTesterMachine.DML.Initial_All_Motion();
-        }
-
         public int DeleteExpireFileInFolder()
         {
             string app_path = AppDomain.CurrentDomain.BaseDirectory;

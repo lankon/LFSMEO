@@ -226,10 +226,6 @@
       <Project>{78fcbdd7-f840-449e-9a6f-4f86889db2a7}</Project>
       <Name>DeviceUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Device_APS\Device_APS.csproj">
-      <Project>{c12ff5de-c9f1-4a7f-8b6b-0c0ab9159ed0}</Project>
-      <Name>Device_APS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Device_Klzx\Device_Klzx.csproj">
       <Project>{9c7c95d6-1c0f-4aeb-90f3-047e24034952}</Project>
       <Name>Device_Klzx</Name>
