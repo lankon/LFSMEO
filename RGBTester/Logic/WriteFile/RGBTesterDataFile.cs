@@ -108,10 +108,9 @@ namespace RGBTester.Logic
                 WriteTitle(describe);
         }
         public void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
-                                    double i_led, double p_led, double eff, double temperature,
+                                    double vfb, double i_led, double p_led, double eff, double temperature,
                                     double x, double y, double m, double c, string color)
         {
-
             // [Check Pass/Fail]
             string bin_v_in, bin_i_in, bin_vf, bin_i_led;
             bin_v_in = CheckPassFail(0, 5.5, v_in);
@@ -120,7 +119,7 @@ namespace RGBTester.Logic
             bin_i_led = CheckPassFail(30, 300, i_led);
 
             string context = $"{dac},{v_in:F2},{bin_v_in},{i_in:F2},{bin_i_in},{p_in:F2},{vf:F2}," +
-                             $"{bin_vf},{i_led:F2},{bin_i_led},{p_led:F2},{eff:F2},{temperature:F2},{x:F2}," +
+                             $"{bin_vf},{vfb:F2},{i_led:F2},{bin_i_led},{p_led:F2},{eff:F2},{temperature:F2},{x:F2}," +
                              $"{y:F2},{m:F3},{c:F2}";
 
             WriteFile(context, color, false);
@@ -252,7 +251,7 @@ namespace RGBTester.Logic
             //string low_range = ",,,,,,,,0,,130,,,0,,30,,,,,,,,,,0,,130,,,0,,30,,,,,,,,";
             //string high_range = ",,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,";
             //string unit = ",,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,";
-            string title = "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,H Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c,L Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c";
+            string title = "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,H Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Vfb(V),Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c,L Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Vfb(V),Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c";
 
             if (type == "Left_R")
                 file = LeftRedFile;

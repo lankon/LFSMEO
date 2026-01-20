@@ -181,6 +181,7 @@ namespace RGBTester.UI
             TxtBx_Left_AvgCount.Enabled = enable;
             TbCtrl_Right_DAC_Setting.Enabled = enable;
             TxtBx_Right_AvgCount.Enabled = enable;
+            LyPnl_RfbSetting.Enabled = enable;
             Pnl_OEM_Test.Visible = enable_oem;
             LyPnl_ProductType.Visible = enable_oem;
             TxtBx_Left_SN.Enabled = IsLeft || ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_TestMode) == 2;

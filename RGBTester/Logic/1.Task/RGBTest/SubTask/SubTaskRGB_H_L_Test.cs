@@ -107,7 +107,7 @@ namespace RGBTester.Logic
         private RGBTesterData TesterData_L = new RGBTesterData();
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
-        private RGBTesterFunction.TestHardwareParam HW_Param = new RGBTesterFunction.TestHardwareParam();
+        RGBTesterFunction RGBfunc;
 
         public enum WORK
         {
@@ -140,8 +140,9 @@ namespace RGBTester.Logic
         {
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
+            RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
 
-            Period_DAQ_Count = HW_Param.Period_DAQ_Count * 3;   //抓三個週期的資料
+            Period_DAQ_Count = RGBfunc.HardwareParam.Period_DAQ_Count * 3;   //抓三個週期的資料
 
             string[] res = Type.Split('_');
 
@@ -160,7 +161,7 @@ namespace RGBTester.Logic
             if (TestColor == "R")
             {
                 Color = Deps.LightEngine.LED_R;
-                LED_Duty = HW_Param.LED_R_Duty;
+                LED_Duty = RGBfunc.HardwareParam.LED_R_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_R : EIOName.Right_VLED_R;
 
                 DAC_Start = isLeft ? Left_R_DAC_Start : Right_R_DAC_Start;
@@ -171,7 +172,7 @@ namespace RGBTester.Logic
             else if(TestColor == "G")
             {
                 Color = Deps.LightEngine.LED_G;
-                LED_Duty = HW_Param.LED_G_Duty;
+                LED_Duty = RGBfunc.HardwareParam.LED_G_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_G : EIOName.Right_VLED_G;
 
                 DAC_Start = isLeft ? Left_G_DAC_Start : Right_G_DAC_Start;
@@ -182,7 +183,7 @@ namespace RGBTester.Logic
             else if(TestColor == "B")
             {
                 Color = Deps.LightEngine.LED_B;
-                LED_Duty = HW_Param.LED_B_Duty;
+                LED_Duty = RGBfunc.HardwareParam.LED_B_Duty;
                 DAQ_Vf = isLeft ? EIOName.Left_VLED_B : EIOName.Right_VLED_B;
 
                 DAC_Start = isLeft ? Left_B_DAC_Start : Right_B_DAC_Start;
@@ -200,8 +201,10 @@ namespace RGBTester.Logic
             TotalState_H = qDAC_H.Count;
             TotalState_L = qDAC_L.Count;
 
-            RGBTesterFunction func = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
-            func.Set_LED_Rigester();
+            double R_LCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_LCM);
+            double R_HCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_HCM);
+            RGBfunc.Set_LED_Rigester();
+            RGBfunc.SetRfb(R_LCM, R_HCM);
         }
 
         private RGBTesterFunction.AvgData PeriodAvgValueCalculate(string current_mode)
@@ -218,13 +221,13 @@ namespace RGBTester.Logic
                 Vin[i] = Deps.DIOL.GetAInputStatus(DAQ_Vin);
 
                 if(current_mode == "LCM")
-                    Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_LCM) - HW_Param.CurrentMeasureBias);
+                    Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_LCM) - RGBfunc.HardwareParam.CurrentMeasureBias);
                 else
-                    Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_HCM) - HW_Param.CurrentMeasureBias);
+                    Iin[i] = (Deps.DIOL.GetAInputStatus(DAQ_Iin_HCM) - RGBfunc.HardwareParam.CurrentMeasureBias);
 
                 Vled[i] = Deps.DIOL.GetAInputStatus(DAQ_VLED);
                 Vf[i] = Vled[i] - Deps.DIOL.GetAInputStatus(DAQ_Vf);
-                Iled[i] = (Deps.DIOL.GetAInputStatus(DAQ_ILED) - HW_Param.CurrentMeasureBias);
+                Iled[i] = (Deps.DIOL.GetAInputStatus(DAQ_ILED) - RGBfunc.HardwareParam.CurrentMeasureBias);
             }
 
             double threshold = 0.95;
@@ -312,8 +315,10 @@ namespace RGBTester.Logic
         {
             double milli = 1000;
 
+            double Vfb = TesterData_L.Iled[index] * RGBfunc.HardwareParam.Rfb_LCM * RGBfunc.HardwareParam.LED_SigMag;
+
             Deps.File.WriteTestResult(TesterData_L.DACpoint[index], TesterData_L.Vin[index], TesterData_L.Iin[index] * milli,
-                                    TesterData_L.Pin[index] * milli, TesterData_L.Vf[index], TesterData_L.Iled[index] * milli,
+                                    TesterData_L.Pin[index] * milli, TesterData_L.Vf[index], Vfb, TesterData_L.Iled[index] * milli,
                                     TesterData_L.Pled[index] * milli, TesterData_L.Eff[index] * 100, TesterData_L.Temperature[index],
                                     LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
                                     LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
@@ -325,15 +330,17 @@ namespace RGBTester.Logic
             Deps.File.WriteTestResult(-99, -99, -99,
                                         -99, -99, -99,
                                         -99, -99, -99,
-                                        -99, -99,
+                                        -99, -99, -99,
                                         -99, -99, Type);
         }
         private void Write_HCM_Result(int index)
         {
             double milli = 1000;
 
+            double Vfb = TesterData_H.Iled[index] * RGBfunc.HardwareParam.Rfb_HCM * RGBfunc.HardwareParam.LED_SigMag;
+
             Deps.File.WriteTestResult(TesterData_H.DACpoint[index], TesterData_H.Vin[index], TesterData_H.Iin[index] * milli,
-                                                            TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], TesterData_H.Iled[index] * milli,
+                                                            TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], Vfb, TesterData_H.Iled[index] * milli,
                                                             TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
                                                             LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
                                                             LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
@@ -351,7 +358,7 @@ namespace RGBTester.Logic
             double current;
             if (Current_DAC >= 200 && Current_DAC <= 300 && TestColor == "R")
             {
-                current = HW_Param.LCM_MaxCurrent * Current_DAC / 1023 / 1000;  //A
+                current = RGBfunc.HardwareParam.LCM_MaxCurrent * Current_DAC / 1023 / 1000;  //A
 
                 if (Math.Abs((measure_current - current) / current * 100) > 15)
                 {
@@ -540,10 +547,10 @@ namespace RGBTester.Logic
                         TesterData_L.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_L.Vin.Add(sum_Vin / RepeatTime);
-                        TesterData_L.Iin.Add(sum_Iin / RepeatTime / HW_Param.Rin / HW_Param.L_SigMag);
+                        TesterData_L.Iin.Add(sum_Iin / RepeatTime / RGBfunc.HardwareParam.Rin / RGBfunc.HardwareParam.L_SigMag);
                         TesterData_L.Vled.Add(sum_Vled / RepeatTime);
                         TesterData_L.Vf.Add(sum_Vrgb / RepeatTime); //(sum_Vled - sum_Vrgb)
-                        TesterData_L.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_LCM / HW_Param.LED_SigMag);
+                        TesterData_L.Iled.Add(sum_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_LCM / RGBfunc.HardwareParam.LED_SigMag);
 
                         int count = TesterData_L.Iled.Count;
                         if (!CheckContact(TesterData_L.Iled[count - 1] - TesterData_L.Iled[0]))
@@ -665,10 +672,10 @@ namespace RGBTester.Logic
                         TesterData_H.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_H.Vin.Add(sum_Vin / RepeatTime);
-                        TesterData_H.Iin.Add(sum_Iin / RepeatTime / HW_Param.Rin / HW_Param.H_SigMag);
+                        TesterData_H.Iin.Add(sum_Iin / RepeatTime / RGBfunc.HardwareParam.Rin / RGBfunc.HardwareParam.H_SigMag);
                         TesterData_H.Vled.Add(sum_Vled / RepeatTime);
                         TesterData_H.Vf.Add(sum_Vrgb / RepeatTime);
-                        TesterData_H.Iled.Add(sum_Iled / RepeatTime / HW_Param.Rfb_HCM / HW_Param.LED_SigMag);
+                        TesterData_H.Iled.Add(sum_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_HCM / RGBfunc.HardwareParam.LED_SigMag);
 
                         //Transition(WORK.CALCULATE_HIGH);
                         State = WORK.CALCULATE_HIGH;

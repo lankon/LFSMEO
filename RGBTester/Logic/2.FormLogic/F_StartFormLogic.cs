@@ -112,7 +112,7 @@ namespace RGBTester.Logic
             EIOName[] eIONames = new EIOName[] { EIOName.Left_Iin_HCM, EIOName.Left_Iin_LCM, EIOName.Left_Vin,
                                                  EIOName.Right_VLED, EIOName.Left_ILED, EIOName.Right_Iin_LCM,
                                                  EIOName.Right_Vin, EIOName.Right_ILED, EIOName.Left_VLED,
-                                                 EIOName.Left_VLED_R, EIOName.Left_VLED_G, EIOName.Left_VLED_B,
+                                                 EIOName.Left_VLED_R, EIOName.Left_VLED_B, EIOName.Left_VLED_G, 
                                                  EIOName.Right_Iin_HCM, EIOName.Right_VLED_R, EIOName.Right_VLED_G,
                                                  EIOName.Right_VLED_B};
 

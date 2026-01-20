@@ -58,8 +58,7 @@ namespace RGBTester.Logic
         {
             RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
             RGBTesterFunction.DAQ_IO_Point daq_io = func.Get_DAQ_IO_Point(test_side, color);
-            RGBTesterFunction.TestHardwareParam hw_param = new RGBTesterFunction.TestHardwareParam();
-            int test_count = hw_param.Period_DAQ_Count * 3;
+            int test_count = func.HardwareParam.Period_DAQ_Count * 3;
 
             double[] Vin = new double[test_count];
             double[] Iin = new double[test_count];

@@ -195,6 +195,12 @@ namespace RGBTester.UI
             this.LyPnl_ProductType = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_ProductType = new System.Windows.Forms.ComboBox();
             this.label50 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.LyPnl_RfbSetting = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_Rfb_HCM = new System.Windows.Forms.TextBox();
+            this.label69 = new System.Windows.Forms.Label();
+            this.label70 = new System.Windows.Forms.Label();
+            this.TxtBx_Rfb_LCM = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.TbCtrl_Left_DAC_Setting.SuspendLayout();
@@ -224,6 +230,8 @@ namespace RGBTester.UI
             this.Pnl_HighLowMode.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.LyPnl_ProductType.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.LyPnl_RfbSetting.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -1681,6 +1689,7 @@ namespace RGBTester.UI
             // 
             this.Pnl_MainButton.AutoScroll = true;
             this.Pnl_MainButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_MainButton.Controls.Add(this.panel1);
             this.Pnl_MainButton.Controls.Add(this.Pnl_OEM_Test);
             this.Pnl_MainButton.Controls.Add(this.Btn_SingleTest);
             this.Pnl_MainButton.Controls.Add(this.Pnl_ShowTemperature);
@@ -1695,7 +1704,7 @@ namespace RGBTester.UI
             this.Pnl_OEM_Test.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Pnl_OEM_Test.Controls.Add(this.Btn_Test);
             this.Pnl_OEM_Test.Controls.Add(this.tableLayoutPanel8);
-            this.Pnl_OEM_Test.Location = new System.Drawing.Point(469, 4);
+            this.Pnl_OEM_Test.Location = new System.Drawing.Point(698, 4);
             this.Pnl_OEM_Test.Name = "Pnl_OEM_Test";
             this.Pnl_OEM_Test.Size = new System.Drawing.Size(445, 75);
             this.Pnl_OEM_Test.TabIndex = 9;
@@ -2049,6 +2058,73 @@ namespace RGBTester.UI
             this.label50.Text = "Product Type";
             this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.LyPnl_RfbSetting);
+            this.panel1.Location = new System.Drawing.Point(469, 4);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(224, 75);
+            this.panel1.TabIndex = 10;
+            // 
+            // LyPnl_RfbSetting
+            // 
+            this.LyPnl_RfbSetting.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.LyPnl_RfbSetting.ColumnCount = 2;
+            this.LyPnl_RfbSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.LyPnl_RfbSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.LyPnl_RfbSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.LyPnl_RfbSetting.Controls.Add(this.TxtBx_Rfb_HCM, 1, 1);
+            this.LyPnl_RfbSetting.Controls.Add(this.label69, 0, 0);
+            this.LyPnl_RfbSetting.Controls.Add(this.label70, 1, 0);
+            this.LyPnl_RfbSetting.Controls.Add(this.TxtBx_Rfb_LCM, 0, 1);
+            this.LyPnl_RfbSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LyPnl_RfbSetting.Location = new System.Drawing.Point(0, 0);
+            this.LyPnl_RfbSetting.Name = "LyPnl_RfbSetting";
+            this.LyPnl_RfbSetting.RowCount = 2;
+            this.LyPnl_RfbSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LyPnl_RfbSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LyPnl_RfbSetting.Size = new System.Drawing.Size(222, 73);
+            this.LyPnl_RfbSetting.TabIndex = 6;
+            // 
+            // TxtBx_Rfb_HCM
+            // 
+            this.TxtBx_Rfb_HCM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Rfb_HCM.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Rfb_HCM.Location = new System.Drawing.Point(115, 40);
+            this.TxtBx_Rfb_HCM.Name = "TxtBx_Rfb_HCM";
+            this.TxtBx_Rfb_HCM.Size = new System.Drawing.Size(104, 29);
+            this.TxtBx_Rfb_HCM.TabIndex = 9;
+            // 
+            // label69
+            // 
+            this.label69.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label69.Location = new System.Drawing.Point(4, 1);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(104, 35);
+            this.label69.TabIndex = 5;
+            this.label69.Text = "Rfb LCM";
+            this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label70
+            // 
+            this.label70.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label70.Location = new System.Drawing.Point(115, 1);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(104, 35);
+            this.label70.TabIndex = 6;
+            this.label70.Text = "Rfb HCM";
+            this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_Rfb_LCM
+            // 
+            this.TxtBx_Rfb_LCM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Rfb_LCM.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Rfb_LCM.Location = new System.Drawing.Point(4, 40);
+            this.TxtBx_Rfb_LCM.Name = "TxtBx_Rfb_LCM";
+            this.TxtBx_Rfb_LCM.Size = new System.Drawing.Size(104, 29);
+            this.TxtBx_Rfb_LCM.TabIndex = 8;
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -2106,6 +2182,9 @@ namespace RGBTester.UI
             this.Pnl_HighLowMode.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.LyPnl_ProductType.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.LyPnl_RfbSetting.ResumeLayout(false);
+            this.LyPnl_RfbSetting.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2275,5 +2354,11 @@ namespace RGBTester.UI
         private System.Windows.Forms.TextBox TxtBx_Left_B_HCM_DAC_End;
         private System.Windows.Forms.Label label68;
         private System.Windows.Forms.TextBox TxtBx_Left_B_DAC_Step;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TableLayoutPanel LyPnl_RfbSetting;
+        private System.Windows.Forms.TextBox TxtBx_Rfb_HCM;
+        private System.Windows.Forms.Label label69;
+        private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.TextBox TxtBx_Rfb_LCM;
     }
 }

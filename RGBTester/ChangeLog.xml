@@ -1,13 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
-	
-	<Unrelease version="1.26.1.2" date="xxxx-xx-xx">
+
+	<Release version="1.26.1.2" date="2026-01-20">
 		<Item type="Added">增加程式版本日誌</Item>
 		<Item type="Added">DAQ波型可視化工具存圖預設名稱增加測試條件</Item>
+		<Item type="Added">Vfb輸出至報表</Item>
+		<Item type="Added">ILed Rfb電阻開放給客戶修改</Item>
 		<Item type="Fixed"></Item>
-	</Unrelease>
+	</Release>
 	<Release version="1.26.1.1" date="2026-01-15">
 		<Item type="Added">初版客戶驗證GRR程式</Item>
 	</Release>
 	
+
 </Changelog>

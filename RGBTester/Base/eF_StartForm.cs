@@ -51,5 +51,8 @@ namespace RGBTester.Base
         TxtBx_Left_B_DAC_Step,
         TxtBx_Left_B_HCM_DAC_End,
         TxtBx_Left_B_LCM_DAC_End,
+
+        TxtBx_Rfb_HCM,
+        TxtBx_Rfb_LCM,
     }
 }

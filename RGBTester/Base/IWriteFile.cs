@@ -25,7 +25,7 @@ namespace RGBTester.Base
         void WriteFile(string context = "", string describe = "", bool NewLine = true);
         void CloseFile(string describe = "");
         void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
-                                    double i_led, double p_led, double eff, double temperature,
+                                    double vfb, double i_led, double p_led, double eff, double temperature,
                                     double x, double y, double m, double c, string color);
         void WriteCalibrationResult(string sn, string describe = "");
         void ResetCalibrationData();

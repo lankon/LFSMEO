@@ -16,11 +16,15 @@ namespace RGBTester.Logic
         public RGBTesterFunction(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
+            HardwareParam = new TestHardwareParam(this);
         }
 
         #region parameter define
+        private double Rfb_LCM = 1;
+        private double Rfb_HCM = 1;
         IServiceProvider ServiceProvider;
         ILightEngineFunction LEA;
+        public TestHardwareParam HardwareParam { get; private set; }
         #endregion
 
         public class AvgData
@@ -34,6 +38,12 @@ namespace RGBTester.Logic
 
         public class TestHardwareParam
         {
+            private RGBTesterFunction _parent;
+            public TestHardwareParam(RGBTesterFunction parent)
+            {
+                _parent = parent;
+            }
+
             public int DAQ_SampleRate { get { return 40; } }            //單位us, DAQ取樣頻率25KHz
             public int DisplayFrequency { get { return 11; } }          //單位ms, 頻率90Hz
             public int OneTimeTestChannel { get { return 5; } }         //一次DAQ取樣通道數(硬體)
@@ -42,8 +52,8 @@ namespace RGBTester.Logic
             public int L_SigMag { get { return 200; } }                 //LCM訊號放大倍率(硬體)
             public int LED_SigMag { get { return 20; } }                //LED訊號放大倍率(硬體)
             public double CurrentMeasureBias { get { return 0.9; } }    //Bias(硬體)
-            public double Rfb_HCM { get { return 0.53; } }              //High Current Mode阻抗(硬體)
-            public double Rfb_LCM { get { return 5.1; } }               //Low Current Mode阻抗(硬體)
+            public double Rfb_HCM { get { return _parent.Rfb_HCM; } }           //High Current Mode阻抗(硬體)-會隨產品變動
+            public double Rfb_LCM { get { return _parent.Rfb_LCM; } }           //Low Current Mode阻抗(硬體)-會隨產品變動
             public double Rin { get { return 0.5; } }                   //輸入阻抗(硬體)
             public double LED_R_Duty { get { return 0.4; } }            //Red LED Duty(硬體)
             public double LED_G_Duty { get { return 0.18; } }           // Green LED Duty(硬體)
@@ -102,6 +112,18 @@ namespace RGBTester.Logic
             LEA.Set_RegisterValue(0x1E, 1, intput);
 
             Tool.SaveLogToFile("Set LED Voltage Value", level: "DBG");
+        }
+        public void SetRfb(double R_LCM, double R_HCM)
+        {
+            if (R_LCM > 0.00000001)
+                Rfb_LCM = R_LCM;
+            else
+                Rfb_LCM = 1;
+
+            if (R_HCM > 0.00000001)
+                Rfb_HCM = R_HCM;
+            else
+                Rfb_HCM = 1;
         }
     }
 }
