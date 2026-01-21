@@ -54,5 +54,8 @@ namespace RGBTester.Base
 
         TxtBx_Rfb_HCM,
         TxtBx_Rfb_LCM,
+
+        TxtBx_LCM_MaxCurrent,
+        TxtBx_HCM_MaxCurrent,
     }
 }

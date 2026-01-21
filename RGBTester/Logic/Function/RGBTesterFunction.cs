@@ -22,6 +22,8 @@ namespace RGBTester.Logic
         #region parameter define
         private double Rfb_LCM = 1;
         private double Rfb_HCM = 1;
+        private double MaxCurrent_LCM = 30;
+        private double MaxCurrent_HCM = 300;
         IServiceProvider ServiceProvider;
         ILightEngineFunction LEA;
         public TestHardwareParam HardwareParam { get; private set; }
@@ -58,8 +60,8 @@ namespace RGBTester.Logic
             public double LED_R_Duty { get { return 0.4; } }            //Red LED Duty(硬體)
             public double LED_G_Duty { get { return 0.18; } }           // Green LED Duty(硬體)
             public double LED_B_Duty { get { return 0.12; } }           //Blue LED Duty(硬體)
-            public double HCM_MaxCurrent { get { return 300; } }        //HCM理論最大電流
-            public double LCM_MaxCurrent { get { return 30; } }         //LCM理論最大電流
+            public double HCM_MaxCurrent { get { return _parent.MaxCurrent_HCM; } }        //HCM理論最大電流
+            public double LCM_MaxCurrent { get { return _parent.MaxCurrent_LCM; } }         //LCM理論最大電流
         }
 
         public class DAQ_IO_Point
@@ -124,6 +126,12 @@ namespace RGBTester.Logic
                 Rfb_HCM = R_HCM;
             else
                 Rfb_HCM = 1;
+        }
+
+        public void SetMaxCurrent(double LCM_I, double HCM_I)
+        {
+            MaxCurrent_LCM = LCM_I;
+            MaxCurrent_HCM = HCM_I;
         }
     }
 }

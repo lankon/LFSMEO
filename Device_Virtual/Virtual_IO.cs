@@ -117,8 +117,8 @@ namespace Device_Virtual
         public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
             long targetTicks = Stopwatch.Frequency / 1000_000;//us
-            var sw = Stopwatch.StartNew();
-            while (sw.ElapsedTicks < targetTicks * 40) { }
+            //var sw = Stopwatch.StartNew();
+            //while (sw.ElapsedTicks < targetTicks * 40) { }
 
             if (AI_Virtual[port] == null)
                 return 5;

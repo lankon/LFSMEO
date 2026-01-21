@@ -48,26 +48,26 @@ namespace RGBTester.Device
             byte low = (byte)(value & 0xFF);    // 低位元
 
             long targetTicks = Stopwatch.Frequency / 1000;//ms
-            var sw = Stopwatch.StartNew();
-            while (sw.ElapsedTicks < targetTicks*10) { }
+            //var sw = Stopwatch.StartNew();
+            //while (sw.ElapsedTicks < targetTicks*1) { }
 
             // ====== 發送 LSB ======
             SetLedDriverData(side, rgb, low);
 
             // ====== 模擬等待回傳時間 ======
-            sw = Stopwatch.StartNew();
-            while (sw.ElapsedTicks < targetTicks * 15 / 10) { }
+            //sw = Stopwatch.StartNew();
+            //while (sw.ElapsedTicks < targetTicks * 1 / 10) { }
 
             // ====== 每道指令需間隔的時間 ======
-            sw = Stopwatch.StartNew();
-            while (sw.ElapsedTicks < targetTicks*10) { }
+            //sw = Stopwatch.StartNew();
+            //while (sw.ElapsedTicks < targetTicks*1) { }
 
             // ====== 發送 MSB ======
             SetLedDriverData(side, LED_RGB_MSB, high);
 
             // ====== 模擬等待回傳時間 ======
-            sw = Stopwatch.StartNew();
-            while (sw.ElapsedTicks < targetTicks * 15 / 10) { }
+            //sw = Stopwatch.StartNew();
+            //while (sw.ElapsedTicks < targetTicks * 1 / 10) { }
 
             return true;
         }

@@ -203,8 +203,11 @@ namespace RGBTester.Logic
 
             double R_LCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_LCM);
             double R_HCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_HCM);
+            double MaxI_LCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_LCM_MaxCurrent);
+            double MaxI_HCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_HCM_MaxCurrent);
             RGBfunc.Set_LED_Rigester();
             RGBfunc.SetRfb(R_LCM, R_HCM);
+            RGBfunc.SetMaxCurrent(MaxI_LCM, MaxI_HCM);
         }
 
         private RGBTesterFunction.AvgData PeriodAvgValueCalculate(string current_mode)
@@ -360,7 +363,7 @@ namespace RGBTester.Logic
             {
                 current = RGBfunc.HardwareParam.LCM_MaxCurrent * Current_DAC / 1023 / 1000;  //A
 
-                if (Math.Abs((measure_current - current) / current * 100) > 15)
+                if ((measure_current - current) / current * 100 < -15)
                 {
                     Tool.SaveLogToFile($"Contact Fail,DAC:{Current_DAC},Iled:{measure_current*1000}mA,Target I:{current*1000}mA", level: "ERR");
                     return false;
@@ -371,16 +374,22 @@ namespace RGBTester.Logic
         }
         private void CheckTestResult(double res, string mode)
         {
+            double current;
+            
             if(mode == "HCM")
             {
-                if (((res - 0.3) / 0.3 * 100) < -10)
+                current = RGBfunc.HardwareParam.HCM_MaxCurrent / 1000;
+
+                if (((res - current) / current * 100) < -10)
                 {
                     Scope.TestFail = true;
                 }
             }
             else
             {
-                if (((res - 0.03) / 0.03 * 100) < -10)
+                current = RGBfunc.HardwareParam.LCM_MaxCurrent / 1000;
+
+                if (((res - current) / current * 100) < -10)
                 {
                     Scope.TestFail = true;
                 }
@@ -388,20 +397,26 @@ namespace RGBTester.Logic
         }
         private void CheckIledResult(double res, string mode)
         {
+            double current;
+
             if (mode == "HCM")
             {
-                if(res > 350)
+                current = RGBfunc.HardwareParam.HCM_MaxCurrent;
+
+                if (res > current+50)
                     Scope.TestFail = true;
             }
             else
             {
-                if(res > 35)
+                current = RGBfunc.HardwareParam.LCM_MaxCurrent;
+
+                if (res > current + 5)
                     Scope.TestFail= true;
             }
         }
         private void CheckClamping(double Vled, List<int> DAC, List<double> ILed)
         {
-            if (ILed.Count < 10)     //測試點數不足無法判斷,直接回傳沒有Clamping
+            if (ILed.Count < 100)     //測試點數不足無法判斷,直接回傳沒有Clamping
             {
                 IsClamping = false;
                 return;
