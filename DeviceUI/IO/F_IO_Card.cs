@@ -318,5 +318,11 @@ namespace DeviceUI.IO
                 UpdatePage();
             }
         }
+
+        private void Btn_IO_Test_Click(object sender, EventArgs e)
+        {
+            DIOL.AddIORule(0, 0, 0, 0, true, (0, 0, 0, 5, false), (0, 0, 0, 7, true));
+            DIOL.AddIORule(0, 0, 0, 0, false, (0, 0, 0, 5, true), (0, 0, 0, 7, false));
+        }
     }
 }

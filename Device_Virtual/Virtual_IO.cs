@@ -48,11 +48,7 @@ namespace Device_Virtual
         #region public function
         public bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
-            if (port < 0 || port >= portMaxCount)
-                return false;
-            if (DevNo < 0 || DevNo >= devMaxCount)
-                return false;
-            if (lineNo < 0 || lineNo >= lineMaxCount)
+            if(CheckIOValid(lineNo, DevNo, port) == false)
                 return false;
 
             return _Param.Input_Status[lineNo, DevNo, port];
@@ -65,6 +61,9 @@ namespace Device_Virtual
 
         public bool GetOutputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
         {
+            if(CheckIOValid(lineNo, DevNo, port) == false)
+                return false;
+
             bool res = _Param.Output_Status[lineNo, DevNo, port];
 
             return res;
@@ -82,6 +81,9 @@ namespace Device_Virtual
 
         public bool SetOutputStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false)
         {
+            if(CheckIOValid(lineNo, devNo, port) == false)
+                return false;
+
             _Param.Output_Status[lineNo, devNo, port] = truefalse;
 
             // 將多維座標轉成唯一 OutputAddress（你可根據專案需求自訂算法）
@@ -177,6 +179,17 @@ namespace Device_Virtual
             int devNo = (address / portMaxCount) % devMaxCount;
             int lineNo = address / (devMaxCount * portMaxCount);
             return (lineNo, devNo, port);
+        }
+
+        private bool CheckIOValid(byte lineNo, byte devNo, byte port)
+        {
+            if (port < 0 || port >= portMaxCount)
+                return false;
+            if (devNo < 0 || devNo >= devMaxCount)
+                return false;
+            if (lineNo < 0 || lineNo >= lineMaxCount)
+                return false;
+            return true;
         }
         #endregion
     }

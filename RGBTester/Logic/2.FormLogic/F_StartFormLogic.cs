@@ -104,6 +104,8 @@ namespace RGBTester.Logic
 
         public int ReadVirtual_AI_Data()
         {
+            SetVirtual_IO_Data();
+
             string filePath = AppDomain.CurrentDomain.BaseDirectory + "\\Setting\\Virtual_AI_Data.csv";
 
             if (!File.Exists(filePath))
@@ -157,6 +159,11 @@ namespace RGBTester.Logic
                 intput[0] = 0xC0;
                 cmd.Set_RegisterValue(0x1E, 1, intput);
             }
+        }
+        public void SetVirtual_IO_Data()
+        {
+            Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, false, (EIOName.SafePos_Sensor, false));
+            Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, true, (EIOName.SafePos_Sensor, true));
         }
         #endregion
 

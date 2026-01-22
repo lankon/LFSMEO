@@ -30,17 +30,10 @@ namespace DeviceUI.IO
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_IO = new System.Windows.Forms.DataGridView();
-            this.Btn_Save = new System.Windows.Forms.Button();
-            this.Btn_RowDown = new System.Windows.Forms.Button();
-            this.Btn_RowUp = new System.Windows.Forms.Button();
-            this.Btn_Remove = new System.Windows.Forms.Button();
-            this.Btn_Add = new System.Windows.Forms.Button();
-            this.Btn_Load = new System.Windows.Forms.Button();
-            this.Timer_IO = new System.Windows.Forms.Timer(this.components);
             this.Title_IO = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,6 +45,14 @@ namespace DeviceUI.IO
             this.Title_CardNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_LineNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_DevNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Btn_Save = new System.Windows.Forms.Button();
+            this.Btn_RowDown = new System.Windows.Forms.Button();
+            this.Btn_RowUp = new System.Windows.Forms.Button();
+            this.Btn_Remove = new System.Windows.Forms.Button();
+            this.Btn_Add = new System.Windows.Forms.Button();
+            this.Btn_Load = new System.Windows.Forms.Button();
+            this.Timer_IO = new System.Windows.Forms.Timer(this.components);
+            this.Btn_IO_Test = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_IO)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,14 +62,14 @@ namespace DeviceUI.IO
             this.DGV_IO.AllowUserToDeleteRows = false;
             this.DGV_IO.AllowUserToResizeColumns = false;
             this.DGV_IO.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_IO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_IO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.DGV_IO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_IO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_IO,
@@ -82,14 +83,14 @@ namespace DeviceUI.IO
             this.Title_CardNum,
             this.Title_LineNum,
             this.Title_DevNum});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_IO.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_IO.DefaultCellStyle = dataGridViewCellStyle6;
             this.DGV_IO.Location = new System.Drawing.Point(5, 5);
             this.DGV_IO.Name = "DGV_IO";
             this.DGV_IO.RowHeadersVisible = false;
@@ -99,83 +100,12 @@ namespace DeviceUI.IO
             this.DGV_IO.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_IO_CellClick);
             this.DGV_IO.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_IO_CellValueChanged);
             // 
-            // Btn_Save
-            // 
-            this.Btn_Save.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Save.Location = new System.Drawing.Point(1200, 5);
-            this.Btn_Save.Name = "Btn_Save";
-            this.Btn_Save.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Save.TabIndex = 22;
-            this.Btn_Save.Text = "Save";
-            this.Btn_Save.UseVisualStyleBackColor = true;
-            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
-            // 
-            // Btn_RowDown
-            // 
-            this.Btn_RowDown.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_RowDown.Location = new System.Drawing.Point(1200, 255);
-            this.Btn_RowDown.Name = "Btn_RowDown";
-            this.Btn_RowDown.Size = new System.Drawing.Size(123, 47);
-            this.Btn_RowDown.TabIndex = 21;
-            this.Btn_RowDown.Text = "Row Down";
-            this.Btn_RowDown.UseVisualStyleBackColor = true;
-            this.Btn_RowDown.Click += new System.EventHandler(this.Btn_RowDown_Click);
-            // 
-            // Btn_RowUp
-            // 
-            this.Btn_RowUp.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_RowUp.Location = new System.Drawing.Point(1200, 205);
-            this.Btn_RowUp.Name = "Btn_RowUp";
-            this.Btn_RowUp.Size = new System.Drawing.Size(123, 47);
-            this.Btn_RowUp.TabIndex = 20;
-            this.Btn_RowUp.Text = "Row Up";
-            this.Btn_RowUp.UseVisualStyleBackColor = true;
-            this.Btn_RowUp.Click += new System.EventHandler(this.Btn_RowUp_Click);
-            // 
-            // Btn_Remove
-            // 
-            this.Btn_Remove.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Remove.Location = new System.Drawing.Point(1200, 155);
-            this.Btn_Remove.Name = "Btn_Remove";
-            this.Btn_Remove.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Remove.TabIndex = 19;
-            this.Btn_Remove.Text = "Remove";
-            this.Btn_Remove.UseVisualStyleBackColor = true;
-            this.Btn_Remove.Click += new System.EventHandler(this.Btn_Remove_Click);
-            // 
-            // Btn_Add
-            // 
-            this.Btn_Add.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Add.Location = new System.Drawing.Point(1200, 105);
-            this.Btn_Add.Name = "Btn_Add";
-            this.Btn_Add.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Add.TabIndex = 18;
-            this.Btn_Add.Text = "Add";
-            this.Btn_Add.UseVisualStyleBackColor = true;
-            this.Btn_Add.Click += new System.EventHandler(this.Btn_Add_Click);
-            // 
-            // Btn_Load
-            // 
-            this.Btn_Load.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Load.Location = new System.Drawing.Point(1200, 55);
-            this.Btn_Load.Name = "Btn_Load";
-            this.Btn_Load.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Load.TabIndex = 24;
-            this.Btn_Load.Text = "Load";
-            this.Btn_Load.UseVisualStyleBackColor = true;
-            this.Btn_Load.Click += new System.EventHandler(this.Btn_Load_Click);
-            // 
-            // Timer_IO
-            // 
-            this.Timer_IO.Interval = 150;
-            this.Timer_IO.Tick += new System.EventHandler(this.Timer_IO_Tick);
-            // 
             // Title_IO
             // 
             this.Title_IO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Title_IO.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Title_IO.DefaultCellStyle = dataGridViewCellStyle5;
             this.Title_IO.HeaderText = "I/O";
             this.Title_IO.Items.AddRange(new object[] {
             "None",
@@ -257,11 +187,94 @@ namespace DeviceUI.IO
             this.Title_DevNum.HeaderText = "Dev No.";
             this.Title_DevNum.Name = "Title_DevNum";
             // 
+            // Btn_Save
+            // 
+            this.Btn_Save.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Save.Location = new System.Drawing.Point(1200, 5);
+            this.Btn_Save.Name = "Btn_Save";
+            this.Btn_Save.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Save.TabIndex = 22;
+            this.Btn_Save.Text = "Save";
+            this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
+            // 
+            // Btn_RowDown
+            // 
+            this.Btn_RowDown.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_RowDown.Location = new System.Drawing.Point(1200, 255);
+            this.Btn_RowDown.Name = "Btn_RowDown";
+            this.Btn_RowDown.Size = new System.Drawing.Size(123, 47);
+            this.Btn_RowDown.TabIndex = 21;
+            this.Btn_RowDown.Text = "Row Down";
+            this.Btn_RowDown.UseVisualStyleBackColor = true;
+            this.Btn_RowDown.Click += new System.EventHandler(this.Btn_RowDown_Click);
+            // 
+            // Btn_RowUp
+            // 
+            this.Btn_RowUp.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_RowUp.Location = new System.Drawing.Point(1200, 205);
+            this.Btn_RowUp.Name = "Btn_RowUp";
+            this.Btn_RowUp.Size = new System.Drawing.Size(123, 47);
+            this.Btn_RowUp.TabIndex = 20;
+            this.Btn_RowUp.Text = "Row Up";
+            this.Btn_RowUp.UseVisualStyleBackColor = true;
+            this.Btn_RowUp.Click += new System.EventHandler(this.Btn_RowUp_Click);
+            // 
+            // Btn_Remove
+            // 
+            this.Btn_Remove.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Remove.Location = new System.Drawing.Point(1200, 155);
+            this.Btn_Remove.Name = "Btn_Remove";
+            this.Btn_Remove.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Remove.TabIndex = 19;
+            this.Btn_Remove.Text = "Remove";
+            this.Btn_Remove.UseVisualStyleBackColor = true;
+            this.Btn_Remove.Click += new System.EventHandler(this.Btn_Remove_Click);
+            // 
+            // Btn_Add
+            // 
+            this.Btn_Add.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Add.Location = new System.Drawing.Point(1200, 105);
+            this.Btn_Add.Name = "Btn_Add";
+            this.Btn_Add.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Add.TabIndex = 18;
+            this.Btn_Add.Text = "Add";
+            this.Btn_Add.UseVisualStyleBackColor = true;
+            this.Btn_Add.Click += new System.EventHandler(this.Btn_Add_Click);
+            // 
+            // Btn_Load
+            // 
+            this.Btn_Load.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Load.Location = new System.Drawing.Point(1200, 55);
+            this.Btn_Load.Name = "Btn_Load";
+            this.Btn_Load.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Load.TabIndex = 24;
+            this.Btn_Load.Text = "Load";
+            this.Btn_Load.UseVisualStyleBackColor = true;
+            this.Btn_Load.Click += new System.EventHandler(this.Btn_Load_Click);
+            // 
+            // Timer_IO
+            // 
+            this.Timer_IO.Interval = 150;
+            this.Timer_IO.Tick += new System.EventHandler(this.Timer_IO_Tick);
+            // 
+            // Btn_IO_Test
+            // 
+            this.Btn_IO_Test.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_IO_Test.Location = new System.Drawing.Point(1200, 574);
+            this.Btn_IO_Test.Name = "Btn_IO_Test";
+            this.Btn_IO_Test.Size = new System.Drawing.Size(123, 48);
+            this.Btn_IO_Test.TabIndex = 25;
+            this.Btn_IO_Test.Text = "IO Test";
+            this.Btn_IO_Test.UseVisualStyleBackColor = true;
+            this.Btn_IO_Test.Click += new System.EventHandler(this.Btn_IO_Test_Click);
+            // 
             // F_IO_Card
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.Btn_IO_Test);
             this.Controls.Add(this.Btn_Load);
             this.Controls.Add(this.Btn_Save);
             this.Controls.Add(this.Btn_RowDown);
@@ -299,5 +312,6 @@ namespace DeviceUI.IO
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_CardNum;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_LineNum;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_DevNum;
+        private System.Windows.Forms.Button Btn_IO_Test;
     }
 }
