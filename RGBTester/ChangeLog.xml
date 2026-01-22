@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
 
-	<Release version="1.26.1.X" date="2026-01-22">
+	<Release version="1.26.1.3" date="2026-01-22">
 		<Item type="Fixed">LCM->HCM Set DAC = 0 and Reset</Item>
 		<Item type="Fixed">Clamping DAC小於850,判斷為GRR Fail</Item>
+		<Item type="Fixed">Clamping 條件前面50個測點不判斷</Item>
 	</Release>
 	<Release version="1.26.1.2" date="2026-01-21">
 		<Item type="Added">增加程式版本日誌</Item>

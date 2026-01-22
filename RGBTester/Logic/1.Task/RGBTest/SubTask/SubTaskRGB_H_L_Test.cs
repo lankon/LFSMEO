@@ -417,7 +417,7 @@ namespace RGBTester.Logic
         }
         private void CheckClamping(double Vled, List<int> DAC, List<double> ILed)
         {
-            if (ILed.Count < 100)     //測試點數不足無法判斷,直接回傳沒有Clamping
+            if (ILed.Count < 50)     //測試點數不足無法判斷,直接回傳沒有Clamping
             {
                 IsClamping = false;
                 return;
