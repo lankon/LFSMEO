@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using ToolFunction;
+using System.Threading;
 
 namespace RGBTester.Logic
 {
@@ -41,17 +42,25 @@ namespace RGBTester.Logic
 
             func.Set_LED_Rigester();
 
+            if (!lea.SetLed_DAC(color, test_side, value))
+            {
+                status_box.ShowMessage("Set Light Engine  0 DAC Fail");
+                return;
+            }
+
             if (!lea.SetLed_CurrentMode(test_mode))
             {
                 status_box.ShowMessage("Set Light Engine Current Mode Fail");
                 return;
             }
 
-            if(!lea.SetLed_DAC(color, test_side, value))
+            if (!lea.SetLed_DAC(color, test_side, value))
             {
                 status_box.ShowMessage("Set Light Engine DAC Fail");
                 return;
             }
+
+            Thread.Sleep(30);   //等待反應時間
         }
 
         public DAQDataResult Get_DAQ_Data(byte test_side, byte color, string test_mode)

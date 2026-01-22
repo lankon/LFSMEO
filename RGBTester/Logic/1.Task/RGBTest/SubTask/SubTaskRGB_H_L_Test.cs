@@ -117,6 +117,7 @@ namespace RGBTester.Logic
             SET_DAC_LOW,
             GET_ADC_LOW,
             CALCULATE_LOW,
+            RESET_LED_BOARD_LOW,
 
             SET_DAC_HIGH,
             GET_ADC_HIGH,
@@ -433,6 +434,12 @@ namespace RGBTester.Logic
             if (Vled < 3 && fitting.Slope < 0.01 && IsClamping == false)
             {
                 int StartClampingDAC = DAC[DAC.Count - 10];
+
+                if(StartClampingDAC < 850)
+                {
+                    Scope.TestFail = true;
+                }
+
                 StartClampingCount = DAC.Count - 10;
                 IsClamping = true;
                 Tool.SaveLogToFile($"Clamping Detected! Start DAC:{StartClampingDAC}", level: "WRN");
@@ -619,18 +626,10 @@ namespace RGBTester.Logic
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
 
-                            if (OnlyLowMode)
-                                Transition(WORK.WRITE_TEST_DATA);
-                            else
-                            {
-                                if (!Deps.LightEngine.SetLed_CurrentMode("HCM"))
-                                {
-                                    StatusBox.ShowMessage("HDMI Board Set HCM Fail");
-                                    Transition(WORK.ABORT);
-                                }
-                                else
-                                    Transition(WORK.SET_DAC_HIGH);
-                            }
+                            if (!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
+                                StatusBox.ShowMessage("HCM Set DAC 0 Fail");
+
+                            Transition(WORK.RESET_LED_BOARD_LOW);
                         }
                         else
                         {
@@ -639,6 +638,29 @@ namespace RGBTester.Logic
                             //Transition(WORK.SET_DAC_LOW);
                             State = WORK.SET_DAC_LOW;
                             goto case WORK.SET_DAC_LOW;
+                        }
+                    }
+                    break;
+                case WORK.RESET_LED_BOARD_LOW:
+                    {
+                        if (!Deps.LightEngine.ResetLED())
+                        {
+                            StatusBox.ShowMessage("Reset LED Fail");
+                            Transition(WORK.ABORT);
+                            break;
+                        }
+
+                        if (OnlyLowMode)
+                            Transition(WORK.WRITE_TEST_DATA);
+                        else
+                        {
+                            if (!Deps.LightEngine.SetLed_CurrentMode("HCM"))
+                            {
+                                StatusBox.ShowMessage("HDMI Board Set HCM Fail");
+                                Transition(WORK.ABORT);
+                            }
+                            else
+                                Transition(WORK.SET_DAC_HIGH);
                         }
                     }
                     break;
