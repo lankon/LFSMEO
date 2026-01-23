@@ -47,7 +47,11 @@ namespace RGBTester.Logic
 
         public void Initial_Motion_Function()
         {
+            Tool.SaveLogToFile("Initial Motion Card");
             RGBTesterMachine.DML.Initial_All_Motion();
+            Tool.SaveLogToFile("Load Motion Config");
+            RGBTesterMachine.DML.LoadAxisConfig();
+            RGBTesterMachine.DML.BindingAxis();
         }
 
         public int DeleteExpireFileInFolder()

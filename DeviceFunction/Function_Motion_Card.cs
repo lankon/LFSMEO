@@ -177,12 +177,12 @@ namespace DeviceFunction
             var info = DML_INFO[axis];
 
             //[Axis Configuration]
-            //if (item == eOEMSetting.TxtBx_AxisType.ToString())
-            //    info.AXIS_TYPE = value;
-            //else if(item == eOEMSetting.TxtBx_LineNo.ToString())
-            //    info.LINE_NO = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_AxisStation.ToString())
-            //    info.DEV_NO = Tool.StringToInt(value);
+            if (item == eF_AxisSetting.Cmbx_AxisType.ToString())
+                info.AXIS_TYPE = value;
+            else if (item == eF_AxisSetting.TxtBx_LineNo.ToString())
+                info.LINE_NO = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_AxisStation.ToString())
+                info.DEV_NO = Tool.StringToInt(value);
             //else if (item == eOEMSetting.Cmbx_AxisUse.ToString())
             //    info.AXIS_USE = Tool.StringToInt(value);
             //else if (item == eOEMSetting.Cmbx_AxisLimitLogic.ToString())
@@ -200,22 +200,22 @@ namespace DeviceFunction
             //    info.MEL_POS = Tool.StringToInt(value);
             //else if (item == eOEMSetting.Cmbx_ReverseMode.ToString())
             //    info.REVERSE_MOVE = Tool.StringToInt(value);
-            ////[Home Configuration]
-            //else if (item == eOEMSetting.Cmbx_HomeMode.ToString())
-            //    info.MODE = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.Cmbx_HomeDirection.ToString())
-            //    info.DIRECTION = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_ORGPosition.ToString())
-            //    info.HOME_POS = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_ORGShiftPosition.ToString())
-            //    info.HOME_SHIFT = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_HomeVelocity.ToString())
-            //    info.MAX_VELOCITY = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_ORGVelocity.ToString())
-            //    info.HOEM_FIND_ORG_VELOCITY = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_HomeAcc.ToString())
-            //    info.ACC = Tool.StringToInt(value);
-            
+            //[Home Configuration]
+            else if (item == eF_AxisSetting.Cmbx_HomeMode.ToString())
+                info.MODE = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.Cmbx_HomeDirection.ToString())
+                info.DIRECTION = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_ORGPosition.ToString())
+                info.HOME_POS = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_ORGShiftPosition.ToString())
+                info.HOME_SHIFT = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_HomeVelocity.ToString())
+                info.MAX_VELOCITY = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_ORGVelocity.ToString())
+                info.HOEM_FIND_ORG_VELOCITY = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_HomeAcc.ToString())
+                info.ACC = Tool.StringToInt(value);
+
             DML_INFO[axis] = info;
         }
         #endregion
@@ -418,9 +418,10 @@ namespace DeviceFunction
 
             doc.Save(filePath);
         }
-        public bool LoadAxisConfig(string load_path)
+        public bool LoadAxisConfig()
         {
-            //string load_path = Application.StartupPath + @"\Setting\AxisConfig.xml";
+            string AppPath = AppDomain.CurrentDomain.BaseDirectory;
+            string load_path = AppPath + @"\Setting\AxisConfig.xml";
 
             if (!File.Exists(load_path))
                 return false;

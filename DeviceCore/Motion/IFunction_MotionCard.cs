@@ -30,7 +30,7 @@ namespace DeviceCore
         
         //[Read&Save Axis Information]
         void SaveAxisConfig(string filePath, string axisName, Dictionary<string, string> parameters);
-        bool LoadAxisConfig(string load_path);
+        bool LoadAxisConfig();
         List<AXIS_INFO> GetAxisConfig();
     }
 }

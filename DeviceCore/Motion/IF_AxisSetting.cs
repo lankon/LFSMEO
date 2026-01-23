@@ -9,5 +9,6 @@ namespace DeviceCore
     public interface IF_AxisSetting
     {
         void UpdateParmeter();
+        void SaveAxisParameter();
     }
 }

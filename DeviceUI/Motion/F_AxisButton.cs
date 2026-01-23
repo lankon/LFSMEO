@@ -22,10 +22,12 @@ namespace DeviceUI.Motion
             InitialForm();
 
             f_MotionSettingLogic.SetAxisButtonIF(this);
+            MotionSettingLogic = f_MotionSettingLogic;
         }
 
         #region parameter define
         List<Panel> PnlPartList = new List<Panel>();
+        F_MotionSettingLogic MotionSettingLogic;
         private int curPnlPart = 0;
         private int CurBtnNum = 0;
         #endregion
@@ -97,7 +99,6 @@ namespace DeviceUI.Motion
 
                 Pnl_Part1.Controls.Add(AxisButton[i]);
             }
-            
         }
         #endregion
 
@@ -110,11 +111,12 @@ namespace DeviceUI.Motion
 
         private void Btn_Axis0_Click(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
+            MotionSettingLogic.SaveAxis();
 
+            Button btn = sender as Button;
             CurBtnNum = Tool.StringToInt((string)btn.Tag);
 
-            //f_MotionSettingManage.UpdateParameter();
+            MotionSettingLogic.UpdateAxisInfo2Form(CurBtnNum);
         }
 
         private void Btn_PreviousPnlPart1_Click(object sender, EventArgs e)

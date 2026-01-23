@@ -33,7 +33,6 @@ namespace DeviceUI.Motion
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.Btn_AllSetting = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label11 = new System.Windows.Forms.Label();
@@ -59,18 +58,42 @@ namespace DeviceUI.Motion
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_AxisName = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label18 = new System.Windows.Forms.Label();
+            this.TxtBx_LineNo = new System.Windows.Forms.TextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Cmbx_HomeDirection = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.Cmbx_HomeMode = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.TxtBx_ORGPosition = new System.Windows.Forms.TextBox();
+            this.TxtBx_ORGShiftPosition = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.TxtBx_HomeVelocity = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.TxtBx_ORGVelocity = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.TxtBx_HomeAcc = new System.Windows.Forms.TextBox();
+            this.Btn_Homing = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -81,7 +104,6 @@ namespace DeviceUI.Motion
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.tabPage1.Controls.Add(this.Btn_AllSetting);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
@@ -90,16 +112,6 @@ namespace DeviceUI.Motion
             this.tabPage1.Size = new System.Drawing.Size(1174, 524);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Parameter";
-            // 
-            // Btn_AllSetting
-            // 
-            this.Btn_AllSetting.Location = new System.Drawing.Point(1024, 479);
-            this.Btn_AllSetting.Name = "Btn_AllSetting";
-            this.Btn_AllSetting.Size = new System.Drawing.Size(144, 39);
-            this.Btn_AllSetting.TabIndex = 2;
-            this.Btn_AllSetting.Text = "All Setting";
-            this.Btn_AllSetting.UseVisualStyleBackColor = true;
-            this.Btn_AllSetting.Click += new System.EventHandler(this.Btn_AllSetting_Click);
             // 
             // groupBox1
             // 
@@ -119,20 +131,23 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.59783F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.40217F));
-            this.tableLayoutPanel2.Controls.Add(this.label11, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.Cmbx_AxisUse, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label10, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label9, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LineNo, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label18, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label11, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.Cmbx_AxisUse, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label10, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label9, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.Cmbx_AxisType, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.TxtBx_AxisStation, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_AxisStation, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 4);
-            this.tableLayoutPanel2.Controls.Add(this.Cmbx_AxisLimitLogic, 1, 3);
-            this.tableLayoutPanel2.Controls.Add(this.Cmbx_AxisLimitStopMode, 1, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.Cmbx_AxisLimitLogic, 1, 4);
+            this.tableLayoutPanel2.Controls.Add(this.Cmbx_AxisLimitStopMode, 1, 5);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 25);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 7;
+            this.tableLayoutPanel2.RowCount = 8;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -145,7 +160,7 @@ namespace DeviceUI.Motion
             // 
             // label11
             // 
-            this.label11.Location = new System.Drawing.Point(6, 117);
+            this.label11.Location = new System.Drawing.Point(6, 155);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(185, 35);
             this.label11.TabIndex = 6;
@@ -158,14 +173,14 @@ namespace DeviceUI.Motion
             this.Cmbx_AxisUse.Items.AddRange(new object[] {
             "NO USE",
             "USE"});
-            this.Cmbx_AxisUse.Location = new System.Drawing.Point(226, 82);
+            this.Cmbx_AxisUse.Location = new System.Drawing.Point(226, 120);
             this.Cmbx_AxisUse.Name = "Cmbx_AxisUse";
             this.Cmbx_AxisUse.Size = new System.Drawing.Size(136, 28);
             this.Cmbx_AxisUse.TabIndex = 5;
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(6, 79);
+            this.label10.Location = new System.Drawing.Point(6, 117);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(185, 35);
             this.label10.TabIndex = 4;
@@ -174,7 +189,7 @@ namespace DeviceUI.Motion
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(6, 41);
+            this.label9.Location = new System.Drawing.Point(6, 79);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(185, 35);
             this.label9.TabIndex = 3;
@@ -193,7 +208,7 @@ namespace DeviceUI.Motion
             // 
             // TxtBx_AxisStation
             // 
-            this.TxtBx_AxisStation.Location = new System.Drawing.Point(226, 44);
+            this.TxtBx_AxisStation.Location = new System.Drawing.Point(226, 82);
             this.TxtBx_AxisStation.Name = "TxtBx_AxisStation";
             this.TxtBx_AxisStation.Size = new System.Drawing.Size(136, 29);
             this.TxtBx_AxisStation.TabIndex = 1;
@@ -209,7 +224,7 @@ namespace DeviceUI.Motion
             // 
             // label12
             // 
-            this.label12.Location = new System.Drawing.Point(6, 155);
+            this.label12.Location = new System.Drawing.Point(6, 193);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(185, 35);
             this.label12.TabIndex = 7;
@@ -222,7 +237,7 @@ namespace DeviceUI.Motion
             this.Cmbx_AxisLimitLogic.Items.AddRange(new object[] {
             "Active Low",
             "Active Hight"});
-            this.Cmbx_AxisLimitLogic.Location = new System.Drawing.Point(226, 120);
+            this.Cmbx_AxisLimitLogic.Location = new System.Drawing.Point(226, 158);
             this.Cmbx_AxisLimitLogic.Name = "Cmbx_AxisLimitLogic";
             this.Cmbx_AxisLimitLogic.Size = new System.Drawing.Size(136, 28);
             this.Cmbx_AxisLimitLogic.TabIndex = 8;
@@ -233,7 +248,7 @@ namespace DeviceUI.Motion
             this.Cmbx_AxisLimitStopMode.Items.AddRange(new object[] {
             "Immediate",
             "Decelerated"});
-            this.Cmbx_AxisLimitStopMode.Location = new System.Drawing.Point(226, 158);
+            this.Cmbx_AxisLimitStopMode.Location = new System.Drawing.Point(226, 196);
             this.Cmbx_AxisLimitStopMode.Name = "Cmbx_AxisLimitStopMode";
             this.Cmbx_AxisLimitStopMode.Size = new System.Drawing.Size(136, 28);
             this.Cmbx_AxisLimitStopMode.TabIndex = 9;
@@ -378,6 +393,219 @@ namespace DeviceUI.Motion
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Speed";
             // 
+            // label18
+            // 
+            this.label18.Location = new System.Drawing.Point(6, 41);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(185, 35);
+            this.label18.TabIndex = 11;
+            this.label18.Text = "Line No.";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_LineNo
+            // 
+            this.TxtBx_LineNo.Location = new System.Drawing.Point(226, 44);
+            this.TxtBx_LineNo.Name = "TxtBx_LineNo";
+            this.TxtBx_LineNo.Size = new System.Drawing.Size(136, 29);
+            this.TxtBx_LineNo.TabIndex = 12;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.tabPage3.Controls.Add(this.Btn_Homing);
+            this.tabPage3.Controls.Add(this.groupBox3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1174, 524);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Home";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.groupBox3.Controls.Add(this.tableLayoutPanel1);
+            this.groupBox3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(374, 372);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Home Configuration";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.59783F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.40217F));
+            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.Cmbx_HomeDirection, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Cmbx_HomeMode, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_ORGPosition, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_ORGShiftPosition, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_HomeVelocity, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_ORGVelocity, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label17, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_HomeAcc, 1, 6);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 25);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 9;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(368, 344);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(6, 155);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(185, 35);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Velocity(mm/s)";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(6, 41);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(185, 35);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Direction";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // Cmbx_HomeDirection
+            // 
+            this.Cmbx_HomeDirection.FormattingEnabled = true;
+            this.Cmbx_HomeDirection.Items.AddRange(new object[] {
+            "MEL",
+            "PEL"});
+            this.Cmbx_HomeDirection.Location = new System.Drawing.Point(226, 44);
+            this.Cmbx_HomeDirection.Name = "Cmbx_HomeDirection";
+            this.Cmbx_HomeDirection.Size = new System.Drawing.Size(136, 28);
+            this.Cmbx_HomeDirection.TabIndex = 0;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(6, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(185, 35);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Mode";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // Cmbx_HomeMode
+            // 
+            this.Cmbx_HomeMode.FormattingEnabled = true;
+            this.Cmbx_HomeMode.Items.AddRange(new object[] {
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8"});
+            this.Cmbx_HomeMode.Location = new System.Drawing.Point(226, 6);
+            this.Cmbx_HomeMode.Name = "Cmbx_HomeMode";
+            this.Cmbx_HomeMode.Size = new System.Drawing.Size(136, 28);
+            this.Cmbx_HomeMode.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(6, 79);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(185, 35);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "ORG Position";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_ORGPosition
+            // 
+            this.TxtBx_ORGPosition.Location = new System.Drawing.Point(226, 82);
+            this.TxtBx_ORGPosition.Name = "TxtBx_ORGPosition";
+            this.TxtBx_ORGPosition.Size = new System.Drawing.Size(136, 29);
+            this.TxtBx_ORGPosition.TabIndex = 1;
+            // 
+            // TxtBx_ORGShiftPosition
+            // 
+            this.TxtBx_ORGShiftPosition.Location = new System.Drawing.Point(226, 120);
+            this.TxtBx_ORGShiftPosition.Name = "TxtBx_ORGShiftPosition";
+            this.TxtBx_ORGShiftPosition.Size = new System.Drawing.Size(136, 29);
+            this.TxtBx_ORGShiftPosition.TabIndex = 10;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(6, 117);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(211, 35);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "ORG Shift Position";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_HomeVelocity
+            // 
+            this.TxtBx_HomeVelocity.Location = new System.Drawing.Point(226, 158);
+            this.TxtBx_HomeVelocity.Name = "TxtBx_HomeVelocity";
+            this.TxtBx_HomeVelocity.Size = new System.Drawing.Size(136, 29);
+            this.TxtBx_HomeVelocity.TabIndex = 11;
+            // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(6, 193);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(211, 35);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Find ORG Velocity(mm/s)";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_ORGVelocity
+            // 
+            this.TxtBx_ORGVelocity.Location = new System.Drawing.Point(226, 196);
+            this.TxtBx_ORGVelocity.Name = "TxtBx_ORGVelocity";
+            this.TxtBx_ORGVelocity.Size = new System.Drawing.Size(136, 29);
+            this.TxtBx_ORGVelocity.TabIndex = 13;
+            // 
+            // label17
+            // 
+            this.label17.Location = new System.Drawing.Point(6, 231);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(185, 35);
+            this.label17.TabIndex = 14;
+            this.label17.Text = "Acceleration(mm/s^2)";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_HomeAcc
+            // 
+            this.TxtBx_HomeAcc.Location = new System.Drawing.Point(226, 234);
+            this.TxtBx_HomeAcc.Name = "TxtBx_HomeAcc";
+            this.TxtBx_HomeAcc.Size = new System.Drawing.Size(136, 29);
+            this.TxtBx_HomeAcc.TabIndex = 15;
+            // 
+            // Btn_Homing
+            // 
+            this.Btn_Homing.Location = new System.Drawing.Point(1024, 479);
+            this.Btn_Homing.Name = "Btn_Homing";
+            this.Btn_Homing.Size = new System.Drawing.Size(144, 39);
+            this.Btn_Homing.TabIndex = 4;
+            this.Btn_Homing.Text = "Homing";
+            this.Btn_Homing.UseVisualStyleBackColor = true;
+            this.Btn_Homing.Click += new System.EventHandler(this.Btn_Homing_Click);
+            // 
             // F_AxisSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -395,6 +623,10 @@ namespace DeviceUI.Motion
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -428,6 +660,25 @@ namespace DeviceUI.Motion
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TxtBx_AxisName;
-        private System.Windows.Forms.Button Btn_AllSetting;
+        private System.Windows.Forms.TextBox TxtBx_LineNo;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox Cmbx_HomeDirection;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox Cmbx_HomeMode;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox TxtBx_ORGPosition;
+        private System.Windows.Forms.TextBox TxtBx_ORGShiftPosition;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox TxtBx_HomeVelocity;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox TxtBx_ORGVelocity;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox TxtBx_HomeAcc;
+        private System.Windows.Forms.Button Btn_Homing;
     }
 }
