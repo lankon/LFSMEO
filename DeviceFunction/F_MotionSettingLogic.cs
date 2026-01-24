@@ -89,7 +89,7 @@ namespace DeviceFunction
             Function_MotionCard.LoadAxisConfig();
 
             Task.Run(async () =>
-            {
+            { 
                 await Function_MotionCard.GoHome(GetCurrentBtnNum());
             });
         }

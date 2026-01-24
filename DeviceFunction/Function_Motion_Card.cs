@@ -54,15 +54,22 @@ namespace DeviceFunction
                 //Thread持續讀取Input訊號
                 for (int k = 0; k < DML.Count; k++)
                 {
-                    if (DML[k].GetName() == "MN200")
-                    {
-                        //List<byte> LineNo = DML[k].Get_Motion_LineNo();
-                        //List<byte> DevNo = DML[k].Get_Motion_DevNo();
+                    //if (DML[k].GetName() == "MN200" || DML[k].GetName() == "PCIE_8332")
+                    //{
+                    //    List<byte> LineNo = DML[k].Get_Motion_LineNo();
+                    //    List<byte> DevNo = DML[k].Get_Motion_DevNo();
 
-                        //for (byte i = 0; i < LineNo.Count; i++)
-                        //{
-                        //    DML[k].UpdateMotionStatus(lineNo: LineNo[i], devNo: DevNo[i]);
-                        //}
+                    //    for (byte i = 0; i < LineNo.Count; i++)
+                    //    {
+                    //        DML[k].UpdateMotionStatus(lineNo: LineNo[i], devNo: DevNo[i]);
+                    //    }
+                    //}
+                    if (DML[k].GetName() == "PCIE_8332")
+                    {
+                        //for (byte i = 0; i < 24; i++)
+                        {
+                            DML[k].UpdateMotionStatus(devNo: 8);
+                        }
                     }
                 }
 

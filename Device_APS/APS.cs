@@ -76,22 +76,22 @@ namespace Device_APS
                 ret = APS168.APS_get_card_name(i, ref APS_Param.CardType);
 
                 if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_PCI_825458 ||
-                    APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
+                    APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C ||
+                    APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_PCIE_8332)
                 {
                     ret = APS168.APS_get_first_axisId(i, ref StartAxisID, ref TotalAxisNum);
 
                     APS_Param.MAX_DI_NUM = 24;
                     APS_Param.MAX_DO_NUM = 24;
                     APS_Param.Input_Status = new bool[5, 5, APS_Param.MAX_DI_NUM];
-                    APS_Param.Motion_Status = new bool[5, 5, APS_Param.MAX_DI_NUM];
+                    APS_Param.Motion_Status = new bool[5, TotalAxisNum, Enum.GetValues(typeof(APS_Motion_IO)).Length];
 
+                    Initial_Success = true;
                     break;
                 }
             }
 
-            Initial_Success = true;
-
-            return true;
+            return Initial_Success;
         }
 
         #region IO Function
