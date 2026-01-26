@@ -77,6 +77,9 @@ namespace RGBTester.Logic
                 Deps.File.CreateFile("Left_G");
                 Deps.File.CreateFile("Left_B");
                 Deps.File.CreateFile("Left_Calibration");
+
+                string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
+                Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
 
             if(!OnlyLeftTest)
@@ -85,6 +88,9 @@ namespace RGBTester.Logic
                 Deps.File.CreateFile("Right_G");
                 Deps.File.CreateFile("Right_B");
                 Deps.File.CreateFile("Right_Calibration");
+
+                string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+                Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
         }
         private void CloseTestFile()
@@ -105,9 +111,28 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Right_Calibration");
             }
         }
+        private void CloseAndDeleteTestFile()
+        {
+            if (!OnlyRightTest)
+            {
+                Deps.File.CloseAndDeleteFile("Left_R");
+                Deps.File.CloseAndDeleteFile("Left_G");
+                Deps.File.CloseAndDeleteFile("Left_B");
+                Deps.File.CloseAndDeleteFile("Left_Calibration");
+            }
+            if (!OnlyLeftTest)
+            {
+                Deps.File.CloseAndDeleteFile("Right_R");
+                Deps.File.CloseAndDeleteFile("Right_G");
+                Deps.File.CloseAndDeleteFile("Right_B");
+                Deps.File.CloseAndDeleteFile("Right_Calibration");
+            }
+        }
         private void Preset()
         {
             CreateTestFile();
+
+            
         }
         protected override void Transition(WORK target)
         {
@@ -298,7 +323,7 @@ namespace RGBTester.Logic
                 case WORK.ABORT:
                     {
                         Scope.TaskRGBTest.IsSingleTest = false;
-                        CloseTestFile();
+                        CloseAndDeleteTestFile();
                         SetStatus(TASK_STATUS.ABORT);
                         //SaveHistoryCurrentState(WORK.ABORT);
                     }

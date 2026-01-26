@@ -44,6 +44,7 @@ namespace RGBTester
             //退出Form後即close掉,要用再new
             services.AddTransient<F_OEM_Setting>();
             services.AddTransient<F_Equipment_Setting>();
+            services.AddSingleton<F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
             
 

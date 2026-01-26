@@ -454,12 +454,17 @@ namespace ToolFunction
     public static partial class Tool
     {
         #region 寫檔
-        public static StreamWriter CreateFile(String Name, String Type, bool ContinueWrite)
+        public static StreamWriter CreateFile(String Name, String Type, bool ContinueWrite, bool DefaultPath = true)
         {
-            String path;
+            String path = "";
             StreamWriter File;
-            path = System.IO.Directory.GetCurrentDirectory();
-            path = path + "\\" + Name;
+            string path_default = System.IO.Directory.GetCurrentDirectory();
+
+            if(DefaultPath)
+                path = path_default + "\\" + Name;
+            else
+                path = Name;
+
             path += Type;
 
             string directoryPath = Path.GetDirectoryName(path);
@@ -504,6 +509,48 @@ namespace ToolFunction
             else
             {
                 //SaveLogToFile("資料夾已存在");
+            }
+        }
+        public static bool CloseAndDeleteFile(StreamWriter File)
+        {
+            string file_path = "";
+            
+            if (File != null)
+            {
+                if (File.BaseStream is FileStream fileStream)
+                    file_path = fileStream.Name;
+
+                Tool.CloseFile(File);
+
+                if (file_path != null)
+                {
+                    Tool.DeleteFile(file_path);
+                    Tool.SaveLogToFile($"檔案已關閉並刪除: {file_path}");
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        public static bool DeleteFile(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    //SaveLogToFile($"檔案已成功刪除: {filePath}");
+                }
+                else
+                    SaveLogToFile($"嘗試刪除的檔案不存在: {filePath}");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // 處理其他未預期的錯誤
+                SaveLogToFile($"刪除檔案時發生未預期錯誤: {filePath} - {ex.Message}", level: "ERR");
+                return false;
             }
         }
         #endregion

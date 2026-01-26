@@ -384,6 +384,7 @@ namespace RGBTester.Logic
                 if (((res - current) / current * 100) < -10)
                 {
                     Scope.TestFail = true;
+                    Tool.SaveLogToFile($"Slope = {res:F3},斜率低於理論值10%", level: "WRN");
                 }
             }
             else
@@ -393,27 +394,28 @@ namespace RGBTester.Logic
                 if (((res - current) / current * 100) < -10)
                 {
                     Scope.TestFail = true;
+                    Tool.SaveLogToFile($"Slope = {res:F3},斜率低於理論值10%", level: "WRN");
                 }
             }
         }
         private void CheckIledResult(double res, string mode)
         {
-            double current;
+            //double current;
 
-            if (mode == "HCM")
-            {
-                current = RGBfunc.HardwareParam.HCM_MaxCurrent;
+            //if (mode == "HCM")
+            //{
+            //    current = RGBfunc.HardwareParam.HCM_MaxCurrent;
 
-                if (res > current+50)
-                    Scope.TestFail = true;
-            }
-            else
-            {
-                current = RGBfunc.HardwareParam.LCM_MaxCurrent;
+            //    if (res > current+50)
+            //        Scope.TestFail = true;
+            //}
+            //else
+            //{
+            //    current = RGBfunc.HardwareParam.LCM_MaxCurrent;
 
-                if (res > current + 5)
-                    Scope.TestFail= true;
-            }
+            //    if (res > current + 5)
+            //        Scope.TestFail= true;
+            //}
         }
         private void CheckClamping(double Vled, List<int> DAC, List<double> ILed)
         {
@@ -425,22 +427,22 @@ namespace RGBTester.Logic
 
             if (IsClamping)   //已經發生Clamping狀態,不再判斷
                 return;
-
-            double[] TempILed = ILed.Skip(ILed.Count - 10).Select(x => x * 1000).ToArray();
-            int[] TempDAC = DAC.Skip(DAC.Count - 10).ToArray();
+            int ClampShift = 10;
+            double[] TempILed = ILed.Skip(ILed.Count - ClampShift).Select(x => x * 1000).ToArray();
+            int[] TempDAC = DAC.Skip(DAC.Count - ClampShift).ToArray();
             var fitting = new LinearCurveFitting(TempDAC, TempILed);
 
             //判斷Clamping條件:Vled過低,Iled對DAC斜率過低
             if (Vled < 3 && fitting.Slope < 0.01 && IsClamping == false)
             {
-                int StartClampingDAC = DAC[DAC.Count - 10];
+                int StartClampingDAC = DAC[DAC.Count - 1];
 
                 if(StartClampingDAC < 850)
                 {
                     Scope.TestFail = true;
                 }
 
-                StartClampingCount = DAC.Count - 10;
+                StartClampingCount = DAC.Count - ClampShift + 5;
                 IsClamping = true;
                 Tool.SaveLogToFile($"Clamping Detected! Start DAC:{StartClampingDAC}", level: "WRN");
                 return;

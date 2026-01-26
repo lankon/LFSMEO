@@ -32,6 +32,7 @@ namespace RGBTester.UI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm_ButtonGroup));
             this.Pnl_Part1 = new System.Windows.Forms.Panel();
+            this.Btn_DAQ_Chart = new System.Windows.Forms.Button();
             this.Btn_Recipe = new System.Windows.Forms.Button();
             this.Btn_LogIn = new System.Windows.Forms.Button();
             this.Btn_OEM_Setting = new System.Windows.Forms.Button();
@@ -42,7 +43,6 @@ namespace RGBTester.UI
             this.Btn_PreviousPnlPart2 = new System.Windows.Forms.Button();
             this.Btn_NextPnlPart2 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.Btn_DAQ_Chart = new System.Windows.Forms.Button();
             this.Pnl_Part1.SuspendLayout();
             this.Pnl_Part2.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +60,17 @@ namespace RGBTester.UI
             this.Pnl_Part1.Name = "Pnl_Part1";
             this.Pnl_Part1.Size = new System.Drawing.Size(1180, 65);
             this.Pnl_Part1.TabIndex = 32;
+            // 
+            // Btn_DAQ_Chart
+            // 
+            this.Btn_DAQ_Chart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_DAQ_Chart.BackgroundImage")));
+            this.Btn_DAQ_Chart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_DAQ_Chart.Location = new System.Drawing.Point(963, 5);
+            this.Btn_DAQ_Chart.Name = "Btn_DAQ_Chart";
+            this.Btn_DAQ_Chart.Size = new System.Drawing.Size(60, 60);
+            this.Btn_DAQ_Chart.TabIndex = 41;
+            this.Btn_DAQ_Chart.UseVisualStyleBackColor = true;
+            this.Btn_DAQ_Chart.Click += new System.EventHandler(this.Btn_DAQ_Chart_Click);
             // 
             // Btn_Recipe
             // 
@@ -120,12 +131,11 @@ namespace RGBTester.UI
             // 
             this.Btn_ParameterSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_ParameterSetting.BackgroundImage")));
             this.Btn_ParameterSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_ParameterSetting.Location = new System.Drawing.Point(885, 5);
+            this.Btn_ParameterSetting.Location = new System.Drawing.Point(1029, 5);
             this.Btn_ParameterSetting.Name = "Btn_ParameterSetting";
             this.Btn_ParameterSetting.Size = new System.Drawing.Size(60, 60);
             this.Btn_ParameterSetting.TabIndex = 31;
             this.Btn_ParameterSetting.UseVisualStyleBackColor = true;
-            this.Btn_ParameterSetting.Visible = false;
             this.Btn_ParameterSetting.Click += new System.EventHandler(this.Btn_ParameterSetting_Click);
             // 
             // Pnl_Part2
@@ -158,17 +168,6 @@ namespace RGBTester.UI
             this.Btn_NextPnlPart2.Text = ">";
             this.Btn_NextPnlPart2.UseVisualStyleBackColor = true;
             this.Btn_NextPnlPart2.Click += new System.EventHandler(this.Btn_NextPnlPart_Click);
-            // 
-            // Btn_DAQ_Chart
-            // 
-            this.Btn_DAQ_Chart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_DAQ_Chart.BackgroundImage")));
-            this.Btn_DAQ_Chart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_DAQ_Chart.Location = new System.Drawing.Point(1029, 6);
-            this.Btn_DAQ_Chart.Name = "Btn_DAQ_Chart";
-            this.Btn_DAQ_Chart.Size = new System.Drawing.Size(60, 60);
-            this.Btn_DAQ_Chart.TabIndex = 41;
-            this.Btn_DAQ_Chart.UseVisualStyleBackColor = true;
-            this.Btn_DAQ_Chart.Click += new System.EventHandler(this.Btn_DAQ_Chart_Click);
             // 
             // F_StartForm_ButtonGroup
             // 

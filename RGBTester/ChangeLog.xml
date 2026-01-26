@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
 
+	<Unrelease version="1.26.1.4" date="xxxx-xx-xx">
+		<Item type="Added">測試結果資料路徑設定</Item>
+		<Item type="Added">歷史紀錄增加測試樣品SN</Item>
+		<Item type="Added">測試RawData報表新增測試條件</Item>
+		<Item type="Fixed">刪除空的資料</Item>
+		<Item type="Fixed">Clamping條件取連續十點斜率小於0.01的最後一個資料點來判斷</Item>
+		<Item type="Fixed">ILed Current上限Fail判斷移除</Item>
+	</Unrelease>
 	<Release version="1.26.1.3" date="2026-01-22">
 		<Item type="Fixed">LCM->HCM Set DAC = 0 and Reset</Item>
 		<Item type="Fixed">Clamping DAC小於850,判斷為GRR Fail</Item>

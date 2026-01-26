@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\eF_ParameterSetting.cs" />
     <Compile Include="Base\eF_Recipe.cs" />
     <Compile Include="Base\eF_StartForm.cs" />
     <Compile Include="Base\eF_Equipment_Setting.cs" />
@@ -128,6 +129,12 @@
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="UI\F_ParameterSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_ParameterSetting.designer.cs">
+      <DependentUpon>F_ParameterSetting.cs</DependentUpon>
+    </Compile>
     <Content Include="ChangeLog.xml" />
     <Compile Include="Device\LightEngine\Command\Z23ACommand.cs" />
     <Compile Include="Device\LightEngine\LightEngineFunction.cs" />
@@ -267,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StateControl.resx">
       <DependentUpon>F_StateControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_ParameterSetting.resx">
+      <DependentUpon>F_ParameterSetting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

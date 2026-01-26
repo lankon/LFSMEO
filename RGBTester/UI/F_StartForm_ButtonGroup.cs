@@ -83,16 +83,12 @@ namespace RGBTester.UI
         {
             var UserPrivilege = ServiceProvider.GetRequiredService<IF_UserPrivilegeLogic>();
 
-            if (UserPrivilege.AtLeastOEM())
-            {
-                Btn_DAQ_Chart.Visible = true;
-                Btn_OEM_Setting.Enabled = true;
-            }
-            else
-            {
-                Btn_OEM_Setting.Enabled = false;
-                Btn_DAQ_Chart.Visible = false;
-            }
+            bool oem = UserPrivilege.AtLeastOEM();
+            bool eng = UserPrivilege.AtLeastEng();
+
+            Btn_DAQ_Chart.Visible = oem;
+            Btn_OEM_Setting.Enabled = oem;
+            Btn_ParameterSetting.Enabled = eng;
         }
         #endregion
 
@@ -117,11 +113,11 @@ namespace RGBTester.UI
 
         private void Btn_ParameterSetting_Click(object sender, EventArgs e)
         {
-            //Tool.HideElementOnPanel(Scope.MainPanel);
+            var para_set = ServiceProvider.GetRequiredService<F_ParameterSetting>();
 
-            //F_IO_Setting f_IO_Setting = new F_IO_Setting();
-            //Tool.SetForm(Scope.MainPanel, f_IO_Setting);
-            //f_IO_Setting.Show();
+            Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.SetForm(Scope.MainPanel, para_set);
+            para_set.Show();
         }
 
         private void Btn_LogIn_Click(object sender, EventArgs e)

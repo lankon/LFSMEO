@@ -127,7 +127,6 @@ namespace RGBTester.Logic
             else
                 Rfb_HCM = 1;
         }
-
         public void SetMaxCurrent(double LCM_I, double HCM_I)
         {
             MaxCurrent_LCM = LCM_I;
