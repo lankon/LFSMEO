@@ -162,8 +162,8 @@ namespace RGBTester.Logic
         }
         public void SetVirtual_IO_Data()
         {
-            Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, false, (EIOName.SafePos_Sensor, false));
-            Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, true, (EIOName.SafePos_Sensor, true));
+            //Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, false, (EIOName.SafePos_Sensor, false));
+            //Machine.DIOL.AddIORule(EIOName.Vacuum_Pump, true, (EIOName.SafePos_Sensor, true));
         }
         #endregion
 

@@ -8,7 +8,7 @@ namespace RGBTester.Base
 {
     public enum eF_ParameterSetting
     {
-        TxtBx_TestFileSavePath,
+        TxtBx_TestFileCopyPath,
     }
 
     public enum eF_ParameterSettingRecipe

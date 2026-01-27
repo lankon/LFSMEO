@@ -31,7 +31,7 @@ namespace RGBTester.UI
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.TxtBx_TestFileSavePath = new System.Windows.Forms.TextBox();
+            this.TxtBx_TestFileCopyPath = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,7 +42,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.46715F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.53284F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_TestFileSavePath, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_TestFileCopyPath, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -58,16 +58,16 @@ namespace RGBTester.UI
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(187, 35);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Test File Save Path";
+            this.label1.Text = "Test File Copy Path";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // TxtBx_TestFileSavePath
+            // TxtBx_TestFileCopyPath
             // 
-            this.TxtBx_TestFileSavePath.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_TestFileSavePath.Location = new System.Drawing.Point(202, 6);
-            this.TxtBx_TestFileSavePath.Name = "TxtBx_TestFileSavePath";
-            this.TxtBx_TestFileSavePath.Size = new System.Drawing.Size(480, 29);
-            this.TxtBx_TestFileSavePath.TabIndex = 5;
+            this.TxtBx_TestFileCopyPath.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_TestFileCopyPath.Location = new System.Drawing.Point(202, 6);
+            this.TxtBx_TestFileCopyPath.Name = "TxtBx_TestFileCopyPath";
+            this.TxtBx_TestFileCopyPath.Size = new System.Drawing.Size(480, 29);
+            this.TxtBx_TestFileCopyPath.TabIndex = 5;
             // 
             // F_ParameterSetting
             // 
@@ -89,6 +89,6 @@ namespace RGBTester.UI
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox TxtBx_TestFileSavePath;
+        private System.Windows.Forms.TextBox TxtBx_TestFileCopyPath;
     }
 }

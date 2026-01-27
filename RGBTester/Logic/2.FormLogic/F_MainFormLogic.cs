@@ -31,6 +31,7 @@ namespace RGBTester.Logic
         {
             ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             ApplicationSetting.ReadAllRecipe<eF_Recipe>();
+            ApplicationSetting.ReadAllRecipe<eF_ParameterSetting>();
 
             Tool.SaveLogToFile("Load Recipe File");
             var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();

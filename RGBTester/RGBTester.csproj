@@ -118,7 +118,6 @@
     <Compile Include="Base\eF_Recipe.cs" />
     <Compile Include="Base\eF_StartForm.cs" />
     <Compile Include="Base\eF_Equipment_Setting.cs" />
-    <Compile Include="Base\eOEMSetting.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
     <Compile Include="Base\IF_StartForm.cs" />
     <Compile Include="Base\IF_MainForm.cs" />

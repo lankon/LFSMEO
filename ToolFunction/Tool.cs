@@ -489,7 +489,10 @@ namespace ToolFunction
 
         public static void CloseFile(StreamWriter File)
         {
-            File.Close();
+            if (File != null && File.BaseStream != null && File.BaseStream.CanWrite)
+            {
+                File.Close();
+            }
         }
         public static void CreateFolder(string folderPath)
         {
@@ -531,6 +534,47 @@ namespace ToolFunction
             }
 
             return false;
+        }
+        public static bool CopyFile(StreamWriter sourceFileStream, string copy_path)
+        {
+            string sourcePath = "";
+            string sourceFileName = "";
+
+            if (sourceFileStream != null)
+            {
+                if (sourceFileStream.BaseStream is FileStream fileStream)
+                {
+                    sourcePath = fileStream.Name;
+                    sourceFileName = Path.GetFileName(sourcePath);
+                }
+                    
+            }
+
+            if (sourcePath == "")
+            {
+                SaveLogToFile("無法從 StreamWriter 取得來源檔案路徑。");
+                return false;
+            }
+
+            // 確保在複製前關閉檔案串流，以解除鎖定
+            CloseFile(sourceFileStream);
+
+            try
+            {
+                // 確保目標資料夾存在
+                CreateFolder(copy_path);
+
+                // 執行複製
+                copy_path = copy_path + $"\\{sourceFileName}";
+                System.IO.File.Copy(sourcePath, copy_path , true);
+                SaveLogToFile($"檔案已成功從 {sourcePath} 複製到 {copy_path}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SaveLogToFile($"複製檔案時發生錯誤: {ex.Message}", level: "ERR");
+                return false;
+            }
         }
         public static bool DeleteFile(string filePath)
         {

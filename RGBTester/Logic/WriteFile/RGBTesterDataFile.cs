@@ -19,6 +19,7 @@ namespace RGBTester.Logic
         }
 
         #region paramter define
+        DateTime now;
         private StreamWriter LeftRedFile;
         private StreamWriter LeftGreenFile;
         private StreamWriter LeftBlueFile;
@@ -44,7 +45,7 @@ namespace RGBTester.Logic
         #region public function
         public void CreateFile(string describe = "")
         {
-            DateTime now = DateTime.Now;
+            now = DateTime.Now;
             string file_name = "";
             string SN = "";
             string Side = "";
@@ -77,30 +78,29 @@ namespace RGBTester.Logic
                     Calibration = "Calibration";
             }
 
-            string pa = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileSavePath);
-            file_name = pa + $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_{Side}_{Color}_{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
+            file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_{Side}_{Color}_{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
 
-           if (describe == "Left_R")
-                LeftRedFile = Tool.CreateFile(file_name, ".csv", false, false);
+            if (describe == "Left_R")
+                LeftRedFile = Tool.CreateFile(file_name, ".csv", false);
             else if (describe == "Left_G")
-                LeftGreenFile = Tool.CreateFile(file_name, ".csv", false, false);
+                LeftGreenFile = Tool.CreateFile(file_name, ".csv", false);
             else if (describe == "Left_B")
-                LeftBlueFile = Tool.CreateFile(file_name, ".csv", false, false);
+                LeftBlueFile = Tool.CreateFile(file_name, ".csv", false);
             else if (describe == "Right_R")
-                RightRedFile = Tool.CreateFile(file_name, ".csv", false, false);
+                RightRedFile = Tool.CreateFile(file_name, ".csv", false);
             else if (describe == "Right_G")
-                RightGreenFile = Tool.CreateFile(file_name, ".csv", false, false);
+                RightGreenFile = Tool.CreateFile(file_name, ".csv", false);
             else if (describe == "Right_B")
-                RightBlueFile = Tool.CreateFile(file_name, ".csv", false, false);
+                RightBlueFile = Tool.CreateFile(file_name, ".csv", false);
             else if(describe == "Left_Calibration")
             {
-                file_name = pa + $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_L_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
-                LeftCalibrationFile = Tool.CreateFile(file_name, ".csv", false, false);
+                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_L_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
+                LeftCalibrationFile = Tool.CreateFile(file_name, ".csv", false);
             }
             else if (describe == "Right_Calibration")
             {
-                file_name = pa + $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_R_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
-                RightCalibrationFile = Tool.CreateFile(file_name, ".csv", false, false);
+                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_R_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
+                RightCalibrationFile = Tool.CreateFile(file_name, ".csv", false);
             }
                 
             if (Side != "" && Calibration == "")
@@ -120,7 +120,7 @@ namespace RGBTester.Logic
             bin_i_led = CheckPassFail(30, 300, i_led);
 
             string context = $"{dac},{v_in:F2},{bin_v_in},{i_in:F2},{bin_i_in},{p_in:F2},{vf:F2}," +
-                             $"{bin_vf},{vfb:F2},{i_led:F2},{bin_i_led},{p_led:F2},{eff:F2},{temperature:F2},{x:F2}," +
+                             $"{bin_vf},{vfb:F3},{i_led:F2},{bin_i_led},{p_led:F2},{eff:F2},{temperature:F2},{x:F2}," +
                              $"{y:F2},{m:F3},{c:F2}";
 
             WriteFile(context, color, false);
@@ -201,6 +201,28 @@ namespace RGBTester.Logic
                 Tool.CloseAndDeleteFile(LeftCalibrationFile);
             else if (describe == "Right_Calibration")
                 Tool.CloseAndDeleteFile(RightCalibrationFile);
+        }
+        public void CopyAndCloseTestFile(string describe)
+        {
+            string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
+            copy_path = copy_path + $"\\{now.ToString("yyyyMMdd")}";
+
+            if (describe == "Left_R" && LeftRedFile != null)
+                Tool.CopyFile(LeftRedFile, copy_path);
+            else if (describe == "Left_G" && LeftGreenFile != null)
+                Tool.CopyFile(LeftGreenFile, copy_path);
+            else if (describe == "Left_B" && LeftBlueFile != null)
+                Tool.CopyFile(LeftBlueFile, copy_path);
+            else if (describe == "Right_R" && RightRedFile != null)
+                Tool.CopyFile(RightRedFile, copy_path);
+            else if (describe == "Right_G" && RightGreenFile != null)
+                Tool.CopyFile(RightGreenFile, copy_path);
+            else if (describe == "Right_B" && RightBlueFile != null)
+                Tool.CopyFile(RightBlueFile, copy_path);
+            else if (describe == "Left_Calibration")
+                Tool.CopyFile(LeftCalibrationFile, copy_path);
+            else if (describe == "Right_Calibration")
+                Tool.CopyFile(RightCalibrationFile, copy_path);
         }
         public void ResetCalibrationData()
         {

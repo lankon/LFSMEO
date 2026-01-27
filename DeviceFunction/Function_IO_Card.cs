@@ -288,6 +288,9 @@ namespace DeviceFunction
         {
             ioListDict.TryGetValue(out_name.ToString(), out IOData iOData);
 
+            if (iOData == null)
+                return -1;
+
             byte cardNo = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
             byte devNo = (byte)iOData.Title_DevNum;

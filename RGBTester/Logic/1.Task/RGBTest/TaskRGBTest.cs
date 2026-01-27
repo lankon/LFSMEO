@@ -111,6 +111,24 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Right_Calibration");
             }
         }
+        private void CopyAndCloseTestFile()
+        {
+            if (!OnlyRightTest)
+            {
+                Deps.File.CopyAndCloseTestFile("Left_R");
+                Deps.File.CopyAndCloseTestFile("Left_G");
+                Deps.File.CopyAndCloseTestFile("Left_B");
+                Deps.File.CopyAndCloseTestFile("Left_Calibration");
+            }
+
+            if (!OnlyLeftTest)
+            {
+                Deps.File.CopyAndCloseTestFile("Right_R");
+                Deps.File.CopyAndCloseTestFile("Right_G");
+                Deps.File.CopyAndCloseTestFile("Right_B");
+                Deps.File.CopyAndCloseTestFile("Right_Calibration");
+            }
+        }
         private void CloseAndDeleteTestFile()
         {
             if (!OnlyRightTest)
@@ -305,7 +323,8 @@ namespace RGBTester.Logic
                 case WORK.SUCCESS:
                     {
                         Scope.TaskRGBTest.IsSingleTest = false;
-                        CloseTestFile();
+                        CopyAndCloseTestFile();
+                        //CloseTestFile();
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
