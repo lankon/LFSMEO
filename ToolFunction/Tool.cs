@@ -537,6 +537,9 @@ namespace ToolFunction
         }
         public static bool CopyFile(StreamWriter sourceFileStream, string copy_path)
         {
+            if (copy_path == "")
+                return false;
+            
             string sourcePath = "";
             string sourceFileName = "";
 

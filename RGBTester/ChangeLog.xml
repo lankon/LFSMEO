@@ -11,7 +11,7 @@
 		<Item type="Fixed">修正IOName找不到時AddIORule錯誤問題</Item>
 		<Item type="Fixed">修正參數設定開啟程式未讀取問題</Item>
 		<Item type="Fixed">Vfb顯示至小數點後3位</Item>
-		<Item type="Fixed">測試開始時再次確認連線</Item>
+		<Item type="Fixed">測試開始時若未連線再次重連</Item>
 	</Unrelease>
 	<Release version="1.26.1.3" date="2026-01-22">
 		<Item type="Fixed">LCM->HCM Set DAC = 0 and Reset</Item>

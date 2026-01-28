@@ -324,6 +324,7 @@ namespace RGBTester.Logic
                     {
                         Scope.TaskRGBTest.IsSingleTest = false;
                         CopyAndCloseTestFile();
+                        CloseTestFile();
                         //CloseTestFile();
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");

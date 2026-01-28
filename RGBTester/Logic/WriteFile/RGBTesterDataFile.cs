@@ -205,7 +205,9 @@ namespace RGBTester.Logic
         public void CopyAndCloseTestFile(string describe)
         {
             string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
-            copy_path = copy_path + $"\\{now.ToString("yyyyMMdd")}";
+            
+            if(copy_path != "")
+                copy_path = copy_path + $"\\{now.ToString("yyyyMMdd")}";
 
             if (describe == "Left_R" && LeftRedFile != null)
                 Tool.CopyFile(LeftRedFile, copy_path);
