@@ -41,6 +41,9 @@ namespace RGBTester.Device
         #region public function
         public bool Open()
         {
+            if(IsInitial == true)
+                return true;
+
             string res = "";
             
             try

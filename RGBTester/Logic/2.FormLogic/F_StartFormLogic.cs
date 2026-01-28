@@ -83,6 +83,9 @@ namespace RGBTester.Logic
 
         public int StartTaskAction(string method = "")
         {
+            ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            lea.Open();
+
             int res = CheckTestCondition();
 
             if (res < 0)

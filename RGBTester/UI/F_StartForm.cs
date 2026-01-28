@@ -53,8 +53,8 @@ namespace RGBTester.UI
                 Tool.ShowFormName(this);
 
             LEA.Set_LEA_Type();
-            if (!LEA.Open())
-                MessageBox.Show("LED Board Connect Fail！","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            LEA.Open();
+                //MessageBox.Show("LED Board Connect Fail！","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
         }
         private void ReadAllEnumSetting()
         {
