@@ -376,25 +376,26 @@ namespace RGBTester.Logic
         private void CheckTestResult(double res, string mode)
         {
             double current;
-            
-            if(mode == "HCM")
-            {
-                current = RGBfunc.HardwareParam.HCM_MaxCurrent / 1000;
 
-                if (((res - current) / current * 100) < -10)
+            double HCM_LL = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_HCM_Slope_LL);
+            double HCM_UL = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_HCM_Slope_UL);
+            double LCM_LL = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_LCM_Slope_LL);
+            double LCM_UL = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_LCM_Slope_UL);
+
+            if (mode == "HCM")
+            {
+                if(res > HCM_UL || res < HCM_LL)
                 {
                     Scope.TestFail = true;
-                    Tool.SaveLogToFile($"Slope = {res:F3},斜率低於理論值10%", level: "WRN");
+                    Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{HCM_LL:F3}~{HCM_UL:F3}", level: "WRN");
                 }
             }
             else
             {
-                current = RGBfunc.HardwareParam.LCM_MaxCurrent / 1000;
-
-                if (((res - current) / current * 100) < -10)
+                if (res > LCM_UL || res < LCM_LL)
                 {
                     Scope.TestFail = true;
-                    Tool.SaveLogToFile($"Slope = {res:F3},斜率低於理論值10%", level: "WRN");
+                    Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{LCM_LL:F3}~{LCM_UL:F3}", level: "WRN");
                 }
             }
         }

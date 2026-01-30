@@ -28,6 +28,7 @@ namespace RGBTester.Logic
         List<Type> enumTypes = new List<Type>
         {
             typeof(eF_StartFormRecipe),
+            typeof(eF_ParameterSettingRecipe),
         };
         #endregion
 

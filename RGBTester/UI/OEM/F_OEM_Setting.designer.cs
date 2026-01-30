@@ -38,6 +38,8 @@ namespace RGBTester.UI
             this.Btn_IO_Setting = new System.Windows.Forms.Button();
             this.Btn_DAQ_SamplingTest = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.Btn_Spectrometer = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -123,11 +125,34 @@ namespace RGBTester.UI
             this.label4.Text = "DAQ SP";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // Btn_Spectrometer
+            // 
+            this.Btn_Spectrometer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Spectrometer.BackgroundImage")));
+            this.Btn_Spectrometer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Spectrometer.Location = new System.Drawing.Point(515, 12);
+            this.Btn_Spectrometer.Name = "Btn_Spectrometer";
+            this.Btn_Spectrometer.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Spectrometer.TabIndex = 42;
+            this.Btn_Spectrometer.UseVisualStyleBackColor = true;
+            this.Btn_Spectrometer.Click += new System.EventHandler(this.Btn_Spectrometer_Click);
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Location = new System.Drawing.Point(495, 75);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(105, 23);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "Spectrum";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.Btn_Spectrometer);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Btn_DAQ_SamplingTest);
             this.Controls.Add(this.Btn_IO_Setting);
@@ -153,5 +178,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_IO_Setting;
         private System.Windows.Forms.Button Btn_DAQ_SamplingTest;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button Btn_Spectrometer;
+        private System.Windows.Forms.Label label5;
     }
 }

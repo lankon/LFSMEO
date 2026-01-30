@@ -220,8 +220,6 @@ namespace DeviceFunction
         }
         #endregion
 
-        
-
         #region public function
         // Initial Function
         public bool Initial_All_Motion()

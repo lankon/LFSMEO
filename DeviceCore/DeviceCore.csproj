@@ -42,7 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ISpectrometer.cs" />
+    <Compile Include="Spectrometer\IFunction_Spectrometer.cs" />
+    <Compile Include="Spectrometer\ISpectrometer.cs" />
     <Compile Include="IO\IF_IO_Card.cs" />
     <Compile Include="IO\IIOCardVirtual.cs" />
     <Compile Include="Motion\eMotionSetting.cs" />

@@ -9,6 +9,9 @@ namespace DeviceCore
 {
     public interface ISpectrometer
     {
+        ESpectrometerType GetSpectrometerType();
         int Open();
+        float[] GetSpectrumOneShot(uint integral_time, uint avg_time = 1);
+        float[] GetSpectrum(uint integral_time, uint avg_time = 1);
     }
 }

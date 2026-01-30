@@ -44,22 +44,22 @@ namespace RGBTester.UI
         private void ReadAllEnumSetting()
         {
             ApplicationSetting.ReadAllRecipe<eF_ParameterSetting>();
-            //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
+            //ApplicationSetting.ReadAllRecipe<eF_ParameterSetting>();
 
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(recipe_name);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            ApplicationSetting.ReadAllRecipe<eF_ParameterSettingRecipe>(recipe_name);
         }
         private void UpdateEnumSettingToForm()
         {
             ApplicationSetting.UpdataRecipeToForm<eF_ParameterSetting>(this);
-            //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_ParameterSettingRecipe>(this);
         }
         private void SaveAllEnumSetting()
         {
             ApplicationSetting.SaveRecipeFromForm<eF_ParameterSetting>(this);
 
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            ApplicationSetting.SaveRecipeFromForm<eF_ParameterSettingRecipe>(this, recipe_name);
         }
         private void UpdatePage()
         {

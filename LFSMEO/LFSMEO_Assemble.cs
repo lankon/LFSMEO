@@ -16,6 +16,7 @@ using Device_MN200;
 using Device_PCIS_DASK;
 using Device_Virtual;
 using Device_Klzx;
+using Device_OTO;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -66,6 +67,7 @@ namespace LFSMEO
             Pcis_dask pcis_9111DG = new Pcis_dask("PCI_9111DG");
             Pcis_dask pcis_9111HR = new Pcis_dask("PCI_9111HR");
             Virtual_IO virtual_io = new Virtual_IO();
+            OTO Spectro_OTO = new OTO();
 
             ChillerControl_Klzx Klxz = new ChillerControl_Klzx();
 
@@ -77,6 +79,7 @@ namespace LFSMEO
             services.AddSingleton<IIOCard>(pcis_9111DG);
             services.AddSingleton<IIOCard>(pcis_9111HR);
             services.AddSingleton<IIOCard>(virtual_io);
+            services.AddSingleton<ISpectrometer>(Spectro_OTO);
             services.AddSingleton<IChillerControl>(sp => sp.GetRequiredService<ChillerControl_Klzx>());
 
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
@@ -89,6 +92,7 @@ namespace LFSMEO
             // (這部分完全不變，DI 容器會自動注入步驟 2 註冊的所有卡片)
             services.AddSingleton<IFunction_MotionCard, Function_Motion_Card>();
             services.AddSingleton<IFunction_IO_Card, Function_IO_Card>();
+            services.AddSingleton<IFunction_Spectrometer, Function_Spectrometer>();
 
             //[Tool]
             services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();

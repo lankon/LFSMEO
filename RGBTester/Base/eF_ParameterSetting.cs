@@ -13,6 +13,9 @@ namespace RGBTester.Base
 
     public enum eF_ParameterSettingRecipe
     {
-        
+        TxtBx_LCM_Slope_UL,
+        TxtBx_LCM_Slope_LL,
+        TxtBx_HCM_Slope_UL,
+        TxtBx_HCM_Slope_LL,
     }
 }

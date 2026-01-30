@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
+using System.IO;
 
 namespace RGBTester.UI
 {
@@ -124,6 +125,25 @@ namespace RGBTester.UI
             var form = ServiceProvider.GetRequiredService<F_DAQ_SamplingTest>();
             Tool.SetForm(Scope.MainPanel, form);
             form.Show();
+        }
+
+        private void Btn_Spectrometer_Click(object sender, EventArgs e)
+        {
+            var spec = ServiceProvider.GetRequiredService<IFunction_Spectrometer>();
+            spec.Initial_All_Spectrometer();
+
+            float[] spectrum = null;
+            spectrum = spec.GetSpectrumOneShot(100);
+
+            if (spectrum == null)
+                return;
+
+            StreamWriter file = Tool.CreateFile("\\Result\\spectrum", ".csv", false);
+            for (int i = 0; i < spectrum.Length; i++)
+            {
+                Tool.WriteFile(file, spectrum[i].ToString());
+            }
+            Tool.CloseFile(file);
         }
     }
 }

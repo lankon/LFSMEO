@@ -15,9 +15,11 @@ namespace Device_OTO
         SpectrumData SD_Live;
         enum ERROR_CODE
         {
-            STATUS_OK,
-            ERROR_NONE_FRAME_SIZE,
-            ERROR_GET_WAVELENGTH_FAIL,
+            STATUS_OK = 0,
+            ERROR_GET_DEVICE_FAIL = -1,
+            ERROR_OPEN_DEVICE_FAIL = -2,
+            ERROR_NONE_FRAME_SIZE = -3,
+            ERROR_GET_WAVELENGTH_FAIL = -4,
         }
         public struct SpectrumData
         {
@@ -145,101 +147,109 @@ namespace Device_OTO
             SD.Reference_Intensity = new float[Framesize];
             SD.O_BG_LevelBuffer = new float[Framesize];
         }
-        #endregion
+        private UInt32[] GetAvailableVidPidList()
+        {
+            uint bufferSize = 0;
+            UInt32[] vidPid = new UInt32[bufferSize * 2];
 
+            unsafe
+            {
+                Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, null);
+                if (bufferSize == 0) return null;
+
+                fixed (UInt32* p = vidPid)
+                {
+                    Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, p);
+                }
+            }
+            return vidPid;
+        }
+        private int InitializeDeviceSettings()
+        {
+            // 取得 FrameSize 並分配記憶體
+            Link_UAI.Link_UAI.UAI_SpectromoduleGetFrameSize(SD_Live.DeviceHandle, ref SD_Live.framesize);
+            
+            if (SD_Live.framesize == 0) 
+                return (int)ERROR_CODE.ERROR_NONE_FRAME_SIZE;
+
+            AllocateBuffer(ref SD_Live, SD_Live.framesize);
+
+            // 統一讀取設備資訊 (SN, FW, Date...)
+            SD_Live.SerialNumber = GetSDKString(Link_UAI.Link_UAI.UAI_SpectrometerGetSerialNumber, 16);
+
+            // 取得波長表
+            var status = Link_UAI.Link_UAI.UAI_SpectrometerWavelengthAcquire(SD_Live.DeviceHandle, SD_Live.Lumda);
+            return (status == (int)ERROR_CODE.STATUS_OK) ? (int)ERROR_CODE.STATUS_OK : (int)ERROR_CODE.ERROR_GET_WAVELENGTH_FAIL;
+        }
+        private string GetSDKString(Func<IntPtr, byte[], uint> sdkMethod, int length)
+        {
+            byte[] buffer = new byte[length];
+            sdkMethod(SD_Live.DeviceHandle, buffer);
+            // 移除空白字元與 Null 結束符
+            return System.Text.Encoding.Default.GetString(buffer).Trim('\0', ' ', '\r', '\n');
+        }
+        #endregion
+        public ESpectrometerType GetSpectrometerType()
+        {
+            return ESpectrometerType.OTO;
+        }
         public int Open()
         {
             try
             {
-                uint status;
-                uint device_num = 0;
-                uint i = 0;
-                //Get compatiable VID and PID
-                UInt32 buffersize = 0;
-                UInt32[] VIDPID = new UInt32[2];
-                unsafe
-                {
-                    Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref buffersize, null);
-                    VIDPID = new UInt32[buffersize * 2]; //VIDPID buffersize should be 2 X VIDPID counts.
-                    fixed (UInt32* temp_VIDPID = VIDPID)
-                    {
-                        Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref buffersize, temp_VIDPID);
-                    }
-                }
+                // 1. 取得設備 VID/PID 列表
+                var vidPidList = GetAvailableVidPidList();
+                
+                if (vidPidList == null) 
+                    return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
 
-                for (int j = 0; j < buffersize * 2; j = j + 2)
+                // 2. 搜尋並嘗試開啟設備
+                for (int j = 0; j < vidPidList.Length; j += 2)
                 {
-                    device_num = 0;
-                    status = Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceAmount(VIDPID[j], VIDPID[j + 1], ref device_num);
+                    uint vid = vidPidList[j];
+                    uint pid = vidPidList[j + 1];
+                    uint deviceCount = 0;
 
-                    for (i = 0; i < device_num; i++)
+                    if (Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceAmount(vid, pid, ref deviceCount) != 0 || deviceCount == 0)
+                        continue;
+
+                    for (uint i = 0; i < deviceCount; i++)
                     {
-                        status = Link_UAI.Link_UAI.UAI_SpectrometerOpen(i, ref SD_Live.DeviceHandle, VIDPID[j], VIDPID[j + 1]);
-                        
-                        if (status == 0)
+                        if (Link_UAI.Link_UAI.UAI_SpectrometerOpen(i, ref SD_Live.DeviceHandle, vid, pid) == 0)
                         {
-                            //Open device successfully then get frame size
-                            Link_UAI.Link_UAI.UAI_SpectromoduleGetFrameSize(SD_Live.DeviceHandle, ref SD_Live.framesize);
-                            if (SD_Live.framesize == 0)
-                                return (int)ERROR_CODE.ERROR_NONE_FRAME_SIZE;
-
-                            //allocate wavelength and raw data buffer
-                            AllocateBuffer(ref SD_Live, SD_Live.framesize);
-
-                            //Get serial
-                            byte[] temp_SN = new byte[16];
-                            Link_UAI.Link_UAI.UAI_SpectrometerGetSerialNumber(SD_Live.DeviceHandle, temp_SN);
-                            SD_Live.SerialNumber = System.Text.Encoding.Default.GetString(temp_SN).Replace(@"\s", "");
-                            SD_Live.SerialNumber = SD_Live.SerialNumber.Substring(0, Link_UAI.Link_UAI.LastIndexOfnumber(temp_SN));
-
-                            //UAI_FirmwareGetBuildNumber
-                            byte[] temp_FWVersion = new byte[8];
-                            Link_UAI.Link_UAI.UAI_FirmwareGetVersion(SD_Live.DeviceHandle, temp_FWVersion);
-                            string FWVersion = Convert.ToChar(temp_FWVersion[0]).ToString() + temp_FWVersion[1].ToString().PadLeft(3, '0') + "." + temp_FWVersion[3].ToString();
-
-                            //UAI_SpectrometerGetActivatingDate
-                            byte[] temp_Date = new byte[16];
-                            Link_UAI.Link_UAI.UAI_SpectrometerGetActivatingDate(SD_Live.DeviceHandle, temp_Date);
-                            string ActivatingDate = System.Text.Encoding.Default.GetString(temp_Date).Replace(@"\s", "");
-
-                            //UAI_SpectrometerGetManufacturingDate
-                            byte[] temp_ManufacturingDate = new byte[16];
-                            Link_UAI.Link_UAI.UAI_SpectrometerGetActivatingDate(SD_Live.DeviceHandle, temp_ManufacturingDate);
-                            string ManufacturingDate = System.Text.Encoding.Default.GetString(temp_ManufacturingDate).Replace(@"\s", "");
-
-                            //UAI_SpectrometerGetRomSerialNumber
-                            byte[] temp_ROMsn = new byte[16];
-                            Link_UAI.Link_UAI.UAI_SpectrometerGetRomSerialNumber(SD_Live.DeviceHandle, temp_ROMsn);
-                            string ROMsn = System.Text.Encoding.Default.GetString(temp_ROMsn).Replace(@"\s", "");
-
-                            //UAI_SpectromoduleGetMaximumIntegrationTime
-                            UInt16 MaxIntegrationTime = 0;
-                            Link_UAI.Link_UAI.UAI_SpectromoduleGetMaximumIntegrationTime(SD_Live.DeviceHandle, ref MaxIntegrationTime);
-
-                            //UAI_SpectromoduleGetMinimumIntegrationTime
-                            UInt16 MinIntegrationTime = 0;
-                            Link_UAI.Link_UAI.UAI_SpectromoduleGetMinimumIntegrationTime(SD_Live.DeviceHandle, ref MinIntegrationTime);
-
-                            //Get wavelength table
-                            status = Link_UAI.Link_UAI.UAI_SpectrometerWavelengthAcquire(SD_Live.DeviceHandle, SD_Live.Lumda);
-                            
-                            if (status != (int)ERROR_CODE.STATUS_OK)
-                                return (int)ERROR_CODE.ERROR_GET_WAVELENGTH_FAIL;
-
-                            return (int)ERROR_CODE.STATUS_OK;
+                            // 3. 成功開啟後進行參數初始化
+                            return InitializeDeviceSettings();
                         }
                     }
                 }
 
-                if (device_num == 0)
-                    return -1;
-                else
-                    return (int)ERROR_CODE.STATUS_OK;
+                return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
             }
-            catch (Exception ex)
-            {
-                return -1;
+            catch
+            { 
+                return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
             }
         }
+        public float[] GetSpectrumOneShot(uint integral_time, uint avg_time = 1)
+        {
+            //每次呼叫皆進行一次清除後再擷取
+            SD_Live.integration_time = integral_time * 1000;    //integral_time(ms) integtration_time(us)
+            SD_Live.Avg = avg_time;
+
+            Link_UAI.Link_UAI.UAI_SpectrometerDataOneshot(SD_Live.DeviceHandle, SD_Live.integration_time, SD_Live.Intensity, SD_Live.Avg);
+
+            return SD_Live.Intensity;
+        }
+        public float[] GetSpectrum(uint integral_time, uint avg_time = 1)
+        {
+            //每次呼叫立即從分光卡中取得當前頻譜
+            SD_Live.integration_time = integral_time * 1000;    //integral_time(ms) integtration_time(us)
+            SD_Live.Avg = avg_time;
+
+            Link_UAI.Link_UAI.UAI_SpectrometerDataAcquire(SD_Live.DeviceHandle, SD_Live.integration_time, SD_Live.Intensity, SD_Live.Avg);
+
+            return SD_Live.Intensity;
+        }
+
     }
 }
