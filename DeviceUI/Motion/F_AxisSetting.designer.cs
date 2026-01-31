@@ -35,6 +35,8 @@ namespace DeviceUI.Motion
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_LineNo = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.Cmbx_AxisUse = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -58,9 +60,8 @@ namespace DeviceUI.Motion
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_AxisName = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.label18 = new System.Windows.Forms.Label();
-            this.TxtBx_LineNo = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.Btn_Homing = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
@@ -77,7 +78,6 @@ namespace DeviceUI.Motion
             this.TxtBx_ORGVelocity = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.TxtBx_HomeAcc = new System.Windows.Forms.TextBox();
-            this.Btn_Homing = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -158,6 +158,22 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel2.Size = new System.Drawing.Size(368, 328);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
+            // TxtBx_LineNo
+            // 
+            this.TxtBx_LineNo.Location = new System.Drawing.Point(226, 44);
+            this.TxtBx_LineNo.Name = "TxtBx_LineNo";
+            this.TxtBx_LineNo.Size = new System.Drawing.Size(136, 29);
+            this.TxtBx_LineNo.TabIndex = 12;
+            // 
+            // label18
+            // 
+            this.label18.Location = new System.Drawing.Point(6, 41);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(185, 35);
+            this.label18.TabIndex = 11;
+            this.label18.Text = "Line No.";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // label11
             // 
             this.label11.Location = new System.Drawing.Point(6, 155);
@@ -200,6 +216,7 @@ namespace DeviceUI.Motion
             // 
             this.Cmbx_AxisType.FormattingEnabled = true;
             this.Cmbx_AxisType.Items.AddRange(new object[] {
+            "Virtual",
             "APS"});
             this.Cmbx_AxisType.Location = new System.Drawing.Point(226, 6);
             this.Cmbx_AxisType.Name = "Cmbx_AxisType";
@@ -393,22 +410,6 @@ namespace DeviceUI.Motion
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Speed";
             // 
-            // label18
-            // 
-            this.label18.Location = new System.Drawing.Point(6, 41);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(185, 35);
-            this.label18.TabIndex = 11;
-            this.label18.Text = "Line No.";
-            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_LineNo
-            // 
-            this.TxtBx_LineNo.Location = new System.Drawing.Point(226, 44);
-            this.TxtBx_LineNo.Name = "TxtBx_LineNo";
-            this.TxtBx_LineNo.Size = new System.Drawing.Size(136, 29);
-            this.TxtBx_LineNo.TabIndex = 12;
-            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
@@ -420,6 +421,16 @@ namespace DeviceUI.Motion
             this.tabPage3.Size = new System.Drawing.Size(1174, 524);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Home";
+            // 
+            // Btn_Homing
+            // 
+            this.Btn_Homing.Location = new System.Drawing.Point(1024, 479);
+            this.Btn_Homing.Name = "Btn_Homing";
+            this.Btn_Homing.Size = new System.Drawing.Size(144, 39);
+            this.Btn_Homing.TabIndex = 4;
+            this.Btn_Homing.Text = "Homing";
+            this.Btn_Homing.UseVisualStyleBackColor = true;
+            this.Btn_Homing.Click += new System.EventHandler(this.Btn_Homing_Click);
             // 
             // groupBox3
             // 
@@ -595,16 +606,6 @@ namespace DeviceUI.Motion
             this.TxtBx_HomeAcc.Name = "TxtBx_HomeAcc";
             this.TxtBx_HomeAcc.Size = new System.Drawing.Size(136, 29);
             this.TxtBx_HomeAcc.TabIndex = 15;
-            // 
-            // Btn_Homing
-            // 
-            this.Btn_Homing.Location = new System.Drawing.Point(1024, 479);
-            this.Btn_Homing.Name = "Btn_Homing";
-            this.Btn_Homing.Size = new System.Drawing.Size(144, 39);
-            this.Btn_Homing.TabIndex = 4;
-            this.Btn_Homing.Text = "Homing";
-            this.Btn_Homing.UseVisualStyleBackColor = true;
-            this.Btn_Homing.Click += new System.EventHandler(this.Btn_Homing_Click);
             // 
             // F_AxisSetting
             // 

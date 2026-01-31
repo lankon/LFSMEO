@@ -44,6 +44,8 @@ namespace Device_APS
 
         public bool Open()
         {
+            return true;
+
             if (Initial_Success == true)
                 return true;
 
@@ -94,6 +96,21 @@ namespace Device_APS
             return Initial_Success;
         }
 
+        public string GetName()
+        {
+            return "AMP_204C";
+
+            if (!Initial_Success)
+                return "None";
+
+            if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
+                return "AMP_204C";
+            else if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_PCIE_8332)
+                return "PCIE_8332";
+
+            return "None";
+        }
+
         #region IO Function
         public bool GetInputStatus(byte lineNo, byte DevNo, byte port)
         {
@@ -108,19 +125,6 @@ namespace Device_APS
             }
 
             return APS_Param.Input_Status[lineNo, DevNo, port];
-        }
-
-        public string GetName()
-        {
-            if (!Initial_Success)
-                return "None";
-
-            if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
-                return "AMP_204C";
-            else if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_PCIE_8332)
-                return "PCIE_8332";
-
-            return "None";
         }
 
         public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)

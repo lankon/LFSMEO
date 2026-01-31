@@ -48,9 +48,8 @@ namespace DeviceFunction
         //[Save & Update Axis Info]
         public void UpdateAxisInfo2Form(int axis)
         {
-            string AppPath = AppDomain.CurrentDomain.BaseDirectory;
             Function_MotionCard.LoadAxisConfig();
-            List<AXIS_INFO> config = Function_MotionCard.GetAxisConfig();
+            var config = Function_MotionCard.GetAxisConfig();
 
             //[Axis Configuration]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_AxisType, config[axis].AXIS_TYPE);

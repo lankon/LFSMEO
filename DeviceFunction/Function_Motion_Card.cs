@@ -225,15 +225,26 @@ namespace DeviceFunction
 
             DML_INFO[axis] = info;
         }
+        private string GetAxisType(int index)
+        {
+            if (index == 0)
+                return "Virtual";
+            else if (index == 1)
+                return "APS";
+            else
+                return "None";
+        }
         #endregion
-
-        
 
         #region public function
         // Initial Function
         public bool Initial_All_Motion()
         {
+            //此函式程式開啟後只能呼叫一次
+            
             bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false, Virtual = false;
+
+            InitialAxsInfo();
 
             foreach (IMotionCard card in Cards)
             {
@@ -279,7 +290,12 @@ namespace DeviceFunction
 
             for (int j = 0; j < DML.Count; j++)
             {
-                nameToIndex[DML[j].GetName()] = j;
+                string name = "";
+
+                if (DML[j].GetName() == "AMP_204C" || DML[j].GetName() == "PCIE_8332")
+                    name = "APS";
+                
+                nameToIndex[name] = j;
             }
 
             for (int i = 0; i < DML_INFO.Count; i++)
@@ -287,7 +303,9 @@ namespace DeviceFunction
                 if (DML_INFO[i].AXIS_TYPE == null)
                     continue;
 
-                if (nameToIndex.TryGetValue(DML_INFO[i].AXIS_TYPE, out int idx))
+                string axis_type = GetAxisType(int.Parse(DML_INFO[i].AXIS_TYPE));
+
+                if (nameToIndex.TryGetValue(axis_type, out int idx))
                 {
                     DML2Axis[i] = idx;
                 }
@@ -433,14 +451,13 @@ namespace DeviceFunction
             if (!File.Exists(load_path))
                 return false;
 
-            InitialAxsInfo();
             LoadMotionConfig(load_path);
 
             return true;
         }
-        public List<AXIS_INFO> GetAxisConfig()
+        public IReadOnlyList<AXIS_INFO> GetAxisConfig()
         {
-            return DML_INFO;
+            return DML_INFO.AsReadOnly();
         }
         #endregion
     }
