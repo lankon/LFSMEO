@@ -216,6 +216,7 @@ namespace DeviceUI.Motion
             // 
             this.Cmbx_AxisType.FormattingEnabled = true;
             this.Cmbx_AxisType.Items.AddRange(new object[] {
+            "None",
             "Virtual",
             "APS"});
             this.Cmbx_AxisType.Location = new System.Drawing.Point(226, 6);

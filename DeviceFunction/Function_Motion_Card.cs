@@ -228,8 +228,10 @@ namespace DeviceFunction
         private string GetAxisType(int index)
         {
             if (index == 0)
-                return "Virtual";
+                return "None";
             else if (index == 1)
+                return "Virtual";
+            else if (index == 2)
                 return "APS";
             else
                 return "None";
@@ -241,31 +243,12 @@ namespace DeviceFunction
         public bool Initial_All_Motion()
         {
             //此函式程式開啟後只能呼叫一次
-            
-            bool UseMN200 = false, UseP32C32 = false, UsePcisDask = false, UseAPS = false, Virtual = false;
-
             InitialAxsInfo();
 
             foreach (IMotionCard card in Cards)
             {
                 if (card.Open() == true)
                     DML.Add(card);
-            }
-
-            for (int i = 0; i < DML.Count; i++)
-            {
-                if (DML[i].GetName() == "MN200")
-                    UseMN200 = true;
-                if (DML[i].GetName() == "AMP_204C" || DML[i].GetName() == "PCIE_8332")
-                    UseAPS = true;
-                if (DML[i].GetName() == "Virtual")
-                    Virtual = true;
-            }
-
-            if (!UseMN200 && !UseAPS)    //沒有任何一張Motion卡
-            {
-                Tool.SaveLogToFile("Motion卡Initial失敗");
-                return false;
             }
 
             Task task = Task.Run(() => Process());
@@ -294,7 +277,9 @@ namespace DeviceFunction
 
                 if (DML[j].GetName() == "AMP_204C" || DML[j].GetName() == "PCIE_8332")
                     name = "APS";
-                
+                else
+                    name = DML[j].GetName();
+
                 nameToIndex[name] = j;
             }
 
@@ -350,7 +335,7 @@ namespace DeviceFunction
         }
 
 
-        // Home Function
+        //[Home Function]
         public async Task<bool> GoHome(int axis)
         {
             byte line = (byte)DML_INFO[axis].LINE_NO;
@@ -378,8 +363,7 @@ namespace DeviceFunction
             return DML_Home_Complete[axis];
         }
 
-
-        // Move Function
+        //[Move Function]
         public bool Get_Motion_Complete(int axis)
         {
             byte line = (byte)DML_INFO[axis].LINE_NO;

@@ -76,6 +76,7 @@ namespace LFSMEO
 
             services.AddSingleton<IMotionCard>(mn200);
             services.AddSingleton<IMotionCard>(APS);
+            services.AddSingleton<IMotionCard, Virtual_Motion>();
             services.AddSingleton<IIOCard>(mn200);
             services.AddSingleton<IIOCard>(pcis_9111DG);
             services.AddSingleton<IIOCard>(pcis_9111HR);

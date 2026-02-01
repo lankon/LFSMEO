@@ -30,6 +30,15 @@ namespace DeviceFunction
                 eF_AxisSetting.Cmbx_AxisUse,
                 eF_AxisSetting.Cmbx_AxisLimitLogic,
                 eF_AxisSetting.Cmbx_AxisLimitStopMode,
+
+                //[Home Setting]
+                eF_AxisSetting.Cmbx_HomeMode,
+                eF_AxisSetting.Cmbx_HomeDirection,
+                eF_AxisSetting.TxtBx_ORGPosition,
+                eF_AxisSetting.TxtBx_ORGShiftPosition,
+                eF_AxisSetting.TxtBx_HomeVelocity,
+                eF_AxisSetting.TxtBx_ORGVelocity,
+                eF_AxisSetting.TxtBx_HomeAcc,
             };
         #endregion
 
@@ -58,6 +67,23 @@ namespace DeviceFunction
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_AxisUse, config[axis].AXIS_USE.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_AxisLimitLogic, config[axis].LIMIT_LOGIC.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_AxisLimitStopMode, config[axis].STOP_MODE.ToString());
+
+            //[Home Setting]
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeMode, config[axis].MODE.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeDirection, config[axis].DIRECTION.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGPosition, config[axis].HOME_POS.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGShiftPosition, config[axis].HOME_SHIFT.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeVelocity, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
+
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGVelocity, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeAcc, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
+
+
+
+            else if (item == eF_AxisSetting.TxtBx_ORGVelocity.ToString())
+                info.HOEM_FIND_ORG_VELOCITY = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_HomeAcc.ToString())
+                info.ACC = Tool.StringToInt(value);
 
             AxisSetting.UpdateParmeter();
         }
