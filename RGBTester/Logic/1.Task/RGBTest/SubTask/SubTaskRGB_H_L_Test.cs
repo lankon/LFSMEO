@@ -437,8 +437,9 @@ namespace RGBTester.Logic
             if (Vled < 3 && fitting.Slope < 0.01 && IsClamping == false)
             {
                 int StartClampingDAC = DAC[DAC.Count - 1];
+                int fail_dac_condition = ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_ClampingFailDAC);
 
-                if(StartClampingDAC < 850)
+                if(StartClampingDAC < fail_dac_condition)
                 {
                     Scope.TestFail = true;
                 }

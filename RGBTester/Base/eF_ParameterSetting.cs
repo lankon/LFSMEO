@@ -9,6 +9,7 @@ namespace RGBTester.Base
     public enum eF_ParameterSetting
     {
         TxtBx_TestFileCopyPath,
+        TxtBx_TestFileCopyPath1,
     }
 
     public enum eF_ParameterSettingRecipe
@@ -17,5 +18,6 @@ namespace RGBTester.Base
         TxtBx_LCM_Slope_LL,
         TxtBx_HCM_Slope_UL,
         TxtBx_HCM_Slope_LL,
+        TxtBx_ClampingFailDAC,
     }
 }

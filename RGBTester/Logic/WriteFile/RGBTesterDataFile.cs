@@ -205,26 +205,31 @@ namespace RGBTester.Logic
         public void CopyAndCloseTestFile(string describe)
         {
             string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
-            
+            string copy_path1 = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath1);
+
             if(copy_path != "")
                 copy_path = copy_path + $"\\{now.ToString("yyyyMMdd")}";
 
+            if (copy_path1 != "")
+                copy_path1 = copy_path1 + $"\\{now.ToString("yyyyMMdd")}";
+
             if (describe == "Left_R" && LeftRedFile != null)
-                Tool.CopyFile(LeftRedFile, copy_path);
+                Tool.CopyFile(LeftRedFile, copy_path, copy_path1);
             else if (describe == "Left_G" && LeftGreenFile != null)
-                Tool.CopyFile(LeftGreenFile, copy_path);
+                Tool.CopyFile(LeftGreenFile, copy_path, copy_path1);
             else if (describe == "Left_B" && LeftBlueFile != null)
-                Tool.CopyFile(LeftBlueFile, copy_path);
+                Tool.CopyFile(LeftBlueFile, copy_path, copy_path1);
             else if (describe == "Right_R" && RightRedFile != null)
-                Tool.CopyFile(RightRedFile, copy_path);
+                Tool.CopyFile(RightRedFile, copy_path, copy_path1);
             else if (describe == "Right_G" && RightGreenFile != null)
-                Tool.CopyFile(RightGreenFile, copy_path);
+                Tool.CopyFile(RightGreenFile, copy_path, copy_path1);
             else if (describe == "Right_B" && RightBlueFile != null)
-                Tool.CopyFile(RightBlueFile, copy_path);
+                Tool.CopyFile(RightBlueFile, copy_path, copy_path1);
             else if (describe == "Left_Calibration")
-                Tool.CopyFile(LeftCalibrationFile, copy_path);
+                Tool.CopyFile(LeftCalibrationFile, copy_path, copy_path1);
             else if (describe == "Right_Calibration")
-                Tool.CopyFile(RightCalibrationFile, copy_path);
+                Tool.CopyFile(RightCalibrationFile, copy_path, copy_path1);
+                
         }
         public void ResetCalibrationData()
         {

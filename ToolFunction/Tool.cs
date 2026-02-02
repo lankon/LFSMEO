@@ -535,9 +535,9 @@ namespace ToolFunction
 
             return false;
         }
-        public static bool CopyFile(StreamWriter sourceFileStream, string copy_path)
+        public static bool CopyFile(StreamWriter sourceFileStream, string copy_path, string copy_path1 = "")
         {
-            if (copy_path == "")
+            if (copy_path == "" && copy_path1 == "")
                 return false;
             
             string sourcePath = "";
@@ -564,13 +564,28 @@ namespace ToolFunction
 
             try
             {
-                // 確保目標資料夾存在
-                CreateFolder(copy_path);
+                if(copy_path != "")
+                {
+                    // 確保目標資料夾存在
+                    CreateFolder(copy_path);
 
-                // 執行複製
-                copy_path = copy_path + $"\\{sourceFileName}";
-                System.IO.File.Copy(sourcePath, copy_path , true);
-                SaveLogToFile($"檔案已成功從 {sourcePath} 複製到 {copy_path}");
+                    // 執行複製
+                    copy_path = copy_path + $"\\{sourceFileName}";
+                    System.IO.File.Copy(sourcePath, copy_path, true);
+                    SaveLogToFile($"檔案已成功從 {sourcePath} 複製到 {copy_path}");
+                }
+
+                if(copy_path1 != "")
+                {
+                    // 確保目標資料夾存在
+                    CreateFolder(copy_path1);
+
+                    // 執行複製
+                    copy_path1 = copy_path1 + $"\\{sourceFileName}";
+                    System.IO.File.Copy(sourcePath, copy_path1, true);
+                    SaveLogToFile($"檔案已成功從 {sourcePath} 複製到 {copy_path1}");
+                }
+                
                 return true;
             }
             catch (Exception ex)
