@@ -67,7 +67,7 @@ namespace Device_Virtual
             throw new NotImplementedException();
         }
 
-        public bool SetMotionConfig()
+        public bool SetMotionConfig(AXIS_INFO axisInfo)
         {
             throw new NotImplementedException();
         }

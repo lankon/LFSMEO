@@ -187,13 +187,17 @@ namespace Device_APS
         #endregion
 
         #region Motion Function
-        public bool SetMotionConfig()
+        public bool SetMotionConfig(AXIS_INFO axisInfo)
         {
-            throw new NotImplementedException();
+            AxisInfo = axisInfo;
+            return true;
         }
 
         public short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
+            if (Initial_Success == false)
+                return 0;
+
             Int32 st = APS168.APS_motion_io_status(devNo);
 
             int index = (int)MOTION_IO.ALM;
@@ -213,6 +217,9 @@ namespace Device_APS
 
         public bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0)
         {
+            if (Initial_Success == false)
+                return false;
+
             bool res = APS_Param.Motion_Status[lineNo, devNo, state];
 
             return res;
@@ -220,6 +227,9 @@ namespace Device_APS
 
         public bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
+            if (Initial_Success == false)
+                return false;
+
             Int32 axis_id = devNo;
             Int32 msts = 0;
 
@@ -282,7 +292,7 @@ namespace Device_APS
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_CURVE, 0);                              // Set acceleration pattern (T-curve)
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_ACC, AxisInfo.ACC);                     // Set homing acceleration rate
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VM, AxisInfo.MAX_VELOCITY);             // Set homing maximum velocity. pulse/s
-            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VO, AxisInfo.HOEM_FIND_ORG_VELOCITY);   // Set homing pulse/s
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VO, AxisInfo.HOEM_FIND_ORG_VELOCITY);   // Set homing velocitu to ORG pulse/s
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_EZA, 0);                                // Set homing
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_SHIFT, AxisInfo.HOME_SHIFT);            // Set homing shift position
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_POS, AxisInfo.HOME_POS);                // Set homing position

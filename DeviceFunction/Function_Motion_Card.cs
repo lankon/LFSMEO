@@ -181,6 +181,8 @@ namespace DeviceFunction
         }
         private void Project2AxisInfo(int axis, string item, string value)
         {
+            //新增軸參數時需添加
+
             var info = DML_INFO[axis];
 
             //[Axis Configuration]
@@ -342,6 +344,8 @@ namespace DeviceFunction
             byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 
             DML_Home_Complete[axis] = false;
+
+            DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
             DML[DML2Axis[axis]].GoHome(lineNo:line, devNo:dev_no);
 
             bool ok = await WaitAchieveLimitAsync(axis);

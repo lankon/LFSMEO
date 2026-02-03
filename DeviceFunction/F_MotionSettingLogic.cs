@@ -25,6 +25,9 @@ namespace DeviceFunction
         public IF_AxisSetting AxisSetting;
         eF_AxisSetting[] AxisParam = new eF_AxisSetting[]
             {
+                //新增軸參數時需添加
+                
+                //[Axis Config]
                 eF_AxisSetting.Cmbx_AxisType,
                 eF_AxisSetting.TxtBx_AxisStation,
                 eF_AxisSetting.Cmbx_AxisUse,
@@ -57,6 +60,8 @@ namespace DeviceFunction
         //[Save & Update Axis Info]
         public void UpdateAxisInfo2Form(int axis)
         {
+            //新增軸參數時需添加
+
             Function_MotionCard.LoadAxisConfig();
             var config = Function_MotionCard.GetAxisConfig();
 
@@ -78,12 +83,6 @@ namespace DeviceFunction
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGVelocity, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeAcc, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
 
-
-
-            else if (item == eF_AxisSetting.TxtBx_ORGVelocity.ToString())
-                info.HOEM_FIND_ORG_VELOCITY = Tool.StringToInt(value);
-            else if (item == eF_AxisSetting.TxtBx_HomeAcc.ToString())
-                info.ACC = Tool.StringToInt(value);
 
             AxisSetting.UpdateParmeter();
         }
