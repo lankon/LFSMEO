@@ -6,6 +6,7 @@
 		<Item type="Added">Slope上下限設定</Item>
 		<Item type="Added">增加UI設定發生Clamping時DAC低於設定條件判定Fail</Item>
 		<Item type="Added">增加複製測試資料路徑</Item>
+		<Item type="Fixed">Calibration報表修正</Item>
 	</Release>
 	<Release version="1.26.1.4" date="2026-01-28">
 		<Item type="Added">測試結果資料複製路徑設定</Item>
