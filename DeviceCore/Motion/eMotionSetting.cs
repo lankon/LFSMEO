@@ -24,6 +24,14 @@ namespace DeviceCore
         TxtBx_AxisPitch,
         #endregion
 
+        #region Speed Configuration
+        TxtBx_FastMaxVelocity,
+        TxtBx_FastInitVelocity,
+        TxtBx_Fast_ACC,
+        TxtBx_Fast_DEC,
+        TxtBx_FastSfac,
+        #endregion
+
         #region Home Configuration
         Cmbx_HomeMode,
         Cmbx_HomeDirection,

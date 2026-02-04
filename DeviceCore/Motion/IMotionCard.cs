@@ -29,6 +29,18 @@ namespace DeviceCore
         public double MEL_POS;      //軟體負極限位置
         public int REVERSE_MOVE;    //運動方向相反Y/N
 
+        //[Speed Configuration]
+        public double FAST_MAX_SPEED;       //Fast最大速度
+        public double FAST_INIT_SPEED;      //Fast起始速度
+        public double FAST_ACC;             //Fast加速度
+        public double FAST_DEC;             //Fast減速度
+        public double FAST_Sfac;            //Fast Sfac
+        public double NORMAL_MAX_SPEED;     //Normal最大速度
+        public double NORMAL_INIT_SPEED;    //Normal起始速度
+        public double NORMAL_ACC;           //Normal加速度
+        public double NORMAL_DEC;           //Normal減速度
+        public double NORMAL_Sfac;          //NormalSfac
+
         //[Home Configuration]
         public int MODE;            //歸Home模式
         public int DIRECTION;       //方向
@@ -36,7 +48,7 @@ namespace DeviceCore
         public int HOME_SHIFT;      //到原點後位移距離
         public int MAX_VELOCITY;    //最大速度
         public int HOEM_FIND_ORG_VELOCITY;  //搜尋原點速度
-        public int ACC;             //加速度
+        public int HOME_ACC;        //Home加速度
     }
     public enum MOTION_IO
     {
@@ -63,7 +75,7 @@ namespace DeviceCore
         double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0);
         int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start,
-                                          double Tacc, double Sacc, double Tdec, double Sdec);
+                                          double Tacc, double Sfac, double Tdec, double Sdec);
         int RelativeSMove(int axis, double position, double velocity_max, double velocity_start,
                                           double Tacc, double Sacc, double Tdec, double Sdec);
         

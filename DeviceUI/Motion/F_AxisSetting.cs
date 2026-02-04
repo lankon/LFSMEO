@@ -58,5 +58,10 @@ namespace DeviceUI.Motion
         {
             MotionSettingLogic.GoHome();
         }
+
+        private void Btn_Move_Click(object sender, EventArgs e)
+        {
+            MotionSettingLogic.PTP_MoveTest();
+        }
     }
 }

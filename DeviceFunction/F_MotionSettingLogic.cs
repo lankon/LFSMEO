@@ -38,6 +38,13 @@ namespace DeviceFunction
                 //[Hardware Configuration]
                 eF_AxisSetting.TxtBx_AxisPitch,
 
+                //[Speed Config]
+                eF_AxisSetting.TxtBx_FastMaxVelocity,
+                eF_AxisSetting.TxtBx_FastInitVelocity,
+                eF_AxisSetting.TxtBx_Fast_ACC,
+                eF_AxisSetting.TxtBx_Fast_DEC,
+                eF_AxisSetting.TxtBx_FastSfac,
+
                 //[Home Setting]
                 eF_AxisSetting.Cmbx_HomeMode,
                 eF_AxisSetting.Cmbx_HomeDirection,
@@ -50,6 +57,8 @@ namespace DeviceFunction
         #endregion
 
         #region public function
+
+        #region [Set Form Interface]
         //[Set Form Interface]
         public void SetAxisButtonIF(IF_AxisButton f_AxisButton)
         {
@@ -60,7 +69,9 @@ namespace DeviceFunction
         {
             AxisSetting = f_AxisSetting;
         }
+        #endregion
 
+        #region [Save & Update Axis Info]
         //[Save & Update Axis Info]
         public void UpdateAxisInfo2Form(int axis)
         {
@@ -80,6 +91,13 @@ namespace DeviceFunction
 
             //[Hardware Configuration]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisPitch, config[axis].PITCH.ToString());
+            
+            //[Speed Config]
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastMaxVelocity, config[axis].FAST_MAX_SPEED.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastInitVelocity, config[axis].FAST_INIT_SPEED.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Fast_ACC, config[axis].FAST_ACC.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Fast_DEC, config[axis].FAST_DEC.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastSfac, config[axis].FAST_Sfac.ToString());
 
             //[Home Setting]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeMode, config[axis].MODE.ToString());
@@ -88,7 +106,7 @@ namespace DeviceFunction
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGShiftPosition, config[axis].HOME_SHIFT.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeVelocity, config[axis].MAX_VELOCITY.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGVelocity, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeAcc, config[axis].ACC.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeAcc, config[axis].HOME_ACC.ToString());
 
 
             AxisSetting.UpdateParmeter();
@@ -112,7 +130,9 @@ namespace DeviceFunction
             string AppPath = AppDomain.CurrentDomain.BaseDirectory;
             Function_MotionCard.SaveAxisConfig(AppPath + @"\Setting\AxisConfig.xml", axisName, param);
         }
+        #endregion
 
+        #region [Motion Function]
         //[Motion]
         public void GoHome()
         {
@@ -124,6 +144,13 @@ namespace DeviceFunction
                 await Function_MotionCard.GoHome(GetCurrentBtnNum());
             });
         }
+
+        public bool PTP_MoveTest()
+        {
+            bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 100.0, "Abs", MOVE_VELOCITY_MODE.FAST);
+            return res;
+        }
+        #endregion
 
         public int GetCurrentBtnNum()
         {

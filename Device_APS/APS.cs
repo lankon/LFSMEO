@@ -297,14 +297,14 @@ namespace Device_APS
 
             byte axis_id = devNo;
 
-            int acc = TranferToPulse(AxisInfo.ACC, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
+            int acc = TranferToPulse(AxisInfo.HOME_ACC, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
             int max_v = TranferToPulse(AxisInfo.MAX_VELOCITY, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
             int org_v = TranferToPulse(AxisInfo.HOEM_FIND_ORG_VELOCITY, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
 
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_MODE, AxisInfo.MODE);                   //Set home mode         
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION);               //Set home direction
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_CURVE, 0);                              // Set acceleration pattern (T-curve)
-            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_ACC, AxisInfo.ACC);                     // Set homing acceleration rate
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_ACC, AxisInfo.HOME_ACC);                     // Set homing acceleration rate
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VM, AxisInfo.MAX_VELOCITY);             // Set homing maximum velocity. pulse/s
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VO, AxisInfo.HOEM_FIND_ORG_VELOCITY);   // Set homing velocitu to ORG pulse/s
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_EZA, 0);                                // Set homing
@@ -349,7 +349,7 @@ namespace Device_APS
                 return 0;
         }
 
-        public int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sacc, double Tdec, double Sdec)
+        public int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sfac, double Tdec, double Sdec)
         {
             if (Initial_Success == false)
                 return -1;
@@ -365,7 +365,7 @@ namespace Device_APS
                                  0,
                                  Tacc,
                                  Tdec,
-                                 Sacc,
+                                 Sfac,
                                  ref p);
 
 
@@ -393,6 +393,23 @@ namespace Device_APS
 
             return ret;
         }
+
+        public int JogMoveStart(int axis, string direction, double velocity)
+        {
+            if (Initial_Success == false)
+                return -1;
+            Int32 ret = -1;
+            Int32 jog_dir = 1;
+            if (direction == "Negative")
+                jog_dir = -1;
+            //ret = APS168.APS_jog_start(axis,
+            //                    jog_dir,
+            //                    velocity,
+            //                    0);
+            return ret;
+        }
         #endregion
+
+
     }
 }

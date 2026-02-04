@@ -23,7 +23,8 @@ namespace DeviceFunction
         private List<IMotionCard> DML = new List<IMotionCard>();
         private List<AXIS_INFO> DML_INFO = new List<AXIS_INFO>();
         private int[] DML2Axis;
-        private bool[] DML_Home_Complete;
+        private bool[] DML_Home_Complete;       //判斷各軸是否完成Home
+        private bool[] DML_Homing;              //判斷各軸是否正在執行Home
         private readonly IEnumerable<IMotionCard> Cards;
 
         public enum AXIS_NAME
@@ -199,6 +200,18 @@ namespace DeviceFunction
             else if (item == eF_AxisSetting.TxtBx_AxisPitch.ToString())
                 info.PITCH = Tool.StringToDouble(value);
 
+            //[Speed Configuration]
+            else if (item == eF_AxisSetting.TxtBx_FastMaxVelocity.ToString())
+                info.FAST_MAX_SPEED = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_FastInitVelocity.ToString())
+                info.FAST_INIT_SPEED = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_Fast_ACC.ToString())
+                info.FAST_ACC = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_Fast_DEC.ToString())
+                info.FAST_DEC = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_FastSfac.ToString())
+                info.FAST_Sfac = Tool.StringToDouble(value);
+
             //[Home Configuration]
             else if (item == eF_AxisSetting.Cmbx_HomeMode.ToString())
                 info.MODE = Tool.StringToInt(value);
@@ -213,7 +226,7 @@ namespace DeviceFunction
             else if (item == eF_AxisSetting.TxtBx_ORGVelocity.ToString())
                 info.HOEM_FIND_ORG_VELOCITY = Tool.StringToInt(value);
             else if (item == eF_AxisSetting.TxtBx_HomeAcc.ToString())
-                info.ACC = Tool.StringToInt(value);
+                info.HOME_ACC = Tool.StringToInt(value);
 
             DML_INFO[axis] = info;
         }
@@ -330,10 +343,17 @@ namespace DeviceFunction
         //[Home Function]
         public async Task<bool> GoHome(int axis)
         {
+            if(DML_Homing[axis] == true)
+            {
+                Tool.SaveLogToFile($"軸 = {axis} 正在執行初始化，請勿重複執行");
+                return false;
+            }
+
             byte line = (byte)DML_INFO[axis].LINE_NO;
             byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 
             DML_Home_Complete[axis] = false;
+            DML_Homing[axis] = true;
 
             DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
             DML[DML2Axis[axis]].GoHome(lineNo:line, devNo:dev_no);
@@ -349,6 +369,9 @@ namespace DeviceFunction
             SetOrigin(axis, DML_INFO[axis].HOME_POS);
 
             //到達原點後位移
+
+            DML_Home_Complete[axis] = true;
+            DML_Homing[axis] = false;
 
             return true;
         }
@@ -367,18 +390,40 @@ namespace DeviceFunction
 
             return res;
         }
-        public bool PTP_Move(int axis , double pos, string mode = "Abs")
+        public bool PTP_Move(int axis , double pos, string mode = "Abs", MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL)
         {
-            //byte line = (byte)DML_INFO[axis].LINE_NO;
-            //byte dev_no = (byte)DML_INFO[axis].DEV_NO;
+            byte line = (byte)DML_INFO[axis].LINE_NO;
+            byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 
-            //if(mode == "Abs")
-            //    DML[DML2Axis[axis]].AbsoluteSMove
+            double velocity_max = 0, velocity_start = 0, acc = 0, dec = 0, sfac = 0;
+            if (velocityMode == MOVE_VELOCITY_MODE.NORMAL)
+            {
+                velocity_max = DML_INFO[axis].NORMAL_MAX_SPEED;
+                velocity_start = DML_INFO[axis].NORMAL_INIT_SPEED;
+                acc = DML_INFO[axis].NORMAL_ACC;
+                dec = DML_INFO[axis].NORMAL_DEC;
+                sfac = DML_INFO[axis].NORMAL_Sfac;
+            }
+            else if (velocityMode == MOVE_VELOCITY_MODE.FAST)
+            {
+                velocity_max = DML_INFO[axis].FAST_MAX_SPEED;
+                velocity_start = DML_INFO[axis].FAST_INIT_SPEED;
+                acc = DML_INFO[axis].FAST_ACC;
+                dec = DML_INFO[axis].FAST_DEC;
+                sfac = DML_INFO[axis].FAST_Sfac;
+            }
 
-            //bool res = DML[DML2Axis[axis]].AbsoluteSMove();
+            int res = 0;
+            if (mode == "Abs")
+                res = DML[DML2Axis[axis]].AbsoluteSMove(axis, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
+            else if(mode == "Rel")
+                res = DML[DML2Axis[axis]].RelativeSMove(axis, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
 
-
-
+            if(res != 0)
+            {
+                Tool.SaveLogToFile($"軸:{axis} PTP_Move失敗", level: "ERR");
+                return false;
+            }
 
             return true;
         }
@@ -436,6 +481,16 @@ namespace DeviceFunction
         public IReadOnlyList<AXIS_INFO> GetAxisConfig()
         {
             return DML_INFO.AsReadOnly();
+        }
+
+        public bool Jog_Start(int axis, string direction, MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Jog_Stop(int axis)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
