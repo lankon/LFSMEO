@@ -192,23 +192,13 @@ namespace DeviceFunction
                 info.LINE_NO = Tool.StringToInt(value);
             else if (item == eF_AxisSetting.TxtBx_AxisStation.ToString())
                 info.DEV_NO = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.Cmbx_AxisUse.ToString())
-            //    info.AXIS_USE = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.Cmbx_AxisLimitLogic.ToString())
-            //    info.LIMIT_LOGIC = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.Cmbx_AxisLimitStopMode.ToString())
-            //    info.STOP_MODE = Tool.StringToInt(value);
-            ////[Software Configuration]
-            //else if (item == eOEMSetting.TxtBx_AxisName.ToString())
-            //    info.AXIS_NANE = value;
-            //else if (item == eOEMSetting.Cmbx_SW_Limit.ToString())
-            //    info.SW_LIMIT = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_SW_PEL_Pos.ToString())
-            //    info.PEL_POS = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.TxtBx_SW_MEL_Pos.ToString())
-            //    info.MEL_POS = Tool.StringToInt(value);
-            //else if (item == eOEMSetting.Cmbx_ReverseMode.ToString())
-            //    info.REVERSE_MOVE = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_DriverResolution.ToString())
+                info.DRIVER_RESOLUTION = Tool.StringToInt(value);
+
+            //[Hardware Configuration]
+            else if (item == eF_AxisSetting.TxtBx_AxisPitch.ToString())
+                info.PITCH = Tool.StringToDouble(value);
+
             //[Home Configuration]
             else if (item == eF_AxisSetting.Cmbx_HomeMode.ToString())
                 info.MODE = Tool.StringToInt(value);

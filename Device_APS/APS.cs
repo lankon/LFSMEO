@@ -12,6 +12,11 @@ namespace Device_APS
 {
     public class APS : IMotionCard
     {
+        public APS()
+        {
+
+        }
+
         #region parameter define 
         APS_Parameter APS_Param = new APS_Parameter();
         private bool Initial_Success = false;
@@ -37,10 +42,15 @@ namespace Device_APS
         }
         #endregion
 
-        public APS()
+        #region private function
+        private int TranferToPulse(double intput, double pitch, double resolution)
         {
-
+            double pulse = intput * resolution / pitch;
+            
+            return (int)pulse;
         }
+        #endregion
+
 
         public bool Open()
         {
@@ -286,6 +296,10 @@ namespace Device_APS
                 return false;
 
             byte axis_id = devNo;
+
+            int acc = TranferToPulse(AxisInfo.ACC, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
+            int max_v = TranferToPulse(AxisInfo.MAX_VELOCITY, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
+            int org_v = TranferToPulse(AxisInfo.HOEM_FIND_ORG_VELOCITY, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
 
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_MODE, AxisInfo.MODE);                   //Set home mode         
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION);               //Set home direction

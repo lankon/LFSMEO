@@ -8,6 +8,8 @@ namespace DeviceCore
 {
     public struct AXIS_INFO
     {
+        //新增軸參數時需添加
+
         //[Axis Configuration]
         public string AXIS_TYPE;    //軸卡名稱
         public int LINE_NO;         //軸卡線程
@@ -15,6 +17,10 @@ namespace DeviceCore
         public int AXIS_USE;        //軸卡使用Y/N
         public int LIMIT_LOGIC;     //硬體極限觸發邏輯
         public int STOP_MODE;       //停止模式
+        public int DRIVER_RESOLUTION;       //驅動器解析度
+
+        //[Hardware Configuration]
+        public double PITCH;        //軸卡螺距
 
         //[Software Configuration]
         public string AXIS_NANE;    //軸名稱

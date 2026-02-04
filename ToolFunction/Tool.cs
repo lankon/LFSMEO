@@ -445,6 +445,20 @@ namespace ToolFunction
                 return -999;
             }
         }
+
+        public static double StringToDouble(string str)
+        {
+            double result;
+            if (Double.TryParse(str, out result))
+            {
+                return result;
+            }
+            else
+            {
+                SaveLogToFile("型別轉換錯誤");
+                return -999;
+            }
+        }
     }
 
 

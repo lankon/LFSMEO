@@ -33,6 +33,10 @@ namespace DeviceFunction
                 eF_AxisSetting.Cmbx_AxisUse,
                 eF_AxisSetting.Cmbx_AxisLimitLogic,
                 eF_AxisSetting.Cmbx_AxisLimitStopMode,
+                eF_AxisSetting.TxtBx_DriverResolution,
+
+                //[Hardware Configuration]
+                eF_AxisSetting.TxtBx_AxisPitch,
 
                 //[Home Setting]
                 eF_AxisSetting.Cmbx_HomeMode,
@@ -72,16 +76,19 @@ namespace DeviceFunction
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_AxisUse, config[axis].AXIS_USE.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_AxisLimitLogic, config[axis].LIMIT_LOGIC.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_AxisLimitStopMode, config[axis].STOP_MODE.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_DriverResolution, config[axis].DRIVER_RESOLUTION.ToString());
+
+            //[Hardware Configuration]
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisPitch, config[axis].PITCH.ToString());
 
             //[Home Setting]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeMode, config[axis].MODE.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeDirection, config[axis].DIRECTION.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGPosition, config[axis].HOME_POS.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGShiftPosition, config[axis].HOME_SHIFT.ToString());
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeVelocity, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
-
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeVelocity, config[axis].MAX_VELOCITY.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGVelocity, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeAcc, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeAcc, config[axis].ACC.ToString());
 
 
             AxisSetting.UpdateParmeter();
