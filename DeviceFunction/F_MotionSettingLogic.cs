@@ -38,12 +38,25 @@ namespace DeviceFunction
                 //[Hardware Configuration]
                 eF_AxisSetting.TxtBx_AxisPitch,
 
+                //[Software Configuration]
+                eF_AxisSetting.TxtBx_AxisName,
+
                 //[Speed Config]
                 eF_AxisSetting.TxtBx_FastMaxVelocity,
                 eF_AxisSetting.TxtBx_FastInitVelocity,
                 eF_AxisSetting.TxtBx_Fast_ACC,
                 eF_AxisSetting.TxtBx_Fast_DEC,
                 eF_AxisSetting.TxtBx_FastSfac,
+                eF_AxisSetting.TxtBx_SlowMaxVelocity,
+                eF_AxisSetting.TxtBx_SlowInitVelocity,
+                eF_AxisSetting.TxtBx_Slow_ACC,
+                eF_AxisSetting.TxtBx_Slow_DEC,
+                eF_AxisSetting.TxtBx_SlowSfac,
+                eF_AxisSetting.TxtBx_NormalMaxVelocity,
+                eF_AxisSetting.TxtBx_NormalInitVelocity,
+                eF_AxisSetting.TxtBx_Normal_ACC,
+                eF_AxisSetting.TxtBx_Normal_DEC,
+                eF_AxisSetting.TxtBx_NormalSfac,
 
                 //[Home Setting]
                 eF_AxisSetting.Cmbx_HomeMode,
@@ -91,13 +104,26 @@ namespace DeviceFunction
 
             //[Hardware Configuration]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisPitch, config[axis].PITCH.ToString());
-            
+
+            //[Software Configuration]
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisName, config[axis].AXIS_NANE.ToString());
+
             //[Speed Config]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastMaxVelocity, config[axis].FAST_MAX_SPEED.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastInitVelocity, config[axis].FAST_INIT_SPEED.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Fast_ACC, config[axis].FAST_ACC.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Fast_DEC, config[axis].FAST_DEC.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastSfac, config[axis].FAST_Sfac.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_SlowMaxVelocity, config[axis].SLOW_MAX_SPEED.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_SlowInitVelocity, config[axis].SLOW_INIT_SPEED.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Slow_ACC, config[axis].SLOW_ACC.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Slow_DEC, config[axis].SLOW_DEC.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_SlowSfac, config[axis].SLOW_Sfac.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_NormalMaxVelocity, config[axis].NORMAL_MAX_SPEED.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_NormalInitVelocity, config[axis].NORMAL_INIT_SPEED.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Normal_ACC, config[axis].NORMAL_ACC.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_Normal_DEC, config[axis].NORMAL_DEC.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_NormalSfac, config[axis].NORMAL_Sfac.ToString());
 
             //[Home Setting]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeMode, config[axis].MODE.ToString());

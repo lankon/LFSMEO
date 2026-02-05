@@ -35,6 +35,11 @@ namespace DeviceCore
         public double FAST_ACC;             //Fast加速度
         public double FAST_DEC;             //Fast減速度
         public double FAST_Sfac;            //Fast Sfac
+        public double SLOW_MAX_SPEED;       //Slow最大速度
+        public double SLOW_INIT_SPEED;      //Slow起始速度
+        public double SLOW_ACC;             //Slow加速度
+        public double SLOW_DEC;             //Slow減速度
+        public double SLOW_Sfac;            //Slow Sfac
         public double NORMAL_MAX_SPEED;     //Normal最大速度
         public double NORMAL_INIT_SPEED;    //Normal起始速度
         public double NORMAL_ACC;           //Normal加速度

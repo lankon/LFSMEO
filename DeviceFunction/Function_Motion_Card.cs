@@ -149,6 +149,13 @@ namespace DeviceFunction
 
             return false;
         }
+        private async Task<bool> GoHome_FSM(int axis, int timeoutMs = 60000 * 5)
+        {
+
+
+
+            return true;
+        }
         private void LoadMotionConfig(string path)
         {
             XDocument doc = XDocument.Load(path);
@@ -193,6 +200,12 @@ namespace DeviceFunction
                 info.LINE_NO = Tool.StringToInt(value);
             else if (item == eF_AxisSetting.TxtBx_AxisStation.ToString())
                 info.DEV_NO = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.Cmbx_AxisUse.ToString())
+                info.AXIS_USE = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.Cmbx_AxisLimitLogic.ToString())
+                info.LIMIT_LOGIC = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.Cmbx_AxisLimitStopMode.ToString())
+                info.STOP_MODE = Tool.StringToInt(value);
             else if (item == eF_AxisSetting.TxtBx_DriverResolution.ToString())
                 info.DRIVER_RESOLUTION = Tool.StringToInt(value);
 
@@ -211,6 +224,30 @@ namespace DeviceFunction
                 info.FAST_DEC = Tool.StringToDouble(value);
             else if (item == eF_AxisSetting.TxtBx_FastSfac.ToString())
                 info.FAST_Sfac = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_SlowMaxVelocity.ToString())
+                info.SLOW_MAX_SPEED = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_SlowInitVelocity.ToString())
+                info.SLOW_INIT_SPEED = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_Slow_ACC.ToString())
+                info.SLOW_ACC = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_Slow_DEC.ToString())
+                info.SLOW_DEC = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_SlowSfac.ToString())
+                info.SLOW_Sfac = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_NormalMaxVelocity.ToString())
+                info.NORMAL_MAX_SPEED = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_NormalInitVelocity.ToString())
+                info.NORMAL_INIT_SPEED = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_Normal_ACC.ToString())
+                info.NORMAL_ACC = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_Normal_DEC.ToString())
+                info.NORMAL_DEC = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_NormalSfac.ToString())
+                info.NORMAL_Sfac = Tool.StringToDouble(value);
+
+            //[Software Configuration]
+            else if (item == eF_AxisSetting.TxtBx_AxisName.ToString())
+                info.AXIS_NANE = value;
 
             //[Home Configuration]
             else if (item == eF_AxisSetting.Cmbx_HomeMode.ToString())
@@ -272,6 +309,7 @@ namespace DeviceFunction
         {
             DML2Axis = new int[DML_INFO.Count];
             DML_Home_Complete = new bool[DML_INFO.Count];
+            DML_Homing = new bool[DML_INFO.Count];
             //GO_HOME_PARAM = new HOME_INFO[DML_INFO.Count];
 
             Dictionary<string, int> nameToIndex = new Dictionary<string, int>();
@@ -344,9 +382,15 @@ namespace DeviceFunction
         //[Home Function]
         public async Task<bool> GoHome(int axis)
         {
+            if (DML_INFO[axis].AXIS_USE == 0)
+            {
+                Tool.SaveLogToFile($"軸 = {axis}({DML_INFO[axis].AXIS_NANE}) 未使用，無法執行初始化", level:"WRN");
+                return false;
+            }
+            
             if(DML_Homing[axis] == true)
             {
-                Tool.SaveLogToFile($"軸 = {axis} 正在執行初始化，請勿重複執行");
+                Tool.SaveLogToFile($"軸 = {axis}({DML_INFO[axis].AXIS_NANE}) 正在執行初始化，請勿重複執行", level: "WRN");
                 return false;
             }
 
@@ -359,11 +403,13 @@ namespace DeviceFunction
             DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
             DML[DML2Axis[axis]].GoHome(lineNo:line, devNo:dev_no);
 
-            bool ok = await WaitAchieveLimitAsync(axis);
+            bool ok = await WaitAchieveLimitAsync(axis, 15000);
 
             if(!ok)
             {
-                Tool.SaveLogToFile($"軸 = {axis} 初始化未完成");
+                Tool.SaveLogToFile($"軸 = {axis}({DML_INFO[axis].AXIS_NANE}) 初始化未完成", level: "ERR");
+                DML_Homing[axis] = false;
+                return false;
             }
 
             //設定原點位置

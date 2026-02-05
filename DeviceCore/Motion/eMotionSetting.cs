@@ -24,12 +24,26 @@ namespace DeviceCore
         TxtBx_AxisPitch,
         #endregion
 
+        #region Software Configuration
+        TxtBx_AxisName,
+        #endregion
+
         #region Speed Configuration
         TxtBx_FastMaxVelocity,
         TxtBx_FastInitVelocity,
         TxtBx_Fast_ACC,
         TxtBx_Fast_DEC,
         TxtBx_FastSfac,
+        TxtBx_SlowMaxVelocity,
+        TxtBx_SlowInitVelocity,
+        TxtBx_Slow_ACC,
+        TxtBx_Slow_DEC,
+        TxtBx_SlowSfac,
+        TxtBx_NormalMaxVelocity,
+        TxtBx_NormalInitVelocity,
+        TxtBx_Normal_ACC,
+        TxtBx_Normal_DEC,
+        TxtBx_NormalSfac,
         #endregion
 
         #region Home Configuration
