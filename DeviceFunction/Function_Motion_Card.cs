@@ -299,9 +299,10 @@ namespace DeviceFunction
                 {
                     DML2Axis[i] = idx;
                 }
+
+                
             }
         }
-
 
         // Set Parameter & Status Function
         public bool SetServo(int axis, bool on_off)
@@ -412,6 +413,8 @@ namespace DeviceFunction
                 dec = DML_INFO[axis].FAST_DEC;
                 sfac = DML_INFO[axis].FAST_Sfac;
             }
+
+            DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
 
             int res = 0;
             if (mode == "Abs")

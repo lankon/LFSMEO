@@ -43,8 +43,11 @@ namespace Device_APS
         #endregion
 
         #region private function
-        private int TranferToPulse(double intput, double pitch, double resolution)
+        private int TransferToPulse(double intput)
         {
+            double resolution = AxisInfo.DRIVER_RESOLUTION;
+            double pitch = AxisInfo.PITCH;
+
             double pulse = intput * resolution / pitch;
             
             return (int)pulse;
@@ -297,9 +300,9 @@ namespace Device_APS
 
             byte axis_id = devNo;
 
-            int acc = TranferToPulse(AxisInfo.HOME_ACC, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
-            int max_v = TranferToPulse(AxisInfo.MAX_VELOCITY, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
-            int org_v = TranferToPulse(AxisInfo.HOEM_FIND_ORG_VELOCITY, AxisInfo.PITCH, AxisInfo.DRIVER_RESOLUTION);
+            int acc = TransferToPulse(AxisInfo.HOME_ACC);
+            int max_v = TransferToPulse(AxisInfo.MAX_VELOCITY);
+            int org_v = TransferToPulse(AxisInfo.HOEM_FIND_ORG_VELOCITY);
 
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_MODE, AxisInfo.MODE);                   //Set home mode         
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION);               //Set home direction
@@ -357,6 +360,11 @@ namespace Device_APS
             Int32 ret = -1;
             ASYNCALL p = new ASYNCALL();
 
+            velocity_start  = TransferToPulse(velocity_start);
+            velocity_max    = TransferToPulse(velocity_max);
+            Tacc            = TransferToPulse(Tacc);
+            Tdec            = TransferToPulse(Tdec);
+
             ret = APS168.APS_ptp_all(axis,
                                  (Int32)APS_Define.OPT_ABSOLUTE,
                                  position,
@@ -367,7 +375,6 @@ namespace Device_APS
                                  Tdec,
                                  Sfac,
                                  ref p);
-
 
             return ret;
         }

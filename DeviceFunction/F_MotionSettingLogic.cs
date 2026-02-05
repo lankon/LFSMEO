@@ -130,6 +130,13 @@ namespace DeviceFunction
             string AppPath = AppDomain.CurrentDomain.BaseDirectory;
             Function_MotionCard.SaveAxisConfig(AppPath + @"\Setting\AxisConfig.xml", axisName, param);
         }
+        public bool SaveAndLoadAxisConfig()
+        {
+            SaveAxis();
+            bool res = Function_MotionCard.LoadAxisConfig();
+
+            return res;
+        }
         #endregion
 
         #region [Motion Function]
@@ -147,7 +154,10 @@ namespace DeviceFunction
 
         public bool PTP_MoveTest()
         {
-            bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 100.0, "Abs", MOVE_VELOCITY_MODE.FAST);
+            SaveAxis();
+            Function_MotionCard.LoadAxisConfig();
+
+            bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 10.0, "Abs", MOVE_VELOCITY_MODE.FAST);
             return res;
         }
         #endregion
