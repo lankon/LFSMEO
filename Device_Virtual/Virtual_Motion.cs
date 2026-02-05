@@ -81,6 +81,11 @@ namespace Device_Virtual
         {
             throw new NotImplementedException();
         }
+
+        public int GetDeviceNo()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
     }

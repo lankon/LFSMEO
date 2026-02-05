@@ -27,6 +27,7 @@ namespace Device_APS
             public Int32 CardType;
             public Int32 MAX_DI_NUM;
             public Int32 MAX_DO_NUM;
+            public Int32 MAX_MOTION_DEV_NUM;
             public bool[,,] Input_Status;   //紀錄[LineNo,DevNo,Port]對應的Input訊號
             public bool[,,] Motion_Status;  //紀錄[LineNo,DevNo,State]對應的Motion訊號
         }
@@ -57,8 +58,6 @@ namespace Device_APS
 
         public bool Open()
         {
-            return true;
-
             if (Initial_Success == true)
                 return true;
 
@@ -96,8 +95,10 @@ namespace Device_APS
                 {
                     ret = APS168.APS_get_first_axisId(i, ref StartAxisID, ref TotalAxisNum);
 
+                    
                     APS_Param.MAX_DI_NUM = 24;
                     APS_Param.MAX_DO_NUM = 24;
+                    APS_Param.MAX_MOTION_DEV_NUM = TotalAxisNum;
                     APS_Param.Input_Status = new bool[5, 5, APS_Param.MAX_DI_NUM];
                     APS_Param.Motion_Status = new bool[5, TotalAxisNum, Enum.GetValues(typeof(APS_Motion_IO)).Length];
 
@@ -122,6 +123,11 @@ namespace Device_APS
                 return "PCIE_8332";
 
             return "None";
+        }
+
+        public int GetDeviceNo()
+        {
+            return APS_Param.MAX_MOTION_DEV_NUM;
         }
 
         #region IO Function
@@ -307,9 +313,9 @@ namespace Device_APS
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_MODE, AxisInfo.MODE);                   //Set home mode         
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION);               //Set home direction
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_CURVE, 0);                              // Set acceleration pattern (T-curve)
-            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_ACC, AxisInfo.HOME_ACC);                     // Set homing acceleration rate
-            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VM, AxisInfo.MAX_VELOCITY);             // Set homing maximum velocity. pulse/s
-            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VO, AxisInfo.HOEM_FIND_ORG_VELOCITY);   // Set homing velocitu to ORG pulse/s
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_ACC, acc);                              // Set homing acceleration rate
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VM, max_v);                             // Set homing maximum velocity. pulse/s
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VO, org_v);                             // Set homing velocitu to ORG pulse/s
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_EZA, 0);                                // Set homing
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_SHIFT, AxisInfo.HOME_SHIFT);            // Set homing shift position
             APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_POS, AxisInfo.HOME_POS);                // Set homing position

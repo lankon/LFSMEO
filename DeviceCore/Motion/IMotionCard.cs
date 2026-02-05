@@ -70,6 +70,7 @@ namespace DeviceCore
     {
         bool Open();
         string GetName();
+        int GetDeviceNo();
         bool SetMotionConfig(AXIS_INFO axisInfo);
         short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0);

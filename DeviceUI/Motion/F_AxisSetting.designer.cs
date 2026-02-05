@@ -67,6 +67,30 @@ namespace DeviceUI.Motion
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_AxisName = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_NormalSfac = new System.Windows.Forms.TextBox();
+            this.TxtBx_Normal_DEC = new System.Windows.Forms.TextBox();
+            this.TxtBx_Normal_ACC = new System.Windows.Forms.TextBox();
+            this.TxtBx_NormalInitVelocity = new System.Windows.Forms.TextBox();
+            this.TxtBx_NormalMaxVelocity = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_SlowSfac = new System.Windows.Forms.TextBox();
+            this.TxtBx_Slow_DEC = new System.Windows.Forms.TextBox();
+            this.TxtBx_Slow_ACC = new System.Windows.Forms.TextBox();
+            this.TxtBx_SlowInitVelocity = new System.Windows.Forms.TextBox();
+            this.TxtBx_SlowMaxVelocity = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.TxtBx_FastSfac = new System.Windows.Forms.TextBox();
@@ -97,30 +121,6 @@ namespace DeviceUI.Motion
             this.TxtBx_ORGVelocity = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.TxtBx_HomeAcc = new System.Windows.Forms.TextBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.TxtBx_SlowSfac = new System.Windows.Forms.TextBox();
-            this.TxtBx_Slow_DEC = new System.Windows.Forms.TextBox();
-            this.TxtBx_Slow_ACC = new System.Windows.Forms.TextBox();
-            this.TxtBx_SlowInitVelocity = new System.Windows.Forms.TextBox();
-            this.TxtBx_SlowMaxVelocity = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.TxtBx_NormalSfac = new System.Windows.Forms.TextBox();
-            this.TxtBx_Normal_DEC = new System.Windows.Forms.TextBox();
-            this.TxtBx_Normal_ACC = new System.Windows.Forms.TextBox();
-            this.TxtBx_NormalInitVelocity = new System.Windows.Forms.TextBox();
-            this.TxtBx_NormalMaxVelocity = new System.Windows.Forms.TextBox();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -130,15 +130,15 @@ namespace DeviceUI.Motion
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -546,6 +546,242 @@ namespace DeviceUI.Motion
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Speed";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.tableLayoutPanel7);
+            this.groupBox7.Location = new System.Drawing.Point(748, 6);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(364, 223);
+            this.groupBox7.TabIndex = 2;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Normal";
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.77465F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.22535F));
+            this.tableLayoutPanel7.Controls.Add(this.TxtBx_NormalSfac, 1, 4);
+            this.tableLayoutPanel7.Controls.Add(this.TxtBx_Normal_DEC, 1, 3);
+            this.tableLayoutPanel7.Controls.Add(this.TxtBx_Normal_ACC, 1, 2);
+            this.tableLayoutPanel7.Controls.Add(this.TxtBx_NormalInitVelocity, 1, 1);
+            this.tableLayoutPanel7.Controls.Add(this.TxtBx_NormalMaxVelocity, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label31, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label32, 0, 1);
+            this.tableLayoutPanel7.Controls.Add(this.label33, 0, 2);
+            this.tableLayoutPanel7.Controls.Add(this.label34, 0, 3);
+            this.tableLayoutPanel7.Controls.Add(this.label35, 0, 4);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 25);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 5;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(358, 195);
+            this.tableLayoutPanel7.TabIndex = 0;
+            // 
+            // TxtBx_NormalSfac
+            // 
+            this.TxtBx_NormalSfac.Location = new System.Drawing.Point(203, 158);
+            this.TxtBx_NormalSfac.Name = "TxtBx_NormalSfac";
+            this.TxtBx_NormalSfac.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_NormalSfac.TabIndex = 22;
+            // 
+            // TxtBx_Normal_DEC
+            // 
+            this.TxtBx_Normal_DEC.Location = new System.Drawing.Point(203, 120);
+            this.TxtBx_Normal_DEC.Name = "TxtBx_Normal_DEC";
+            this.TxtBx_Normal_DEC.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_Normal_DEC.TabIndex = 21;
+            // 
+            // TxtBx_Normal_ACC
+            // 
+            this.TxtBx_Normal_ACC.Location = new System.Drawing.Point(203, 82);
+            this.TxtBx_Normal_ACC.Name = "TxtBx_Normal_ACC";
+            this.TxtBx_Normal_ACC.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_Normal_ACC.TabIndex = 20;
+            // 
+            // TxtBx_NormalInitVelocity
+            // 
+            this.TxtBx_NormalInitVelocity.Location = new System.Drawing.Point(203, 44);
+            this.TxtBx_NormalInitVelocity.Name = "TxtBx_NormalInitVelocity";
+            this.TxtBx_NormalInitVelocity.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_NormalInitVelocity.TabIndex = 19;
+            // 
+            // TxtBx_NormalMaxVelocity
+            // 
+            this.TxtBx_NormalMaxVelocity.Location = new System.Drawing.Point(203, 6);
+            this.TxtBx_NormalMaxVelocity.Name = "TxtBx_NormalMaxVelocity";
+            this.TxtBx_NormalMaxVelocity.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_NormalMaxVelocity.TabIndex = 18;
+            // 
+            // label31
+            // 
+            this.label31.Location = new System.Drawing.Point(6, 3);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(185, 35);
+            this.label31.TabIndex = 3;
+            this.label31.Text = "Speed";
+            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label32
+            // 
+            this.label32.Location = new System.Drawing.Point(6, 41);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(185, 35);
+            this.label32.TabIndex = 4;
+            this.label32.Text = "Init Speed";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label33
+            // 
+            this.label33.Location = new System.Drawing.Point(6, 79);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(185, 35);
+            this.label33.TabIndex = 15;
+            this.label33.Text = "Acceleration(mm/s^2)";
+            this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label34
+            // 
+            this.label34.Location = new System.Drawing.Point(6, 117);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(188, 35);
+            this.label34.TabIndex = 16;
+            this.label34.Text = "deceleration(mm/s^2)";
+            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label35
+            // 
+            this.label35.Location = new System.Drawing.Point(6, 155);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(188, 35);
+            this.label35.TabIndex = 17;
+            this.label35.Text = "Sfac";
+            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.tableLayoutPanel6);
+            this.groupBox6.Location = new System.Drawing.Point(378, 6);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(364, 223);
+            this.groupBox6.TabIndex = 1;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Slow";
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel6.ColumnCount = 2;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.77465F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.22535F));
+            this.tableLayoutPanel6.Controls.Add(this.TxtBx_SlowSfac, 1, 4);
+            this.tableLayoutPanel6.Controls.Add(this.TxtBx_Slow_DEC, 1, 3);
+            this.tableLayoutPanel6.Controls.Add(this.TxtBx_Slow_ACC, 1, 2);
+            this.tableLayoutPanel6.Controls.Add(this.TxtBx_SlowInitVelocity, 1, 1);
+            this.tableLayoutPanel6.Controls.Add(this.TxtBx_SlowMaxVelocity, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label22, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label27, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.label28, 0, 2);
+            this.tableLayoutPanel6.Controls.Add(this.label29, 0, 3);
+            this.tableLayoutPanel6.Controls.Add(this.label30, 0, 4);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 25);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 5;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(358, 195);
+            this.tableLayoutPanel6.TabIndex = 0;
+            // 
+            // TxtBx_SlowSfac
+            // 
+            this.TxtBx_SlowSfac.Location = new System.Drawing.Point(203, 158);
+            this.TxtBx_SlowSfac.Name = "TxtBx_SlowSfac";
+            this.TxtBx_SlowSfac.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_SlowSfac.TabIndex = 22;
+            // 
+            // TxtBx_Slow_DEC
+            // 
+            this.TxtBx_Slow_DEC.Location = new System.Drawing.Point(203, 120);
+            this.TxtBx_Slow_DEC.Name = "TxtBx_Slow_DEC";
+            this.TxtBx_Slow_DEC.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_Slow_DEC.TabIndex = 21;
+            // 
+            // TxtBx_Slow_ACC
+            // 
+            this.TxtBx_Slow_ACC.Location = new System.Drawing.Point(203, 82);
+            this.TxtBx_Slow_ACC.Name = "TxtBx_Slow_ACC";
+            this.TxtBx_Slow_ACC.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_Slow_ACC.TabIndex = 20;
+            // 
+            // TxtBx_SlowInitVelocity
+            // 
+            this.TxtBx_SlowInitVelocity.Location = new System.Drawing.Point(203, 44);
+            this.TxtBx_SlowInitVelocity.Name = "TxtBx_SlowInitVelocity";
+            this.TxtBx_SlowInitVelocity.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_SlowInitVelocity.TabIndex = 19;
+            // 
+            // TxtBx_SlowMaxVelocity
+            // 
+            this.TxtBx_SlowMaxVelocity.Location = new System.Drawing.Point(203, 6);
+            this.TxtBx_SlowMaxVelocity.Name = "TxtBx_SlowMaxVelocity";
+            this.TxtBx_SlowMaxVelocity.Size = new System.Drawing.Size(149, 29);
+            this.TxtBx_SlowMaxVelocity.TabIndex = 18;
+            // 
+            // label22
+            // 
+            this.label22.Location = new System.Drawing.Point(6, 3);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(185, 35);
+            this.label22.TabIndex = 3;
+            this.label22.Text = "Speed";
+            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label27
+            // 
+            this.label27.Location = new System.Drawing.Point(6, 41);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(185, 35);
+            this.label27.TabIndex = 4;
+            this.label27.Text = "Init Speed";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label28
+            // 
+            this.label28.Location = new System.Drawing.Point(6, 79);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(185, 35);
+            this.label28.TabIndex = 15;
+            this.label28.Text = "Acceleration(mm/s^2)";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label29
+            // 
+            this.label29.Location = new System.Drawing.Point(6, 117);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(188, 35);
+            this.label29.TabIndex = 16;
+            this.label29.Text = "deceleration(mm/s^2)";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label30
+            // 
+            this.label30.Location = new System.Drawing.Point(6, 155);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(188, 35);
+            this.label30.TabIndex = 17;
+            this.label30.Text = "Sfac";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.tableLayoutPanel5);
@@ -756,8 +992,8 @@ namespace DeviceUI.Motion
             // 
             this.Cmbx_HomeDirection.FormattingEnabled = true;
             this.Cmbx_HomeDirection.Items.AddRange(new object[] {
-            "MEL",
-            "PEL"});
+            "Positive",
+            "Negative"});
             this.Cmbx_HomeDirection.Location = new System.Drawing.Point(226, 44);
             this.Cmbx_HomeDirection.Name = "Cmbx_HomeDirection";
             this.Cmbx_HomeDirection.Size = new System.Drawing.Size(136, 28);
@@ -861,242 +1097,6 @@ namespace DeviceUI.Motion
             this.TxtBx_HomeAcc.Size = new System.Drawing.Size(136, 29);
             this.TxtBx_HomeAcc.TabIndex = 15;
             // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.tableLayoutPanel6);
-            this.groupBox6.Location = new System.Drawing.Point(378, 6);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(364, 223);
-            this.groupBox6.TabIndex = 1;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Slow";
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.77465F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.22535F));
-            this.tableLayoutPanel6.Controls.Add(this.TxtBx_SlowSfac, 1, 4);
-            this.tableLayoutPanel6.Controls.Add(this.TxtBx_Slow_DEC, 1, 3);
-            this.tableLayoutPanel6.Controls.Add(this.TxtBx_Slow_ACC, 1, 2);
-            this.tableLayoutPanel6.Controls.Add(this.TxtBx_SlowInitVelocity, 1, 1);
-            this.tableLayoutPanel6.Controls.Add(this.TxtBx_SlowMaxVelocity, 1, 0);
-            this.tableLayoutPanel6.Controls.Add(this.label22, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.label27, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.label28, 0, 2);
-            this.tableLayoutPanel6.Controls.Add(this.label29, 0, 3);
-            this.tableLayoutPanel6.Controls.Add(this.label30, 0, 4);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 25);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 5;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(358, 195);
-            this.tableLayoutPanel6.TabIndex = 0;
-            // 
-            // TxtBx_SlowSfac
-            // 
-            this.TxtBx_SlowSfac.Location = new System.Drawing.Point(203, 158);
-            this.TxtBx_SlowSfac.Name = "TxtBx_SlowSfac";
-            this.TxtBx_SlowSfac.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_SlowSfac.TabIndex = 22;
-            // 
-            // TxtBx_Slow_DEC
-            // 
-            this.TxtBx_Slow_DEC.Location = new System.Drawing.Point(203, 120);
-            this.TxtBx_Slow_DEC.Name = "TxtBx_Slow_DEC";
-            this.TxtBx_Slow_DEC.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_Slow_DEC.TabIndex = 21;
-            // 
-            // TxtBx_Slow_ACC
-            // 
-            this.TxtBx_Slow_ACC.Location = new System.Drawing.Point(203, 82);
-            this.TxtBx_Slow_ACC.Name = "TxtBx_Slow_ACC";
-            this.TxtBx_Slow_ACC.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_Slow_ACC.TabIndex = 20;
-            // 
-            // TxtBx_SlowInitVelocity
-            // 
-            this.TxtBx_SlowInitVelocity.Location = new System.Drawing.Point(203, 44);
-            this.TxtBx_SlowInitVelocity.Name = "TxtBx_SlowInitVelocity";
-            this.TxtBx_SlowInitVelocity.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_SlowInitVelocity.TabIndex = 19;
-            // 
-            // TxtBx_SlowMaxVelocity
-            // 
-            this.TxtBx_SlowMaxVelocity.Location = new System.Drawing.Point(203, 6);
-            this.TxtBx_SlowMaxVelocity.Name = "TxtBx_SlowMaxVelocity";
-            this.TxtBx_SlowMaxVelocity.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_SlowMaxVelocity.TabIndex = 18;
-            // 
-            // label22
-            // 
-            this.label22.Location = new System.Drawing.Point(6, 3);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(185, 35);
-            this.label22.TabIndex = 3;
-            this.label22.Text = "Speed";
-            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label27
-            // 
-            this.label27.Location = new System.Drawing.Point(6, 41);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(185, 35);
-            this.label27.TabIndex = 4;
-            this.label27.Text = "Init Speed";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label28
-            // 
-            this.label28.Location = new System.Drawing.Point(6, 79);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(185, 35);
-            this.label28.TabIndex = 15;
-            this.label28.Text = "Acceleration(mm/s^2)";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label29
-            // 
-            this.label29.Location = new System.Drawing.Point(6, 117);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(188, 35);
-            this.label29.TabIndex = 16;
-            this.label29.Text = "deceleration(mm/s^2)";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label30
-            // 
-            this.label30.Location = new System.Drawing.Point(6, 155);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(188, 35);
-            this.label30.TabIndex = 17;
-            this.label30.Text = "Sfac";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.tableLayoutPanel7);
-            this.groupBox7.Location = new System.Drawing.Point(748, 6);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(364, 223);
-            this.groupBox7.TabIndex = 2;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Normal";
-            // 
-            // tableLayoutPanel7
-            // 
-            this.tableLayoutPanel7.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel7.ColumnCount = 2;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.77465F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.22535F));
-            this.tableLayoutPanel7.Controls.Add(this.TxtBx_NormalSfac, 1, 4);
-            this.tableLayoutPanel7.Controls.Add(this.TxtBx_Normal_DEC, 1, 3);
-            this.tableLayoutPanel7.Controls.Add(this.TxtBx_Normal_ACC, 1, 2);
-            this.tableLayoutPanel7.Controls.Add(this.TxtBx_NormalInitVelocity, 1, 1);
-            this.tableLayoutPanel7.Controls.Add(this.TxtBx_NormalMaxVelocity, 1, 0);
-            this.tableLayoutPanel7.Controls.Add(this.label31, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.label32, 0, 1);
-            this.tableLayoutPanel7.Controls.Add(this.label33, 0, 2);
-            this.tableLayoutPanel7.Controls.Add(this.label34, 0, 3);
-            this.tableLayoutPanel7.Controls.Add(this.label35, 0, 4);
-            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 25);
-            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 5;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(358, 195);
-            this.tableLayoutPanel7.TabIndex = 0;
-            // 
-            // TxtBx_NormalSfac
-            // 
-            this.TxtBx_NormalSfac.Location = new System.Drawing.Point(203, 158);
-            this.TxtBx_NormalSfac.Name = "TxtBx_NormalSfac";
-            this.TxtBx_NormalSfac.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_NormalSfac.TabIndex = 22;
-            // 
-            // TxtBx_Normal_DEC
-            // 
-            this.TxtBx_Normal_DEC.Location = new System.Drawing.Point(203, 120);
-            this.TxtBx_Normal_DEC.Name = "TxtBx_Normal_DEC";
-            this.TxtBx_Normal_DEC.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_Normal_DEC.TabIndex = 21;
-            // 
-            // TxtBx_Normal_ACC
-            // 
-            this.TxtBx_Normal_ACC.Location = new System.Drawing.Point(203, 82);
-            this.TxtBx_Normal_ACC.Name = "TxtBx_Normal_ACC";
-            this.TxtBx_Normal_ACC.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_Normal_ACC.TabIndex = 20;
-            // 
-            // TxtBx_NormalInitVelocity
-            // 
-            this.TxtBx_NormalInitVelocity.Location = new System.Drawing.Point(203, 44);
-            this.TxtBx_NormalInitVelocity.Name = "TxtBx_NormalInitVelocity";
-            this.TxtBx_NormalInitVelocity.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_NormalInitVelocity.TabIndex = 19;
-            // 
-            // TxtBx_NormalMaxVelocity
-            // 
-            this.TxtBx_NormalMaxVelocity.Location = new System.Drawing.Point(203, 6);
-            this.TxtBx_NormalMaxVelocity.Name = "TxtBx_NormalMaxVelocity";
-            this.TxtBx_NormalMaxVelocity.Size = new System.Drawing.Size(149, 29);
-            this.TxtBx_NormalMaxVelocity.TabIndex = 18;
-            // 
-            // label31
-            // 
-            this.label31.Location = new System.Drawing.Point(6, 3);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(185, 35);
-            this.label31.TabIndex = 3;
-            this.label31.Text = "Speed";
-            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label32
-            // 
-            this.label32.Location = new System.Drawing.Point(6, 41);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(185, 35);
-            this.label32.TabIndex = 4;
-            this.label32.Text = "Init Speed";
-            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label33
-            // 
-            this.label33.Location = new System.Drawing.Point(6, 79);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(185, 35);
-            this.label33.TabIndex = 15;
-            this.label33.Text = "Acceleration(mm/s^2)";
-            this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label34
-            // 
-            this.label34.Location = new System.Drawing.Point(6, 117);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(188, 35);
-            this.label34.TabIndex = 16;
-            this.label34.Text = "deceleration(mm/s^2)";
-            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label35
-            // 
-            this.label35.Location = new System.Drawing.Point(6, 155);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(188, 35);
-            this.label35.TabIndex = 17;
-            this.label35.Text = "Sfac";
-            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // F_AxisSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1118,6 +1118,12 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
@@ -1125,12 +1131,6 @@ namespace DeviceUI.Motion
             this.groupBox3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel6.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel7.PerformLayout();
             this.ResumeLayout(false);
 
         }

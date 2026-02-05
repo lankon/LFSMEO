@@ -52,25 +52,20 @@ namespace DeviceFunction
         {
             while (true)
             {
+                
+                
+                
                 //Thread持續讀取Input訊號
                 for (int k = 0; k < DML.Count; k++)
                 {
-                    //if (DML[k].GetName() == "MN200" || DML[k].GetName() == "PCIE_8332")
-                    //{
-                    //    List<byte> LineNo = DML[k].Get_Motion_LineNo();
-                    //    List<byte> DevNo = DML[k].Get_Motion_DevNo();
+                    if (DML[k].GetName() != "AMP_204C")
+                        continue;
 
-                    //    for (byte i = 0; i < LineNo.Count; i++)
-                    //    {
-                    //        DML[k].UpdateMotionStatus(lineNo: LineNo[i], devNo: DevNo[i]);
-                    //    }
-                    //}
-                    if (DML[k].GetName() == "PCIE_8332")
+                    byte DevNo = (byte)DML[k].GetDeviceNo();
+
+                    for(byte i=0;i<DevNo;i++)
                     {
-                        //for (byte i = 0; i < 24; i++)
-                        {
-                            DML[k].UpdateMotionStatus(devNo: 8);
-                        }
+                        DML[k].UpdateMotionStatus(devNo: i);
                     }
                 }
 
@@ -142,6 +137,13 @@ namespace DeviceFunction
             {
                 if (AchieveLimit(axis))
                     return true;
+
+                byte line_no = (byte)DML_INFO[axis].LINE_NO;
+                byte dev_no = (byte)DML_INFO[axis].DEV_NO;
+                if (DML[DML2Axis[axis]].GetMotionStatus(lineNo: line_no,devNo: dev_no,state:(int)MOTION_IO.ALM))
+                {
+                    return false;
+                }
 
                 await Task.Delay(interval);
                 elapsed += interval;
@@ -401,6 +403,7 @@ namespace DeviceFunction
             DML_Homing[axis] = true;
 
             DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
+            DML[DML2Axis[axis]].Servo_ONOff(lineNo: line, devNo: dev_no, flag: true);
             DML[DML2Axis[axis]].GoHome(lineNo:line, devNo:dev_no);
 
             bool ok = await WaitAchieveLimitAsync(axis, 15000);
