@@ -299,10 +299,10 @@ namespace Device_APS
         //    return true;
         //}
 
-        public bool GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
+        public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
             if (Initial_Success == false)
-                return false;
+                return -1;
 
             byte axis_id = devNo;
 
@@ -322,10 +322,7 @@ namespace Device_APS
 
             int res = APS168.APS_home_move(axis_id);
 
-            if (res == 0)
-                return true;
-            else
-                return false;
+            return res;
         }
 
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)

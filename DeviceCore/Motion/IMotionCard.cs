@@ -77,7 +77,7 @@ namespace DeviceCore
         bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         bool Servo_ONOff(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, bool flag = false);
         //bool SetGoHomeParam(AXIS_INFO hOME_PARAM);
-        bool GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
+        int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0);
         int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start,

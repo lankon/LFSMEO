@@ -45,6 +45,15 @@ namespace DeviceFunction
             AXIS_IY,
             AXIS_IZ,
         }
+        public enum WORK
+        {
+            INITIAL,
+            SERVO_ON,
+            GO_HOME_FIRST,
+            GO_HOME_FIRST_SHIFT,
+            GO_HOME_SECOND,
+            GO_HOME_SECOND_SHIFT,
+        }
         #endregion
 
         #region Threading
@@ -93,7 +102,7 @@ namespace DeviceFunction
             byte line = (byte)DML_INFO[axis].LINE_NO;
             byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 
-            DML[DML2Axis[axis]].UpdateMotionStatus(lineNo: line, devNo: dev_no);
+            //DML[DML2Axis[axis]].UpdateMotionStatus(lineNo: line, devNo: dev_no);  //已經由Thread更新
 
             bool PEL = DML[DML2Axis[axis]].GetMotionStatus(lineNo: line, devNo: dev_no, state: (int)MOTION_IO.PEL);
             bool MEL = DML[DML2Axis[axis]].GetMotionStatus(lineNo: line, devNo: dev_no, state: (int)MOTION_IO.MEL);
@@ -153,10 +162,70 @@ namespace DeviceFunction
         }
         private async Task<bool> GoHome_FSM(int axis, int timeoutMs = 60000 * 5)
         {
+            int elapsed = 0;
+            int res = 0;
+            const int interval = 20;
+            long delay = 0;
+
+            WORK state = WORK.INITIAL;
+
+            while (elapsed < timeoutMs)
+            {
+                switch(state)
+                {
+                    case WORK.INITIAL:
+                        state = WORK.SERVO_ON;
+                        break;
+                    case WORK.SERVO_ON:
+                        {
+                            if (SetServo(axis, true))
+                                state = WORK.GO_HOME_FIRST;
+                            else
+                                return false;
+                        }
+                        break;
+                    case WORK.GO_HOME_FIRST:
+                        {
+                            res = DML[DML2Axis[axis]].GoHome(lineNo: (byte)DML_INFO[axis].LINE_NO, devNo: (byte)DML_INFO[axis].DEV_NO);
+                            
+                            if (res != 0)
+                                return false;
+                            else
+                                state = WORK.GO_HOME_FIRST_SHIFT;
+                        }
+                        break;
+                    case WORK.GO_HOME_FIRST_SHIFT:
+                        {
+                            if (!AchieveLimit(axis))
+                            {
+                                Tool.ResetTimeCount(out delay);
+                                break;
+                            }
+                                
+                            if(Tool.CheckTimeOverSec(delay, 1))
+                            {
+                                res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_SHIFT,
+                                                                            DML_INFO[axis].SLOW_MAX_SPEED,
+                                                                            DML_INFO[axis].SLOW_INIT_SPEED,
+                                                                            DML_INFO[axis].SLOW_ACC,
+                                                                            DML_INFO[axis].SLOW_Sfac,
+                                                                            DML_INFO[axis].SLOW_DEC, 0);
+                                
+                                if(res != 0)
+                                    return false;
+                                else
+                                    state = WORK.GO_HOME_SECOND;
+                            }
+                        }
+                        break;
+                }
+
+                await Task.Delay(interval);
+                elapsed += interval;
+            }
 
 
-
-            return true;
+                return true;
         }
         private void LoadMotionConfig(string path)
         {
@@ -406,9 +475,10 @@ namespace DeviceFunction
             DML[DML2Axis[axis]].Servo_ONOff(lineNo: line, devNo: dev_no, flag: true);
             DML[DML2Axis[axis]].GoHome(lineNo:line, devNo:dev_no);
 
-            bool ok = await WaitAchieveLimitAsync(axis, 15000);
+            //bool ok = await WaitAchieveLimitAsync(axis, 15000);
+            bool ok = await GoHome_FSM(axis, 15000);
 
-            if(!ok)
+            if (!ok)
             {
                 Tool.SaveLogToFile($"軸 = {axis}({DML_INFO[axis].AXIS_NANE}) 初始化未完成", level: "ERR");
                 DML_Homing[axis] = false;

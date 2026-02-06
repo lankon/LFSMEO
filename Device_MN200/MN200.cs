@@ -207,7 +207,7 @@ namespace Device_MN200
             }
         }
         
-        public bool GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
+        public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
             throw new NotImplementedException();
         }
