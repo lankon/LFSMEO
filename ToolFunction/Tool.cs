@@ -200,7 +200,12 @@ namespace ToolFunction
 
             return (int)(us * unit);
         }
-        public static bool CheckTimeOverSec(long tick, int time)
+
+        public static int GetCurrentTickCount()
+        {
+            return Environment.TickCount;
+        }
+        public static bool CheckTimeOverSec(int tick, int time)
         {
             var time_count = Environment.TickCount - tick;
             bool res = time_count > time * 1000;

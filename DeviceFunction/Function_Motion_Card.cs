@@ -61,9 +61,6 @@ namespace DeviceFunction
         {
             while (true)
             {
-                
-                
-                
                 //Thread持續讀取Input訊號
                 for (int k = 0; k < DML.Count; k++)
                 {
@@ -108,6 +105,15 @@ namespace DeviceFunction
             bool MEL = DML[DML2Axis[axis]].GetMotionStatus(lineNo: line, devNo: dev_no, state: (int)MOTION_IO.MEL);
 
             return PEL || MEL;
+        }
+        private bool AlarmStatus(int axis)
+        {
+            byte line = (byte)DML_INFO[axis].LINE_NO;
+            byte dev_no = (byte)DML_INFO[axis].DEV_NO;
+
+            bool ALM = DML[DML2Axis[axis]].GetMotionStatus(lineNo: line, devNo: dev_no, state: (int)MOTION_IO.ALM);
+
+            return ALM;
         }
         private bool SetOrigin(int axis, double pos)
         {
@@ -164,17 +170,23 @@ namespace DeviceFunction
         {
             int elapsed = 0;
             int res = 0;
+            int delay = 0;
             const int interval = 20;
-            long delay = 0;
 
             WORK state = WORK.INITIAL;
 
             while (elapsed < timeoutMs)
             {
+                if (AlarmStatus(axis) == true)
+                    return false;
+                
                 switch(state)
                 {
                     case WORK.INITIAL:
-                        state = WORK.SERVO_ON;
+                        {
+                            DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
+                            state = WORK.SERVO_ON;
+                        }
                         break;
                     case WORK.SERVO_ON:
                         {
@@ -198,7 +210,7 @@ namespace DeviceFunction
                         {
                             if (!AchieveLimit(axis))
                             {
-                                Tool.ResetTimeCount(out delay);
+                                delay = Tool.GetCurrentTickCount();
                                 break;
                             }
                                 
@@ -210,11 +222,11 @@ namespace DeviceFunction
                                                                             DML_INFO[axis].SLOW_ACC,
                                                                             DML_INFO[axis].SLOW_Sfac,
                                                                             DML_INFO[axis].SLOW_DEC, 0);
-                                
-                                if(res != 0)
+
+                                if (res != 0)
                                     return false;
                                 else
-                                    state = WORK.GO_HOME_SECOND;
+                                    return true;
                             }
                         }
                         break;
@@ -224,8 +236,7 @@ namespace DeviceFunction
                 elapsed += interval;
             }
 
-
-                return true;
+            return true;
         }
         private void LoadMotionConfig(string path)
         {
@@ -284,6 +295,10 @@ namespace DeviceFunction
             else if (item == eF_AxisSetting.TxtBx_AxisPitch.ToString())
                 info.PITCH = Tool.StringToDouble(value);
 
+            //[Software Configuration]
+            else if (item == eF_AxisSetting.TxtBx_AxisName.ToString())
+                info.AXIS_NANE = value;
+
             //[Speed Configuration]
             else if (item == eF_AxisSetting.TxtBx_FastMaxVelocity.ToString())
                 info.FAST_MAX_SPEED = Tool.StringToDouble(value);
@@ -315,10 +330,6 @@ namespace DeviceFunction
                 info.NORMAL_DEC = Tool.StringToDouble(value);
             else if (item == eF_AxisSetting.TxtBx_NormalSfac.ToString())
                 info.NORMAL_Sfac = Tool.StringToDouble(value);
-
-            //[Software Configuration]
-            else if (item == eF_AxisSetting.TxtBx_AxisName.ToString())
-                info.AXIS_NANE = value;
 
             //[Home Configuration]
             else if (item == eF_AxisSetting.Cmbx_HomeMode.ToString())
@@ -449,38 +460,29 @@ namespace DeviceFunction
             return res;
         }
 
-
         //[Home Function]
         public async Task<bool> GoHome(int axis)
         {
             if (DML_INFO[axis].AXIS_USE == 0)
             {
-                Tool.SaveLogToFile($"軸 = {axis}({DML_INFO[axis].AXIS_NANE}) 未使用，無法執行初始化", level:"WRN");
+                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 未使用，無法執行初始化", level:"WRN");
                 return false;
             }
             
             if(DML_Homing[axis] == true)
             {
-                Tool.SaveLogToFile($"軸 = {axis}({DML_INFO[axis].AXIS_NANE}) 正在執行初始化，請勿重複執行", level: "WRN");
+                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 正在執行初始化，請勿重複執行", level: "WRN");
                 return false;
             }
-
-            byte line = (byte)DML_INFO[axis].LINE_NO;
-            byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 
             DML_Home_Complete[axis] = false;
             DML_Homing[axis] = true;
 
-            DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
-            DML[DML2Axis[axis]].Servo_ONOff(lineNo: line, devNo: dev_no, flag: true);
-            DML[DML2Axis[axis]].GoHome(lineNo:line, devNo:dev_no);
-
-            //bool ok = await WaitAchieveLimitAsync(axis, 15000);
             bool ok = await GoHome_FSM(axis, 15000);
 
             if (!ok)
             {
-                Tool.SaveLogToFile($"軸 = {axis}({DML_INFO[axis].AXIS_NANE}) 初始化未完成", level: "ERR");
+                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 初始化未完成", level: "ERR");
                 DML_Homing[axis] = false;
                 return false;
             }
@@ -604,6 +606,7 @@ namespace DeviceFunction
         {
             return DML_INFO.AsReadOnly();
         }
+
 
         public bool Jog_Start(int axis, string direction, MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL)
         {

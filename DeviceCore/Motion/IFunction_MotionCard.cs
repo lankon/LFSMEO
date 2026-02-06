@@ -41,5 +41,8 @@ namespace DeviceCore
         void SaveAxisConfig(string filePath, string axisName, Dictionary<string, string> parameters);
         bool LoadAxisConfig();
         IReadOnlyList<AXIS_INFO> GetAxisConfig();
+
+        //[Status]
+        
     }
 }

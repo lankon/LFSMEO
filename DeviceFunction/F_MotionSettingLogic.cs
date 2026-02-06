@@ -106,7 +106,7 @@ namespace DeviceFunction
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisPitch, config[axis].PITCH.ToString());
 
             //[Software Configuration]
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisName, config[axis].AXIS_NANE.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisName, config[axis].AXIS_NANE);
 
             //[Speed Config]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastMaxVelocity, config[axis].FAST_MAX_SPEED.ToString());

@@ -367,6 +367,7 @@ namespace Device_APS
             velocity_max    = TransferToPulse(velocity_max);
             Tacc            = TransferToPulse(Tacc);
             Tdec            = TransferToPulse(Tdec);
+            position        = TransferToPulse(position);
 
             ret = APS168.APS_ptp_all(axis,
                                  (Int32)APS_Define.OPT_ABSOLUTE,
@@ -389,6 +390,12 @@ namespace Device_APS
 
             Int32 ret = -1;
             ASYNCALL p = new ASYNCALL();
+
+            velocity_start = TransferToPulse(velocity_start);
+            velocity_max = TransferToPulse(velocity_max);
+            Tacc = TransferToPulse(Tacc);
+            Tdec = TransferToPulse(Tdec);
+            position = TransferToPulse(position);
 
             ret = APS168.APS_ptp_all(axis,
                      (Int32)APS_Define.OPT_RELATIVE,
