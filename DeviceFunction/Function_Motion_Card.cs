@@ -53,6 +53,7 @@ namespace DeviceFunction
             GO_HOME_FIRST_SHIFT,
             GO_HOME_SECOND,
             GO_HOME_SECOND_SHIFT,
+            WAIT_GO_HOME_SECOND_SHIFT,
         }
         #endregion
 
@@ -171,6 +172,7 @@ namespace DeviceFunction
             int elapsed = 0;
             int res = 0;
             int delay = 0;
+            int enter_cpunt = 0;
             const int interval = 20;
 
             WORK state = WORK.INITIAL;
@@ -208,13 +210,14 @@ namespace DeviceFunction
                         break;
                     case WORK.GO_HOME_FIRST_SHIFT:
                         {
-                            if (!AchieveLimit(axis))
+                            if (!AchieveLimit(axis) || enter_cpunt == 0)
                             {
                                 delay = Tool.GetCurrentTickCount();
+                                enter_cpunt++;
                                 break;
                             }
                                 
-                            if(Tool.CheckTimeOverSec(delay, 1))
+                            if(Tool.CheckTimeOverSec(delay, 1) && Get_Motion_Complete(axis) ==true)
                             {
                                 res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_1ST,
                                                                             DML_INFO[axis].SLOW_MAX_SPEED,
@@ -227,13 +230,18 @@ namespace DeviceFunction
                                 if (res != 0)
                                     return false;
                                 else
-                                    state = WORK.GO_HOME_SECOND_SHIFT;
+                                    state = WORK.GO_HOME_SECOND;
                             }
                         }
                         break;
                     case WORK.GO_HOME_SECOND:
                         {
+                            if (Get_Motion_Complete(axis) == false)
+                                break;
+                            
                             res = DML[DML2Axis[axis]].GoHome(lineNo: (byte)DML_INFO[axis].LINE_NO, devNo: (byte)DML_INFO[axis].DEV_NO, count:2);
+
+                            enter_cpunt = 0;
 
                             if (res != 0)
                                 return false;
@@ -243,16 +251,17 @@ namespace DeviceFunction
                         break;
                     case WORK.GO_HOME_SECOND_SHIFT:
                         {
-                            if (!AchieveLimit(axis))
+                            if (!AchieveLimit(axis) || enter_cpunt == 0)
                             {
                                 delay = Tool.GetCurrentTickCount();
+                                enter_cpunt++;
                                 break;
                             }
 
-                            if (Tool.CheckTimeOverSec(delay, 1))
+                            if (Tool.CheckTimeOverSec(delay, 1) && Get_Motion_Complete(axis) == true)
                             {
                                 res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_2ND,
-                                                                            DML_INFO[axis].MAX_VELOCITY_2ND,
+                                                                            DML_INFO[axis].HOME_OFFSET_VELOCITY_2ND,
                                                                             DML_INFO[axis].FAST_INIT_SPEED,
                                                                             DML_INFO[axis].HOME_ACC_2ND,
                                                                             DML_INFO[axis].FAST_Sfac,
@@ -262,8 +271,16 @@ namespace DeviceFunction
                                 if (res != 0)
                                     return false;
                                 else
-                                    return true;
+                                    state = WORK.WAIT_GO_HOME_SECOND_SHIFT;
                             }
+                        }
+                        break;
+                    case WORK.WAIT_GO_HOME_SECOND_SHIFT:
+                        {
+                            if (Get_Motion_Complete(axis) == false)
+                                break;
+
+                            return true;
                         }
                         break;
                 }
