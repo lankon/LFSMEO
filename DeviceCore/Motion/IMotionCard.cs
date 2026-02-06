@@ -47,13 +47,17 @@ namespace DeviceCore
         public double NORMAL_Sfac;          //NormalSfac
 
         //[Home Configuration]
-        public int MODE;            //歸Home模式
-        public int DIRECTION;       //方向
-        public int HOME_POS;        //原點位置
-        public int HOME_SHIFT;      //到原點後位移距離
-        public int MAX_VELOCITY;    //最大速度
-        public int HOEM_FIND_ORG_VELOCITY;  //搜尋原點速度
-        public int HOME_ACC;        //Home加速度
+        public int DIRECTION;           //歸Home方向
+        public double HOME_POS;         //Home位置
+        public double MAX_VELOCITY_1ST;    //最大速度
+        public double HOME_ACC_1ST;        //Home加速度
+        public double HOME_DEC_1ST;        //Home減速度
+        public double HOME_OFFSET_1ST;     //到原點後位移距離
+        public double MAX_VELOCITY_2ND;    //最大速度
+        public double HOME_ACC_2ND;        //Home加速度
+        public double HOME_DEC_2ND;        //Home減速度
+        public double HOME_OFFSET_VELOCITY_2ND;        //到原點後位移速度
+        public double HOME_OFFSET_2ND;     //到原點後位移距離
     }
     public enum MOTION_IO
     {
@@ -77,7 +81,7 @@ namespace DeviceCore
         bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         bool Servo_ONOff(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, bool flag = false);
         //bool SetGoHomeParam(AXIS_INFO hOME_PARAM);
-        int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
+        int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1);
         double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0);
         int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start,

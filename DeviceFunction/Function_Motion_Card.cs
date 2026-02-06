@@ -216,12 +216,48 @@ namespace DeviceFunction
                                 
                             if(Tool.CheckTimeOverSec(delay, 1))
                             {
-                                res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_SHIFT,
+                                res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_1ST,
                                                                             DML_INFO[axis].SLOW_MAX_SPEED,
                                                                             DML_INFO[axis].SLOW_INIT_SPEED,
                                                                             DML_INFO[axis].SLOW_ACC,
                                                                             DML_INFO[axis].SLOW_Sfac,
-                                                                            DML_INFO[axis].SLOW_DEC, 0);
+                                                                            DML_INFO[axis].SLOW_DEC,
+                                                                            DML_INFO[axis].SLOW_Sfac);
+
+                                if (res != 0)
+                                    return false;
+                                else
+                                    state = WORK.GO_HOME_SECOND_SHIFT;
+                            }
+                        }
+                        break;
+                    case WORK.GO_HOME_SECOND:
+                        {
+                            res = DML[DML2Axis[axis]].GoHome(lineNo: (byte)DML_INFO[axis].LINE_NO, devNo: (byte)DML_INFO[axis].DEV_NO, count:2);
+
+                            if (res != 0)
+                                return false;
+                            else
+                                state = WORK.GO_HOME_SECOND_SHIFT;
+                        }
+                        break;
+                    case WORK.GO_HOME_SECOND_SHIFT:
+                        {
+                            if (!AchieveLimit(axis))
+                            {
+                                delay = Tool.GetCurrentTickCount();
+                                break;
+                            }
+
+                            if (Tool.CheckTimeOverSec(delay, 1))
+                            {
+                                res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_2ND,
+                                                                            DML_INFO[axis].MAX_VELOCITY_2ND,
+                                                                            DML_INFO[axis].FAST_INIT_SPEED,
+                                                                            DML_INFO[axis].HOME_ACC_2ND,
+                                                                            DML_INFO[axis].FAST_Sfac,
+                                                                            DML_INFO[axis].HOME_DEC_2ND,
+                                                                            DML_INFO[axis].FAST_Sfac);
 
                                 if (res != 0)
                                     return false;
@@ -332,20 +368,28 @@ namespace DeviceFunction
                 info.NORMAL_Sfac = Tool.StringToDouble(value);
 
             //[Home Configuration]
-            else if (item == eF_AxisSetting.Cmbx_HomeMode.ToString())
-                info.MODE = Tool.StringToInt(value);
-            else if (item == eF_AxisSetting.Cmbx_HomeDirection.ToString())
+            else if(item == eF_AxisSetting.Cmbx_HomeDirection.ToString())
                 info.DIRECTION = Tool.StringToInt(value);
             else if (item == eF_AxisSetting.TxtBx_ORGPosition.ToString())
-                info.HOME_POS = Tool.StringToInt(value);
-            else if (item == eF_AxisSetting.TxtBx_ORGShiftPosition.ToString())
-                info.HOME_SHIFT = Tool.StringToInt(value);
-            else if (item == eF_AxisSetting.TxtBx_HomeVelocity.ToString())
-                info.MAX_VELOCITY = Tool.StringToInt(value);
-            else if (item == eF_AxisSetting.TxtBx_ORGVelocity.ToString())
-                info.HOEM_FIND_ORG_VELOCITY = Tool.StringToInt(value);
-            else if (item == eF_AxisSetting.TxtBx_HomeAcc.ToString())
-                info.HOME_ACC = Tool.StringToInt(value);
+                info.HOME_POS = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_1stHomeVelocity.ToString())
+                info.MAX_VELOCITY_1ST = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_1stHomeAcc.ToString())
+                info.HOME_ACC_1ST = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_1stHomeDec.ToString())
+                info.HOME_DEC_1ST = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_1stORGOffset.ToString())
+                info.HOME_OFFSET_1ST = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_2ndHomeVelocity.ToString())
+                info.MAX_VELOCITY_2ND = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_2ndHomeAcc.ToString())
+                info.HOME_ACC_2ND = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_2ndHomeDec.ToString())
+                info.HOME_DEC_2ND = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_2ndHomeOffsetVelocity.ToString())
+                info.HOME_OFFSET_VELOCITY_2ND = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_2ndORGOffset.ToString())
+                info.HOME_OFFSET_2ND = Tool.StringToDouble(value);
 
             DML_INFO[axis] = info;
         }

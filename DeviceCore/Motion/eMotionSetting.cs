@@ -47,13 +47,17 @@ namespace DeviceCore
         #endregion
 
         #region Home Configuration
-        Cmbx_HomeMode,
         Cmbx_HomeDirection,
         TxtBx_ORGPosition,
-        TxtBx_ORGShiftPosition,
-        TxtBx_HomeVelocity,
-        TxtBx_ORGVelocity,
-        TxtBx_HomeAcc,
+        TxtBx_1stHomeVelocity,
+        TxtBx_1stHomeAcc,
+        TxtBx_1stHomeDec,
+        TxtBx_1stORGOffset,
+        TxtBx_2ndHomeVelocity,
+        TxtBx_2ndHomeAcc,
+        TxtBx_2ndHomeDec,
+        TxtBx_2ndHomeOffsetVelocity,
+        TxtBx_2ndORGOffset,
         #endregion
     }
 }

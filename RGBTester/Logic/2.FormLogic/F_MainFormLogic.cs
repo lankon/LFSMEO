@@ -58,9 +58,9 @@ namespace RGBTester.Logic
         {
             string app_path = AppDomain.CurrentDomain.BaseDirectory;
 
-            string delete_foler = app_path + "\\History";
+            string delete_folder = app_path + "\\History";
 
-            Tool.DeleteExpireFiles(delete_foler, 90);
+            Tool.DeleteExpireFiles(delete_folder, 90);
 
             return 0;
         }

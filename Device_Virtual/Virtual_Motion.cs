@@ -50,12 +50,10 @@ namespace Device_Virtual
             throw new NotImplementedException();
         }
 
-        public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
+        public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
         {
             throw new NotImplementedException();
         }
-
-        
 
         public int RelativeSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sacc, double Tdec, double Sdec)
         {

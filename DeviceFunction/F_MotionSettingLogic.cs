@@ -59,13 +59,17 @@ namespace DeviceFunction
                 eF_AxisSetting.TxtBx_NormalSfac,
 
                 //[Home Setting]
-                eF_AxisSetting.Cmbx_HomeMode,
                 eF_AxisSetting.Cmbx_HomeDirection,
                 eF_AxisSetting.TxtBx_ORGPosition,
-                eF_AxisSetting.TxtBx_ORGShiftPosition,
-                eF_AxisSetting.TxtBx_HomeVelocity,
-                eF_AxisSetting.TxtBx_ORGVelocity,
-                eF_AxisSetting.TxtBx_HomeAcc,
+                eF_AxisSetting.TxtBx_1stHomeVelocity,
+                eF_AxisSetting.TxtBx_1stHomeAcc,
+                eF_AxisSetting.TxtBx_1stHomeDec,
+                eF_AxisSetting.TxtBx_1stORGOffset,
+                eF_AxisSetting.TxtBx_2ndHomeVelocity,
+                eF_AxisSetting.TxtBx_2ndHomeAcc,
+                eF_AxisSetting.TxtBx_2ndHomeDec,
+                eF_AxisSetting.TxtBx_2ndHomeOffsetVelocity,
+                eF_AxisSetting.TxtBx_2ndORGOffset,
             };
         #endregion
 
@@ -126,14 +130,17 @@ namespace DeviceFunction
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_NormalSfac, config[axis].NORMAL_Sfac.ToString());
 
             //[Home Setting]
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeMode, config[axis].MODE.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_HomeDirection, config[axis].DIRECTION.ToString());
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGPosition, config[axis].HOME_POS.ToString());
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGShiftPosition, config[axis].HOME_SHIFT.ToString());
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeVelocity, config[axis].MAX_VELOCITY.ToString());
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_ORGVelocity, config[axis].HOEM_FIND_ORG_VELOCITY.ToString());
-            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_HomeAcc, config[axis].HOME_ACC.ToString());
-
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_1stHomeVelocity, config[axis].MAX_VELOCITY_1ST.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_1stHomeAcc, config[axis].HOME_ACC_1ST.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_1stHomeDec, config[axis].HOME_DEC_1ST.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_1stORGOffset, config[axis].HOME_OFFSET_1ST.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_2ndHomeVelocity, config[axis].MAX_VELOCITY_2ND.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_2ndHomeAcc, config[axis].HOME_ACC_2ND.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_2ndHomeDec, config[axis].HOME_DEC_2ND.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_2ndHomeOffsetVelocity, config[axis].HOME_OFFSET_VELOCITY_2ND.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_2ndORGOffset, config[axis].HOME_OFFSET_2ND.ToString());
 
             AxisSetting.UpdateParmeter();
         }
