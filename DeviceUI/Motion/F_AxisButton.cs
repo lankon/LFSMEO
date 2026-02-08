@@ -28,8 +28,10 @@ namespace DeviceUI.Motion
         #region parameter define
         List<Panel> PnlPartList = new List<Panel>();
         F_MotionSettingLogic MotionSettingLogic;
+        Label[] Labl_PostionAxis = new Label[AxisCount];
         private int curPnlPart = 0;
         private int CurBtnNum = 0;
+        private const int AxisCount = 14;     //軸數量
         #endregion
 
         #region private function
@@ -80,25 +82,42 @@ namespace DeviceUI.Motion
         }
         private void CreateDynamicElement()
         {
-            Button[] AxisButton = new Button[14];
-            string[] AxisButtonName = new string[14] { "Y", "Z", "A","AX", "AY", "AZ", "AA", "EX", "EY",
-                                                       "EZ", "EA", "IX", "IY", "IZ"};
+            Button[] AxisButton = new Button[AxisCount];
+            string[] AxisButtonName = new string[AxisCount] { "Y", "Z", "A","AX", "AY", "AZ", "AA", "EX", "EY",
+                                                              "EZ", "EA", "IX", "IY", "IZ"};
 
             for (int i=0; i<AxisButton.Length; i++)
             {
                 AxisButton[i] = new Button();
                 AxisButton[i].Font = new System.Drawing.Font("Times New Roman", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                AxisButton[i].Location = new System.Drawing.Point(116+84*i, 3);
-                AxisButton[i].Name = $"Btn_Axis{i+1}";
+                AxisButton[i].Location = new System.Drawing.Point(116 + 84 * i, 3);
+                AxisButton[i].Name = $"Btn_Axis{i + 1}";
                 AxisButton[i].Size = new System.Drawing.Size(78, 82);
                 AxisButton[i].TabIndex = 3;
-                AxisButton[i].Tag = $"{i+1}";
+                AxisButton[i].Tag = $"{i + 1}";
                 AxisButton[i].Text = AxisButtonName[i];
                 AxisButton[i].UseVisualStyleBackColor = true;
                 AxisButton[i].Click += new System.EventHandler(this.Btn_Axis0_Click);
 
                 Pnl_Part1.Controls.Add(AxisButton[i]);
             }
+
+            for(int i=0; i< Labl_PostionAxis.Length; i++)
+            {
+                Labl_PostionAxis[i] = new Label();
+                Labl_PostionAxis[i].AutoSize = true;
+                Labl_PostionAxis[i].ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+                Labl_PostionAxis[i].Location = new System.Drawing.Point(132+84*i, 64);
+                Labl_PostionAxis[i].Name = $"Labl_PostionAxis{i+1}";
+                Labl_PostionAxis[i].Size = new System.Drawing.Size(44, 12);
+                Labl_PostionAxis[i].TabIndex = 4;
+                Labl_PostionAxis[i].Text = "000.000";
+                Labl_PostionAxis[i].TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
+                Pnl_Part1.Controls.Add(Labl_PostionAxis[i]);
+                Labl_PostionAxis[i].BringToFront();
+            }
+
         }
         #endregion
 
@@ -127,6 +146,11 @@ namespace DeviceUI.Motion
         private void Btn_NextPnlPart1_Click(object sender, EventArgs e)
         {
             curPnlPart = NextPnlPart(PnlPartList, curPnlPart);
+        }
+
+        private void Timer_UpdatePosition_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

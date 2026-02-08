@@ -18,7 +18,7 @@ namespace DeviceUI.Motion
             MotionSettingLogic = f_MotionSettingLogic;
 
             ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
-            ApplicationSetting.UpdataRecipeToForm<eF_AxisSetting>(this);
+            //ApplicationSetting.UpdataRecipeToForm<eF_AxisSetting>(this);
 
             InitialForm();
         }

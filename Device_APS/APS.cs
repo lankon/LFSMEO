@@ -293,13 +293,6 @@ namespace Device_APS
                 return false;
         }
 
-        //public override bool SetGoHomeParam(AXIS_INFO hOME_PARAM)
-        //{
-        //    AxisInfo = hOME_PARAM;
-
-        //    return true;
-        //}
-
         public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
         {
             if (Initial_Success == false)
@@ -341,11 +334,15 @@ namespace Device_APS
                 return -1;
 
             int axis = devNo;
+            int ret = -1;
             double pos = -1;
             
-            APS168.APS_get_position_f(axis, ref pos);
+            ret = APS168.APS_get_position_f(axis, ref pos);
 
-            return pos;
+            if (ret != 0)
+                return -1;
+            else
+                return pos;
         }
 
         public int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0)
@@ -436,7 +433,5 @@ namespace Device_APS
             return ret;
         }
         #endregion
-
-
     }
 }

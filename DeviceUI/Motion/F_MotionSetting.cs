@@ -11,12 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using DeviceCore;
+using DeviceFunction;
 
 namespace DeviceUI.Motion
 {    
     public partial class F_MotionSetting : Form, IF_MotionSetting
     {
-        public F_MotionSetting(IServiceProvider serviceProvider, IF_AxisButton f_AxisButton, IF_AxisSetting f_AxisSetting)
+        public F_MotionSetting(IServiceProvider serviceProvider, IF_AxisButton f_AxisButton, IF_AxisSetting f_AxisSetting,
+                                F_MotionSettingLogic f_MotionSettingLogic)
         {
             InitializeComponent();
 
@@ -25,6 +27,7 @@ namespace DeviceUI.Motion
             ServiceProvider = serviceProvider;
             AxisSetting = f_AxisSetting;
             AxisButton = f_AxisButton;
+            MotionSettingLogic = f_MotionSettingLogic;
             DockAxisSetting(typeof(IF_AxisSetting));
             DockAxisButton(typeof(IF_AxisButton));
         }
@@ -33,6 +36,7 @@ namespace DeviceUI.Motion
         IServiceProvider ServiceProvider;
         IF_AxisButton AxisButton;
         IF_AxisSetting AxisSetting;
+        F_MotionSettingLogic MotionSettingLogic;
         #endregion
 
         #region private function
@@ -50,6 +54,10 @@ namespace DeviceUI.Motion
         private void ShowHint()
         {
 
+        }
+        private void UpdatePage()
+        {
+            MotionSettingLogic.UpdateAxisInfo2Form(0);
         }
         #endregion
 
@@ -90,6 +98,10 @@ namespace DeviceUI.Motion
                 //Tool.ReleaseButtonImages(this);
                 //this.Close();
                 //this.Dispose();
+            }
+            else
+            {
+                UpdatePage();
             }
         }
     }

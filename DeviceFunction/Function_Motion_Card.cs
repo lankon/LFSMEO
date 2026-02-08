@@ -76,7 +76,7 @@ namespace DeviceFunction
                     }
                 }
 
-                Thread.Sleep(200);
+                Thread.Sleep(100);
             }
         }
         #endregion
@@ -502,17 +502,11 @@ namespace DeviceFunction
 
             return 0;
         }
-        //public int SetHomeConfig(int axis, HOME_INFO info)
-        //{
-        //    DML[DML2Axis[axis]].SetGoHomeParam()
-
-        //    return 0;
-        //}
-
-
-        // Position Function
         public double GetPosition(int axis)
         {
+            if (DML_INFO[axis].AXIS_USE == 0)
+                return 0.000;
+
             byte line = (byte)DML_INFO[axis].LINE_NO;
             byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 

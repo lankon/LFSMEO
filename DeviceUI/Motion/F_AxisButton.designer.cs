@@ -37,12 +37,13 @@ namespace DeviceUI.Motion
             this.Labl_PostionAxis0 = new System.Windows.Forms.Label();
             this.Btn_Axis0 = new System.Windows.Forms.Button();
             this.Pnl_Part2 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.Btn_NextPnlPart2 = new System.Windows.Forms.Button();
             this.Btn_PreviousPnlPart2 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.Timer_UpdatePosition = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.Pnl_Part1.SuspendLayout();
             this.Pnl_Part2.SuspendLayout();
             this.SuspendLayout();
@@ -108,24 +109,13 @@ namespace DeviceUI.Motion
             this.Pnl_Part2.Controls.Add(this.label1);
             this.Pnl_Part2.Controls.Add(this.button1);
             this.Pnl_Part2.Controls.Add(this.Btn_NextPnlPart2);
+            this.Pnl_Part2.Controls.Add(this.button7);
             this.Pnl_Part2.Controls.Add(this.Btn_PreviousPnlPart2);
             this.Pnl_Part2.Controls.Add(this.button6);
-            this.Pnl_Part2.Controls.Add(this.button7);
             this.Pnl_Part2.Location = new System.Drawing.Point(146, 203);
             this.Pnl_Part2.Name = "Pnl_Part2";
             this.Pnl_Part2.Size = new System.Drawing.Size(1318, 88);
             this.Pnl_Part2.TabIndex = 36;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(41, 64);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 12);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "000.000";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button1
             // 
@@ -182,6 +172,22 @@ namespace DeviceUI.Motion
             this.button7.Text = "Y";
             this.button7.UseVisualStyleBackColor = true;
             // 
+            // Timer_UpdatePosition
+            // 
+            this.Timer_UpdatePosition.Interval = 200;
+            this.Timer_UpdatePosition.Tick += new System.EventHandler(this.Timer_UpdatePosition_Tick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.label1.Location = new System.Drawing.Point(40, 61);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(44, 12);
+            this.label1.TabIndex = 35;
+            this.label1.Text = "000.000";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // F_AxisButton
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -208,11 +214,12 @@ namespace DeviceUI.Motion
         private System.Windows.Forms.Label Labl_PostionAxis0;
         private System.Windows.Forms.Button Btn_Axis0;
         private System.Windows.Forms.Panel Pnl_Part2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button Btn_NextPnlPart2;
         private System.Windows.Forms.Button Btn_PreviousPnlPart2;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Timer Timer_UpdatePosition;
+        private System.Windows.Forms.Label label1;
     }
 }

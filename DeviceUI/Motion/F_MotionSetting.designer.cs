@@ -82,6 +82,7 @@ namespace DeviceUI.Motion
             // label7
             // 
             this.label7.BackColor = System.Drawing.Color.White;
+            this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label7.Location = new System.Drawing.Point(4, 478);
@@ -95,6 +96,7 @@ namespace DeviceUI.Motion
             // label3
             // 
             this.label3.BackColor = System.Drawing.Color.White;
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label3.Location = new System.Drawing.Point(4, 399);
@@ -108,6 +110,7 @@ namespace DeviceUI.Motion
             // label4
             // 
             this.label4.BackColor = System.Drawing.Color.White;
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(4, 320);
@@ -121,6 +124,7 @@ namespace DeviceUI.Motion
             // label5
             // 
             this.label5.BackColor = System.Drawing.Color.White;
+            this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -149,6 +153,7 @@ namespace DeviceUI.Motion
             // label2
             // 
             this.label2.BackColor = System.Drawing.Color.White;
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label2.Location = new System.Drawing.Point(4, 241);
