@@ -37,13 +37,13 @@ namespace DeviceUI.Motion
             this.Labl_PostionAxis0 = new System.Windows.Forms.Label();
             this.Btn_Axis0 = new System.Windows.Forms.Button();
             this.Pnl_Part2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.Btn_NextPnlPart2 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.Btn_PreviousPnlPart2 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
             this.Timer_UpdatePosition = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
             this.Pnl_Part1.SuspendLayout();
             this.Pnl_Part2.SuspendLayout();
             this.SuspendLayout();
@@ -117,6 +117,17 @@ namespace DeviceUI.Motion
             this.Pnl_Part2.Size = new System.Drawing.Size(1318, 88);
             this.Pnl_Part2.TabIndex = 36;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.label1.Location = new System.Drawing.Point(40, 61);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(44, 12);
+            this.label1.TabIndex = 35;
+            this.label1.Text = "000.000";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Times New Roman", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -138,6 +149,17 @@ namespace DeviceUI.Motion
             this.Btn_NextPnlPart2.Text = ">";
             this.Btn_NextPnlPart2.UseVisualStyleBackColor = true;
             this.Btn_NextPnlPart2.Click += new System.EventHandler(this.Btn_NextPnlPart1_Click);
+            // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("Times New Roman", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.Location = new System.Drawing.Point(109, 3);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(78, 82);
+            this.button7.TabIndex = 1;
+            this.button7.Tag = "1";
+            this.button7.Text = "Y";
+            this.button7.UseVisualStyleBackColor = true;
             // 
             // Btn_PreviousPnlPart2
             // 
@@ -161,32 +183,10 @@ namespace DeviceUI.Motion
             this.button6.Text = "Z";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // button7
-            // 
-            this.button7.Font = new System.Drawing.Font("Times New Roman", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(109, 3);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(78, 82);
-            this.button7.TabIndex = 1;
-            this.button7.Tag = "1";
-            this.button7.Text = "Y";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
             // Timer_UpdatePosition
             // 
             this.Timer_UpdatePosition.Interval = 200;
             this.Timer_UpdatePosition.Tick += new System.EventHandler(this.Timer_UpdatePosition_Tick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(40, 61);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 12);
-            this.label1.TabIndex = 35;
-            this.label1.Text = "000.000";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // F_AxisButton
             // 

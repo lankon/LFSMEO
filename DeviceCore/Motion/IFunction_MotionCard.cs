@@ -24,8 +24,9 @@ namespace DeviceCore
         bool SetServo(int axis, bool on_off);
         int SetSpeedConfig();
         
-        // Position Function
+        // Status Function
         double GetPosition(int axis);
+        void GetMotionStatus(int axis, out bool[] status);
 
         // Home Function
         Task<bool> GoHome(int axis);
@@ -41,8 +42,5 @@ namespace DeviceCore
         void SaveAxisConfig(string filePath, string axisName, Dictionary<string, string> parameters);
         bool LoadAxisConfig();
         IReadOnlyList<AXIS_INFO> GetAxisConfig();
-
-        //[Status]
-        
     }
 }

@@ -119,12 +119,34 @@ namespace DeviceUI.Motion
             }
 
         }
+        private void StartUpdatePosition(bool start)
+        {
+            if (start == true)
+                Timer_UpdatePosition.Start();
+            else
+                Timer_UpdatePosition.Stop();
+        }
         #endregion
 
         #region public function
         public int GetCurrentBtnNum()
         {
             return CurBtnNum;
+        }
+        
+        public void StartUpdatePositionInvoke(bool start)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() =>
+                {
+                    StartUpdatePosition(start);
+                }));
+            }
+            else
+            {
+                StartUpdatePosition(start);
+            }
         }
         #endregion
 
@@ -150,7 +172,12 @@ namespace DeviceUI.Motion
 
         private void Timer_UpdatePosition_Tick(object sender, EventArgs e)
         {
-
+            Labl_PostionAxis0.Text = MotionSettingLogic.Function_MotionCard.GetPosition(0).ToString("000.000");
+            for (int i=0; i< AxisCount; i++)
+            {
+                Labl_PostionAxis[i].Text = MotionSettingLogic.Function_MotionCard.GetPosition(i + 1).ToString("000.000");
+            }
         }
+
     }
 }

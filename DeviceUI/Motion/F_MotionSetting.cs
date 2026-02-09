@@ -55,9 +55,37 @@ namespace DeviceUI.Motion
         {
 
         }
+        private void StartUpdateStatus(bool start)
+        {
+            if (start)
+                Timer_UpdateStatus.Start();
+            else
+                Timer_UpdateStatus.Stop();
+        }
+        private void StartUpdateStatusInvoke(bool start)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() =>
+                {
+                    StartUpdateStatus(start);
+                }));
+            }
+            else
+            {
+                StartUpdateStatus(start);
+            }
+        }
         private void UpdatePage()
         {
             MotionSettingLogic.UpdateAxisInfo2Form(0);
+            AxisButton.StartUpdatePositionInvoke(true);
+            StartUpdateStatusInvoke(true);
+        }
+        private void LeavePage()
+        {
+            AxisButton.StartUpdatePositionInvoke(false);
+            StartUpdateStatusInvoke(false);
         }
         #endregion
 
@@ -93,15 +121,37 @@ namespace DeviceUI.Motion
                 ApplicationSetting.SaveRecipeFromForm<eF_AxisSetting>(this);
                 //重新讀取變數值
                 ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
+                
+                LeavePage();
 
                 //釋放記憶體資源
                 //Tool.ReleaseButtonImages(this);
                 //this.Close();
-                //this.Dispose();
+                //this.Dispose();jtrjtkyykjrjttjtjtj
             }
             else
             {
                 UpdatePage();
+            }
+        }
+
+        private void Timer_UpdateStatus_Tick(object sender, EventArgs e)
+        {
+            IFunction_MotionCard func = ServiceProvider.GetRequiredService<IFunction_MotionCard>();
+            int axis_num = AxisButton.GetCurrentBtnNum();
+
+            Label[] labl_status = new Label[] { Labl_Alarm, Labl_PEL, Labl_MEL,
+                                                Labl_ORG, Labl_Servo, Labl_INP,
+                                                Labl_RDY};
+
+            func.GetMotionStatus(axis_num, out bool[] status);
+
+            for (int i = 0; i < status.Length; i++)
+            {
+                if (status[i] == true)
+                    labl_status[i].BackColor = Color.LimeGreen;
+                else
+                    labl_status[i].BackColor = Color.White;
             }
         }
     }

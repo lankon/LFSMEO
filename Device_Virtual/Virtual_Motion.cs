@@ -42,7 +42,7 @@ namespace Device_Virtual
 
         public bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)

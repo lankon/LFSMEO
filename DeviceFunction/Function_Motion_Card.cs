@@ -502,6 +502,8 @@ namespace DeviceFunction
 
             return 0;
         }
+
+        //[Status Function]
         public double GetPosition(int axis)
         {
             if (DML_INFO[axis].AXIS_USE == 0)
@@ -513,6 +515,23 @@ namespace DeviceFunction
             double res = DML[DML2Axis[axis]].GetPosition(lineNo: line, devNo: dev_no);
 
             return res;
+        }
+        public void GetMotionStatus(int axis, out bool[] status)
+        {
+            byte line = (byte)DML_INFO[axis].LINE_NO;
+            byte dev_no = (byte)DML_INFO[axis].DEV_NO;
+
+            int start = (int)MOTION_IO.ALM;
+            int end = (int)MOTION_IO.RDY;
+
+            bool [] bstatus = new bool[end - start + 1];
+
+            for (int i = start; i<=end; i++)
+            {
+                bstatus[i - start] = DML[DML2Axis[axis]].GetMotionStatus(lineNo: line, devNo: dev_no, state: i);
+            }
+
+            status = bstatus;
         }
 
         //[Home Function]
