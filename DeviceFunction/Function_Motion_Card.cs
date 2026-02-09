@@ -260,6 +260,8 @@ namespace DeviceFunction
 
                             if (Tool.CheckTimeOverSec(delay, 1) && Get_Motion_Complete(axis) == true)
                             {
+                                SetOrigin(axis, DML_INFO[axis].HOME_POS);
+
                                 res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_2ND,
                                                                             DML_INFO[axis].HOME_OFFSET_VELOCITY_2ND,
                                                                             DML_INFO[axis].FAST_INIT_SPEED,
@@ -506,7 +508,7 @@ namespace DeviceFunction
         //[Status Function]
         public double GetPosition(int axis)
         {
-            if (DML_INFO[axis].AXIS_USE == 0)
+            if (DML_INFO[axis].AXIS_USE == 0 || DML2Axis[axis] == 0)
                 return 0.000;
 
             byte line = (byte)DML_INFO[axis].LINE_NO;
@@ -525,6 +527,12 @@ namespace DeviceFunction
             int end = (int)MOTION_IO.RDY;
 
             bool [] bstatus = new bool[end - start + 1];
+
+            if (DML_INFO[axis].AXIS_USE == 0)
+            {
+                status = bstatus;
+                return;
+            }
 
             for (int i = start; i<=end; i++)
             {
@@ -561,8 +569,8 @@ namespace DeviceFunction
                 return false;
             }
 
-            //設定原點位置
-            SetOrigin(axis, DML_INFO[axis].HOME_POS);
+            //////設定原點位置
+            //SetOrigin(axis, DML_INFO[axis].HOME_POS);
 
             //到達原點後位移
 
