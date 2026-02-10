@@ -17,6 +17,16 @@ namespace Device_Virtual
         }
 
         #region parameter define
+        enum VIRTUAL_MOTION_IO
+        {
+            ALM,
+            PEL,
+            MEL,
+            ORG,
+            SVON,
+            INP,
+            RDY,
+        }
         #endregion
 
         #region public function
@@ -37,12 +47,37 @@ namespace Device_Virtual
 
         public bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
+            /*模擬T-Curve運動時間
+            T:運動時間
+            S:距離
+            V:速度
+            Sacc:加速度距離
+            Sdec:減速度距離
+            Acc:加速度
+            Dec:減速度
+            Vmax:最大速度
+
+            加速度段移動時間 T_acc = (V_max - V_0) / Acc
+            加速度段移動距離 S_acc = V_0 * T_acc + 0.5 * Acc * T_acc^2
+            
+            減速度段移動時間 T_dec = V_max / Dec
+            減速度段移動距離 S_dec = V_max^2 / (2 * Dec)
+
+            均速度段移動時間 T_const = (S_total - Sacc - Sdec) / Vmax
+
+            總運動時間 T = T_acc + T_const + T_dec
+            */
+
             throw new NotImplementedException();
         }
 
         public bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0)
         {
-            return false;
+            if (state == (int)VIRTUAL_MOTION_IO.ALM || state == (int)VIRTUAL_MOTION_IO.MEL ||
+                state == (int)VIRTUAL_MOTION_IO.PEL)
+                return false;
+            else
+                return true;
         }
 
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
@@ -81,6 +116,11 @@ namespace Device_Virtual
         }
 
         public int GetDeviceNo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ContinuousMove(int axis, int dir, double acc, double dec, double velocity_max)
         {
             throw new NotImplementedException();
         }

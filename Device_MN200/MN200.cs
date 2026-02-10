@@ -301,6 +301,11 @@ namespace Device_MN200
         {
             return 1;
         }
+
+        public int ContinuousMove(int axis, int dir, double acc, double dec, double velocity_max)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

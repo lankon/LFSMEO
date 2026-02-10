@@ -447,18 +447,24 @@ namespace Device_APS
             return ret;
         }
 
-        public int JogMoveStart(int axis, string direction, double velocity)
+        public int ContinuousMove(int axis, int dir, double acc, double dec, double velocity_max)
         {
             if (Initial_Success == false)
                 return -1;
-            Int32 ret = -1;
-            Int32 jog_dir = 1;
-            if (direction == "Negative")
-                jog_dir = -1;
-            //ret = APS168.APS_jog_start(axis,
-            //                    jog_dir,
-            //                    velocity,
-            //                    0);
+
+            int ret = -1;
+
+            APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_MODE, 0);                // Set jog mode [0:Continuous mode, 1:Step mode]
+            APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_DIR, dir);               // Set jog direction [0:  Positive , 1: Negative direction]
+            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_SF, 0.5);
+            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_ACC, acc);
+            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_DEC, dec);
+            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_VM, velocity_max);
+
+            APS168.APS_jog_start(axis, 0);          //Jog OFF 
+            // Create a rising edge.
+            ret = APS168.APS_jog_start(axis, 1);    //Jog ON 
+
             return ret;
         }
         #endregion

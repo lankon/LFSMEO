@@ -200,8 +200,11 @@ namespace DeviceFunction
                         break;
                     case WORK.GO_HOME_FIRST:
                         {
-                            res = DML[DML2Axis[axis]].GoHome(lineNo: (byte)DML_INFO[axis].LINE_NO, devNo: (byte)DML_INFO[axis].DEV_NO);
-                            
+                            DML[DML2Axis[axis]].ContinuousMove(axis, DML_INFO[axis].DIRECTION, 
+                                                                        DML_INFO[axis].HOME_ACC_1ST, 
+                                                                        DML_INFO[axis].HOME_DEC_1ST, 
+                                                                        DML_INFO[axis].MAX_VELOCITY_1ST);
+
                             if (res != 0)
                                 return false;
                             else
@@ -591,6 +594,18 @@ namespace DeviceFunction
             byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 
             bool res = DML[DML2Axis[axis]].GetMotionComplete(lineNo: line, devNo: dev_no);
+
+            if(res == true)
+            {
+                int ret = DML[DML2Axis[axis]].UpdateMotionStatus(lineNo: line, devNo: dev_no);
+
+                if (ret != 0)
+                    return false;
+
+                bool check_INP = DML[DML2Axis[axis]].GetMotionStatus(lineNo: line, devNo: dev_no, state: (int)MOTION_IO.INP);
+
+                return check_INP;
+            }
 
             return res;
         }
