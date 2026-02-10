@@ -196,17 +196,22 @@ namespace DeviceFunction
                                 state = WORK.GO_HOME_FIRST;
                             else
                                 return false;
+
+                            delay = Tool.GetCurrentTickCount();
                         }
                         break;
                     case WORK.GO_HOME_FIRST:
                         {
-                            DML[DML2Axis[axis]].ContinuousMove(axis, DML_INFO[axis].DIRECTION, 
+                            res = DML[DML2Axis[axis]].ContinuousMove(axis, DML_INFO[axis].DIRECTION, 
                                                                         DML_INFO[axis].HOME_ACC_1ST, 
                                                                         DML_INFO[axis].HOME_DEC_1ST, 
                                                                         DML_INFO[axis].MAX_VELOCITY_1ST);
 
                             if (res != 0)
+                            {
+                                Tool.SaveLogToFile("FAIL:GO_HOME_FIRST");
                                 return false;
+                            }
                             else
                                 state = WORK.GO_HOME_FIRST_SHIFT;
                         }
@@ -220,7 +225,7 @@ namespace DeviceFunction
                                 break;
                             }
                                 
-                            if(Tool.CheckTimeOverSec(delay, 1) && Get_Motion_Complete(axis) ==true)
+                            if(Tool.CheckTimeOverSec(delay, 1)/* && Get_Motion_Complete(axis) ==true*/)
                             {
                                 res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_1ST,
                                                                             DML_INFO[axis].SLOW_MAX_SPEED,
@@ -231,7 +236,10 @@ namespace DeviceFunction
                                                                             DML_INFO[axis].SLOW_Sfac);
 
                                 if (res != 0)
+                                {
+                                    Tool.SaveLogToFile("FAIL:GO_HOME_FIRST_SHIFT");
                                     return false;
+                                }
                                 else
                                     state = WORK.GO_HOME_SECOND;
                             }
@@ -242,12 +250,21 @@ namespace DeviceFunction
                             if (Get_Motion_Complete(axis) == false)
                                 break;
                             
-                            res = DML[DML2Axis[axis]].GoHome(lineNo: (byte)DML_INFO[axis].LINE_NO, devNo: (byte)DML_INFO[axis].DEV_NO, count:2);
+                            //res = DML[DML2Axis[axis]].GoHome(lineNo: (byte)DML_INFO[axis].LINE_NO, devNo: (byte)DML_INFO[axis].DEV_NO, count:2);
+                            res = DML[DML2Axis[axis]].ContinuousMove(axis, DML_INFO[axis].DIRECTION,
+                                                                        DML_INFO[axis].HOME_ACC_2ND,
+                                                                        DML_INFO[axis].HOME_DEC_2ND,
+                                                                        DML_INFO[axis].MAX_VELOCITY_2ND);
+
+
 
                             enter_cpunt = 0;
 
                             if (res != 0)
+                            {
+                                Tool.SaveLogToFile("FAIL:GO_HOME_SECOND");
                                 return false;
+                            }
                             else
                                 state = WORK.GO_HOME_SECOND_SHIFT;
                         }
@@ -261,7 +278,7 @@ namespace DeviceFunction
                                 break;
                             }
 
-                            if (Tool.CheckTimeOverSec(delay, 1) && Get_Motion_Complete(axis) == true)
+                            if (Tool.CheckTimeOverSec(delay, 1)/* && Get_Motion_Complete(axis) == true*/)
                             {
                                 SetOrigin(axis, DML_INFO[axis].HOME_POS);
 
@@ -274,7 +291,10 @@ namespace DeviceFunction
                                                                             DML_INFO[axis].FAST_Sfac);
 
                                 if (res != 0)
+                                {
+                                    Tool.SaveLogToFile("FAIL:GO_HOME_SECOND_SHIFT");
                                     return false;
+                                }
                                 else
                                     state = WORK.WAIT_GO_HOME_SECOND_SHIFT;
                             }
@@ -563,6 +583,7 @@ namespace DeviceFunction
             DML_Home_Complete[axis] = false;
             DML_Homing[axis] = true;
 
+            Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 開使初始化");
             bool ok = await GoHome_FSM(axis, 15000);
 
             if (!ok)

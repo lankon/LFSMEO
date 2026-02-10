@@ -366,7 +366,7 @@ namespace Device_APS
             int ret = -1;
             double pos = -1;
 
-            ret = APS168.APS_get_position_f(axis, ref pos);
+            ret = APS168.APS_get_command_f(axis, ref pos);
 
             if (ret != 0)
                 return -1;
@@ -454,6 +454,10 @@ namespace Device_APS
 
             int ret = -1;
 
+            acc = TransferToPulse(acc);
+            dec = TransferToPulse(dec);
+            velocity_max = TransferToPulse(velocity_max);
+
             APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_MODE, 0);                // Set jog mode [0:Continuous mode, 1:Step mode]
             APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_DIR, dir);               // Set jog direction [0:  Positive , 1: Negative direction]
             APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_SF, 0.5);
@@ -461,7 +465,7 @@ namespace Device_APS
             APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_DEC, dec);
             APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_VM, velocity_max);
 
-            APS168.APS_jog_start(axis, 0);          //Jog OFF 
+            ret = APS168.APS_jog_start(axis, 0);          //Jog OFF 
             // Create a rising edge.
             ret = APS168.APS_jog_start(axis, 1);    //Jog ON 
 
