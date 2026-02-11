@@ -186,7 +186,7 @@ namespace DeviceFunction
                 {
                     case WORK.INITIAL:
                         {
-                            DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
+                            DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis], DML_INFO[axis].DEV_NO);
                             state = WORK.SERVO_ON;
                         }
                         break;
@@ -196,13 +196,12 @@ namespace DeviceFunction
                                 state = WORK.GO_HOME_FIRST;
                             else
                                 return false;
-
-                            delay = Tool.GetCurrentTickCount();
                         }
                         break;
                     case WORK.GO_HOME_FIRST:
                         {
-                            res = DML[DML2Axis[axis]].ContinuousMove(axis, DML_INFO[axis].DIRECTION, 
+                            res = DML[DML2Axis[axis]].ContinuousMove(DML_INFO[axis].DEV_NO, 
+                                                                        DML_INFO[axis].DIRECTION, 
                                                                         DML_INFO[axis].HOME_ACC_1ST, 
                                                                         DML_INFO[axis].HOME_DEC_1ST, 
                                                                         DML_INFO[axis].MAX_VELOCITY_1ST);
@@ -227,7 +226,8 @@ namespace DeviceFunction
                                 
                             if(Tool.CheckTimeOverSec(delay, 1)/* && Get_Motion_Complete(axis) ==true*/)
                             {
-                                res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_1ST,
+                                res = DML[DML2Axis[axis]].RelativeSMove(DML_INFO[axis].DEV_NO,
+                                                                            DML_INFO[axis].HOME_OFFSET_1ST,
                                                                             DML_INFO[axis].SLOW_MAX_SPEED,
                                                                             DML_INFO[axis].SLOW_INIT_SPEED,
                                                                             DML_INFO[axis].SLOW_ACC,
@@ -251,12 +251,11 @@ namespace DeviceFunction
                                 break;
                             
                             //res = DML[DML2Axis[axis]].GoHome(lineNo: (byte)DML_INFO[axis].LINE_NO, devNo: (byte)DML_INFO[axis].DEV_NO, count:2);
-                            res = DML[DML2Axis[axis]].ContinuousMove(axis, DML_INFO[axis].DIRECTION,
+                            res = DML[DML2Axis[axis]].ContinuousMove(DML_INFO[axis].DEV_NO,
+                                                                        DML_INFO[axis].DIRECTION,
                                                                         DML_INFO[axis].HOME_ACC_2ND,
                                                                         DML_INFO[axis].HOME_DEC_2ND,
                                                                         DML_INFO[axis].MAX_VELOCITY_2ND);
-
-
 
                             enter_cpunt = 0;
 
@@ -282,7 +281,8 @@ namespace DeviceFunction
                             {
                                 SetOrigin(axis, DML_INFO[axis].HOME_POS);
 
-                                res = DML[DML2Axis[axis]].RelativeSMove(axis, DML_INFO[axis].HOME_OFFSET_2ND,
+                                res = DML[DML2Axis[axis]].RelativeSMove(DML_INFO[axis].DEV_NO,
+                                                                            DML_INFO[axis].HOME_OFFSET_2ND,
                                                                             DML_INFO[axis].HOME_OFFSET_VELOCITY_2ND,
                                                                             DML_INFO[axis].FAST_INIT_SPEED,
                                                                             DML_INFO[axis].HOME_ACC_2ND,
@@ -376,6 +376,12 @@ namespace DeviceFunction
             //[Software Configuration]
             else if (item == eF_AxisSetting.TxtBx_AxisName.ToString())
                 info.AXIS_NANE = value;
+            else if (item == eF_AxisSetting.Cmbx_UseSoftLimit.ToString())
+                info.SW_LIMIT = Tool.StringToInt(value);
+            else if (item == eF_AxisSetting.TxtBx_SoftPEL.ToString())
+                info.PEL_POS = Tool.StringToDouble(value);
+            else if (item == eF_AxisSetting.TxtBx_SoftMEL.ToString())
+                info.MEL_POS = Tool.StringToDouble(value);
 
             //[Speed Configuration]
             else if (item == eF_AxisSetting.TxtBx_FastMaxVelocity.ToString())
@@ -446,6 +452,13 @@ namespace DeviceFunction
             else
                 return "None";
         }
+        private bool CheckAxisEnable(int axis)
+        {             
+            if (DML_INFO[axis].AXIS_USE == 0 || DML2Axis[axis] == -1)
+                return false;
+            else
+                return true;
+        }
         #endregion
 
         #region public function
@@ -464,14 +477,6 @@ namespace DeviceFunction
             Task task = Task.Run(() => Process());
 
             return true;
-        }
-        public void SetAxis(AXIS_INFO MF)
-        {
-            DML_INFO.Add(MF);
-        }
-        public void ClearAxis()
-        {
-            DML_INFO.Clear();
         }
         public void BindingAxis()
         {
@@ -496,6 +501,8 @@ namespace DeviceFunction
 
             for (int i = 0; i < DML_INFO.Count; i++)
             {
+                DML2Axis[i] = -1;
+
                 if (DML_INFO[i].AXIS_TYPE == null)
                     continue;
 
@@ -505,8 +512,6 @@ namespace DeviceFunction
                 {
                     DML2Axis[i] = idx;
                 }
-
-                
             }
         }
 
@@ -520,18 +525,11 @@ namespace DeviceFunction
 
             return res;
         }
-        public int SetSpeedConfig()
-        {
-
-
-
-            return 0;
-        }
 
         //[Status Function]
         public double GetPosition(int axis)
         {
-            if (DML_INFO[axis].AXIS_USE == 0 || DML2Axis[axis] == 0)
+            if (!CheckAxisEnable(axis))
                 return 0.000;
 
             byte line = (byte)DML_INFO[axis].LINE_NO;
@@ -551,7 +549,7 @@ namespace DeviceFunction
 
             bool [] bstatus = new bool[end - start + 1];
 
-            if (DML_INFO[axis].AXIS_USE == 0)
+            if (!CheckAxisEnable(axis))
             {
                 status = bstatus;
                 return;
@@ -568,7 +566,7 @@ namespace DeviceFunction
         //[Home Function]
         public async Task<bool> GoHome(int axis)
         {
-            if (DML_INFO[axis].AXIS_USE == 0)
+            if (!CheckAxisEnable(axis))
             {
                 Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 未使用，無法執行初始化", level:"WRN");
                 return false;
@@ -583,7 +581,7 @@ namespace DeviceFunction
             DML_Home_Complete[axis] = false;
             DML_Homing[axis] = true;
 
-            Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 開使初始化");
+            Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 開始初始化");
             bool ok = await GoHome_FSM(axis, 15000);
 
             if (!ok)
@@ -593,13 +591,10 @@ namespace DeviceFunction
                 return false;
             }
 
-            //////設定原點位置
-            //SetOrigin(axis, DML_INFO[axis].HOME_POS);
-
-            //到達原點後位移
-
             DML_Home_Complete[axis] = true;
             DML_Homing[axis] = false;
+
+            Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 初始化完成");
 
             return true;
         }
@@ -653,13 +648,21 @@ namespace DeviceFunction
                 sfac = DML_INFO[axis].FAST_Sfac;
             }
 
-            DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis]);
+            //DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis], axis);
 
             int res = 0;
             if (mode == "Abs")
-                res = DML[DML2Axis[axis]].AbsoluteSMove(axis, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
+            {
+                res = DML[DML2Axis[axis]].AbsoluteSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
+                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{pos}");
+            }
             else if(mode == "Rel")
-                res = DML[DML2Axis[axis]].RelativeSMove(axis, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
+            {
+                res = DML[DML2Axis[axis]].RelativeSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
+
+                double new_pos = DML[DML2Axis[axis]].GetPosition(devNo: dev_no) + pos;
+                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{new_pos}");
+            }
 
             if(res != 0)
             {

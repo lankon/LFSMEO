@@ -15,24 +15,22 @@ namespace DeviceCore
 
     public interface IFunction_MotionCard
     {
+        // [Initial Function]
         bool Initial_All_Motion();
-        void SetAxis(AXIS_INFO MF);
-        void ClearAxis();
         void BindingAxis();
         
-        // Set Parameter & Status Function
+        // [Set Parameter & Status Function]
         bool SetServo(int axis, bool on_off);
-        int SetSpeedConfig();
         
-        // Status Function
+        // [Status Function]
         double GetPosition(int axis);
         void GetMotionStatus(int axis, out bool[] status);
 
-        // Home Function
+        // [Home Function]
         Task<bool> GoHome(int axis);
         bool Get_Home_Complete(int axis);
         
-        // Move Function
+        // [Move Function]
         bool Get_Motion_Complete(int axis);
         bool PTP_Move(int axis, double pos, string mode = "Abs", MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL);
         bool Jog_Start(int axis, string direction, MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL);

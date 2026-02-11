@@ -63,5 +63,10 @@ namespace DeviceUI.Motion
         {
             MotionSettingLogic.PTP_MoveTest();
         }
+
+        private void Btn_PositiveMove_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

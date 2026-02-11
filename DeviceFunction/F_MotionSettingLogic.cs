@@ -40,6 +40,9 @@ namespace DeviceFunction
 
                 //[Software Configuration]
                 eF_AxisSetting.TxtBx_AxisName,
+                eF_AxisSetting.Cmbx_UseSoftLimit,
+                eF_AxisSetting.TxtBx_SoftPEL,
+                eF_AxisSetting.TxtBx_SoftMEL,
 
                 //[Speed Config]
                 eF_AxisSetting.TxtBx_FastMaxVelocity,
@@ -111,6 +114,9 @@ namespace DeviceFunction
 
             //[Software Configuration]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_AxisName, config[axis].AXIS_NANE);
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_UseSoftLimit, config[axis].SW_LIMIT.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_SoftPEL, config[axis].PEL_POS.ToString());
+            ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_SoftMEL, config[axis].MEL_POS.ToString());
 
             //[Speed Config]
             ApplicationSetting.SetRecipe<eF_AxisSetting>((int)eF_AxisSetting.TxtBx_FastMaxVelocity, config[axis].FAST_MAX_SPEED.ToString());
@@ -193,6 +199,7 @@ namespace DeviceFunction
             bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 10.0, "Abs", MOVE_VELOCITY_MODE.FAST);
             return res;
         }
+
         #endregion
 
         public int GetCurrentBtnNum()

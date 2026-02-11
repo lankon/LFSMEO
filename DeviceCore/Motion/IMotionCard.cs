@@ -27,7 +27,7 @@ namespace DeviceCore
         public int SW_LIMIT;        //軟體極限Y/N
         public double PEL_POS;      //軟體正極限位置
         public double MEL_POS;      //軟體負極限位置
-        public int REVERSE_MOVE;    //運動方向相反Y/N
+        //public int REVERSE_MOVE;    //運動方向相反Y/N
 
         //[Speed Configuration]
         public double FAST_MAX_SPEED;       //Fast最大速度
@@ -72,23 +72,24 @@ namespace DeviceCore
 
     public interface IMotionCard
     {
+        // [Initial Function]
         bool Open();
-        string GetName();
-        int GetDeviceNo();
-        int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1);
-
-        //[Setting Function]
-        bool SetMotionConfig(AXIS_INFO axisInfo);
+        
+        // [Setting Function]
+        bool SetMotionConfig(AXIS_INFO axisInfo, int axis);
         int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0);
         bool Servo_ONOff(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, bool flag = false);
 
-        //[Status Function]
+        // [Status Function]
+        string GetName();
+        int GetDeviceNo();
         short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0);
         bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
         double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0);
 
-        //[Move Function]
+        // [Move Function]
+        int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1);
         int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start,
                                           double Tacc, double Sfac, double Tdec, double Sdec);
         int RelativeSMove(int axis, double position, double velocity_max, double velocity_start,

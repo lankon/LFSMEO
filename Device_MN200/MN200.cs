@@ -164,7 +164,7 @@ namespace Device_MN200
                 return "None";
         }
         
-        public bool SetMotionConfig(AXIS_INFO axisInfo)
+        public bool SetMotionConfig(AXIS_INFO axisInfo, int UI_AxisId)
         {
             throw new NotImplementedException();
         }

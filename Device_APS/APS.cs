@@ -21,7 +21,7 @@ namespace Device_APS
         #region parameter define 
         APS_Parameter APS_Param = new APS_Parameter();
         private bool Initial_Success = false;
-        private AXIS_INFO AxisInfo = new AXIS_INFO();
+        private Dictionary<int, AXIS_INFO> AxisInfoMap = new Dictionary<int, AXIS_INFO>();
 
         struct APS_Parameter
         {
@@ -45,10 +45,10 @@ namespace Device_APS
         #endregion
 
         #region private function
-        private int TransferToPulse(double intput)
+        private int TransferToPulse(double intput, int axis)
         {
-            double resolution = AxisInfo.DRIVER_RESOLUTION;
-            double pitch = AxisInfo.PITCH;
+            double resolution = AxisInfoMap[axis].DRIVER_RESOLUTION;
+            double pitch = AxisInfoMap[axis].PITCH;
 
             if (pitch == 0)
                 return 0;
@@ -57,10 +57,10 @@ namespace Device_APS
             
             return (int)pulse;
         }
-        private double TransferToMillimeter(double intput)
+        private double TransferToMillimeter(double intput, int axis)
         {
-            double resolution = AxisInfo.DRIVER_RESOLUTION;
-            double pitch = AxisInfo.PITCH;
+            double resolution = AxisInfoMap[axis].DRIVER_RESOLUTION;
+            double pitch = AxisInfoMap[axis].PITCH;
 
             if (resolution == 0)
                 return 0;
@@ -222,9 +222,9 @@ namespace Device_APS
         #endregion
 
         #region Motion Function
-        public bool SetMotionConfig(AXIS_INFO axisInfo)
+        public bool SetMotionConfig(AXIS_INFO axisInfo, int axis)
         {
-            AxisInfo = axisInfo;
+            AxisInfoMap[axis] = axisInfo;
             return true;
         }
 
@@ -310,23 +310,23 @@ namespace Device_APS
 
         public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
         {
-            if (Initial_Success == false)
-                return -1;
+            //if (Initial_Success == false)
+            //    return -1;
 
-            byte axis_id = devNo;
+            //byte axis_id = devNo;
 
-            int acc = 0, max_v = 0;
+            //int acc = 0, max_v = 0;
 
-            if (count == 1)
-            {
-                acc = TransferToPulse(AxisInfo.HOME_ACC_1ST);
-                max_v = TransferToPulse(AxisInfo.MAX_VELOCITY_1ST);
-            }
-            else
-            {
-                acc = TransferToPulse(AxisInfo.HOME_ACC_2ND);
-                max_v = TransferToPulse(AxisInfo.MAX_VELOCITY_2ND);
-            }
+            //if (count == 1)
+            //{
+            //    acc = TransferToPulse(AxisInfo.HOME_ACC_1ST);
+            //    max_v = TransferToPulse(AxisInfo.MAX_VELOCITY_1ST);
+            //}
+            //else
+            //{
+            //    acc = TransferToPulse(AxisInfo.HOME_ACC_2ND);
+            //    max_v = TransferToPulse(AxisInfo.MAX_VELOCITY_2ND);
+            //}
 
             //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_MODE, 1);                   //Set home mode         
             //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION);   //Set home direction
@@ -338,23 +338,9 @@ namespace Device_APS
             //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_SHIFT, 0);                  // Set homing shift position
             //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_POS, 0);                    // Set homing position
 
+            //int res = APS168.APS_home_move(axis_id);
 
-            APS168.APS_set_axis_param(axis_id, (Int32)APS_Define.PRA_HOME_MODE, 0); //Set home mode
-            APS168.APS_set_axis_param(axis_id, (Int32)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION); //Set home direction
-            APS168.APS_set_axis_param_f(axis_id, (Int32)APS_Define.PRA_HOME_CURVE, 0.5); //Set s-factor
-            APS168.APS_set_axis_param_f(axis_id, (Int32)APS_Define.PRA_HOME_ACC, acc); //Set homing acceleration rate
-            APS168.APS_set_axis_param_f(axis_id, (Int32)APS_Define.PRA_HOME_VM, max_v); //Set homing maximum velocity.
-            APS168.APS_set_axis_param_f(axis_id, (Int32)APS_Define.PRA_HOME_VS, 0); //Set homing leave home velocity
-            APS168.APS_set_axis_param_f(axis_id, (Int32)APS_Define.PRA_HOME_VO, max_v*0.1); //Set homing speed
-            APS168.APS_set_axis_param_f(axis_id, (Int32)APS_Define.PRA_HOME_SHIFT, 0); //Set home shift
-            APS168.APS_set_axis_param_f(axis_id, (Int32)APS_Define.PRA_HOME_POS, 0); //User defined position after homing
-
-
-
-
-            int res = APS168.APS_home_move(axis_id);
-
-            return res;
+            return 0;
         }
 
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
@@ -371,7 +357,7 @@ namespace Device_APS
             if (ret != 0)
                 return -1;
             else
-                return TransferToMillimeter(pos);
+                return TransferToMillimeter(pos, axis);
         }
 
         public int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0)
@@ -399,12 +385,11 @@ namespace Device_APS
             Int32 ret = -1;
             ASYNCALL p = new ASYNCALL();
 
-            velocity_start  = TransferToPulse(velocity_start);
-            velocity_max    = TransferToPulse(velocity_max);
-            Tacc            = TransferToPulse(Tacc);
-            Tdec            = TransferToPulse(Tdec);
-            position        = TransferToPulse(position);
-
+            velocity_start  = TransferToPulse(velocity_start, axis);
+            velocity_max    = TransferToPulse(velocity_max, axis);
+            Tacc            = TransferToPulse(Tacc, axis);
+            Tdec            = TransferToPulse(Tdec, axis);
+            position        = TransferToPulse(position, axis);  
             ret = APS168.APS_ptp_all(axis,
                                  (Int32)APS_Define.OPT_ABSOLUTE,
                                  position,
@@ -427,12 +412,11 @@ namespace Device_APS
             Int32 ret = -1;
             ASYNCALL p = new ASYNCALL();
 
-            velocity_start = TransferToPulse(velocity_start);
-            velocity_max = TransferToPulse(velocity_max);
-            Tacc = TransferToPulse(Tacc);
-            Tdec = TransferToPulse(Tdec);
-            position = TransferToPulse(position);
-
+            velocity_start = TransferToPulse(velocity_start, axis);
+            velocity_max = TransferToPulse(velocity_max, axis);
+            Tacc = TransferToPulse(Tacc, axis);
+            Tdec = TransferToPulse(Tdec, axis);
+            position = TransferToPulse(position, axis);
             ret = APS168.APS_ptp_all(axis,
                      (Int32)APS_Define.OPT_RELATIVE,
                      position,
@@ -454,9 +438,9 @@ namespace Device_APS
 
             int ret = -1;
 
-            acc = TransferToPulse(acc);
-            dec = TransferToPulse(dec);
-            velocity_max = TransferToPulse(velocity_max);
+            acc = TransferToPulse(acc, axis);
+            dec = TransferToPulse(dec, axis);
+            velocity_max = TransferToPulse(velocity_max, axis);
 
             APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_MODE, 0);                // Set jog mode [0:Continuous mode, 1:Step mode]
             APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_DIR, dir);               // Set jog direction [0:  Positive , 1: Negative direction]

@@ -26,6 +26,9 @@ namespace DeviceCore
 
         #region Software Configuration
         TxtBx_AxisName,
+        Cmbx_UseSoftLimit,
+        TxtBx_SoftPEL,
+        TxtBx_SoftMEL,
         #endregion
 
         #region Speed Configuration
