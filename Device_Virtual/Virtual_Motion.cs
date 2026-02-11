@@ -126,13 +126,35 @@ namespace Device_Virtual
             return true;
         }
 
+
+        public bool SetMotionConfig(AXIS_INFO axisInfo, int axis)
+        {
+            AxisInfoMap[axis] = axisInfo;
+            return true;
+        }
+        public bool Servo_ONOff(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, bool flag = false)
+        {
+            return true;
+        }
+        public int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0)
+        {
+            CurrentPosition[devNo] = pos;
+            return 0;
+        }
+
+
         public string GetName()
         {
             return "Virtual";
         }
-
-        
-
+        public int GetDeviceNo()
+        {
+            return 25;
+        }
+        public short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
+        {
+            return 0;
+        }
         public bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
             if (Tool.GetTime(MoveTimer[devNo]) < MoveTime[devNo])
@@ -140,7 +162,6 @@ namespace Device_Virtual
             else
                 return true;
         }
-
         public bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0)
         {
             if (state == (int)VIRTUAL_MOTION_IO.MEL && CurrentPosition[devNo] <= AxisInfoMap[devNo].MEL_POS)
@@ -165,46 +186,16 @@ namespace Device_Virtual
 
             return false;
         }
-
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
             return CurrentPosition[devNo];
         }
 
+
         public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
         {
             return 0;
         }
-
-        
-
-        public bool Servo_ONOff(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, bool flag = false)
-        {
-            return true;
-        }
-
-        public bool SetMotionConfig(AXIS_INFO axisInfo, int axis)
-        {
-            AxisInfoMap[axis] = axisInfo;
-            return true;
-        }
-
-        public int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0)
-        {
-            CurrentPosition[devNo] = pos;
-            return 0;
-        }
-
-        public short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
-        {
-            return 0;
-        }
-
-        public int GetDeviceNo()
-        {
-            return 25;
-        }
-
         public int RelativeSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sacc, double Tdec, double Sdec)
         {
             double time = 0;
