@@ -27,6 +27,7 @@ namespace DeviceFunction
         private bool[] DML_Home_Complete;       //判斷各軸是否完成Home
         private bool[] DML_Homing;              //判斷各軸是否正在執行Home
         private readonly IEnumerable<IMotionCard> Cards;
+        private SINGLE_MOVE_MODE SingleMoveMode = SINGLE_MOVE_MODE.INDEX;
 
         public enum AXIS_NAME
         {
@@ -520,7 +521,7 @@ namespace DeviceFunction
             }
         }
 
-        // Set Parameter & Status Function
+        //[Set Parameter & Status Function]
         public bool SetServo(int axis, bool on_off)
         {
             byte line = (byte)DML_INFO[axis].LINE_NO;
@@ -529,6 +530,11 @@ namespace DeviceFunction
             bool res = DML[DML2Axis[axis]].Servo_ONOff(lineNo: line, devNo: dev_no, flag: on_off);
 
             return res;
+        }
+        public bool SetSingleMoveMode(SINGLE_MOVE_MODE mode)
+        {
+            SingleMoveMode = mode;
+            return true;
         }
 
         //[Status Function]
@@ -566,6 +572,10 @@ namespace DeviceFunction
             }
 
             status = bstatus;
+        }
+        public SINGLE_MOVE_MODE GetSingleMoveMode()
+        {
+            return SingleMoveMode;
         }
 
         //[Home Function]
@@ -686,6 +696,79 @@ namespace DeviceFunction
 
             return true;
         }
+        public bool SingleMove(int axis, int dir, double pos)
+        {
+            byte line = (byte)DML_INFO[axis].LINE_NO;
+            byte dev_no = (byte)DML_INFO[axis].DEV_NO;
+
+            double velocity_max = 0, velocity_start = 0, acc = 0, dec = 0, sfac = 0;
+
+            if (SingleMoveMode == SINGLE_MOVE_MODE.CONTINUOUS_SLOW)
+            {
+                velocity_max = DML_INFO[axis].SLOW_MAX_SPEED;
+                acc = DML_INFO[axis].SLOW_ACC;
+                dec = DML_INFO[axis].SLOW_DEC;
+            }
+            else if (SingleMoveMode == SINGLE_MOVE_MODE.CONTINUOUS_NORMAL || 
+                     SingleMoveMode == SINGLE_MOVE_MODE.INDEX)
+            {
+                velocity_max = DML_INFO[axis].NORMAL_MAX_SPEED;
+                acc = DML_INFO[axis].NORMAL_ACC;
+                dec = DML_INFO[axis].NORMAL_DEC;
+            }
+            else if (SingleMoveMode == SINGLE_MOVE_MODE.CONTINUOUS_FAST)
+            {
+                velocity_max = DML_INFO[axis].FAST_MAX_SPEED;
+                acc = DML_INFO[axis].FAST_ACC;
+                dec = DML_INFO[axis].FAST_DEC;
+            }
+
+            int res = 0;
+            if (SingleMoveMode == SINGLE_MOVE_MODE.INDEX)
+            {
+                res = DML[DML2Axis[axis]].RelativeSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, sfac);
+
+                double new_pos = DML[DML2Axis[axis]].GetPosition(devNo: dev_no) + pos;
+                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{new_pos}");
+            }
+            else
+            {
+                res = DML[DML2Axis[axis]].ContinuousMove(dev_no, dir, acc, dec, velocity_max);
+            }
+
+            if (res != 0)
+            {
+                Tool.SaveLogToFile($"軸:{axis} Single_Move失敗", level: "ERR");
+                return false;
+            }
+
+            return true;
+        }
+        public bool StopAxisMove(int axis)
+        {
+            byte line = (byte)DML_INFO[axis].LINE_NO;
+            byte dev_no = (byte)DML_INFO[axis].DEV_NO;
+
+            double dec = 0;
+
+            if (SingleMoveMode == SINGLE_MOVE_MODE.CONTINUOUS_SLOW)
+                dec = DML_INFO[axis].SLOW_DEC;
+            else if (SingleMoveMode == SINGLE_MOVE_MODE.CONTINUOUS_NORMAL)
+                dec = DML_INFO[axis].NORMAL_DEC;
+            else if (SingleMoveMode == SINGLE_MOVE_MODE.CONTINUOUS_FAST)
+                dec = DML_INFO[axis].FAST_DEC;
+
+            int res = 0;
+            res = DML[DML2Axis[axis]].Stop(devNo: dev_no, Tdec: dec);
+
+            if (res != 0)
+            {
+                Tool.SaveLogToFile($"軸:{axis} Stop_Move失敗", level: "ERR");
+                return false;
+            }
+
+            return true;
+        }
 
         //[Read&Save Axis Information]
         public void SaveAxisConfig(string filePath, string axisName, Dictionary<string, string> parameters)
@@ -747,7 +830,6 @@ namespace DeviceFunction
         {
             throw new NotImplementedException();
         }
-
         public bool Jog_Stop(int axis)
         {
             throw new NotImplementedException();

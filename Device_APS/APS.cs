@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Device_APS.APS_Define_W32;
+using Device_APS.APS168_W64;
+using DeviceCore;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
-using DeviceCore;
-using Device_APS.APS168_W64;
-using Device_APS.APS_Define_W32;
-using System.Diagnostics.Eventing.Reader;
 
 namespace Device_APS
 {
@@ -386,6 +386,16 @@ namespace Device_APS
                 return 0;
         }
 
+        public int Stop(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double Tdec = 0)
+        {
+            int ret = -1;
+
+            ret = APS168.APS_set_axis_param_f(devNo, (Int32)APS_Define.PRA_STP_DEC, Tdec);
+            ret = APS168.APS_stop_move(devNo);
+
+            return ret;
+        }
+
         public int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sfac, double Tdec, double Sdec)
         {
             if (Initial_Success == false)
@@ -458,12 +468,14 @@ namespace Device_APS
             APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_DEC, dec);
             APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_VM, velocity_max);
 
-            ret = APS168.APS_jog_start(axis, 0);          //Jog OFF 
+            ret = APS168.APS_jog_start(axis, 0);            //Jog OFF 
             // Create a rising edge.
-            ret = APS168.APS_jog_start(axis, 1);    //Jog ON 
+            ret = APS168.APS_jog_start(axis, 1);            //Jog ON 
 
             return ret;
         }
+
+        
         #endregion
     }
 }

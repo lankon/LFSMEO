@@ -90,6 +90,7 @@ namespace DeviceCore
 
         // [Move Function]
         int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1);
+        int Stop(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double Tdec = 0);
         int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start,
                                           double Tacc, double Sfac, double Tdec, double Sdec);
         int RelativeSMove(int axis, double position, double velocity_max, double velocity_start,

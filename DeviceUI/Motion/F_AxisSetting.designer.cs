@@ -33,6 +33,10 @@ namespace DeviceUI.Motion
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.Btn_NegativeMove = new System.Windows.Forms.Button();
+            this.Btn_MoveMode = new System.Windows.Forms.Button();
+            this.Btn_PositiveMove = new System.Windows.Forms.Button();
             this.Btn_Move = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,6 +60,8 @@ namespace DeviceUI.Motion
             this.Cmbx_AxisLimitStopMode = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_IndexStep = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.TxtBx_SoftMEL = new System.Windows.Forms.TextBox();
@@ -131,10 +137,9 @@ namespace DeviceUI.Motion
             this.TxtBx_ORGPosition = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
             this.Btn_Homing = new System.Windows.Forms.Button();
-            this.Btn_PositiveMove = new System.Windows.Forms.Button();
-            this.Btn_NegativeMove = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -168,8 +173,7 @@ namespace DeviceUI.Motion
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.tabPage1.Controls.Add(this.Btn_NegativeMove);
-            this.tabPage1.Controls.Add(this.Btn_PositiveMove);
+            this.tabPage1.Controls.Add(this.tableLayoutPanel1);
             this.tabPage1.Controls.Add(this.Btn_Move);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -180,6 +184,56 @@ namespace DeviceUI.Motion
             this.tabPage1.Size = new System.Drawing.Size(1174, 524);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Parameter";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+            this.tableLayoutPanel1.Controls.Add(this.Btn_NegativeMove, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_MoveMode, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_PositiveMove, 2, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(823, 461);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(309, 57);
+            this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // Btn_NegativeMove
+            // 
+            this.Btn_NegativeMove.Location = new System.Drawing.Point(4, 4);
+            this.Btn_NegativeMove.Name = "Btn_NegativeMove";
+            this.Btn_NegativeMove.Size = new System.Drawing.Size(104, 49);
+            this.Btn_NegativeMove.TabIndex = 5;
+            this.Btn_NegativeMove.Text = "- <=";
+            this.Btn_NegativeMove.UseVisualStyleBackColor = true;
+            this.Btn_NegativeMove.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Btn_NegativeMove_MouseDown);
+            this.Btn_NegativeMove.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseUp);
+            // 
+            // Btn_MoveMode
+            // 
+            this.Btn_MoveMode.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_MoveMode.Location = new System.Drawing.Point(115, 4);
+            this.Btn_MoveMode.Name = "Btn_MoveMode";
+            this.Btn_MoveMode.Size = new System.Drawing.Size(79, 49);
+            this.Btn_MoveMode.TabIndex = 6;
+            this.Btn_MoveMode.Text = "Index";
+            this.Btn_MoveMode.UseVisualStyleBackColor = true;
+            this.Btn_MoveMode.Click += new System.EventHandler(this.Btn_MoveMode_Click);
+            // 
+            // Btn_PositiveMove
+            // 
+            this.Btn_PositiveMove.Location = new System.Drawing.Point(201, 4);
+            this.Btn_PositiveMove.Name = "Btn_PositiveMove";
+            this.Btn_PositiveMove.Size = new System.Drawing.Size(104, 49);
+            this.Btn_PositiveMove.TabIndex = 4;
+            this.Btn_PositiveMove.Text = "=> +";
+            this.Btn_PositiveMove.UseVisualStyleBackColor = true;
+            this.Btn_PositiveMove.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseDown);
+            this.Btn_PositiveMove.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseUp);
             // 
             // Btn_Move
             // 
@@ -435,6 +489,8 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.85994F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.14006F));
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_IndexStep, 1, 5);
+            this.tableLayoutPanel3.Controls.Add(this.label2, 0, 5);
             this.tableLayoutPanel3.Controls.Add(this.label13, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.comboBox4, 1, 4);
             this.tableLayoutPanel3.Controls.Add(this.TxtBx_SoftMEL, 1, 3);
@@ -458,6 +514,22 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(364, 328);
             this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // TxtBx_IndexStep
+            // 
+            this.TxtBx_IndexStep.Location = new System.Drawing.Point(182, 196);
+            this.TxtBx_IndexStep.Name = "TxtBx_IndexStep";
+            this.TxtBx_IndexStep.Size = new System.Drawing.Size(176, 29);
+            this.TxtBx_IndexStep.TabIndex = 13;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(6, 193);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(167, 35);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Index Step(mm)";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label13
             // 
@@ -1202,25 +1274,6 @@ namespace DeviceUI.Motion
             this.Btn_Homing.UseVisualStyleBackColor = true;
             this.Btn_Homing.Click += new System.EventHandler(this.Btn_Homing_Click);
             // 
-            // Btn_PositiveMove
-            // 
-            this.Btn_PositiveMove.Location = new System.Drawing.Point(1024, 463);
-            this.Btn_PositiveMove.Name = "Btn_PositiveMove";
-            this.Btn_PositiveMove.Size = new System.Drawing.Size(108, 55);
-            this.Btn_PositiveMove.TabIndex = 4;
-            this.Btn_PositiveMove.Text = "=> +";
-            this.Btn_PositiveMove.UseVisualStyleBackColor = true;
-            this.Btn_PositiveMove.Click += new System.EventHandler(this.Btn_PositiveMove_Click);
-            // 
-            // Btn_NegativeMove
-            // 
-            this.Btn_NegativeMove.Location = new System.Drawing.Point(864, 463);
-            this.Btn_NegativeMove.Name = "Btn_NegativeMove";
-            this.Btn_NegativeMove.Size = new System.Drawing.Size(108, 55);
-            this.Btn_NegativeMove.TabIndex = 5;
-            this.Btn_NegativeMove.Text = "- <=";
-            this.Btn_NegativeMove.UseVisualStyleBackColor = true;
-            // 
             // F_AxisSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1232,6 +1285,7 @@ namespace DeviceUI.Motion
             this.Text = "F_StartForm_ButtonGroup";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -1363,5 +1417,9 @@ namespace DeviceUI.Motion
         private System.Windows.Forms.TextBox TxtBx_2ndORGOffset;
         private System.Windows.Forms.Button Btn_NegativeMove;
         private System.Windows.Forms.Button Btn_PositiveMove;
+        private System.Windows.Forms.Button Btn_MoveMode;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TextBox TxtBx_IndexStep;
+        private System.Windows.Forms.Label label2;
     }
 }

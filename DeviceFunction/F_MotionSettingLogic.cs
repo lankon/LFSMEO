@@ -214,7 +214,11 @@ namespace DeviceFunction
             
             return res;
         }
-
+        public bool SingleMove(int dir)
+        {
+            bool res = Function_MotionCard.SingleMove(GetCurrentBtnNum(), dir, 50.0);
+            return res;
+        }
         #endregion
 
         public int GetCurrentBtnNum()

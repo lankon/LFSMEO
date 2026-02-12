@@ -78,7 +78,7 @@ namespace DeviceUI.Motion
         }
         private void UpdatePage()
         {
-            MotionSettingLogic.UpdateAxisInfo2Form(0);
+            MotionSettingLogic.UpdateAxisInfo2Form(MotionSettingLogic.GetCurrentBtnNum());
             AxisButton.StartUpdatePositionInvoke(true);
             StartUpdateStatusInvoke(true);
         }

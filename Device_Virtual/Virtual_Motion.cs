@@ -26,7 +26,7 @@ namespace Device_Virtual
         private Dictionary<int, double> CurrentPosition = new Dictionary<int, double>();        //當前位置(mm)
         private Dictionary<int, double> MoveTime = new Dictionary<int, double>();               //模擬運動時間(ms)
         private Dictionary<int, long> MoveTimer = new Dictionary<int, long>();                  //模擬運動計時器(ms)
-        private bool CM_Stop = false;       //連續移動停止旗標 這樣寫有問題!!!!
+        private Dictionary<int, bool> CM_Stop = new Dictionary<int, bool>();                    //連續移動停止旗標
 
         enum VIRTUAL_MOTION_IO
         {
@@ -115,6 +115,7 @@ namespace Device_Virtual
                 CurrentPosition[i] = 0;
                 MoveTime[i] = 0;
                 MoveTimer[i] = 0;
+                CM_Stop[i] = false;
 
                 AxisInfoMap[i] = new AXIS_INFO()
                 {
@@ -166,19 +167,15 @@ namespace Device_Virtual
         {
             if (state == (int)VIRTUAL_MOTION_IO.MEL && CurrentPosition[devNo] <= AxisInfoMap[devNo].MEL_POS)
             {
-                CM_Stop = true; //極限觸發後停止連續移動
+                CM_Stop[devNo] = true; //極限觸發後停止連續移動
                 return true;
             }
-            //else
-            //    CM_Stop = false; //非極限狀態恢復連續移動
 
             if (state == (int)VIRTUAL_MOTION_IO.PEL && CurrentPosition[devNo] >= AxisInfoMap[devNo].PEL_POS)
             {
-                CM_Stop = true; //極限觸發後停止連續移動
+                CM_Stop[devNo] = true; //極限觸發後停止連續移動
                 return true;
             }
-            //else
-            //    CM_Stop = false; //非極限狀態恢復連續移動
 
             if (state == (int)VIRTUAL_MOTION_IO.ORG || state == (int)VIRTUAL_MOTION_IO.INP ||
                 state == (int)VIRTUAL_MOTION_IO.RDY || state == (int)VIRTUAL_MOTION_IO.SVON)
@@ -194,6 +191,12 @@ namespace Device_Virtual
 
         public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
         {
+            return 0;
+        }
+        public int Stop(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double Tdec = 0)
+        {
+            CM_Stop[devNo] = true;
+
             return 0;
         }
         public int RelativeSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sacc, double Tdec, double Sdec)
@@ -235,22 +238,28 @@ namespace Device_Virtual
             int ret = 0;
 
             Tool.ResetTimeCount(out long startTicks);
-            CM_Stop = false;
+            CM_Stop[axis] = false;
 
-            while (!CM_Stop)                   
+            Thread moveThread = new Thread(() =>
             {
-                if (Tool.GetTime(startTicks, time: "s") > 5)
-                    break;
-                
-                double time = Tool.GetTime(startTicks, time:"s");
+                while (!CM_Stop[axis])
+                {
+                    if (Tool.GetTime(startTicks, time: "s") > 5)
+                        break;
 
-                if(dir == 1)    //負向
-                    CurrentPosition[axis] = CurrentPosition[axis] - time * velocity_max;
-                else
-                    CurrentPosition[axis] = CurrentPosition[axis] + time * velocity_max;
+                    double time = Tool.GetTime(startTicks, time: "s");
 
-                Thread.Sleep(100);
-            }
+                    if (dir == 1)    //負向
+                        CurrentPosition[axis] = CurrentPosition[axis] - time * velocity_max;
+                    else
+                        CurrentPosition[axis] = CurrentPosition[axis] + time * velocity_max;
+
+                    Thread.Sleep(100);
+                }
+            });
+
+            moveThread.IsBackground = true;
+            moveThread.Start();
 
             acc = TransferToPulse(acc, axis);
             dec = TransferToPulse(dec, axis);

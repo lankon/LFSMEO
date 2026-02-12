@@ -306,6 +306,11 @@ namespace Device_MN200
         {
             throw new NotImplementedException();
         }
+
+        public int Stop(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double Tdec = 0)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
