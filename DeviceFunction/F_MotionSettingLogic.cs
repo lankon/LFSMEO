@@ -196,7 +196,22 @@ namespace DeviceFunction
             SaveAxis();
             Function_MotionCard.LoadAxisConfig();
 
-            bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 10.0, "Abs", MOVE_VELOCITY_MODE.FAST);
+            long CycleTime = 0;
+            Tool.ResetTimeCount(out CycleTime);
+            bool Terminate = false;
+
+            bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 50.0, "Abs", MOVE_VELOCITY_MODE.FAST);
+            
+            while(!Terminate)
+            {
+                if(Function_MotionCard.Get_Motion_Complete(GetCurrentBtnNum()))
+                {
+                    Terminate = true;
+                }
+            }
+            
+            Tool.SaveLogToFile($"PTP Move Time:{Tool.GetTime(CycleTime)}");
+            
             return res;
         }
 

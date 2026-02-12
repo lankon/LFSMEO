@@ -123,6 +123,15 @@ namespace Device_APS
                 }
             }
 
+            for (int i = 0; i < GetDeviceNo(); i++)
+            {
+                AxisInfoMap[i] = new AXIS_INFO()
+                {
+                    PEL_POS = 10000,
+                    MEL_POS = -10000,
+                };
+            }
+
             return Initial_Success;
         }
 

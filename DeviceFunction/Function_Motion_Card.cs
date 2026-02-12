@@ -23,6 +23,7 @@ namespace DeviceFunction
         private List<IMotionCard> DML = new List<IMotionCard>();
         private List<AXIS_INFO> DML_INFO = new List<AXIS_INFO>();
         private int[] DML2Axis;
+        private long CycleTime = 0;
         private bool[] DML_Home_Complete;       //判斷各軸是否完成Home
         private bool[] DML_Homing;              //判斷各軸是否正在執行Home
         private readonly IEnumerable<IMotionCard> Cards;
@@ -281,6 +282,8 @@ namespace DeviceFunction
                             {
                                 SetOrigin(axis, DML_INFO[axis].HOME_POS);
 
+                                //Tool.ResetTimeCount(out CycleTime);
+
                                 res = DML[DML2Axis[axis]].RelativeSMove(DML_INFO[axis].DEV_NO,
                                                                             DML_INFO[axis].HOME_OFFSET_2ND,
                                                                             DML_INFO[axis].HOME_OFFSET_VELOCITY_2ND,
@@ -304,6 +307,8 @@ namespace DeviceFunction
                         {
                             if (Get_Motion_Complete(axis) == false)
                                 break;
+
+                            //Tool.SaveLogToFile($"AxisMoveTime:{Tool.GetTime(CycleTime)}");
 
                             return true;
                         }
