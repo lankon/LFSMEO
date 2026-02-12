@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
+using RGBTester.Logic;
 
 namespace RGBTester.UI
 {
@@ -124,6 +125,14 @@ namespace RGBTester.UI
             var form = ServiceProvider.GetRequiredService<F_DAQ_SamplingTest>();
             Tool.SetForm(Scope.MainPanel, form);
             form.Show();
+        }
+
+        private void Btn_Test_Click(object sender, EventArgs e)
+        {
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+
+            MainTask.SetTask<TaskMotionTest>();
+            MainTask.Run();
         }
     }
 }
