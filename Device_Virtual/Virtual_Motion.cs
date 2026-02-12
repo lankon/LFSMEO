@@ -165,6 +165,9 @@ namespace Device_Virtual
         }
         public bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0)
         {
+            if (devNo > GetDeviceNo())
+                return false;
+            
             if (state == (int)VIRTUAL_MOTION_IO.MEL && CurrentPosition[devNo] <= AxisInfoMap[devNo].MEL_POS)
             {
                 CM_Stop[devNo] = true; //極限觸發後停止連續移動
@@ -185,7 +188,9 @@ namespace Device_Virtual
         }
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
-            return CurrentPosition[devNo];
+            CurrentPosition.TryGetValue(devNo, out double pos);
+
+            return pos;
         }
 
 

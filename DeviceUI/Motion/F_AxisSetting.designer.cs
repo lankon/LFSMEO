@@ -713,7 +713,7 @@ namespace DeviceUI.Motion
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(185, 35);
             this.label31.TabIndex = 3;
-            this.label31.Text = "Speed";
+            this.label31.Text = "Speed(mm/s)";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label32
@@ -722,7 +722,7 @@ namespace DeviceUI.Motion
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(185, 35);
             this.label32.TabIndex = 4;
-            this.label32.Text = "Init Speed";
+            this.label32.Text = "Init Speed(mm/s)";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label33
@@ -831,7 +831,7 @@ namespace DeviceUI.Motion
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(185, 35);
             this.label22.TabIndex = 3;
-            this.label22.Text = "Speed";
+            this.label22.Text = "Speed(mm/s)";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label27
@@ -840,7 +840,7 @@ namespace DeviceUI.Motion
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(185, 35);
             this.label27.TabIndex = 4;
-            this.label27.Text = "Init Speed";
+            this.label27.Text = "Init Speed(mm/s)";
             this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label28
@@ -949,7 +949,7 @@ namespace DeviceUI.Motion
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(185, 35);
             this.label20.TabIndex = 3;
-            this.label20.Text = "Speed";
+            this.label20.Text = "Speed(mm/s)";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label21
@@ -958,7 +958,7 @@ namespace DeviceUI.Motion
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(185, 35);
             this.label21.TabIndex = 4;
-            this.label21.Text = "Init Speed";
+            this.label21.Text = "Init Speed(mm/s)";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label24

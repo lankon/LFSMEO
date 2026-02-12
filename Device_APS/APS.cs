@@ -71,7 +71,6 @@ namespace Device_APS
         }
         #endregion
 
-
         public bool Open()
         {
             if (Initial_Success == true)

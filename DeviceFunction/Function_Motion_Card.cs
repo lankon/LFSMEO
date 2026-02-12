@@ -824,16 +824,6 @@ namespace DeviceFunction
         {
             return DML_INFO.AsReadOnly();
         }
-
-
-        public bool Jog_Start(int axis, string direction, MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL)
-        {
-            throw new NotImplementedException();
-        }
-        public bool Jog_Stop(int axis)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

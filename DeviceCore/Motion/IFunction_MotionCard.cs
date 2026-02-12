@@ -44,8 +44,6 @@ namespace DeviceCore
         bool PTP_Move(int axis, double pos, string mode = "Abs", MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL);
         bool SingleMove(int axis, int dir, double pos);
         bool StopAxisMove(int axis);
-        bool Jog_Start(int axis, string direction, MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL);
-        bool Jog_Stop(int axis);
 
         // [Read&Save Axis Information]
         void SaveAxisConfig(string filePath, string axisName, Dictionary<string, string> parameters);
