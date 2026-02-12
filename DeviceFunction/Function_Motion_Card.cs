@@ -636,7 +636,16 @@ namespace DeviceFunction
             byte dev_no = (byte)DML_INFO[axis].DEV_NO;
 
             double velocity_max = 0, velocity_start = 0, acc = 0, dec = 0, sfac = 0;
-            if (velocityMode == MOVE_VELOCITY_MODE.NORMAL)
+
+            if (velocityMode == MOVE_VELOCITY_MODE.SLOW)
+            {
+                velocity_max = DML_INFO[axis].SLOW_MAX_SPEED;
+                velocity_start = DML_INFO[axis].SLOW_INIT_SPEED;
+                acc = DML_INFO[axis].SLOW_ACC;
+                dec = DML_INFO[axis].SLOW_DEC;
+                sfac = DML_INFO[axis].SLOW_Sfac;
+            }
+            else if (velocityMode == MOVE_VELOCITY_MODE.NORMAL)
             {
                 velocity_max = DML_INFO[axis].NORMAL_MAX_SPEED;
                 velocity_start = DML_INFO[axis].NORMAL_INIT_SPEED;
