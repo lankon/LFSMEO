@@ -40,6 +40,7 @@ namespace RGBTester.UI
             this.label4 = new System.Windows.Forms.Label();
             this.Btn_Spectrometer = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.Btn_Test = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -146,6 +147,16 @@ namespace RGBTester.UI
             this.label5.Text = "Spectrum";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // Btn_Test
+            // 
+            this.Btn_Test.Location = new System.Drawing.Point(44, 394);
+            this.Btn_Test.Name = "Btn_Test";
+            this.Btn_Test.Size = new System.Drawing.Size(69, 70);
+            this.Btn_Test.TabIndex = 42;
+            this.Btn_Test.Text = "Test";
+            this.Btn_Test.UseVisualStyleBackColor = true;
+            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -153,6 +164,7 @@ namespace RGBTester.UI
             this.ClientSize = new System.Drawing.Size(1326, 661);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.Btn_Spectrometer);
+            this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Btn_DAQ_SamplingTest);
             this.Controls.Add(this.Btn_IO_Setting);
@@ -180,5 +192,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button Btn_Spectrometer;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button Btn_Test;
     }
 }

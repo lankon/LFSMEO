@@ -29,17 +29,19 @@ namespace DeviceUI.Motion
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.Labl_RDY = new System.Windows.Forms.Label();
+            this.Labl_INP = new System.Windows.Forms.Label();
+            this.Labl_Servo = new System.Windows.Forms.Label();
+            this.Labl_MEL = new System.Windows.Forms.Label();
+            this.Labl_PEL = new System.Windows.Forms.Label();
+            this.Labl_ORG = new System.Windows.Forms.Label();
+            this.Labl_Alarm = new System.Windows.Forms.Label();
             this.Pnl_AxisButton = new System.Windows.Forms.Panel();
             this.Pnl_AxisSetting = new System.Windows.Forms.Panel();
+            this.Timer_UpdateStatus = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -58,13 +60,13 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_RDY, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_INP, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_Servo, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_MEL, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_PEL, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_ORG, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.Labl_Alarm, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -79,99 +81,104 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel1.Size = new System.Drawing.Size(126, 557);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
-            // label7
+            // Labl_RDY
             // 
-            this.label7.BackColor = System.Drawing.Color.White;
-            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(4, 478);
-            this.label7.Margin = new System.Windows.Forms.Padding(3);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(118, 75);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "RDY";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_RDY.BackColor = System.Drawing.Color.White;
+            this.Labl_RDY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_RDY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Labl_RDY.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_RDY.Location = new System.Drawing.Point(4, 478);
+            this.Labl_RDY.Margin = new System.Windows.Forms.Padding(3);
+            this.Labl_RDY.Name = "Labl_RDY";
+            this.Labl_RDY.Size = new System.Drawing.Size(118, 75);
+            this.Labl_RDY.TabIndex = 14;
+            this.Labl_RDY.Text = "RDY";
+            this.Labl_RDY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // Labl_INP
             // 
-            this.label3.BackColor = System.Drawing.Color.White;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(4, 399);
-            this.label3.Margin = new System.Windows.Forms.Padding(3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(118, 72);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "INP";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_INP.BackColor = System.Drawing.Color.White;
+            this.Labl_INP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_INP.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Labl_INP.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_INP.Location = new System.Drawing.Point(4, 399);
+            this.Labl_INP.Margin = new System.Windows.Forms.Padding(3);
+            this.Labl_INP.Name = "Labl_INP";
+            this.Labl_INP.Size = new System.Drawing.Size(118, 72);
+            this.Labl_INP.TabIndex = 10;
+            this.Labl_INP.Text = "INP";
+            this.Labl_INP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label4
+            // Labl_Servo
             // 
-            this.label4.BackColor = System.Drawing.Color.White;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(4, 320);
-            this.label4.Margin = new System.Windows.Forms.Padding(3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(118, 72);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Servo";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_Servo.BackColor = System.Drawing.Color.White;
+            this.Labl_Servo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_Servo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Labl_Servo.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_Servo.Location = new System.Drawing.Point(4, 320);
+            this.Labl_Servo.Margin = new System.Windows.Forms.Padding(3);
+            this.Labl_Servo.Name = "Labl_Servo";
+            this.Labl_Servo.Size = new System.Drawing.Size(118, 72);
+            this.Labl_Servo.TabIndex = 11;
+            this.Labl_Servo.Text = "Servo";
+            this.Labl_Servo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // Labl_MEL
             // 
-            this.label5.BackColor = System.Drawing.Color.White;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(4, 162);
-            this.label5.Margin = new System.Windows.Forms.Padding(3);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(118, 72);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "MEL";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_MEL.BackColor = System.Drawing.Color.White;
+            this.Labl_MEL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_MEL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Labl_MEL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Labl_MEL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_MEL.Location = new System.Drawing.Point(4, 162);
+            this.Labl_MEL.Margin = new System.Windows.Forms.Padding(3);
+            this.Labl_MEL.Name = "Labl_MEL";
+            this.Labl_MEL.Size = new System.Drawing.Size(118, 72);
+            this.Labl_MEL.TabIndex = 12;
+            this.Labl_MEL.Text = "MEL";
+            this.Labl_MEL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
+            // Labl_PEL
             // 
-            this.label6.BackColor = System.Drawing.Color.White;
-            this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(4, 83);
-            this.label6.Margin = new System.Windows.Forms.Padding(3);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(118, 72);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "PEL";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_PEL.BackColor = System.Drawing.Color.White;
+            this.Labl_PEL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_PEL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Labl_PEL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_PEL.Location = new System.Drawing.Point(4, 83);
+            this.Labl_PEL.Margin = new System.Windows.Forms.Padding(3);
+            this.Labl_PEL.Name = "Labl_PEL";
+            this.Labl_PEL.Size = new System.Drawing.Size(118, 72);
+            this.Labl_PEL.TabIndex = 13;
+            this.Labl_PEL.Text = "PEL";
+            this.Labl_PEL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // Labl_ORG
             // 
-            this.label2.BackColor = System.Drawing.Color.White;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(4, 241);
-            this.label2.Margin = new System.Windows.Forms.Padding(3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(118, 72);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "ORG";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_ORG.BackColor = System.Drawing.Color.White;
+            this.Labl_ORG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_ORG.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Labl_ORG.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_ORG.Location = new System.Drawing.Point(4, 241);
+            this.Labl_ORG.Margin = new System.Windows.Forms.Padding(3);
+            this.Labl_ORG.Name = "Labl_ORG";
+            this.Labl_ORG.Size = new System.Drawing.Size(118, 72);
+            this.Labl_ORG.TabIndex = 9;
+            this.Labl_ORG.Text = "ORG";
+            this.Labl_ORG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // Labl_Alarm
             // 
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(4, 4);
-            this.label1.Margin = new System.Windows.Forms.Padding(3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 72);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Alarm";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Labl_Alarm.BackColor = System.Drawing.Color.White;
+            this.Labl_Alarm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_Alarm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Labl_Alarm.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Labl_Alarm.Location = new System.Drawing.Point(4, 4);
+            this.Labl_Alarm.Margin = new System.Windows.Forms.Padding(3);
+            this.Labl_Alarm.Name = "Labl_Alarm";
+            this.Labl_Alarm.Size = new System.Drawing.Size(118, 72);
+            this.Labl_Alarm.TabIndex = 8;
+            this.Labl_Alarm.Text = "Alarm";
+            this.Labl_Alarm.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Pnl_AxisButton
             // 
@@ -188,6 +195,10 @@ namespace DeviceUI.Motion
             this.Pnl_AxisSetting.Name = "Pnl_AxisSetting";
             this.Pnl_AxisSetting.Size = new System.Drawing.Size(1184, 559);
             this.Pnl_AxisSetting.TabIndex = 4;
+            // 
+            // Timer_UpdateStatus
+            // 
+            this.Timer_UpdateStatus.Tick += new System.EventHandler(this.Timer_UpdateStatus_Tick);
             // 
             // F_MotionSetting
             // 
@@ -210,14 +221,15 @@ namespace DeviceUI.Motion
         #endregion
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel Pnl_AxisButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label Labl_Alarm;
+        private System.Windows.Forms.Label Labl_PEL;
+        private System.Windows.Forms.Label Labl_MEL;
+        private System.Windows.Forms.Label Labl_Servo;
+        private System.Windows.Forms.Label Labl_INP;
+        private System.Windows.Forms.Label Labl_ORG;
+        private System.Windows.Forms.Label Labl_RDY;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel Pnl_AxisSetting;
+        private System.Windows.Forms.Timer Timer_UpdateStatus;
     }
 }

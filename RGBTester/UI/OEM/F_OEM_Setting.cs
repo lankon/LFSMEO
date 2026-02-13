@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
+using RGBTester.Logic;
 using System.IO;
 
 namespace RGBTester.UI
@@ -103,6 +104,9 @@ namespace RGBTester.UI
                 Tool.HideElementOnPanel(Scope.MainPanel);
                 Tool.SetForm(Scope.MainPanel, form);
                 form.Show();
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    oem_set.ShowFormName(true);
             }
         }
 
@@ -144,6 +148,14 @@ namespace RGBTester.UI
                 Tool.WriteFile(file, spectrum[i].ToString());
             }
             Tool.CloseFile(file);
+        }
+
+        private void Btn_Test_Click(object sender, EventArgs e)
+        {
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+
+            MainTask.SetTask<TaskMotionTest>();
+            MainTask.Run();
         }
     }
 }

@@ -40,9 +40,10 @@ namespace DeviceUI.Motion
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.Btn_NextPnlPart2 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.Btn_PreviousPnlPart2 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.Timer_UpdatePosition = new System.Windows.Forms.Timer(this.components);
             this.Pnl_Part1.SuspendLayout();
             this.Pnl_Part2.SuspendLayout();
             this.SuspendLayout();
@@ -108,9 +109,9 @@ namespace DeviceUI.Motion
             this.Pnl_Part2.Controls.Add(this.label1);
             this.Pnl_Part2.Controls.Add(this.button1);
             this.Pnl_Part2.Controls.Add(this.Btn_NextPnlPart2);
+            this.Pnl_Part2.Controls.Add(this.button7);
             this.Pnl_Part2.Controls.Add(this.Btn_PreviousPnlPart2);
             this.Pnl_Part2.Controls.Add(this.button6);
-            this.Pnl_Part2.Controls.Add(this.button7);
             this.Pnl_Part2.Location = new System.Drawing.Point(146, 203);
             this.Pnl_Part2.Name = "Pnl_Part2";
             this.Pnl_Part2.Size = new System.Drawing.Size(1318, 88);
@@ -120,10 +121,10 @@ namespace DeviceUI.Motion
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(41, 64);
+            this.label1.Location = new System.Drawing.Point(40, 61);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 12);
-            this.label1.TabIndex = 4;
+            this.label1.TabIndex = 35;
             this.label1.Text = "000.000";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -149,6 +150,17 @@ namespace DeviceUI.Motion
             this.Btn_NextPnlPart2.UseVisualStyleBackColor = true;
             this.Btn_NextPnlPart2.Click += new System.EventHandler(this.Btn_NextPnlPart1_Click);
             // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("Times New Roman", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.Location = new System.Drawing.Point(109, 3);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(78, 82);
+            this.button7.TabIndex = 1;
+            this.button7.Tag = "1";
+            this.button7.Text = "Y";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
             // Btn_PreviousPnlPart2
             // 
             this.Btn_PreviousPnlPart2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -171,16 +183,10 @@ namespace DeviceUI.Motion
             this.button6.Text = "Z";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // Timer_UpdatePosition
             // 
-            this.button7.Font = new System.Drawing.Font("Times New Roman", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(109, 3);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(78, 82);
-            this.button7.TabIndex = 1;
-            this.button7.Tag = "1";
-            this.button7.Text = "Y";
-            this.button7.UseVisualStyleBackColor = true;
+            this.Timer_UpdatePosition.Interval = 200;
+            this.Timer_UpdatePosition.Tick += new System.EventHandler(this.Timer_UpdatePosition_Tick);
             // 
             // F_AxisButton
             // 
@@ -208,11 +214,12 @@ namespace DeviceUI.Motion
         private System.Windows.Forms.Label Labl_PostionAxis0;
         private System.Windows.Forms.Button Btn_Axis0;
         private System.Windows.Forms.Panel Pnl_Part2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button Btn_NextPnlPart2;
         private System.Windows.Forms.Button Btn_PreviousPnlPart2;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Timer Timer_UpdatePosition;
+        private System.Windows.Forms.Label label1;
     }
 }

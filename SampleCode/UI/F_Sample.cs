@@ -65,10 +65,13 @@ namespace SampleCode.UI
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
         }
+        private void LeavePage()
+        {
+        }
         #endregion
 
         #region public function
-        
+
         #endregion
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
         {
@@ -77,6 +80,7 @@ namespace SampleCode.UI
                 SaveAllEnumSetting();
                 ReadAllEnumSetting();
 
+                LeavePage();
                 ////釋放記憶體資源
                 //Tool.ReleaseButtonImages(this);
                 //this.Close();

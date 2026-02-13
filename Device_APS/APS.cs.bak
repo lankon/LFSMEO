@@ -1,34 +1,27 @@
-﻿using Device_APS.APS_Define_W32;
-using Device_APS.APS168_W64;
-using DeviceCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Device_APS
+using DeviceCore;
+using Device_APS.APS168_W64;
+using Device_APS.APS_Define_W32;
+
+namespace InstrumentTest.Motion_IO_Card.Base
 {
-    public class APS : IMotionCard
+    class APS : IMotionCard
     {
-        public APS()
-        {
-
-        }
-
         #region parameter define 
         APS_Parameter APS_Param = new APS_Parameter();
         private bool Initial_Success = false;
-        private Dictionary<int, AXIS_INFO> AxisInfoMap = new Dictionary<int, AXIS_INFO>();
+        private AXIS_INFO AxisInfo = new AXIS_INFO();
 
         struct APS_Parameter
         {
             public Int32 CardType;
             public Int32 MAX_DI_NUM;
             public Int32 MAX_DO_NUM;
-            public Int32 MAX_MOTION_DEV_NUM;
             public bool[,,] Input_Status;   //紀錄[LineNo,DevNo,Port]對應的Input訊號
             public bool[,,] Motion_Status;  //紀錄[LineNo,DevNo,State]對應的Motion訊號
         }
@@ -44,32 +37,37 @@ namespace Device_APS
         }
         #endregion
 
-        #region private function
-        private int TransferToPulse(double intput, int axis)
+        public APS()
         {
-            double resolution = AxisInfoMap[axis].DRIVER_RESOLUTION;
-            double pitch = AxisInfoMap[axis].PITCH;
 
-            if (pitch == 0)
-                return 0;
-
-            double pulse = intput * resolution / pitch;
-            
-            return (int)pulse;
         }
-        private double TransferToMillimeter(double intput, int axis)
+        
+        #region IO Function
+        public bool GetInputStatus(byte lineNo, byte DevNo, byte port)
         {
-            double resolution = AxisInfoMap[axis].DRIVER_RESOLUTION;
-            double pitch = AxisInfoMap[axis].PITCH;
+            if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
+            {
+                if (port < 0 || port >= APS_Param.MAX_DI_NUM)
+                    return false;
+                if (DevNo < 0 || DevNo >= 5)
+                    return false;
+                if (lineNo < 0 || lineNo >= 5)
+                    return false;
+            }
 
-            if (resolution == 0)
-                return 0;
-
-            double pulse = intput / resolution * pitch;
-
-            return pulse;
+            return APS_Param.Input_Status[lineNo, DevNo, port];
         }
-        #endregion
+
+        public string GetName()
+        {
+            if (!Initial_Success)
+                return "None";
+
+            if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
+                return "AMP_204C";
+
+            return "None";
+        }
 
         public bool Open()
         {
@@ -86,12 +84,12 @@ namespace Device_APS
             {
                 ret = APS168.APS_initial(ref boardID_InBits, mode);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ret = -1;
             }
-
-
+            
+            
             if (ret != 0)
                 return false;
 
@@ -105,69 +103,22 @@ namespace Device_APS
                 ret = APS168.APS_get_card_name(i, ref APS_Param.CardType);
 
                 if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_PCI_825458 ||
-                    APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C ||
-                    APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_PCIE_8332)
+                    APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
                 {
                     ret = APS168.APS_get_first_axisId(i, ref StartAxisID, ref TotalAxisNum);
 
-                    
                     APS_Param.MAX_DI_NUM = 24;
                     APS_Param.MAX_DO_NUM = 24;
-                    APS_Param.MAX_MOTION_DEV_NUM = TotalAxisNum;
                     APS_Param.Input_Status = new bool[5, 5, APS_Param.MAX_DI_NUM];
-                    APS_Param.Motion_Status = new bool[5, TotalAxisNum, Enum.GetValues(typeof(APS_Motion_IO)).Length];
+                    APS_Param.Motion_Status = new bool[5, 5, APS_Param.MAX_DI_NUM];
 
-                    Initial_Success = true;
                     break;
                 }
             }
 
-            for (int i = 0; i < GetDeviceNo(); i++)
-            {
-                AxisInfoMap[i] = new AXIS_INFO()
-                {
-                    PEL_POS = 10000,
-                    MEL_POS = -10000,
-                };
-            }
+            Initial_Success = true;
 
-            return Initial_Success;
-        }
-
-        public string GetName()
-        {
-            return "AMP_204C";
-
-            if (!Initial_Success)
-                return "None";
-
-            if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
-                return "AMP_204C";
-            else if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_PCIE_8332)
-                return "PCIE_8332";
-
-            return "None";
-        }
-
-        public int GetDeviceNo()
-        {
-            return APS_Param.MAX_MOTION_DEV_NUM;
-        }
-
-        #region IO Function
-        public bool GetInputStatus(byte lineNo, byte DevNo, byte port)
-        {
-            if (APS_Param.CardType == (Int32)APS_Define.DEVICE_NAME_AMP_20408C)
-            {
-                if (port < 0 || port >= APS_Param.MAX_DI_NUM)
-                    return false;
-                if (DevNo < 0 || DevNo >= 5)
-                    return false;
-                if (lineNo < 0 || lineNo >= 5)
-                    return false;
-            }
-
-            return APS_Param.Input_Status[lineNo, DevNo, port];
+            return true;
         }
 
         public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
@@ -230,17 +181,13 @@ namespace Device_APS
         #endregion
 
         #region Motion Function
-        public bool SetMotionConfig(AXIS_INFO axisInfo, int axis)
+        public bool SetMotionConfig()
         {
-            AxisInfoMap[axis] = axisInfo;
-            return true;
+            throw new NotImplementedException();
         }
 
         public short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
-            if (Initial_Success == false)
-                return 0;
-
             Int32 st = APS168.APS_motion_io_status(devNo);
 
             int index = (int)MOTION_IO.ALM;
@@ -260,9 +207,6 @@ namespace Device_APS
 
         public bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0)
         {
-            if (Initial_Success == false)
-                return false;
-
             bool res = APS_Param.Motion_Status[lineNo, devNo, state];
 
             return res;
@@ -270,9 +214,6 @@ namespace Device_APS
 
         public bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
-            if (Initial_Success == false)
-                return false;
-
             Int32 axis_id = devNo;
             Int32 msts = 0;
 
@@ -316,39 +257,36 @@ namespace Device_APS
                 return false;
         }
 
-        public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
+        //public override bool SetGoHomeParam(AXIS_INFO hOME_PARAM)
+        //{
+        //    AxisInfo = hOME_PARAM;
+
+        //    return true;
+        //}
+
+        public bool GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
-            //if (Initial_Success == false)
-            //    return -1;
+            if (Initial_Success == false)
+                return false;
 
-            //byte axis_id = devNo;
+            byte axis_id = devNo;
 
-            //int acc = 0, max_v = 0;
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_MODE, AxisInfo.MODE);              //Set home mode         
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION);          //Set home direction
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_CURVE, 0);                          // Set acceleration pattern (T-curve)
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_ACC, AxisInfo.ACC);                // Set homing acceleration rate
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VM, AxisInfo.MAX_VELOCITY);        // Set homing maximum velocity. pulse/s
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VO, AxisInfo.HOEM_FIND_ORG_VELOCITY);  // Set homing pulse/s
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_EZA, 0);                            // Set homing
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_SHIFT, AxisInfo.HOME_SHIFT);       // Set homing shift position
+            APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_POS, AxisInfo.HOME_POS);           // Set homing position
 
-            //if (count == 1)
-            //{
-            //    acc = TransferToPulse(AxisInfo.HOME_ACC_1ST);
-            //    max_v = TransferToPulse(AxisInfo.MAX_VELOCITY_1ST);
-            //}
-            //else
-            //{
-            //    acc = TransferToPulse(AxisInfo.HOME_ACC_2ND);
-            //    max_v = TransferToPulse(AxisInfo.MAX_VELOCITY_2ND);
-            //}
+            int res = APS168.APS_home_move(axis_id);
 
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_MODE, 1);                   //Set home mode         
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_DIR, AxisInfo.DIRECTION);   //Set home direction
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_CURVE, 0);                  // Set acceleration pattern (T-curve)
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_ACC, acc);                  // Set homing acceleration rate
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VM, max_v);                 // Set homing maximum velocity. pulse/s
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_VO, 0);                     // Set homing velocitu to ORG pulse/s
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_EZA, 0);                    // Set homing
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_SHIFT, 0);                  // Set homing shift position
-            //APS168.APS_set_axis_param(axis_id, (int)APS_Define.PRA_HOME_POS, 0);                    // Set homing position
-
-            //int res = APS168.APS_home_move(axis_id);
-
-            return 0;
+            if (res == 0)
+                return true;
+            else
+                return false;
         }
 
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
@@ -357,15 +295,11 @@ namespace Device_APS
                 return -1;
 
             int axis = devNo;
-            int ret = -1;
             double pos = -1;
+            
+            APS168.APS_get_position_f(axis, ref pos);
 
-            ret = APS168.APS_get_command_f(axis, ref pos);
-
-            if (ret != 0)
-                return -1;
-            else
-                return TransferToMillimeter(pos, axis);
+            return pos;
         }
 
         public int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0)
@@ -385,19 +319,7 @@ namespace Device_APS
                 return 0;
         }
 
-        public int Stop(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double Tdec = 0)
-        {
-            int ret = -1;
-
-            Tdec = TransferToPulse(Tdec, devNo);
-
-            ret = APS168.APS_set_axis_param_f(devNo, (Int32)APS_Define.PRA_STP_DEC, Tdec);
-            ret = APS168.APS_stop_move(devNo);
-
-            return ret;
-        }
-
-        public int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sfac, double Tdec, double Sdec)
+        public int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sacc, double Tdec, double Sdec)
         {
             if (Initial_Success == false)
                 return -1;
@@ -405,11 +327,6 @@ namespace Device_APS
             Int32 ret = -1;
             ASYNCALL p = new ASYNCALL();
 
-            velocity_start  = TransferToPulse(velocity_start, axis);
-            velocity_max    = TransferToPulse(velocity_max, axis);
-            Tacc            = TransferToPulse(Tacc, axis);
-            Tdec            = TransferToPulse(Tdec, axis);
-            position        = TransferToPulse(position, axis);  
             ret = APS168.APS_ptp_all(axis,
                                  (Int32)APS_Define.OPT_ABSOLUTE,
                                  position,
@@ -418,8 +335,9 @@ namespace Device_APS
                                  0,
                                  Tacc,
                                  Tdec,
-                                 Sfac,
+                                 Sacc,
                                  ref p);
+
 
             return ret;
         }
@@ -432,11 +350,6 @@ namespace Device_APS
             Int32 ret = -1;
             ASYNCALL p = new ASYNCALL();
 
-            velocity_start = TransferToPulse(velocity_start, axis);
-            velocity_max = TransferToPulse(velocity_max, axis);
-            Tacc = TransferToPulse(Tacc, axis);
-            Tdec = TransferToPulse(Tdec, axis);
-            position = TransferToPulse(position, axis);
             ret = APS168.APS_ptp_all(axis,
                      (Int32)APS_Define.OPT_RELATIVE,
                      position,
@@ -450,33 +363,6 @@ namespace Device_APS
 
             return ret;
         }
-
-        public int ContinuousMove(int axis, int dir, double acc, double dec, double velocity_max)
-        {
-            if (Initial_Success == false)
-                return -1;
-
-            int ret = -1;
-
-            acc = TransferToPulse(acc, axis);
-            dec = TransferToPulse(dec, axis);
-            velocity_max = TransferToPulse(velocity_max, axis);
-
-            APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_MODE, 0);                // Set jog mode [0:Continuous mode, 1:Step mode]
-            APS168.APS_set_axis_param(axis, (Int32)APS_Define.PRA_JG_DIR, dir);               // Set jog direction [0:  Positive , 1: Negative direction]
-            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_SF, 0.5);
-            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_ACC, acc);
-            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_DEC, dec);
-            APS168.APS_set_axis_param_f(axis, (Int32)APS_Define.PRA_JG_VM, velocity_max);
-
-            ret = APS168.APS_jog_start(axis, 0);            //Jog OFF 
-            // Create a rising edge.
-            ret = APS168.APS_jog_start(axis, 1);            //Jog ON 
-
-            return ret;
-        }
-
-        
         #endregion
     }
 }

@@ -164,7 +164,7 @@ namespace Device_MN200
                 return "None";
         }
         
-        public bool SetMotionConfig()
+        public bool SetMotionConfig(AXIS_INFO axisInfo, int UI_AxisId)
         {
             throw new NotImplementedException();
         }
@@ -207,7 +207,7 @@ namespace Device_MN200
             }
         }
         
-        public bool GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
+        public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
         {
             throw new NotImplementedException();
         }
@@ -293,6 +293,21 @@ namespace Device_MN200
         }
 
         public int Clear_AI_VirtualData()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetDeviceNo()
+        {
+            return 1;
+        }
+
+        public int ContinuousMove(int axis, int dir, double acc, double dec, double velocity_max)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Stop(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double Tdec = 0)
         {
             throw new NotImplementedException();
         }

@@ -9,5 +9,7 @@ namespace DeviceCore
     public interface IF_AxisButton
     {
         int GetCurrentBtnNum();
+        void StartUpdatePositionInvoke(bool start);
+        void ShowFormName(bool show);
     }
 }

@@ -200,6 +200,11 @@ namespace ToolFunction
 
             return (int)(us * unit);
         }
+
+        public static int GetCurrentTickCount()
+        {
+            return Environment.TickCount;
+        }
         public static bool CheckTimeOverSec(int tick, int time)
         {
             var time_count = Environment.TickCount - tick;
@@ -436,6 +441,20 @@ namespace ToolFunction
             int result;
 
             if (Int32.TryParse(str, out result))
+            {
+                return result;
+            }
+            else
+            {
+                SaveLogToFile("型別轉換錯誤");
+                return -999;
+            }
+        }
+
+        public static double StringToDouble(string str)
+        {
+            double result;
+            if (Double.TryParse(str, out result))
             {
                 return result;
             }
