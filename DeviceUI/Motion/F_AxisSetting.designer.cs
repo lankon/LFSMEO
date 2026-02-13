@@ -193,9 +193,9 @@ namespace DeviceUI.Motion
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
             this.tableLayoutPanel1.Controls.Add(this.Btn_NegativeMove, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.Btn_MoveMode, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.Btn_PositiveMove, 2, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(823, 461);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_MoveMode, 1, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(850, 461);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -226,11 +226,12 @@ namespace DeviceUI.Motion
             // 
             // Btn_PositiveMove
             // 
+            this.Btn_PositiveMove.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Btn_PositiveMove.Location = new System.Drawing.Point(201, 4);
             this.Btn_PositiveMove.Name = "Btn_PositiveMove";
             this.Btn_PositiveMove.Size = new System.Drawing.Size(104, 49);
             this.Btn_PositiveMove.TabIndex = 4;
-            this.Btn_PositiveMove.Text = "=> +";
+            this.Btn_PositiveMove.Text = "=>+";
             this.Btn_PositiveMove.UseVisualStyleBackColor = true;
             this.Btn_PositiveMove.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseDown);
             this.Btn_PositiveMove.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseUp);
@@ -250,7 +251,7 @@ namespace DeviceUI.Motion
             this.groupBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.groupBox4.Controls.Add(this.tableLayoutPanel4);
             this.groupBox4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.groupBox4.Location = new System.Drawing.Point(385, 6);
+            this.groupBox4.Location = new System.Drawing.Point(399, 6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(370, 356);
             this.groupBox4.TabIndex = 2;
@@ -476,7 +477,7 @@ namespace DeviceUI.Motion
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.groupBox2.Controls.Add(this.tableLayoutPanel3);
             this.groupBox2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.groupBox2.Location = new System.Drawing.Point(762, 6);
+            this.groupBox2.Location = new System.Drawing.Point(792, 6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(370, 356);
             this.groupBox2.TabIndex = 1;

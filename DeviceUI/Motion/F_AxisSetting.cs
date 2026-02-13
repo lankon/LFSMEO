@@ -40,7 +40,6 @@ namespace DeviceUI.Motion
         {
             SetHint();
 
-
             DML = ServiceProvider.GetRequiredService<IFunction_MotionCard>();
             //if (ApplicationSetting.Get_Int_Recipe<eF_AxisSetting>((int)eF_AxisSetting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
@@ -57,6 +56,11 @@ namespace DeviceUI.Motion
         {
             ApplicationSetting.SaveRecipeFromForm<eF_AxisSetting>(this);
             ApplicationSetting.ReadAllRecipe<eF_AxisSetting>();
+        }
+        public void ShowFormName(bool show)
+        {
+            if (show)
+                Tool.ShowFormName(this, 1);
         }
         #endregion
 

@@ -87,9 +87,6 @@ namespace DeviceUI.Motion
             AxisButton.StartUpdatePositionInvoke(false);
             StartUpdateStatusInvoke(false);
         }
-        #endregion
-
-        #region public function
         private void DockAxisSetting(Type child_form)
         {
             object service = ServiceProvider.GetRequiredService(child_form);
@@ -112,6 +109,18 @@ namespace DeviceUI.Motion
         }
         #endregion
 
+        #region public function
+        public void ShowFormName(bool show)
+        {
+            if(show)
+            {
+                Tool.ShowFormName(this);
+                AxisButton.ShowFormName(true);
+                AxisSetting.ShowFormName(true);
+            }
+        }
+        #endregion
+
 
         private void F_Template_VisibleChanged(object sender, EventArgs e)
         {
@@ -127,7 +136,7 @@ namespace DeviceUI.Motion
                 //釋放記憶體資源
                 //Tool.ReleaseButtonImages(this);
                 //this.Close();
-                //this.Dispose();jtrjtkyykjrjttjtjtj
+                //this.Dispose();
             }
             else
             {

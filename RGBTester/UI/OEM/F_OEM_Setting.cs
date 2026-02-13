@@ -103,6 +103,9 @@ namespace RGBTester.UI
                 Tool.HideElementOnPanel(Scope.MainPanel);
                 Tool.SetForm(Scope.MainPanel, form);
                 form.Show();
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    oem_set.ShowFormName(true);
             }
         }
 

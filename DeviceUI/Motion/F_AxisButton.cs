@@ -148,6 +148,11 @@ namespace DeviceUI.Motion
                 StartUpdatePosition(start);
             }
         }
+        public void ShowFormName(bool show)
+        {
+            if (show)
+                Tool.ShowFormName(this);
+        }
         #endregion
 
         private void Btn_Axis0_Click(object sender, EventArgs e)

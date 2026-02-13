@@ -10,5 +10,6 @@ namespace DeviceCore
     {
         void UpdateParmeter();
         void SaveAxisParameter();
+        void ShowFormName(bool show);
     }
 }

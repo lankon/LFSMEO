@@ -13,6 +13,8 @@ namespace RGBTester.Base
 
     public enum eMachineSetting
     {
+        //所有專案共用的enum名稱
+
         Cmbx_MachineType,
     }
 }

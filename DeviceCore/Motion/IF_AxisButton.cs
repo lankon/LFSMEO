@@ -10,5 +10,6 @@ namespace DeviceCore
     {
         int GetCurrentBtnNum();
         void StartUpdatePositionInvoke(bool start);
+        void ShowFormName(bool show);
     }
 }

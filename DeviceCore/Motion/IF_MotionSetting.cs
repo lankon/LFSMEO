@@ -10,5 +10,6 @@ namespace DeviceCore
     {
         //void DockAxisButton(Type child_form);
         //void DockAxisSetting(Type child_form);
+        void ShowFormName(bool show);
     }
 }
