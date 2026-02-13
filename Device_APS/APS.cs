@@ -389,6 +389,8 @@ namespace Device_APS
         {
             int ret = -1;
 
+            Tdec = TransferToPulse(Tdec, devNo);
+
             ret = APS168.APS_set_axis_param_f(devNo, (Int32)APS_Define.PRA_STP_DEC, Tdec);
             ret = APS168.APS_stop_move(devNo);
 

@@ -84,19 +84,6 @@ namespace DeviceFunction
         #endregion
 
         #region private function
-        private bool OpenMotionCard(IMotionCard motion, string name)
-        {
-            if (motion.Open() == true)
-            {
-                DML.Add(motion);
-                return true;
-            }
-            else
-            {
-                Tool.SaveLogToFile($"{name}開卡失敗");
-                return false;
-            }
-        }
         private bool AchieveLimit(int axis)
         {
             byte line = (byte)DML_INFO[axis].LINE_NO;
