@@ -1,18 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{984A1DB1-08F4-4BFD-8FCE-B78C97BBB83F}</ProjectGuid>
+    <ProjectGuid>{C63D227F-F747-49ED-8BC6-05286E333B02}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeviceCore</RootNamespace>
-    <AssemblyName>DeviceCore</AssemblyName>
+    <RootNamespace>FTLight</RootNamespace>
+    <AssemblyName>FTLight</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,30 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILightControl.cs" />
-    <Compile Include="Spectrometer\IFunction_Spectrometer.cs" />
-    <Compile Include="Spectrometer\ISpectrometer.cs" />
-    <Compile Include="IO\IF_IO_Card.cs" />
-    <Compile Include="IO\IIOCardVirtual.cs" />
-    <Compile Include="Motion\eMotionSetting.cs" />
-    <Compile Include="IChillerControl.cs" />
-    <Compile Include="IO\IFunction_IO_Card.cs" />
-    <Compile Include="Motion\IFunction_MotionCard.cs" />
-    <Compile Include="IO\IIOCard.cs" />
-    <Compile Include="Motion\IF_AxisButton.cs" />
-    <Compile Include="Motion\IF_AxisSetting.cs" />
-    <Compile Include="Motion\IF_MotionSetting.cs" />
-    <Compile Include="Motion\IMotionCard.cs" />
+    <Compile Include="Light_FT_116.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
-      <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
-      <Name>ToolFunction</Name>
+    <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
+      <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
+      <Name>DeviceCore</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
