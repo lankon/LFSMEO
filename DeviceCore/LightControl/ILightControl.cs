@@ -30,5 +30,6 @@ namespace DeviceCore
         int Open();
         int SetLightValue(int value, int port = 0, int station_number = 0);
         ELightControlType GetLightControlType();
+        string GetPortName();
     }
 }

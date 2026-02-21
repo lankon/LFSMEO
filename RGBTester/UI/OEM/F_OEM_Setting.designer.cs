@@ -41,6 +41,8 @@ namespace RGBTester.UI
             this.Btn_Spectrometer = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.Btn_Test = new System.Windows.Forms.Button();
+            this.Btn_Light = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -157,11 +159,33 @@ namespace RGBTester.UI
             this.Btn_Test.UseVisualStyleBackColor = true;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
+            // Btn_Light
+            // 
+            this.Btn_Light.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Light.Location = new System.Drawing.Point(44, 130);
+            this.Btn_Light.Name = "Btn_Light";
+            this.Btn_Light.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Light.TabIndex = 44;
+            this.Btn_Light.UseVisualStyleBackColor = true;
+            this.Btn_Light.Click += new System.EventHandler(this.Btn_Light_Click);
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label6.Location = new System.Drawing.Point(35, 193);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 23);
+            this.label6.TabIndex = 45;
+            this.label6.Text = "Light";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.Btn_Light);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.Btn_Spectrometer);
             this.Controls.Add(this.Btn_Test);
@@ -193,5 +217,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_Spectrometer;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button Btn_Test;
+        private System.Windows.Forms.Button Btn_Light;
+        private System.Windows.Forms.Label label6;
     }
 }

@@ -35,8 +35,8 @@ namespace DeviceUI.Motion
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.Btn_NegativeMove = new System.Windows.Forms.Button();
-            this.Btn_MoveMode = new System.Windows.Forms.Button();
             this.Btn_PositiveMove = new System.Windows.Forms.Button();
+            this.Btn_MoveMode = new System.Windows.Forms.Button();
             this.Btn_Move = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -213,17 +213,6 @@ namespace DeviceUI.Motion
             this.Btn_NegativeMove.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Btn_NegativeMove_MouseDown);
             this.Btn_NegativeMove.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseUp);
             // 
-            // Btn_MoveMode
-            // 
-            this.Btn_MoveMode.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_MoveMode.Location = new System.Drawing.Point(115, 4);
-            this.Btn_MoveMode.Name = "Btn_MoveMode";
-            this.Btn_MoveMode.Size = new System.Drawing.Size(79, 49);
-            this.Btn_MoveMode.TabIndex = 6;
-            this.Btn_MoveMode.Text = "Index";
-            this.Btn_MoveMode.UseVisualStyleBackColor = true;
-            this.Btn_MoveMode.Click += new System.EventHandler(this.Btn_MoveMode_Click);
-            // 
             // Btn_PositiveMove
             // 
             this.Btn_PositiveMove.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -235,6 +224,17 @@ namespace DeviceUI.Motion
             this.Btn_PositiveMove.UseVisualStyleBackColor = true;
             this.Btn_PositiveMove.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseDown);
             this.Btn_PositiveMove.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Btn_PositiveMove_MouseUp);
+            // 
+            // Btn_MoveMode
+            // 
+            this.Btn_MoveMode.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_MoveMode.Location = new System.Drawing.Point(115, 4);
+            this.Btn_MoveMode.Name = "Btn_MoveMode";
+            this.Btn_MoveMode.Size = new System.Drawing.Size(79, 49);
+            this.Btn_MoveMode.TabIndex = 6;
+            this.Btn_MoveMode.Text = "Index";
+            this.Btn_MoveMode.UseVisualStyleBackColor = true;
+            this.Btn_MoveMode.Click += new System.EventHandler(this.Btn_MoveMode_Click);
             // 
             // Btn_Move
             // 

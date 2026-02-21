@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILightControl.cs" />
+    <Compile Include="LightControl\IFunction_LightControl.cs" />
+    <Compile Include="LightControl\IF_LightControl.cs" />
+    <Compile Include="LightControl\ILightControl.cs" />
     <Compile Include="Spectrometer\IFunction_Spectrometer.cs" />
     <Compile Include="Spectrometer\ISpectrometer.cs" />
     <Compile Include="IO\IF_IO_Card.cs" />

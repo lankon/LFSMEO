@@ -120,6 +120,11 @@ namespace Device_FTLight
         }
         public int Open()
         {
+            
+            
+            if (LightInfo.PortName == null)
+                return -1;
+
             Comport.PortName = LightInfo.PortName;
             Comport.BaudRate = int.Parse("19200");
             Comport.DataBits = int.Parse("8");
@@ -129,8 +134,7 @@ namespace Device_FTLight
             Comport.ReadTimeout = 1000;
             Comport.WriteTimeout = 1000;
 
-            if (Comport.PortName == "None")
-                return -1;
+            return 0;   //測試用
 
             if (!Comport.IsOpen)
             {
@@ -149,6 +153,10 @@ namespace Device_FTLight
         public ELightControlType GetLightControlType()
         {
             return ELightControlType.FT;
+        }
+        public string GetPortName()
+        {
+            return Comport.PortName;
         }
         public int SetLightValue(int value, int port = 0, int station_number = 0)
         {

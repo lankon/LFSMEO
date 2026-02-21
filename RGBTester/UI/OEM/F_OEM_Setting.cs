@@ -157,5 +157,20 @@ namespace RGBTester.UI
             MainTask.SetTask<TaskMotionTest>();
             MainTask.Run();
         }
+
+        private void Btn_Light_Click(object sender, EventArgs e)
+        {
+            var light_set = ServiceProvider.GetRequiredService<IF_LightControl>();
+
+            if (light_set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    light_set.ShowFormName(true);
+            }
+        }
     }
 }

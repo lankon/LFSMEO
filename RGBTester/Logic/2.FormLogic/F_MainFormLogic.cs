@@ -55,6 +55,13 @@ namespace RGBTester.Logic
             RGBTesterMachine.DML.BindingAxis();
         }
 
+        public void Initial_Light_Function()
+        {
+            IF_LightControl f_light = ServiceProvider.GetRequiredService<IF_LightControl>();
+            f_light.Update_Light_List();
+            RGBTesterMachine.Light.Initial_All_LightControl();
+        }
+
         public int DeleteExpireFileInFolder()
         {
             string app_path = AppDomain.CurrentDomain.BaseDirectory;

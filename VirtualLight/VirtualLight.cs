@@ -42,5 +42,10 @@ namespace Device_VirtualLight
             
             return 0;
         }
+
+        public string GetPortName()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

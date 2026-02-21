@@ -12,12 +12,15 @@ using DeviceCore;
 using DeviceFunction;
 using DeviceUI.Motion;
 using DeviceUI.IO;
+using DeviceUI.LightControl;
 using Device_MN200;
 using Device_PCIS_DASK;
 using Device_Virtual;
 using Device_Klzx;
 using Device_OTO;
 using Device_APS;
+using Device_FTLight;
+using Device_VirtualLight;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -64,17 +67,14 @@ namespace LFSMEO
 
         private void ConfigureApplicationServices(IServiceCollection services)
         {
+            //[Device]
             MN200 mn200 = new MN200();
             Pcis_dask pcis_9111DG = new Pcis_dask("PCI_9111DG");
             Pcis_dask pcis_9111HR = new Pcis_dask("PCI_9111HR");
             Virtual_IO virtual_io = new Virtual_IO();
             OTO Spectro_OTO = new OTO();
             APS APS = new APS();
-
             ChillerControl_Klzx Klxz = new ChillerControl_Klzx();
-
-            // 同一個實例，註冊成多個介面
-            services.AddSingleton(Klxz);
 
             services.AddSingleton<IMotionCard>(mn200);
             services.AddSingleton<IMotionCard>(APS);
@@ -84,23 +84,27 @@ namespace LFSMEO
             services.AddSingleton<IIOCard>(pcis_9111HR);
             services.AddSingleton<IIOCard>(virtual_io);
             services.AddSingleton<ISpectrometer>(Spectro_OTO);
-            services.AddSingleton<IChillerControl>(sp => sp.GetRequiredService<ChillerControl_Klzx>());
+            services.AddSingleton<ILightControl, Light_FT_116>();
+            services.AddSingleton<ILightControl, VirtualLight>();
+            services.AddSingleton<IChillerControl>(Klxz);
 
+            //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
             services.AddSingleton<IF_AxisSetting, F_AxisSetting>();
             services.AddSingleton<IF_AxisButton, F_AxisButton>();
-            services.AddSingleton<F_MotionSettingLogic>();
             services.AddSingleton<IF_IO_Card, F_IO_Card>();
+            services.AddSingleton<IF_LightControl, F_LightControl>();
+            services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
 
-            // --- 步驟 3: 註冊「管理者」(DeviceFunction) ---
-            // (這部分完全不變，DI 容器會自動注入步驟 2 註冊的所有卡片)
+            //[Form Logic]
+            services.AddSingleton<F_MotionSettingLogic>();
+            services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();
+
+            //[Function]
             services.AddSingleton<IFunction_MotionCard, Function_Motion_Card>();
             services.AddSingleton<IFunction_IO_Card, Function_IO_Card>();
             services.AddSingleton<IFunction_Spectrometer, Function_Spectrometer>();
-
-            //[Tool]
-            services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();
-            services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
+            services.AddSingleton<IFunction_LightControl, Function_LightControl>();
 
             //[Machine]
             Icon AppIcon = null; string AppName = "";

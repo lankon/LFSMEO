@@ -94,6 +94,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="F_LightControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_LightControl.designer.cs">
+      <DependentUpon>F_LightControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="IO\F_IO_Card.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +132,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="F_LightControl.resx">
+      <DependentUpon>F_LightControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IO\F_IO_Card.resx">
       <DependentUpon>F_IO_Card.cs</DependentUpon>
     </EmbeddedResource>
