@@ -120,8 +120,6 @@ namespace Device_FTLight
         }
         public int Open()
         {
-            
-            
             if (LightInfo.PortName == null)
                 return -1;
 
@@ -133,8 +131,6 @@ namespace Device_FTLight
 
             Comport.ReadTimeout = 1000;
             Comport.WriteTimeout = 1000;
-
-            return 0;   //測試用
 
             if (!Comport.IsOpen)
             {

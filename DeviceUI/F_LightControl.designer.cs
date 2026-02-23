@@ -29,10 +29,17 @@ namespace DeviceUI.LightControl
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_Light = new System.Windows.Forms.DataGridView();
+            this.Btn_Load = new System.Windows.Forms.Button();
+            this.Btn_Save = new System.Windows.Forms.Button();
+            this.Btn_RowDown = new System.Windows.Forms.Button();
+            this.Btn_RowUp = new System.Windows.Forms.Button();
+            this.Btn_Remove = new System.Windows.Forms.Button();
+            this.Btn_Add = new System.Windows.Forms.Button();
+            this.Btn_FunctionTest = new System.Windows.Forms.Button();
             this.Title_LightType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,13 +48,6 @@ namespace DeviceUI.LightControl
             this.Title_OutPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Open = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Btn_Load = new System.Windows.Forms.Button();
-            this.Btn_Save = new System.Windows.Forms.Button();
-            this.Btn_RowDown = new System.Windows.Forms.Button();
-            this.Btn_RowUp = new System.Windows.Forms.Button();
-            this.Btn_Remove = new System.Windows.Forms.Button();
-            this.Btn_Add = new System.Windows.Forms.Button();
-            this.Btn_FunctionTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Light)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,14 +57,14 @@ namespace DeviceUI.LightControl
             this.DGV_Light.AllowUserToDeleteRows = false;
             this.DGV_Light.AllowUserToResizeColumns = false;
             this.DGV_Light.AllowUserToResizeRows = false;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_Light.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_Light.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_Light.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_Light.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_LightType,
@@ -75,14 +75,14 @@ namespace DeviceUI.LightControl
             this.Title_OutPort,
             this.Title_Value,
             this.Title_Open});
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_Light.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_Light.DefaultCellStyle = dataGridViewCellStyle3;
             this.DGV_Light.Location = new System.Drawing.Point(5, 5);
             this.DGV_Light.Name = "DGV_Light";
             this.DGV_Light.RowHeadersVisible = false;
@@ -91,77 +91,6 @@ namespace DeviceUI.LightControl
             this.DGV_Light.TabIndex = 14;
             this.DGV_Light.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Light_CellContentClick);
             this.DGV_Light.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Light_CellValueChanged);
-            // 
-            // Title_LightType
-            // 
-            this.Title_LightType.HeaderText = "Light Type";
-            this.Title_LightType.Items.AddRange(new object[] {
-            "None",
-            "Virtual",
-            "FT"});
-            this.Title_LightType.Name = "Title_LightType";
-            this.Title_LightType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_LightType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Title_LightType.Width = 120;
-            // 
-            // Title_Name
-            // 
-            this.Title_Name.HeaderText = "Name";
-            this.Title_Name.Name = "Title_Name";
-            this.Title_Name.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_Name.Width = 150;
-            // 
-            // Title_Description
-            // 
-            this.Title_Description.HeaderText = "Description";
-            this.Title_Description.Name = "Title_Description";
-            this.Title_Description.Width = 150;
-            // 
-            // Title_Comport
-            // 
-            this.Title_Comport.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Title_Comport.DefaultCellStyle = dataGridViewCellStyle14;
-            this.Title_Comport.HeaderText = "Comport";
-            this.Title_Comport.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3",
-            "COM4",
-            "COM5",
-            "COM6",
-            "COM7",
-            "COM8",
-            "COM9",
-            "COM10",
-            "COM11",
-            "COM12"});
-            this.Title_Comport.Name = "Title_Comport";
-            this.Title_Comport.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_Comport.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Title_Station
-            // 
-            this.Title_Station.HeaderText = "Station";
-            this.Title_Station.Name = "Title_Station";
-            // 
-            // Title_OutPort
-            // 
-            this.Title_OutPort.HeaderText = "Out Port";
-            this.Title_OutPort.Name = "Title_OutPort";
-            // 
-            // Title_Value
-            // 
-            this.Title_Value.HeaderText = "Value";
-            this.Title_Value.Name = "Title_Value";
-            this.Title_Value.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // Title_Open
-            // 
-            this.Title_Open.HeaderText = "Open";
-            this.Title_Open.Name = "Title_Open";
-            this.Title_Open.Text = "Open";
             // 
             // Btn_Load
             // 
@@ -239,6 +168,77 @@ namespace DeviceUI.LightControl
             this.Btn_FunctionTest.UseVisualStyleBackColor = true;
             this.Btn_FunctionTest.Click += new System.EventHandler(this.Btn_FunctionTest_Click);
             // 
+            // Title_LightType
+            // 
+            this.Title_LightType.HeaderText = "Light Type";
+            this.Title_LightType.Items.AddRange(new object[] {
+            "None",
+            "VIRTUAL",
+            "FT"});
+            this.Title_LightType.Name = "Title_LightType";
+            this.Title_LightType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_LightType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Title_LightType.Width = 120;
+            // 
+            // Title_Name
+            // 
+            this.Title_Name.HeaderText = "Name";
+            this.Title_Name.Name = "Title_Name";
+            this.Title_Name.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_Name.Width = 150;
+            // 
+            // Title_Description
+            // 
+            this.Title_Description.HeaderText = "Description";
+            this.Title_Description.Name = "Title_Description";
+            this.Title_Description.Width = 150;
+            // 
+            // Title_Comport
+            // 
+            this.Title_Comport.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Title_Comport.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Title_Comport.HeaderText = "Comport";
+            this.Title_Comport.Items.AddRange(new object[] {
+            "COM1",
+            "COM2",
+            "COM3",
+            "COM4",
+            "COM5",
+            "COM6",
+            "COM7",
+            "COM8",
+            "COM9",
+            "COM10",
+            "COM11",
+            "COM12"});
+            this.Title_Comport.Name = "Title_Comport";
+            this.Title_Comport.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_Comport.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Title_Station
+            // 
+            this.Title_Station.HeaderText = "Station";
+            this.Title_Station.Name = "Title_Station";
+            // 
+            // Title_OutPort
+            // 
+            this.Title_OutPort.HeaderText = "Out Port";
+            this.Title_OutPort.Name = "Title_OutPort";
+            // 
+            // Title_Value
+            // 
+            this.Title_Value.HeaderText = "Value";
+            this.Title_Value.Name = "Title_Value";
+            this.Title_Value.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Title_Open
+            // 
+            this.Title_Open.HeaderText = "Open";
+            this.Title_Open.Name = "Title_Open";
+            this.Title_Open.Text = "Open";
+            // 
             // F_LightControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -269,6 +269,7 @@ namespace DeviceUI.LightControl
         private System.Windows.Forms.Button Btn_RowUp;
         private System.Windows.Forms.Button Btn_Remove;
         private System.Windows.Forms.Button Btn_Add;
+        private System.Windows.Forms.Button Btn_FunctionTest;
         private System.Windows.Forms.DataGridViewComboBoxColumn Title_LightType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Description;
@@ -277,6 +278,5 @@ namespace DeviceUI.LightControl
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_OutPort;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Value;
         private System.Windows.Forms.DataGridViewButtonColumn Title_Open;
-        private System.Windows.Forms.Button Btn_FunctionTest;
     }
 }

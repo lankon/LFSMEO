@@ -9,7 +9,7 @@ namespace DeviceCore
 {
     public enum ELightControlType
     {
-        VITUAL,
+        VIRTUAL,
         FT,
     }
 

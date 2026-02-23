@@ -66,7 +66,7 @@ namespace DeviceFunction
                     if (res == 0)
                         LightList.Add(newDevice);
                     else
-                        Tool.SaveLogToFile($"光源控制器 {config.Title_LightType} ({config.Title_Comport}) 開啟失敗, Error: {res}");
+                        Tool.SaveLogToFile($"光源控制器 {config.Title_LightType} ({config.Title_Comport})連線失敗", level:"ERR");
                 }
             }
 
@@ -75,7 +75,7 @@ namespace DeviceFunction
             {
                 ret = 0;
 
-                if (LightList[i].GetLightControlType() != ELightControlType.VITUAL)
+                if (LightList[i].GetLightControlType() != ELightControlType.VIRTUAL)
                 {
                     Tool.SaveLogToFile("實體光源 Initial Success");
                     return 0;
@@ -112,8 +112,7 @@ namespace DeviceFunction
             }
             else
             {
-                // 找不到對應硬體 (可能初始化失敗或 Port 設定錯誤)
-                Tool.SaveLogToFile($"SetLightValue Fail: Cannot find hardware {light_data.Title_LightType} on {light_data.Title_Comport}");
+                Tool.SaveLogToFile($"SetLightValue Fail: Cannot find hardware {light_data.Title_LightType} on {light_data.Title_Comport}", level: "ERR");
                 return false;
             }
 
@@ -137,7 +136,7 @@ namespace DeviceFunction
             else
             {
                 // 找不到對應硬體 (可能初始化失敗或 Port 設定錯誤)
-                Tool.SaveLogToFile($"SetLightValue Fail: Cannot find hardware {type} on {port_name}");
+                Tool.SaveLogToFile($"SetLightValue Fail: Cannot find hardware {type} on {port_name}", level:"ERR");
                 return false;
             }
 

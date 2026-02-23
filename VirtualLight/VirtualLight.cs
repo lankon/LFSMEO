@@ -23,7 +23,7 @@ namespace Device_VirtualLight
 
         public ELightControlType GetLightControlType()
         {
-            return ELightControlType.VITUAL;
+            return ELightControlType.VIRTUAL;
         }
 
         public int Open()
@@ -39,13 +39,12 @@ namespace Device_VirtualLight
 
         public int SetLightValue(int value, int port = 0, int station_number = 0)
         {
-            
             return 0;
         }
 
         public string GetPortName()
         {
-            throw new NotImplementedException();
+            return LightInfo.PortName;
         }
     }
 }
