@@ -253,6 +253,10 @@
       <Project>{5b509d3f-99cd-44e0-bec4-591c3096d61b}</Project>
       <Name>Device_Virtual</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FTLight\Device_FTLight.csproj">
+      <Project>{c63d227f-f747-49ed-8bc6-05286e333b02}</Project>
+      <Name>Device_FTLight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProbeTester\ProbeTester.csproj">
       <Project>{e38566f8-a449-4e97-af5e-d5b50a5ff910}</Project>
       <Name>ProbeTester</Name>
@@ -268,6 +272,10 @@
     <ProjectReference Include="..\UserPrivilege\UserPrivilege.csproj">
       <Project>{da522546-9ac7-47e5-b40e-17b0cfef3726}</Project>
       <Name>UserPrivilege</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VirtualLight\Device_VirtualLight.csproj">
+      <Project>{4e720c40-9608-4c4e-b2e6-addf51fae62f}</Project>
+      <Name>Device_VirtualLight</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
