@@ -150,14 +150,6 @@ namespace RGBTester.UI
             Tool.CloseFile(file);
         }
 
-        private void Btn_Test_Click(object sender, EventArgs e)
-        {
-            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-
-            MainTask.SetTask<TaskMotionTest>();
-            MainTask.Run();
-        }
-
         private void Btn_Light_Click(object sender, EventArgs e)
         {
             var light_set = ServiceProvider.GetRequiredService<IF_LightControl>();
