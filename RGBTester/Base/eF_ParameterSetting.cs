@@ -10,6 +10,7 @@ namespace RGBTester.Base
     {
         TxtBx_TestFileCopyPath,
         TxtBx_TestFileCopyPath1,
+        Cmbx_YieldRecord,
     }
 
     public enum eF_ParameterSettingRecipe

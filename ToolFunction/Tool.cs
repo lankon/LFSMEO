@@ -365,6 +365,48 @@ namespace ToolFunction
 
             return res;
         }
+        public static bool DataGrid_Update<T>(DataGridView dataGridView, List<T> data_list)
+        {
+            // 執行緒安全檢查 (選配，視你的呼叫環境而定)
+            if (dataGridView.InvokeRequired)
+            {
+                return (bool)dataGridView.Invoke(new Func<bool>(() => DataGrid_Update(dataGridView, data_list)));
+            }
+
+            dataGridView.SuspendLayout();
+
+            try
+            {
+                dataGridView.Rows.Clear();
+
+                // 取得該型別 T 的所有屬性
+                var properties = typeof(T).GetProperties();
+
+                foreach (var data in data_list)
+                {
+                    int rowIndex = dataGridView.Rows.Add();
+                    DataGridViewRow row = dataGridView.Rows[rowIndex];
+
+                    foreach (var prop in properties)
+                    {
+                        if (dataGridView.Columns.Contains(prop.Name))
+                        {
+                            object value = prop.GetValue(data);
+                            row.Cells[prop.Name].Value = value;
+                        }
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                dataGridView.ResumeLayout();
+            }
+        }
         public static void DataGrid_RowDown(DataGridView dataGridView)
         {
             // 確保選取的列不為 null 且不是最後一列
@@ -446,7 +488,7 @@ namespace ToolFunction
             }
             else
             {
-                SaveLogToFile("型別轉換錯誤");
+                SaveLogToFile("StringToInt型別轉換錯誤");
                 return -999;
             }
         }
@@ -460,8 +502,22 @@ namespace ToolFunction
             }
             else
             {
-                SaveLogToFile("型別轉換錯誤");
+                SaveLogToFile("StringToDouble型別轉換錯誤");
                 return -999;
+            }
+        }
+
+        public static DateTime StringToDateTime(string str)
+        {
+            DateTime result;
+            if (DateTime.TryParse(str, out result))
+            {
+                return result;
+            }
+            else
+            {
+                SaveLogToFile("StringToDateTime型別轉換錯誤");
+                return DateTime.MinValue;
             }
         }
     }

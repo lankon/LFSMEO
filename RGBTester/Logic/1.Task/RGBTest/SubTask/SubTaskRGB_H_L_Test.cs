@@ -14,7 +14,6 @@ using System.Runtime.CompilerServices;
 
 namespace RGBTester.Logic
 {
-    #region Task
     public class SubTaskRGB_H_L_Test : IBaseTask<SubTaskRGB_H_L_Test.WORK>
     {
         public SubTaskRGB_H_L_Test(IBaseTaskDependence dependencies, 
@@ -879,6 +878,4 @@ namespace RGBTester.Logic
             }
         }
     }
-    #endregion
- 
 }

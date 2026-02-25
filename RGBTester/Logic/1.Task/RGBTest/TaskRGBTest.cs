@@ -12,7 +12,6 @@ using RGBTester.Base;
 
 namespace RGBTester.Logic
 {
-    #region Task
     public class TaskRGBTest: IBaseTask<TaskRGBTest.WORK>
     {
         public TaskRGBTest(IBaseTaskDependence dependencies,
@@ -365,6 +364,4 @@ namespace RGBTester.Logic
             }
         }
     }
-    #endregion
- 
 }

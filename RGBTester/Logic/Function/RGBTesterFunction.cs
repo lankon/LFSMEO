@@ -104,7 +104,7 @@ namespace RGBTester.Logic
         public void Set_LED_Rigester()
         {
             LEA = ServiceProvider.GetRequiredService<ILightEngineFunction>();
-            
+
             byte[] intput = new byte[1];
             //intput[0] = 0x24;
             //Deps.LightEngine.Set_RegisterValue(0x02, 1, intput);
@@ -131,6 +131,32 @@ namespace RGBTester.Logic
         {
             MaxCurrent_LCM = LCM_I;
             MaxCurrent_HCM = HCM_I;
+        }
+        public void YieldStatistics(bool pass, string sn)
+        {
+            if (ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.Cmbx_YieldRecord) == 0)
+                return;
+            
+            string product_type = "None";
+            int i_pass = pass == true ? 1 : 0;
+
+            if (sn.Substring(2,1) == "A")
+                product_type = "STM1";
+            else if(sn.Substring(2, 1) == "C")
+                product_type = "STM2";
+
+            TestResultDataBase.ProductionLog log = new TestResultDataBase.ProductionLog()
+            {
+                ProductType = product_type,
+                SN = sn,
+                TestTime = DateTime.Now,
+                IsPass = i_pass,
+                Exclude = 0,
+                Description = "None"
+            };
+
+            TestResultDataBase data_base = ServiceProvider.GetRequiredService<TestResultDataBase>();
+            data_base.Manager.InsertData(log);
         }
     }
 }

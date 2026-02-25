@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.1.66\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="INIDLL">
       <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\INIDLL.dll</HintPath>
     </Reference>
@@ -73,6 +76,9 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -119,15 +125,17 @@
     <Compile Include="Base\eF_StartForm.cs" />
     <Compile Include="Base\eF_Equipment_Setting.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
-    <Compile Include="Base\IF_StartForm.cs" />
-    <Compile Include="Base\IF_MainForm.cs" />
-    <Compile Include="Base\IF_ProgressBar.cs" />
-    <Compile Include="Base\IF_StatusBox.cs" />
-    <Compile Include="Base\IF_StateControl.cs" />
+    <Compile Include="Base\IF_Form\IF_ParameterSetting.cs" />
+    <Compile Include="Base\IF_Form\IF_StartForm.cs" />
+    <Compile Include="Base\IF_Form\IF_MainForm.cs" />
+    <Compile Include="Base\IF_Form\IF_ProgressBar.cs" />
+    <Compile Include="Base\IF_Form\IF_StatusBox.cs" />
+    <Compile Include="Base\IF_Form\IF_StateControl.cs" />
     <Compile Include="Base\ILightEngineFunction.cs" />
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Logic\Function\TestResultDataBase.cs" />
     <Compile Include="UI\F_ParameterSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,5 +312,7 @@
       <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Serilog.4.3.0\build\Serilog.targets'))" />
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
 </Project>

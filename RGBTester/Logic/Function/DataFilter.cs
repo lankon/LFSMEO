@@ -71,7 +71,5 @@ namespace RGBTester.Logic
 
         #region private function
         #endregion
-
-
     }
 }

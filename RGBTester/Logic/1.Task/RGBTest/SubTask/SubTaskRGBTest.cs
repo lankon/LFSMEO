@@ -13,7 +13,6 @@ using ToolFunction;
 
 namespace RGBTester.Logic
 {
-    #region Task
     public class SubTaskRGBTest: IBaseTask<SubTaskRGBTest.WORK>
     {
         public SubTaskRGBTest(IBaseTaskDependence dependencies,
@@ -38,10 +37,12 @@ namespace RGBTester.Logic
         }
 
         #region parameter
+        RGBTesterFunction RGBfunc;
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
         private string Type;
+        private string SN;
         public enum WORK
         {
             NONE,
@@ -135,6 +136,16 @@ namespace RGBTester.Logic
         {
             Scope.TestFail = false;
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+            RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+
+            if(Type == "Left")
+            {
+                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
+            }
+            else if(Type == "Right")
+            {
+                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+            }
         }
         #endregion
 
@@ -242,8 +253,15 @@ namespace RGBTester.Logic
                 case WORK.SUCCESS:
                     {
                         if(Scope.TestFail == true)
+                        {
                             StatusBox.ShowMessage("GRR Fail");
-                        
+                            RGBfunc.YieldStatistics(false, SN);
+                        }
+                        else
+                        {
+                            RGBfunc.YieldStatistics(true, SN);
+                        }
+
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }
@@ -281,6 +299,4 @@ namespace RGBTester.Logic
             }
         }
     }
-    #endregion
- 
 }

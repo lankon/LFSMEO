@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
 
+	<Release version="1.26.2.1" date="2026-02-25">
+		<Item type="Added">良率統計報表</Item>
+	</Release>
 	<Release version="1.26.1.5" date="2026-02-02">
 		<Item type="Added">OTO分光卡</Item>
 		<Item type="Added">Slope上下限設定</Item>

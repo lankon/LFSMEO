@@ -44,7 +44,7 @@ namespace RGBTester
             //退出Form後即close掉,要用再new
             services.AddTransient<F_OEM_Setting>();
             services.AddTransient<F_Equipment_Setting>();
-            services.AddSingleton<F_ParameterSetting>();
+            services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
             //[Form Logic]
@@ -56,7 +56,7 @@ namespace RGBTester
             //[Logic]
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<RGBTesterFunction>();
-
+            services.AddSingleton<TestResultDataBase>();
 
             return services;
         }

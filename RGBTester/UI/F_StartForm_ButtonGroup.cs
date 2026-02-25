@@ -113,11 +113,14 @@ namespace RGBTester.UI
 
         private void Btn_ParameterSetting_Click(object sender, EventArgs e)
         {
-            var para_set = ServiceProvider.GetRequiredService<F_ParameterSetting>();
+            var para_set = ServiceProvider.GetRequiredService<IF_ParameterSetting>();
 
-            Tool.HideElementOnPanel(Scope.MainPanel);
-            Tool.SetForm(Scope.MainPanel, para_set);
-            para_set.Show();
+            if(para_set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
         }
 
         private void Btn_LogIn_Click(object sender, EventArgs e)
