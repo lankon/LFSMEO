@@ -94,6 +94,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera\CameraDisplayPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="F_LightControl.cs">
       <SubType>Form</SubType>
     </Compile>

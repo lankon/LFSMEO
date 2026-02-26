@@ -233,6 +233,10 @@
       <Project>{c12ff5de-c9f1-4a7f-8b6b-0c0ab9159ed0}</Project>
       <Name>Device_APS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_Hikvision\Device_Hikvision.csproj">
+      <Project>{ffa19edb-00b0-4a6e-ac8e-bd87597601ee}</Project>
+      <Name>Device_Hikvision</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Device_Klzx\Device_Klzx.csproj">
       <Project>{9c7c95d6-1c0f-4aeb-90f3-047e24034952}</Project>
       <Name>Device_Klzx</Name>

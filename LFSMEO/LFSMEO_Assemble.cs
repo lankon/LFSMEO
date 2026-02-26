@@ -21,6 +21,7 @@ using Device_OTO;
 using Device_APS;
 using Device_FTLight;
 using Device_VirtualLight;
+using Device_Hikvision;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -86,6 +87,7 @@ namespace LFSMEO
             services.AddSingleton<ISpectrometer>(Spectro_OTO);
             services.AddSingleton<ILightControl, Light_FT_116>();
             services.AddSingleton<ILightControl, VirtualLight>();
+            services.AddSingleton<ICamera, Hikvision>();
             services.AddSingleton<IChillerControl>(Klxz);
 
             //[Form]
@@ -105,6 +107,7 @@ namespace LFSMEO
             services.AddSingleton<IFunction_IO_Card, Function_IO_Card>();
             services.AddSingleton<IFunction_Spectrometer, Function_Spectrometer>();
             services.AddSingleton<IFunction_LightControl, Function_LightControl>();
+            services.AddSingleton<IFunction_Camera, Function_Camera>();
 
             //[Machine]
             Icon AppIcon = null; string AppName = "";
