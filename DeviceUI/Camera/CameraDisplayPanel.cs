@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using DeviceCore;
+
 namespace DeviceUI.Camera
 {
-    public class CameraDisplayPanel:Panel
+    public class CameraDisplayPanel:Panel, ICameraDisplayPanel
     {
         public CameraDisplayPanel()
         {
@@ -18,50 +20,238 @@ namespace DeviceUI.Camera
                           ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.ResizeRedraw, true);
             this.UpdateStyles();
+
+            this.MouseEnter += (s, e) => { this.Focus(); };
+            this.MouseWheel += CameraDisplayPanel_MouseWheel;
+            this.MouseMove += CameraDisplayPanel_MouseMove;
+            this.MouseUp += CameraDisplayPanel_MouseUp;
+            this.MouseDown += CameraDisplayPanel_MouseDown;
         }
 
-        // 存放目前的影像 (從海康拿到的 Bitmap)
-        private Bitmap _currentImage;
-        public Bitmap CurrentImage
+        #region parameter define
+        private float _zoomScale = 1.0f;                //影像放大縮小比例
+        private PointF _offset = new PointF(0, 0);      //影像放大縮小位移
+        private Point _startPoint;                      // 滑鼠按下時的起點
+        private Point _endPoint;                        // 滑鼠移動時的當前點
+        private bool _isSelecting = false;              // 是否正在拖拉矩形
+        public Rectangle _selectedRect { get; private set; } // 最終選取的矩形區域
+        private readonly object _imageLock = new object();
+        private Bitmap _currentImage;                   //傳入CCD原始圖像資訊
+        public Bitmap CurrentImage                      //傳入CCD原始圖像資訊
         {
             get => _currentImage;
             set
             {
-                // 1. 釋放舊的 Bitmap 資源，避免 GDI+ 記憶體洩漏
-                _currentImage?.Dispose();
+                bool isFirstImage = false;
+                lock (_imageLock)
+                {
+                    if (_currentImage == null && value != null) isFirstImage = true;
+                    _currentImage?.Dispose();
+                    _currentImage = value;
+                }
 
-                // 2. 存入新圖
-                _currentImage = value;
-
-                // 3. 關鍵：告訴 Windows 這個元件「無效」了，請儘快呼叫 OnPaint
-                // Invalidate 是執行緒安全的，可以在取像的 Background Thread 呼叫
-                this.Invalidate();
+                if (isFirstImage)
+                    FitWindow();
+                else
+                    this.Invalidate();
             }
         }
-        public float ZoomScale { get; set; } = 1.0f;
+        #endregion
+
+        #region private function
+        private Rectangle GetDisplayRect(Bitmap bmp)
+        {
+            if (bmp == null) return Rectangle.Empty;
+
+            // 計算縮放比例
+            float ratio = Math.Min((float)this.Width / bmp.Width, (float)this.Height / bmp.Height);
+            int tw = (int)(bmp.Width * ratio);
+            int th = (int)(bmp.Height * ratio);
+
+            // 計算居中位移
+            int tx = (this.Width - tw) / 2;
+            int ty = (this.Height - th) / 2;
+
+            return new Rectangle(tx, ty, tw, th);
+        }
+        private Rectangle GetNormalizedRect(Point p1, Point p2)
+        {
+            return new Rectangle(
+                Math.Min(p1.X, p2.X),
+                Math.Min(p1.Y, p2.Y),
+                Math.Abs(p1.X - p2.X),
+                Math.Abs(p1.Y - p2.Y)
+            );
+        }
+        private void DrawSelectionRectangle(Graphics g)
+        {
+            if (!_isSelecting) return;
+
+            Rectangle drawRect = GetNormalizedRect(_startPoint, _endPoint);
+
+            using (Pen dashPen = new Pen(Color.Blue, 1))
+            {
+                dashPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                g.DrawRectangle(dashPen, drawRect);
+            }
+
+            // 如果之後想加填充，也可以寫在這裡
+            // using (SolidBrush brush = new SolidBrush(Color.FromArgb(50, Color.Yellow))) {
+            //     g.FillRectangle(brush, drawRect);
+            // }
+        }
+        private void DrawCrosshair(Graphics g)
+        {
+            Color crosshairColor = Color.Red;
+            float thickness = 1.0f;
+
+            using (Pen pen = new Pen(crosshairColor, thickness))
+            {
+                // 畫水平線
+                g.DrawLine(pen, 0, this.Height / 2, this.Width, this.Height / 2);
+                // 畫垂直線
+                g.DrawLine(pen, this.Width / 2, 0, this.Width / 2, this.Height);
+            }
+        }
+        private Rectangle GetImageInternalRect()
+        {
+            //將框選的螢幕矩形範圍推回實際影像的範圍
+
+            if (_currentImage == null) return Rectangle.Empty;
+
+            int ix = (int)((_selectedRect.X - _offset.X) / _zoomScale);
+            int iy = (int)((_selectedRect.Y - _offset.Y) / _zoomScale);
+            int iw = (int)(_selectedRect.Width / _zoomScale);
+            int ih = (int)(_selectedRect.Height / _zoomScale);
+
+            return new Rectangle(ix, iy, iw, ih);
+        }
+        #endregion
+
+        #region public function
+        public void FitWindow()
+        {
+            if (_currentImage == null) return;
+
+            // 計算符合視窗的比例
+            float ratio = Math.Min((float)this.Width / _currentImage.Width, (float)this.Height / _currentImage.Height);
+            _zoomScale = ratio;
+
+            // 計算置中位移，並存入 _offset
+            _offset.X = (this.Width - _currentImage.Width * ratio) / 2f;
+            _offset.Y = (this.Height - _currentImage.Height * ratio) / 2f;
+
+            this.Invalidate();
+        }
+        public void SaveFullImage(string filePath)
+        {
+            lock (_imageLock)
+            {
+                if (_currentImage != null)
+                {
+                    _currentImage.Save(filePath, System.Drawing.Imaging.ImageFormat.Bmp);
+                }
+            }
+        }
+        public void SaveSelectedROI(string filePath)
+        {
+            // 1. 先取得轉換後的影像真實座標
+            Rectangle realRect = GetImageInternalRect();
+
+            if (realRect.Width <= 0 || realRect.Height <= 0) return;
+
+            lock (_imageLock)
+            {
+                if (_currentImage != null)
+                {
+                    // 2. 從原始影像中裁切 (Clone) 出該區域
+                    using (Bitmap roiImg = _currentImage.Clone(realRect, _currentImage.PixelFormat))
+                    {
+                        roiImg.Save(filePath, System.Drawing.Imaging.ImageFormat.Bmp);
+                    }
+                }
+            }
+        }
+        #endregion
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
 
-            // 設定繪圖品質 (如果是機台操作，InterpolationMode 選 NearestNeighbor 效能最好)
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 
-            if (CurrentImage != null)
+            lock (_imageLock)
             {
-                // 這裡實作縮放與平移邏輯
-                // g.ScaleTransform(ZoomScale, ZoomScale);
-                g.DrawImage(CurrentImage, 0, 0);
-
-                // 畫輔助線 (例如十字絲)
-                using (Pen pen = new Pen(Color.Red, 2))
+                if (_currentImage != null)
                 {
-                    g.DrawLine(pen, 0, this.Height / 2, this.Width, this.Height / 2);
-                    g.DrawLine(pen, this.Width / 2, 0, this.Width / 2, this.Height);
+                    g.TranslateTransform(_offset.X, _offset.Y);
+                    g.ScaleTransform(_zoomScale, _zoomScale);
+
+                    g.DrawImage(_currentImage, 0, 0);
+
+                    // 重設轉換，避免影響後續畫線
+                    g.ResetTransform();
                 }
             }
 
+            DrawCrosshair(g);
+            DrawSelectionRectangle(g);
+
             base.OnPaint(e);
+        }
+
+        private void CameraDisplayPanel_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (_currentImage == null) return;
+
+            float oldScale = _zoomScale;
+
+            // 判斷滾輪向上或向下 (每次縮放 10%)
+            if (e.Delta > 0) _zoomScale *= 1.05f;
+            else _zoomScale /= 1.05f;
+
+            // 限制最小縮放倍率，避免影像消失
+            if (_zoomScale < 0.5f) _zoomScale = 0.5f;
+
+            // 調整 Offset 讓滑鼠指向的像素點不動
+            float ratio = _zoomScale / oldScale;
+            _offset.X = e.X - (e.X - _offset.X) * ratio;
+            _offset.Y = e.Y - (e.Y - _offset.Y) * ratio;
+
+            this.Invalidate();
+        }
+
+        private void CameraDisplayPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && _isSelecting)
+            {
+                _isSelecting = false;
+                // 計算最終矩形
+                _selectedRect = GetNormalizedRect(_startPoint, _endPoint);
+
+                // 可以在這裡觸發一個事件，通知主程式「範圍選好了」
+                //OnSelectionCompleted(_selectedRect);
+            }
+        }
+
+        private void CameraDisplayPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isSelecting)
+            {
+                _endPoint = e.Location;
+                this.Invalidate();
+            }
+        }
+
+        private void CameraDisplayPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                _isSelecting = true;
+                _startPoint = e.Location;
+                _endPoint = e.Location; // 防止沒動滑鼠就放開
+            }
         }
     }
 }

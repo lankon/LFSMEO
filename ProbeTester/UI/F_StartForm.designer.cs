@@ -75,9 +75,9 @@ namespace ProbeTester.UI
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(7, 4);
+            this.panel1.Location = new System.Drawing.Point(7, 141);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(809, 525);
+            this.panel1.Size = new System.Drawing.Size(850, 680);
             this.panel1.TabIndex = 0;
             // 
             // Pnl_MainButton
@@ -86,9 +86,9 @@ namespace ProbeTester.UI
             this.Pnl_MainButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Pnl_MainButton.Controls.Add(this.button8);
             this.Pnl_MainButton.Controls.Add(this.Btn_Start);
-            this.Pnl_MainButton.Location = new System.Drawing.Point(7, 578);
+            this.Pnl_MainButton.Location = new System.Drawing.Point(7, 870);
             this.Pnl_MainButton.Name = "Pnl_MainButton";
-            this.Pnl_MainButton.Size = new System.Drawing.Size(809, 82);
+            this.Pnl_MainButton.Size = new System.Drawing.Size(850, 94);
             this.Pnl_MainButton.TabIndex = 1;
             // 
             // button8
@@ -97,11 +97,12 @@ namespace ProbeTester.UI
             this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.button8.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button8.Location = new System.Drawing.Point(86, 3);
+            this.button8.Location = new System.Drawing.Point(95, 3);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 75);
+            this.button8.Size = new System.Drawing.Size(85, 85);
             this.button8.TabIndex = 6;
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // Btn_Start
             // 
@@ -111,7 +112,7 @@ namespace ProbeTester.UI
             this.Btn_Start.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Btn_Start.Location = new System.Drawing.Point(4, 3);
             this.Btn_Start.Name = "Btn_Start";
-            this.Btn_Start.Size = new System.Drawing.Size(75, 75);
+            this.Btn_Start.Size = new System.Drawing.Size(85, 85);
             this.Btn_Start.TabIndex = 5;
             this.Btn_Start.UseVisualStyleBackColor = true;
             this.Btn_Start.Click += new System.EventHandler(this.Btn_Start_Click);
@@ -120,9 +121,9 @@ namespace ProbeTester.UI
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.tableLayoutPanel1);
-            this.panel3.Location = new System.Drawing.Point(8, 535);
+            this.panel3.Location = new System.Drawing.Point(7, 827);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(809, 37);
+            this.panel3.Size = new System.Drawing.Size(850, 37);
             this.panel3.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -149,7 +150,7 @@ namespace ProbeTester.UI
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(460, 34);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(457, 34);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
             // textBox4
@@ -244,44 +245,44 @@ namespace ProbeTester.UI
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.tableLayoutPanel2);
-            this.panel4.Location = new System.Drawing.Point(823, 453);
+            this.panel4.Location = new System.Drawing.Point(863, 718);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(498, 207);
+            this.panel4.Size = new System.Drawing.Size(321, 246);
             this.panel4.TabIndex = 4;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 4;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel2.Controls.Add(this.button3, 3, 1);
             this.tableLayoutPanel2.Controls.Add(this.button7, 3, 2);
             this.tableLayoutPanel2.Controls.Add(this.button6, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.button5, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.Btn_Home, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.button4, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.button2, 2, 2);
             this.tableLayoutPanel2.Controls.Add(this.button9, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.button1, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.Btn_Home, 2, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(269, 198);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(311, 236);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // button3
             // 
             this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
             this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button3.Location = new System.Drawing.Point(205, 71);
+            this.button3.Location = new System.Drawing.Point(232, 80);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(60, 60);
+            this.button3.Size = new System.Drawing.Size(75, 69);
             this.button3.TabIndex = 33;
             this.button3.UseVisualStyleBackColor = true;
             // 
@@ -289,9 +290,9 @@ namespace ProbeTester.UI
             // 
             this.button7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button7.BackgroundImage")));
             this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button7.Location = new System.Drawing.Point(205, 138);
+            this.button7.Location = new System.Drawing.Point(232, 156);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(60, 60);
+            this.button7.Size = new System.Drawing.Size(75, 75);
             this.button7.TabIndex = 37;
             this.button7.UseVisualStyleBackColor = true;
             // 
@@ -299,9 +300,9 @@ namespace ProbeTester.UI
             // 
             this.button6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button6.BackgroundImage")));
             this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button6.Location = new System.Drawing.Point(71, 138);
+            this.button6.Location = new System.Drawing.Point(80, 156);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(60, 60);
+            this.button6.Size = new System.Drawing.Size(69, 75);
             this.button6.TabIndex = 36;
             this.button6.UseVisualStyleBackColor = true;
             // 
@@ -309,9 +310,9 @@ namespace ProbeTester.UI
             // 
             this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
             this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button5.Location = new System.Drawing.Point(71, 4);
+            this.button5.Location = new System.Drawing.Point(80, 4);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(60, 60);
+            this.button5.Size = new System.Drawing.Size(69, 69);
             this.button5.TabIndex = 35;
             this.button5.UseVisualStyleBackColor = true;
             // 
@@ -319,9 +320,9 @@ namespace ProbeTester.UI
             // 
             this.Btn_Home.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Home.BackgroundImage")));
             this.Btn_Home.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_Home.Location = new System.Drawing.Point(138, 4);
+            this.Btn_Home.Location = new System.Drawing.Point(156, 4);
             this.Btn_Home.Name = "Btn_Home";
-            this.Btn_Home.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Home.Size = new System.Drawing.Size(69, 69);
             this.Btn_Home.TabIndex = 30;
             this.Btn_Home.UseVisualStyleBackColor = true;
             // 
@@ -329,9 +330,9 @@ namespace ProbeTester.UI
             // 
             this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
             this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button4.Location = new System.Drawing.Point(205, 4);
+            this.button4.Location = new System.Drawing.Point(232, 4);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(60, 60);
+            this.button4.Size = new System.Drawing.Size(75, 69);
             this.button4.TabIndex = 34;
             this.button4.UseVisualStyleBackColor = true;
             // 
@@ -339,9 +340,9 @@ namespace ProbeTester.UI
             // 
             this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
             this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button2.Location = new System.Drawing.Point(138, 138);
+            this.button2.Location = new System.Drawing.Point(156, 156);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(60, 60);
+            this.button2.Size = new System.Drawing.Size(69, 75);
             this.button2.TabIndex = 32;
             this.button2.UseVisualStyleBackColor = true;
             // 
@@ -351,7 +352,7 @@ namespace ProbeTester.UI
             this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button9.Location = new System.Drawing.Point(4, 4);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(60, 60);
+            this.button9.Size = new System.Drawing.Size(69, 69);
             this.button9.TabIndex = 36;
             this.button9.UseVisualStyleBackColor = true;
             // 
@@ -359,9 +360,9 @@ namespace ProbeTester.UI
             // 
             this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.Location = new System.Drawing.Point(71, 71);
+            this.button1.Location = new System.Drawing.Point(80, 80);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(60, 60);
+            this.button1.Size = new System.Drawing.Size(69, 69);
             this.button1.TabIndex = 31;
             this.button1.UseVisualStyleBackColor = true;
             // 
@@ -369,7 +370,7 @@ namespace ProbeTester.UI
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.Pnl_Mapping);
-            this.panel2.Location = new System.Drawing.Point(898, 4);
+            this.panel2.Location = new System.Drawing.Point(1451, 68);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(423, 443);
             this.panel2.TabIndex = 5;
@@ -397,7 +398,7 @@ namespace ProbeTester.UI
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.button10);
-            this.panel5.Location = new System.Drawing.Point(822, 4);
+            this.panel5.Location = new System.Drawing.Point(1375, 68);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(69, 443);
             this.panel5.TabIndex = 6;
@@ -415,7 +416,7 @@ namespace ProbeTester.UI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.ClientSize = new System.Drawing.Size(1896, 967);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel4);

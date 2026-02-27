@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
+using System.Drawing;
 
 //[Device]
 using DeviceCore;
@@ -30,9 +33,8 @@ using UserPrivilege.Logic;
 
 //[Machine]
 using RGBTester;
-using System.IO;
-using System.Diagnostics;
-using System.Drawing;
+using ProbeTester;
+
 
 namespace LFSMEO
 {
@@ -44,8 +46,8 @@ namespace LFSMEO
         {
             switch (Scope.MachineType)
             {
-                case EMachineType.VPT_3IN1:
-                //return host.Services.GetRequiredService<F_VPT3IN1_Main>();
+                case EMachineType.ProbeTester:
+                    return host.Services.GetRequiredService<ProbeTester.UI.F_MainForm>();
                 case EMachineType.RGBTester:
                     return host.Services.GetRequiredService<RGBTester.UI.F_MainForm>();
                 default:
@@ -113,9 +115,8 @@ namespace LFSMEO
             Icon AppIcon = null; string AppName = "";
             switch (Scope.MachineType)
             {
-                case EMachineType.VPT_3IN1:
-                    //services.AddTransient<, ProbeTesterLogic>();
-                    //services.AddTransient<IMachineLogic, ProbeTesterLogic>();
+                case EMachineType.ProbeTester:
+                    services.AddProbeTesterServices();
                     break;
                 case EMachineType.RGBTester:
                     services.AddRGBTesterServices();

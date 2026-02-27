@@ -9,7 +9,7 @@ namespace LFSMEO
     public enum EMachineType
     {
         NONE,
-        VPT_3IN1,
+        ProbeTester,
         RGBTester,
     }
 

@@ -40,6 +40,12 @@ namespace DeviceFunction
 
             return 0;
         }
+        public bool StopGrabAllCamera()
+        {
+
+            return false;
+        }
+
         #endregion
 
     }
