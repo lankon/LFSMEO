@@ -52,6 +52,8 @@ namespace Device_Hikvision
             if (MV_INFO_LIST.nDeviceNum == 0 || nRet != (int)ERROR_CODE.STATUS_OK)
                 return (int)ERROR_CODE.ERROR_CONNECT_FAIL;
 
+            m_pOperator = new CameraOperator[MV_INFO_LIST.nDeviceNum];
+
             int OpenedNum = 0;
             for (int i=0; i< MV_INFO_LIST.nDeviceNum; i++)
             {
