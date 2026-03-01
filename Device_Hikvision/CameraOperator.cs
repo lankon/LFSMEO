@@ -204,6 +204,19 @@ namespace DeviceSourceHikvision
 
             return CO_OK;
         }
+        public int GetOneFrameTimeOut(IntPtr pData, ref UInt32 pnDataLen, UInt32 nDataSize, ref MyCamera.MV_FRAME_OUT_INFO_EX pFrameInfo, int time_out)
+        {
+            pnDataLen = 0;
+            int nRet = m_pCSI.MV_CC_GetOneFrameTimeout_NET(pData, nDataSize, ref pFrameInfo, time_out);
+            if (MyCamera.MV_OK != nRet)
+            {
+                return CO_FAIL;
+            }
+
+            pnDataLen = (uint)(pFrameInfo.nWidth * pFrameInfo.nHeight * (((((UInt32)pFrameInfo.enPixelType) >> 16) & 0x00ff) >> 3));
+
+            return CO_OK;
+        }
 
 
         /****************************************************************************

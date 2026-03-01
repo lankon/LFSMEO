@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,62 @@ namespace DeviceUI.Camera
         #endregion
 
         #region private function
+        public Bitmap CreateUniversalBitmap(int width, int height, IntPtr ptr, MyCamera.MvGvspPixelType pixelType)
+        {
+            PixelFormat format = PixelFormat.Format8bppIndexed;
+            int bytesPerPixel = 1;
+            bool isMono = false;
+
+            // 1. 根據 PixelType 判定格式與位元組數
+            switch (pixelType)
+            {
+                case MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono8:
+                    format = PixelFormat.Format8bppIndexed;
+                    bytesPerPixel = 1;
+                    isMono = true;
+                    break;
+
+                case MyCamera.MvGvspPixelType.PixelType_Gvsp_BGR8_Packed:
+                case MyCamera.MvGvspPixelType.PixelType_Gvsp_RGB8_Packed:
+                    format = PixelFormat.Format24bppRgb;
+                    bytesPerPixel = 3;
+                    break;
+
+                case MyCamera.MvGvspPixelType.PixelType_Gvsp_YUV422_Packed:
+                case MyCamera.MvGvspPixelType.PixelType_Gvsp_YUV422_YUYV_Packed:
+                    // 注意：GDI+ 沒有原生 YUV 格式，直接顯示會是色偏的。
+                    // 這裡設定 16bpp 是為了讓記憶體長度對齊 (2 bytes per pixel)
+                    format = PixelFormat.Format16bppRgb565;
+                    bytesPerPixel = 2;
+                    break;
+
+                default:
+                    // 若遇到不支援的格式，預設走 Mono8 嘗試顯示
+                    format = PixelFormat.Format8bppIndexed;
+                    bytesPerPixel = 1;
+                    break;
+            }
+
+            // 2. 計算符合 4 字節對齊的 Stride
+            // 這是最穩健的寫法，確保不同寬度的 CCD 都不會發生畫面傾斜
+            int stride = ((width * bytesPerPixel + 3) / 4) * 4;
+
+            // 3. 建立 Bitmap 物件 (指向 Pinned 指標)
+            Bitmap bmp = new Bitmap(width, height, stride, format, ptr);
+
+            // 4. 如果是 Mono8，修正調色盤
+            if (isMono)
+            {
+                ColorPalette palette = bmp.Palette;
+                for (int i = 0; i < 256; i++)
+                {
+                    palette.Entries[i] = Color.FromArgb(i, i, i);
+                }
+                bmp.Palette = palette;
+            }
+
+            return bmp;
+        }
         private Rectangle GetDisplayRect(Bitmap bmp)
         {
             if (bmp == null) return Rectangle.Empty;
