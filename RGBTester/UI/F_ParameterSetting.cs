@@ -13,22 +13,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToolFunction;
+using static RGBTester.Logic.TestResultDataBase;
 
 namespace RGBTester.UI
 {
     public partial class F_ParameterSetting : Form, IF_ParameterSetting
     {
-        public F_ParameterSetting(IServiceProvider serviceProvider)
+        public F_ParameterSetting(IServiceProvider serviceProvider, F_ParameterSettingLogic f_ParameterSettingLogic)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
+            ParameterSettingLogic1 = f_ParameterSettingLogic;
 
             InitialForm();
         }
 
         #region parameter define
         IServiceProvider ServiceProvider;
+        F_ParameterSettingLogic ParameterSettingLogic1;
         #endregion
 
         #region private function
@@ -44,7 +47,7 @@ namespace RGBTester.UI
         }
         void ShowHint()
         {
-
+            toolTip1.SetToolTip(Btn_OutputResult, $"{AppDomain.CurrentDomain.BaseDirectory}\\Result");
         }
         private void ReadAllEnumSetting()
         {
@@ -117,12 +120,16 @@ namespace RGBTester.UI
             DGV_ProductRawData.DataSource = new BindingList<TestResultDataBase.ProductionLog>(result);
 
             // 顯示統計數據
-            var report = data_base.Manager.GetSummaryReport(pickip_condition, start_time, end_time);
-            TxtBx_Total.Text = report.TotalUnits.ToString();
-            TxtBx_Pass.Text = report.PassUnits.ToString();
-            TxtBx_Fail.Text = report.FailUnits.ToString();
-            TxtBx_Exclude.Text = report.ExcludeUnits.ToString();
-            TxtBx_Yield.Text = report.Yield.ToString("P2");
+            List<ProductionLog> pass_data = new List<ProductionLog>();
+            List<ProductionLog> fail_data = new List<ProductionLog>();
+            YieldResult yieldResult = new YieldResult();
+            data_base.Manager.GetSummaryReport(ref pass_data, ref fail_data, ref yieldResult);
+
+            TxtBx_Total.Text = yieldResult.TotalUnits.ToString();
+            TxtBx_Pass.Text = yieldResult.PassUnits.ToString();
+            TxtBx_Fail.Text = yieldResult.FailUnits.ToString();
+            //TxtBx_Exclude.Text = report.ExcludeUnits.ToString();
+            TxtBx_Yield.Text = yieldResult.Yield.ToString("P2");
         }
 
         private void TxtBx_StartTime_DoubleClick(object sender, EventArgs e)
@@ -165,15 +172,15 @@ namespace RGBTester.UI
             var dgv = sender as DataGridView;
             var row = dgv.Rows[e.RowIndex];
 
-            // 1. 取得這筆資料的唯一 ID (假設你的 ID 欄位名稱是 "ID")
+            // 取得這筆資料的唯一 ID (假設你的 ID 欄位名稱是 "ID")
             if (row.Cells["Title_ID"].Value == null) return;
             int id = Convert.ToInt32(row.Cells["Title_ID"].Value);
 
-            // 2. 取得被修改的欄位名稱與新數值
+            // 取得被修改的欄位名稱與新數值
             string columnName = dgv.Columns[e.ColumnIndex].HeaderText;
             object newValue = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 
-            // 3. 存回資料庫
+            // 存回資料庫
             try
             {
                 data_base.Manager.UpdateDatabase(id, columnName, newValue);
@@ -184,6 +191,12 @@ namespace RGBTester.UI
             {
                 MessageBox.Show($"更新失敗：{ex.Message}");
             }
+        }
+
+        private void Btn_OutputResult_Click(object sender, EventArgs e)
+        {
+            ParameterSettingLogic1.OutPutYieldReport();
+            MessageBox.Show("Save Yield Report Success!");
         }
     }
 }

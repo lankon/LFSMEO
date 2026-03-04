@@ -134,11 +134,13 @@ namespace RGBTester.Logic
         }
         private void Preset()
         {
-            Scope.TestFail = false;
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
 
-            if(Type == "Left")
+            Scope.TestFail = false;
+            RGBfunc.FailReasonFlag.ResetAllFlag();
+
+            if (Type == "Left")
             {
                 SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
             }
@@ -254,8 +256,9 @@ namespace RGBTester.Logic
                     {
                         if(Scope.TestFail == true)
                         {
-                            StatusBox.ShowMessage("GRR Fail");
-                            RGBfunc.YieldStatistics(false, SN);
+                            StatusBox.ShowMessage("Fail");
+                            string description = RGBfunc.FailReasonFlag.GetFailDescription();
+                            RGBfunc.YieldStatistics(false, SN, description);
                         }
                         else
                         {

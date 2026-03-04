@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dapper;
+using Serilog;
+using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
-using Dapper;
 
 namespace RGBTester.Logic
 {
@@ -53,6 +54,8 @@ namespace RGBTester.Logic
         {
             #region parameter define
             private string _connStr = $"Data Source={AppDomain.CurrentDomain.BaseDirectory}\\Setting\\YieldReport.db;Version=3;";
+            List<ProductionLog> FailPart = new List<ProductionLog>();
+            List<ProductionLog> PassPart = new List<ProductionLog>();
             #endregion
 
             #region private function
@@ -88,7 +91,7 @@ namespace RGBTester.Logic
                     parameters.Add("is_pass", is_pass);
                 }
 
-                if (exclude != 0 && exclude != -1)
+                if (exclude != 2 && exclude != -1)
                 {
                     sql.Append(" AND Exclude = @exclude ");
                     parameters.Add("exclude", exclude);
@@ -162,8 +165,56 @@ namespace RGBTester.Logic
 
                     sql.Append(" ORDER BY TestTime DESC");
 
-                    return conn.Query<ProductionLog>(sql.ToString(), parameters).ToList();
+                    // 取得所有資料
+                    List<ProductionLog> report = conn.Query<ProductionLog>(sql.ToString(), parameters).ToList();
+
+                    var finalSummary = report
+                        .GroupBy(x => new { x.ProductType, x.SN })
+                        .Select(g =>
+                        {
+                            // 判斷SN是否有過任何一筆PASS
+                            var passRecord = g.Where(x => x.IsPass == 1).OrderByDescending(x => x.TestTime).FirstOrDefault();
+                            bool isFinalPass = passRecord != null;
+
+                            // 如果有PASS，就抓最新的一筆PASS紀錄；若全FAIL，則抓最後一次FAIL紀錄
+                            var targetRecord = isFinalPass
+                                ? passRecord
+                                : g.OrderByDescending(x => x.TestTime).First();
+
+                            return new ProductionLog
+                            {
+                                ID = targetRecord.ID,
+                                ProductType = g.Key.ProductType,
+                                SN = g.Key.SN,
+                                TestTime = targetRecord.TestTime,
+                                IsPass = isFinalPass ? 1 : 0,
+                                Exclude = targetRecord.Exclude,
+                                Description = targetRecord.Description
+                            };
+                        })
+                        .OrderByDescending(x => x.TestTime)
+                        .ToList();
+
+                    // 取出Pass及Fail的部分
+                    PassPart = finalSummary.Where(x => x.IsPass == 1).ToList();
+                    FailPart = finalSummary.Where(x => x.IsPass == 0).ToList();
+
+                    return report;
                 }
+            }
+
+            public void GetSummaryReport(ref List<ProductionLog> pass, ref List<ProductionLog> fail, ref YieldResult yield_result)
+            {
+                pass = PassPart;
+                fail = FailPart;
+
+                yield_result = new YieldResult
+                {
+                    TotalUnits = pass.Count + fail.Count,
+                    PassUnits = pass.Count,
+                    FailUnits = fail.Count
+                };
+
             }
 
             public YieldResult GetSummaryReport(ProductionLog select_data, DateTime start, DateTime end)
@@ -177,25 +228,27 @@ namespace RGBTester.Logic
                 using (var conn = new SQLiteConnection(_connStr))
                 {
                     //從資料庫提取資料
-                    StringBuilder sql = new StringBuilder(@"
-                        SELECT 
-                            ProductType,
-                            COUNT(*) as TotalUnits,
-                            SUM(CASE WHEN IsPass = 1 AND Exclude = 0 THEN 1 ELSE 0 END) as PassUnits,
-                            SUM(CASE WHEN IsPass = 0 AND Exclude = 0 THEN 1 ELSE 0 END) as FailUnits
-                        FROM ProductionLogs
-                        WHERE TestTime BETWEEN datetime(@start) AND datetime(@end) ");
-
+                    StringBuilder whereSql = new StringBuilder(" WHERE TestTime BETWEEN @start AND @end ");
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("start", start);
                     parameters.Add("end", end);
+                    FilterCondition(ref whereSql, ref parameters, select_data);
 
-                    FilterCondition(ref sql, ref parameters, select_data);
+                    string finalSql = $@"
+                                        SELECT 
+                                            ProductType,
+                                            COUNT(*) as TotalUnits,
+                                            SUM(CASE WHEN MaxPass = 1 THEN 1 ELSE 0 END) as PassUnits,
+                                            SUM(CASE WHEN MaxPass = 0 THEN 1 ELSE 0 END) as FailUnits
+                                        FROM (
+                                            SELECT ProductType, SN, MAX(IsPass) as MaxPass
+                                            FROM ProductionLogs
+                                            {whereSql}
+                                            GROUP BY ProductType, SN
+                                        ) AS Sub
+                                        GROUP BY ProductType";
 
-                    sql.Append(" GROUP BY ProductType ");
-
-                    //取得分類結果
-                    List<ProductionSummary> report = conn.Query<ProductionSummary>(sql.ToString(), parameters).ToList();
+                    List<ProductionSummary> report = conn.Query<ProductionSummary>(finalSql, parameters).ToList();
 
                     //計算結果
                     int total_units = 0, fail_units = 0, pass_units = 0, yield = 0;

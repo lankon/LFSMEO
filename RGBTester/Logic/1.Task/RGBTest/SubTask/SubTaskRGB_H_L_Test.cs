@@ -387,6 +387,7 @@ namespace RGBTester.Logic
                 {
                     Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{HCM_LL:F3}~{HCM_UL:F3}", level: "WRN");
+                    RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
             }
             else
@@ -395,6 +396,7 @@ namespace RGBTester.Logic
                 {
                     Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{LCM_LL:F3}~{LCM_UL:F3}", level: "WRN");
+                    RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
             }
         }
@@ -441,12 +443,22 @@ namespace RGBTester.Logic
                 if(StartClampingDAC < fail_dac_condition)
                 {
                     Scope.TestFail = true;
+                    RGBfunc.FailReasonFlag.IsClampingErr = true;
                 }
 
                 StartClampingCount = DAC.Count - ClampShift + 5;
                 IsClamping = true;
                 Tool.SaveLogToFile($"Clamping Detected! Start DAC:{StartClampingDAC}", level: "WRN");
                 return;
+            }
+        }
+        private void CheckTestTemperature(double temperature)
+        {
+            if(temperature > 50)
+            {
+                Scope.TestFail = true;
+                RGBfunc.FailReasonFlag.IsTemperatureErr = true;
+                Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高", level: "WRN");
             }
         }
         #endregion
@@ -552,8 +564,10 @@ namespace RGBTester.Logic
                     {
                         double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
-                       //取得溫度
-                        TesterData_L.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
+                        //取得溫度
+                        double temperature = double.Parse(Deps.LightEngine.GetTemperature());
+                        CheckTestTemperature(temperature);
+                        TesterData_L.Temperature.Add(temperature);
 
                         RGBTesterFunction.AvgData LowAvgData = new RGBTesterFunction.AvgData();
 
@@ -694,7 +708,9 @@ namespace RGBTester.Logic
                         double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
 
                         //取得溫度
-                        TesterData_H.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
+                        double temperature = double.Parse(Deps.LightEngine.GetTemperature());
+                        CheckTestTemperature(temperature);
+                        TesterData_H.Temperature.Add(temperature);
 
                         RGBTesterFunction.AvgData HighAvgData = new RGBTesterFunction.AvgData();
                         //取得AI訊號

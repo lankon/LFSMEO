@@ -29,8 +29,10 @@ namespace RGBTester.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_TestFileCopyPath = new System.Windows.Forms.TextBox();
@@ -50,18 +52,24 @@ namespace RGBTester.UI
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.DGV_ProductRawData = new System.Windows.Forms.DataGridView();
+            this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_ProductType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_SN = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_TestTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_IsPass = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Title_Exclude = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Title_Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TxtBx_EndTime = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.TxtBx_Yield = new System.Windows.Forms.TextBox();
-            this.TxtBx_Exclude = new System.Windows.Forms.TextBox();
             this.TxtBx_Fail = new System.Windows.Forms.TextBox();
             this.TxtBx_Pass = new System.Windows.Forms.TextBox();
             this.TxtBx_Total = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.TxtBx_Yield = new System.Windows.Forms.TextBox();
+            this.Btn_OutputResult = new System.Windows.Forms.Button();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.TxtBx_StartTime = new System.Windows.Forms.TextBox();
             this.TxtBx_SN = new System.Windows.Forms.TextBox();
@@ -72,13 +80,7 @@ namespace RGBTester.UI
             this.Btn_Search = new System.Windows.Forms.Button();
             this.Cmbx_YieldRecord = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_ProductType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_SN = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_TestTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_IsPass = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Title_Exclude = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Title_Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -298,14 +300,14 @@ namespace RGBTester.UI
             this.DGV_ProductRawData.AllowUserToDeleteRows = false;
             this.DGV_ProductRawData.AllowUserToResizeColumns = false;
             this.DGV_ProductRawData.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_ProductRawData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_ProductRawData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.DGV_ProductRawData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_ProductRawData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_ID,
@@ -315,14 +317,14 @@ namespace RGBTester.UI
             this.Title_IsPass,
             this.Title_Exclude,
             this.Title_Description});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_ProductRawData.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_ProductRawData.DefaultCellStyle = dataGridViewCellStyle12;
             this.DGV_ProductRawData.Location = new System.Drawing.Point(3, 103);
             this.DGV_ProductRawData.Name = "DGV_ProductRawData";
             this.DGV_ProductRawData.RowHeadersVisible = false;
@@ -330,6 +332,69 @@ namespace RGBTester.UI
             this.DGV_ProductRawData.Size = new System.Drawing.Size(905, 344);
             this.DGV_ProductRawData.TabIndex = 27;
             this.DGV_ProductRawData.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_ProductRawData_CellValueChanged);
+            // 
+            // Title_ID
+            // 
+            this.Title_ID.DataPropertyName = "ID";
+            this.Title_ID.HeaderText = "ID";
+            this.Title_ID.Name = "Title_ID";
+            this.Title_ID.ReadOnly = true;
+            this.Title_ID.Visible = false;
+            // 
+            // Title_ProductType
+            // 
+            this.Title_ProductType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Title_ProductType.DataPropertyName = "ProductType";
+            this.Title_ProductType.HeaderText = "Product Type";
+            this.Title_ProductType.Name = "Title_ProductType";
+            this.Title_ProductType.ReadOnly = true;
+            this.Title_ProductType.Width = 140;
+            // 
+            // Title_SN
+            // 
+            this.Title_SN.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Title_SN.DataPropertyName = "SN";
+            this.Title_SN.HeaderText = "SN";
+            this.Title_SN.Name = "Title_SN";
+            this.Title_SN.ReadOnly = true;
+            this.Title_SN.Width = 180;
+            // 
+            // Title_TestTime
+            // 
+            this.Title_TestTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Title_TestTime.DataPropertyName = "TestTime";
+            dataGridViewCellStyle11.Format = "yyyy-MM-dd HH:mm:ss";
+            this.Title_TestTime.DefaultCellStyle = dataGridViewCellStyle11;
+            this.Title_TestTime.HeaderText = "Test Time";
+            this.Title_TestTime.Name = "Title_TestTime";
+            this.Title_TestTime.ReadOnly = true;
+            this.Title_TestTime.Width = 180;
+            // 
+            // Title_IsPass
+            // 
+            this.Title_IsPass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Title_IsPass.DataPropertyName = "IsPass";
+            this.Title_IsPass.HeaderText = "Pass";
+            this.Title_IsPass.Name = "Title_IsPass";
+            this.Title_IsPass.ReadOnly = true;
+            this.Title_IsPass.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_IsPass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Title_Exclude
+            // 
+            this.Title_Exclude.DataPropertyName = "Exclude";
+            this.Title_Exclude.HeaderText = "Exclude";
+            this.Title_Exclude.Name = "Title_Exclude";
+            this.Title_Exclude.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_Exclude.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Title_Description
+            // 
+            this.Title_Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Title_Description.DataPropertyName = "Description";
+            this.Title_Description.HeaderText = "Description";
+            this.Title_Description.Name = "Title_Description";
+            this.Title_Description.Width = 180;
             // 
             // TxtBx_EndTime
             // 
@@ -354,40 +419,22 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel5.Controls.Add(this.TxtBx_Yield, 9, 0);
-            this.tableLayoutPanel5.Controls.Add(this.TxtBx_Exclude, 7, 0);
             this.tableLayoutPanel5.Controls.Add(this.TxtBx_Fail, 5, 0);
             this.tableLayoutPanel5.Controls.Add(this.TxtBx_Pass, 3, 0);
             this.tableLayoutPanel5.Controls.Add(this.TxtBx_Total, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.label6, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.label12, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.label13, 4, 0);
-            this.tableLayoutPanel5.Controls.Add(this.label14, 6, 0);
-            this.tableLayoutPanel5.Controls.Add(this.label15, 8, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label15, 6, 0);
+            this.tableLayoutPanel5.Controls.Add(this.TxtBx_Yield, 7, 0);
+            this.tableLayoutPanel5.Controls.Add(this.Btn_OutputResult, 8, 0);
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 452);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(905, 37);
             this.tableLayoutPanel5.TabIndex = 30;
-            // 
-            // TxtBx_Yield
-            // 
-            this.TxtBx_Yield.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Yield.Location = new System.Drawing.Point(813, 4);
-            this.TxtBx_Yield.Name = "TxtBx_Yield";
-            this.TxtBx_Yield.ReadOnly = true;
-            this.TxtBx_Yield.Size = new System.Drawing.Size(88, 29);
-            this.TxtBx_Yield.TabIndex = 35;
-            // 
-            // TxtBx_Exclude
-            // 
-            this.TxtBx_Exclude.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Exclude.Location = new System.Drawing.Point(641, 4);
-            this.TxtBx_Exclude.Name = "TxtBx_Exclude";
-            this.TxtBx_Exclude.ReadOnly = true;
-            this.TxtBx_Exclude.Size = new System.Drawing.Size(74, 29);
-            this.TxtBx_Exclude.TabIndex = 34;
             // 
             // TxtBx_Fail
             // 
@@ -446,25 +493,37 @@ namespace RGBTester.UI
             this.label13.Text = "Fail";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label14
-            // 
-            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label14.Location = new System.Drawing.Point(550, 1);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(84, 35);
-            this.label14.TabIndex = 11;
-            this.label14.Text = "Exclude";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // label15
             // 
             this.label15.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label15.Location = new System.Drawing.Point(722, 1);
+            this.label15.Location = new System.Drawing.Point(550, 1);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(84, 35);
             this.label15.TabIndex = 12;
             this.label15.Text = "Yield(%)";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Yield
+            // 
+            this.TxtBx_Yield.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Yield.Location = new System.Drawing.Point(641, 4);
+            this.TxtBx_Yield.Name = "TxtBx_Yield";
+            this.TxtBx_Yield.ReadOnly = true;
+            this.TxtBx_Yield.Size = new System.Drawing.Size(74, 29);
+            this.TxtBx_Yield.TabIndex = 35;
+            // 
+            // Btn_OutputResult
+            // 
+            this.tableLayoutPanel5.SetColumnSpan(this.Btn_OutputResult, 2);
+            this.Btn_OutputResult.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_OutputResult.Location = new System.Drawing.Point(719, 1);
+            this.Btn_OutputResult.Margin = new System.Windows.Forms.Padding(0);
+            this.Btn_OutputResult.Name = "Btn_OutputResult";
+            this.Btn_OutputResult.Size = new System.Drawing.Size(185, 35);
+            this.Btn_OutputResult.TabIndex = 36;
+            this.Btn_OutputResult.Text = "Output Result";
+            this.Btn_OutputResult.UseVisualStyleBackColor = true;
+            this.Btn_OutputResult.Click += new System.EventHandler(this.Btn_OutputResult_Click);
             // 
             // tableLayoutPanel6
             // 
@@ -542,8 +601,9 @@ namespace RGBTester.UI
             this.Cmbx_Exclude.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Cmbx_Exclude.FormattingEnabled = true;
             this.Cmbx_Exclude.Items.AddRange(new object[] {
-            "All",
-            "Exclude"});
+            "NonExclude",
+            "Exclude",
+            "All"});
             this.Cmbx_Exclude.Location = new System.Drawing.Point(604, 4);
             this.Cmbx_Exclude.Name = "Cmbx_Exclude";
             this.Cmbx_Exclude.Size = new System.Drawing.Size(92, 28);
@@ -584,67 +644,6 @@ namespace RGBTester.UI
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1019, 496);
             this.panel1.TabIndex = 33;
-            // 
-            // Title_ID
-            // 
-            this.Title_ID.DataPropertyName = "ID";
-            this.Title_ID.HeaderText = "ID";
-            this.Title_ID.Name = "Title_ID";
-            this.Title_ID.ReadOnly = true;
-            this.Title_ID.Visible = false;
-            // 
-            // Title_ProductType
-            // 
-            this.Title_ProductType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Title_ProductType.DataPropertyName = "ProductType";
-            this.Title_ProductType.HeaderText = "Product Type";
-            this.Title_ProductType.Name = "Title_ProductType";
-            this.Title_ProductType.ReadOnly = true;
-            this.Title_ProductType.Width = 140;
-            // 
-            // Title_SN
-            // 
-            this.Title_SN.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Title_SN.DataPropertyName = "SN";
-            this.Title_SN.HeaderText = "SN";
-            this.Title_SN.Name = "Title_SN";
-            this.Title_SN.ReadOnly = true;
-            this.Title_SN.Width = 180;
-            // 
-            // Title_TestTime
-            // 
-            this.Title_TestTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Title_TestTime.DataPropertyName = "TestTime";
-            this.Title_TestTime.HeaderText = "Test Time";
-            this.Title_TestTime.Name = "Title_TestTime";
-            this.Title_TestTime.ReadOnly = true;
-            this.Title_TestTime.Width = 180;
-            // 
-            // Title_IsPass
-            // 
-            this.Title_IsPass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Title_IsPass.DataPropertyName = "IsPass";
-            this.Title_IsPass.HeaderText = "Pass";
-            this.Title_IsPass.Name = "Title_IsPass";
-            this.Title_IsPass.ReadOnly = true;
-            this.Title_IsPass.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_IsPass.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Title_Exclude
-            // 
-            this.Title_Exclude.DataPropertyName = "Exclude";
-            this.Title_Exclude.HeaderText = "Exclude";
-            this.Title_Exclude.Name = "Title_Exclude";
-            this.Title_Exclude.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_Exclude.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Title_Description
-            // 
-            this.Title_Description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Title_Description.DataPropertyName = "Description";
-            this.Title_Description.HeaderText = "Description";
-            this.Title_Description.Name = "Title_Description";
-            this.Title_Description.Width = 180;
             // 
             // F_ParameterSetting
             // 
@@ -700,7 +699,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox TxtBx_Total;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
@@ -712,11 +710,11 @@ namespace RGBTester.UI
         private System.Windows.Forms.ComboBox Cmbx_Exclude;
         private System.Windows.Forms.ComboBox Cmbx_Pass;
         private System.Windows.Forms.TextBox TxtBx_Yield;
-        private System.Windows.Forms.TextBox TxtBx_Exclude;
         private System.Windows.Forms.TextBox TxtBx_Fail;
         private System.Windows.Forms.TextBox TxtBx_Pass;
         private System.Windows.Forms.ComboBox Cmbx_YieldRecord;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button Btn_OutputResult;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_ProductType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_SN;
@@ -724,5 +722,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.DataGridViewCheckBoxColumn Title_IsPass;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Title_Exclude;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Description;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

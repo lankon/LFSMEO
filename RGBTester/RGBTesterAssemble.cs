@@ -52,7 +52,8 @@ namespace RGBTester
             services.AddSingleton<F_StartFormLogic>();
             services.AddSingleton<F_RecipeLogic>();
             services.AddSingleton<F_DAQ_ChartLogic>();
-
+            services.AddSingleton<F_ParameterSettingLogic>();
+            
             //[Logic]
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<RGBTesterFunction>();

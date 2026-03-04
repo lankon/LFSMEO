@@ -27,6 +27,7 @@ namespace RGBTester.Logic
         IServiceProvider ServiceProvider;
         ILightEngineFunction LEA;
         public TestHardwareParam HardwareParam { get; private set; }
+        public TestFailReasonFlag FailReasonFlag { get; set; } = new TestFailReasonFlag();
         #endregion
 
         public class AvgData
@@ -72,6 +73,31 @@ namespace RGBTester.Logic
             public EIOName DAQ_Vf;
             public EIOName DAQ_Iin_HCM;
             public EIOName DAQ_Iin_LCM;
+        }
+
+        public class TestFailReasonFlag
+        {
+            public bool IsSlopeErr = false;
+            public bool IsClampingErr = false;
+            public bool IsTemperatureErr = false;
+
+            public void ResetAllFlag()
+            {
+                IsSlopeErr = false;
+                IsClampingErr = false;
+                IsTemperatureErr = false;
+            }
+
+            public string GetFailDescription()
+            {
+                if (IsSlopeErr)
+                    return "Slope Fail";
+                if (IsClampingErr)
+                    return "Clamping Fail";
+                if (IsTemperatureErr)
+                    return "Temperature Fail";
+                return "None";
+            }
         }
 
         public DAQ_IO_Point Get_DAQ_IO_Point(byte TestSide, byte TestColor)
@@ -132,7 +158,7 @@ namespace RGBTester.Logic
             MaxCurrent_LCM = LCM_I;
             MaxCurrent_HCM = HCM_I;
         }
-        public void YieldStatistics(bool pass, string sn)
+        public void YieldStatistics(bool pass, string sn, string description = "None")
         {
             if (ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.Cmbx_YieldRecord) == 0)
                 return;
@@ -152,7 +178,7 @@ namespace RGBTester.Logic
                 TestTime = DateTime.Now,
                 IsPass = i_pass,
                 Exclude = 0,
-                Description = "None"
+                Description = description
             };
 
             TestResultDataBase data_base = ServiceProvider.GetRequiredService<TestResultDataBase>();
