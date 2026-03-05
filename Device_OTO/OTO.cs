@@ -150,12 +150,14 @@ namespace Device_OTO
         private UInt32[] GetAvailableVidPidList()
         {
             uint bufferSize = 0;
-            UInt32[] vidPid = new UInt32[bufferSize * 2];
+            UInt32[] vidPid;
 
             unsafe
             {
                 Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, null);
                 if (bufferSize == 0) return null;
+
+                vidPid = new UInt32[bufferSize * 2];
 
                 fixed (UInt32* p = vidPid)
                 {
@@ -197,13 +199,13 @@ namespace Device_OTO
         {
             try
             {
-                // 1. 取得設備 VID/PID 列表
+                // 取得設備 VID/PID 列表
                 var vidPidList = GetAvailableVidPidList();
                 
                 if (vidPidList == null) 
                     return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
 
-                // 2. 搜尋並嘗試開啟設備
+                // 搜尋並嘗試開啟設備
                 for (int j = 0; j < vidPidList.Length; j += 2)
                 {
                     uint vid = vidPidList[j];
@@ -217,7 +219,7 @@ namespace Device_OTO
                     {
                         if (Link_UAI.Link_UAI.UAI_SpectrometerOpen(i, ref SD_Live.DeviceHandle, vid, pid) == 0)
                         {
-                            // 3. 成功開啟後進行參數初始化
+                            // 成功開啟後進行參數初始化
                             return InitializeDeviceSettings();
                         }
                     }
