@@ -249,6 +249,10 @@
       <Project>{bc7e3727-5a66-4475-b135-40382c3ee841}</Project>
       <Name>Device_PCIS_DASK</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_Spectrum_Virtual\Device_Spectrum_Virtual.csproj">
+      <Project>{88702617-9323-40cc-8208-07a378d9e823}</Project>
+      <Name>Device_Spectrum_Virtual</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Device_Virtual\Device_Virtual.csproj">
       <Project>{5b509d3f-99cd-44e0-bec4-591c3096d61b}</Project>
       <Name>Device_Virtual</Name>

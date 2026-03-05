@@ -33,6 +33,7 @@ using RGBTester;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing;
+using Device_Spectrum_Virtual;
 
 namespace LFSMEO
 {
@@ -85,6 +86,7 @@ namespace LFSMEO
             services.AddSingleton<IIOCard>(pcis_9111HR);
             services.AddSingleton<IIOCard>(virtual_io);
             services.AddSingleton<ISpectrometer>(Spectro_OTO);
+            services.AddSingleton<ISpectrometer, Virtual_Spectrum>();
             services.AddSingleton<ILightControl, Light_FT_116>();
             services.AddSingleton<ILightControl, VirtualLight>();
             services.AddSingleton<IChillerControl>(Klxz);
