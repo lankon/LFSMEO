@@ -1,15 +1,14 @@
-﻿using System;
+﻿using DeviceCore;
+using Microsoft.Extensions.DependencyInjection;
+using RGBTester.Base;
+using RGBTester.Device;
+using RGBTester.Logic;
+using RGBTester.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using RGBTester.Base;
-using RGBTester.UI;
-using RGBTester.Logic;
-using RGBTester.Device;
 
 namespace RGBTester
 {

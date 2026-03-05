@@ -14,7 +14,7 @@ using DeviceCore;
 
 namespace DeviceUI.Spectrometer
 {
-    public partial class F_Spectrometer : Form
+    public partial class F_Spectrometer : Form, IF_Spectrometer
     {
         public F_Spectrometer(IFunction_Spectrometer function_Spectrometer)
         {
@@ -26,7 +26,7 @@ namespace DeviceUI.Spectrometer
         }
 
         #region parameter define
-        List<LightData> LightList = new List<LightData>();
+        List<SpectrumData> SpectrumList = new List<SpectrumData>();
         IFunction_Spectrometer Spectrometer;
         #endregion
 
@@ -38,8 +38,10 @@ namespace DeviceUI.Spectrometer
 
             ShowHint();
 
-            //if (!Tool.DataGrid_DataLoad(DGV_Light, "Light.xml"))
-            //    Tool.SaveLogToFile("Light控制表讀取失敗");
+            SetSpectrumPlot();
+
+            if (!Tool.DataGrid_DataLoad(DGV_Spectrum, "Spectrum.xml"))
+                Tool.SaveLogToFile("Spectrum控制表讀取失敗");
         }
         private void ShowHint()
         {
@@ -70,33 +72,82 @@ namespace DeviceUI.Spectrometer
         private void LeavePage()
         {
         }
-        private void Update_Light_List(DataGridView DGV, List<LightData> light_list)
+
+
+        private void SetSpectrumPlot()
         {
-            light_list.Clear();
+            string professionalFont = "Segoe UI"; // 或 "Arial"
+
+            // 統一 X 軸
+            var xLabel = Plot_Spectrom.Plot.Axes.Bottom.Label;
+            xLabel.Text = "Wavelength (nm)";
+            xLabel.FontName = professionalFont;
+            xLabel.FontSize = 16;
+            xLabel.Bold = true;
+
+            // 統一 Y 軸
+            var yLabel = Plot_Spectrom.Plot.Axes.Left.Label;
+            yLabel.Text = "Intensity (a.u.)";
+            yLabel.FontName = professionalFont;
+            yLabel.FontSize = 16;
+            yLabel.Bold = true;
+
+            // 統一標題
+            var title = Plot_Spectrom.Plot.Axes.Title.Label;
+            title.Text = "Spectrum";
+            title.FontName = professionalFont;
+            title.FontSize = 20;
+            title.Bold = true;
+
+            // 讓格線變淡 (Alpha 設低一點)
+            Plot_Spectrom.Plot.Grid.MajorLineColor = ScottPlot.Colors.Black.WithAlpha(0.05);
+
+            // 設定背景色為乾淨的白色
+            Plot_Spectrom.Plot.FigureBackground.Color = ScottPlot.Colors.White;
+            Plot_Spectrom.Plot.DataBackground.Color = ScottPlot.Colors.White;
+
+            // 隱藏不必要的右邊與上方座標軸線
+            Plot_Spectrom.Plot.Axes.Right.FrameLineStyle.Width = 0;
+            Plot_Spectrom.Plot.Axes.Top.FrameLineStyle.Width = 0;
+
+            Plot_Spectrom.Refresh();
+        }
+        private void DrawSpectrumData(double[] wavelength, double[] intensity)
+        {
+            // 清除舊有的繪圖物件
+            Plot_Spectrom.Plot.Clear();
+
+            // 加入數據線條
+            var myPlot = Plot_Spectrom.Plot.Add.Scatter(wavelength, intensity);
+
+            // 設定線條樣式
+            myPlot.LineWidth = 2;
+            myPlot.Color = ScottPlot.Colors.Blue;
+            myPlot.MarkerSize = 0;
+
+            // 自動縮放並刷新
+            Plot_Spectrom.Plot.Axes.AutoScale();
+            Plot_Spectrom.Refresh();
+        }
+        private void Update_Spectrum_List(DataGridView DGV, List<SpectrumData> spectrum_list)
+        {
+            spectrum_list.Clear();
 
             foreach (DataGridViewRow row in DGV.Rows)
             {
                 if (row.IsNewRow) continue;
 
-                int station = Tool.StringToInt(row.Cells["Title_Station"]?.Value.ToString());
-                int port = Tool.StringToInt(row.Cells["Title_OutPort"]?.Value.ToString());
-                int value = Tool.StringToInt(row.Cells["Title_Value"]?.Value.ToString());
-
-                var data = new LightData()
+                var data = new SpectrumData()
                 {
-                    Title_LightType = row.Cells["Title_LightType"]?.Value?.ToString(),
+                    Title_SpectrumType = row.Cells["Title_SpectrumType"]?.Value?.ToString(),
                     Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
-                    Title_Description = row.Cells["Title_Description"]?.Value?.ToString(),
-                    Title_Comport = row.Cells["Title_Comport"]?.Value?.ToString(),
-                    Title_Station = station,
-                    Title_OutPort = port,
-                    Title_Value = value,
+                    Title_ID = row.Cells["Title_ID"]?.Value?.ToString(),
                 };
 
-                light_list.Add(data);
+                spectrum_list.Add(data);
             }
 
-            //LightControl.LoadConfiguration(light_list);
+            Spectrometer.LoadConfiguration(spectrum_list);
         }
         #endregion
 
@@ -106,9 +157,9 @@ namespace DeviceUI.Spectrometer
             if (show)
                 Tool.ShowFormName(this);
         }
-        public void Update_Light_List()
+        public void Update_Spectrum_List()
         {
-            Update_Light_List(DGV_Light, LightList);
+            Update_Spectrum_List(DGV_Spectrum, SpectrumList);
         }
         #endregion
 
@@ -133,67 +184,64 @@ namespace DeviceUI.Spectrometer
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            string[] context = new string[] { "None", "None", "None", "COM1", "-1", "-1", "-1", "Open" };
+            string[] context = new string[] { "None", "None", "None", "Get" };
 
-            Tool.DataGrid_AddRow(DGV_Light, context);
+            Tool.DataGrid_AddRow(DGV_Spectrum, context);
         }
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
-            Tool.DataGrid_DataSave(DGV_Light, "Light.xml");
+            Tool.DataGrid_DataSave(DGV_Spectrum, "Spectrum.xml");
         }
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
-            if (!Tool.DataGrid_DataLoad(DGV_Light, "Light.xml"))
-                Tool.SaveLogToFile("Light控制表讀取失敗");
+            if (!Tool.DataGrid_DataLoad(DGV_Spectrum, "Spectrum.xml"))
+                Tool.SaveLogToFile("Spectrum控制表讀取失敗");
         }
 
         private void Btn_Remove_Click(object sender, EventArgs e)
         {
-            Tool.DataGrid_DeleteRow(DGV_Light);
-        }
-
-        private void Btn_RowUp_Click(object sender, EventArgs e)
-        {
-            Tool.DataGrid_RowUp(DGV_Light);
-        }
-
-        private void Btn_RowDown_Click(object sender, EventArgs e)
-        {
-            Tool.DataGrid_RowDown(DGV_Light);
+            Tool.DataGrid_DeleteRow(DGV_Spectrum);
         }
 
         private void Btn_FunctionTest_Click(object sender, EventArgs e)
         {
-            Spectrometer.Initial_All_Spectrometer();
+            double[] walength = new double[] { 400, 500, 600, 700, 800 };
+            double[] intensity = new double[] { 10, 20, 15, 25, 5 };
+
+            DrawSpectrumData(walength, intensity);
+            //Spectrometer.Initial_All_Spectrometer();
             //LightControl.SetLightValue(ELightName.LIGHT_1, 50);
-        }
-
-        private void DGV_Light_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (LightList.Count == 0 || e.RowIndex < 0) return;
-
-            Update_Light_List(DGV_Light, LightList);
         }
 
         private void DGV_Light_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            if (DGV_Light.Columns[e.ColumnIndex].Name == "Title_Open")
+            if (DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_GetSpectrum")
             {
-                var row = DGV_Light.Rows[e.RowIndex];
+                var row = DGV_Spectrum.Rows[e.RowIndex];
 
-                string Title_LightType = row.Cells["Title_LightType"]?.Value?.ToString();
-                string Title_Comport = row.Cells["Title_Comport"]?.Value?.ToString();
-                int station = Tool.StringToInt(row.Cells["Title_Station"]?.Value.ToString());
-                int port = Tool.StringToInt(row.Cells["Title_OutPort"]?.Value.ToString());
-                int value = Tool.StringToInt(row.Cells["Title_Value"]?.Value.ToString());
+                string Title_SpectrumType = row.Cells["Title_SpectrumType"]?.Value?.ToString();
+                string Title_Name = row.Cells["Title_Name"]?.Value?.ToString();
+                string Title_ID = row.Cells["Title_ID"]?.Value?.ToString();
 
-                Enum.TryParse(Title_LightType, out ELightControlType eLightType);
-
+                Enum.TryParse(Title_Name, out ESpectrumName spectrum_name);
+                Spectrometer.GetSpectrumOneShot(spectrum_name, 100);
                 //LightControl.SetLightValue(eLightType, Title_Comport, station, port, value);
+            }
+        }
+
+        private void DGV_Spectrum_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (SpectrumList.Count == 0 || e.RowIndex < 0) return;
+
+            if (DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_Name" ||
+                DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_ID" ||
+                DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_SpectrumType")
+            {
+                Update_Spectrum_List(DGV_Spectrum, SpectrumList);
             }
         }
     }
