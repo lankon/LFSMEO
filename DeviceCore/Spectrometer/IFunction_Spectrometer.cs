@@ -28,7 +28,7 @@ namespace DeviceCore
     {
         public string Title_SpectrumType { get; set; }
         public string Title_Name { get; set; }
-        //public string Title_IntegralTime { get; set; }
+        public string Title_IntegralTime { get; set; }
         public string Title_ID { get; set; }
     }
 

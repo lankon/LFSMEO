@@ -142,7 +142,7 @@ namespace DeviceUI.Spectrometer
                     Title_SpectrumType = row.Cells["Title_SpectrumType"]?.Value?.ToString(),
                     Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
                     Title_ID = row.Cells["Title_ID"]?.Value?.ToString(),
-                    //Title_IntegralTime = row.Cells["Title_IntegralTime"]?.Value?.ToString(),
+                    Title_IntegralTime = row.Cells["Title_IntegralTime"]?.Value?.ToString(),
                 };
 
                 spectrum_list.Add(data);
@@ -239,10 +239,11 @@ namespace DeviceUI.Spectrometer
                 string Title_SpectrumType = row.Cells["Title_SpectrumType"]?.Value?.ToString();
                 string Title_Name = row.Cells["Title_Name"]?.Value?.ToString();
                 string Title_ID = row.Cells["Title_ID"]?.Value?.ToString();
+                Int32.TryParse(row.Cells["Title_IntegralTime"].Value.ToString(), out int IntegralTime);
 
                 Enum.TryParse(Title_Name, out ESpectrumName spectrum_name);
 
-                float[] f_spec_data = Spectrometer.GetSpectrumOneShot(spectrum_name, 100);
+                float[] f_spec_data = Spectrometer.GetSpectrumOneShot(spectrum_name, (uint)IntegralTime);
                 float[] f_wave_data = Spectrometer.GetWavelengthSpan(spectrum_name);
 
                 if (f_spec_data == null || f_wave_data == null)
