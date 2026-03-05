@@ -28,9 +28,33 @@ namespace DeviceFunction
         #endregion
 
         #region private function
+        private void BindingDeviceIndex()
+        {
+            foreach (KeyValuePair<string, SpectrumData> entry in SpectrumListDict)
+            {
+                string name = entry.Key;
+                SpectrumData intensities = entry.Value;
+
+                for (int j = 0; j < SpectrometerList.Count; j++)
+                {
+                    if (intensities.Title_SpectrumType == SpectrometerList[j].GetSpectrometerType().ToString())
+                    {
+                        SpectrometerList[j].BindingDeviceIndex(intensities.Title_ID);
+                        break;
+                    }
+                }
+            }
+        }
         #endregion
 
         #region public function
+        public void LoadConfiguration(List<SpectrumData> newSpectrumDataList)
+        {
+            SpectrumListDict = newSpectrumDataList
+                        .GroupBy(x => x.Title_Name)
+                        .ToDictionary(g => g.Key, g => g.First());
+        }
+
         public int Initial_All_Spectrometer()
         {
             SpectrometerList.Clear();
@@ -56,6 +80,8 @@ namespace DeviceFunction
                 }
             }
 
+            BindingDeviceIndex();
+
             int ret = -1;
             for (int i = 0; i < SpectrometerList.Count; i++)
             {
@@ -72,11 +98,24 @@ namespace DeviceFunction
             return ret;
         }
 
-        public void LoadConfiguration(List<SpectrumData> newSpectrumDataList)
+        public float[] GetWavelengthSpan(ESpectrumName name)
         {
-            SpectrumListDict = newSpectrumDataList
-                        .GroupBy(x => x.Title_Name)
-                        .ToDictionary(g => g.Key, g => g.First());
+            SpectrumListDict.TryGetValue(name.ToString(), out SpectrumData spectrum_data);
+
+            if (spectrum_data == null)
+                return null;
+
+            float[] wavelegth = null;
+
+            if (IsInitial == false)
+                return wavelegth;
+
+            var targetDevice = SpectrometerList.FirstOrDefault(device =>
+                                                               device.GetSpectrometerType().ToString() == spectrum_data.Title_SpectrumType);
+
+            wavelegth = targetDevice?.GetWavelength(spectrum_data.Title_ID);
+
+            return wavelegth;
         }
 
         public float[] GetSpectrumOneShot(ESpectrumName name, uint integral_time, uint avg_time = 1)

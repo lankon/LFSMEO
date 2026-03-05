@@ -151,12 +151,13 @@ namespace Device_OTO
         private UInt32[] GetAvailableVidPidList()
         {
             uint bufferSize = 0;
-            UInt32[] vidPid = new UInt32[bufferSize * 2];
-
+            UInt32[] vidPid;
             unsafe
             {
                 Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, null);
                 if (bufferSize == 0) return null;
+
+                vidPid = new UInt32[bufferSize * 2];
 
                 fixed (UInt32* p = vidPid)
                 {
@@ -241,7 +242,7 @@ namespace Device_OTO
                 return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
             }
         }
-        public void BindingDeviceIndex(string serialNumber, int index)
+        public void BindingDeviceIndex(string serialNumber)
         {
             for(int i=0; i< SD_Live.Length; i++)
             {
@@ -251,6 +252,15 @@ namespace Device_OTO
                     break;
                 }
             }
+        }
+        public float[] GetWavelength(string sn)
+        {
+            int index = GetDeviceIndex(sn);
+
+            if (index == -1)
+                return null; // 未找到對應的設備索引
+
+            return SD_Live[index].Lumda;
         }
         public float[] GetSpectrumOneShot(string sn, uint integral_time, uint avg_time = 1)
         {

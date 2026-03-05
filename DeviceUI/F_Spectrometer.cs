@@ -142,6 +142,7 @@ namespace DeviceUI.Spectrometer
                     Title_SpectrumType = row.Cells["Title_SpectrumType"]?.Value?.ToString(),
                     Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
                     Title_ID = row.Cells["Title_ID"]?.Value?.ToString(),
+                    //Title_IntegralTime = row.Cells["Title_IntegralTime"]?.Value?.ToString(),
                 };
 
                 spectrum_list.Add(data);
@@ -163,28 +164,9 @@ namespace DeviceUI.Spectrometer
         }
         #endregion
 
-        private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
-        {
-            if (!this.Visible)
-            {
-                SaveAllEnumSetting();
-                ReadAllEnumSetting();
-
-                LeavePage();
-                ////釋放記憶體資源
-                //Tool.ReleaseButtonImages(this);
-                //this.Close();
-                //this.Dispose();
-            }
-            else
-            {
-                UpdatePage();
-            }
-        }
-
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            string[] context = new string[] { "None", "None", "None", "Get" };
+            string[] context = new string[] { "None", "None", "None", "0", "Get" };
 
             Tool.DataGrid_AddRow(DGV_Spectrum, context);
         }
@@ -215,7 +197,38 @@ namespace DeviceUI.Spectrometer
             //LightControl.SetLightValue(ELightName.LIGHT_1, 50);
         }
 
-        private void DGV_Light_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DGV_Spectrum_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (SpectrumList.Count == 0 || e.RowIndex < 0) return;
+
+            if (DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_Name" ||
+                DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_ID" ||
+                DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_SpectrumType")
+            {
+                Update_Spectrum_List(DGV_Spectrum, SpectrumList);
+            }
+        }
+
+        private void F_Spectrometer_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!this.Visible)
+            {
+                SaveAllEnumSetting();
+                ReadAllEnumSetting();
+
+                LeavePage();
+                ////釋放記憶體資源
+                //Tool.ReleaseButtonImages(this);
+                //this.Close();
+                //this.Dispose();
+            }
+            else
+            {
+                UpdatePage();
+            }
+        }
+
+        private void DGV_Spectrum_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
@@ -228,20 +241,21 @@ namespace DeviceUI.Spectrometer
                 string Title_ID = row.Cells["Title_ID"]?.Value?.ToString();
 
                 Enum.TryParse(Title_Name, out ESpectrumName spectrum_name);
-                Spectrometer.GetSpectrumOneShot(spectrum_name, 100);
-                //LightControl.SetLightValue(eLightType, Title_Comport, station, port, value);
-            }
-        }
 
-        private void DGV_Spectrum_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            if (SpectrumList.Count == 0 || e.RowIndex < 0) return;
+                float[] f_spec_data = Spectrometer.GetSpectrumOneShot(spectrum_name, 100);
+                float[] f_wave_data = Spectrometer.GetWavelengthSpan(spectrum_name);
 
-            if (DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_Name" ||
-                DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_ID" ||
-                DGV_Spectrum.Columns[e.ColumnIndex].Name == "Title_SpectrumType")
-            {
-                Update_Spectrum_List(DGV_Spectrum, SpectrumList);
+                if (f_spec_data == null || f_wave_data == null)
+                {
+                    Plot_Spectrom.Plot.Clear();
+                    Plot_Spectrom.Refresh();
+                    return;
+                }
+
+                double[] spec_data = Array.ConvertAll(f_spec_data, x => (double)x);
+                double[] wave_data = Array.ConvertAll(f_wave_data, x => (double)x);
+
+                DrawSpectrumData(wave_data, spec_data);
             }
         }
     }

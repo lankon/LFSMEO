@@ -29,19 +29,20 @@ namespace DeviceUI.Spectrometer
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_Spectrum = new System.Windows.Forms.DataGridView();
-            this.Title_SpectrumType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_GetSpectrum = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Btn_Load = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.Btn_FunctionTest = new System.Windows.Forms.Button();
             this.Plot_Spectrom = new ScottPlot.WinForms.FormsPlot();
+            this.Title_SpectrumType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_IntegralTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_GetSpectrum = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Spectrum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,36 +52,101 @@ namespace DeviceUI.Spectrometer
             this.DGV_Spectrum.AllowUserToDeleteRows = false;
             this.DGV_Spectrum.AllowUserToResizeColumns = false;
             this.DGV_Spectrum.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_Spectrum.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_Spectrum.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.DGV_Spectrum.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_Spectrum.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_SpectrumType,
             this.Title_Name,
             this.Title_ID,
+            this.Title_IntegralTime,
             this.Title_GetSpectrum});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_Spectrum.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_Spectrum.DefaultCellStyle = dataGridViewCellStyle4;
             this.DGV_Spectrum.Location = new System.Drawing.Point(5, 5);
             this.DGV_Spectrum.Name = "DGV_Spectrum";
             this.DGV_Spectrum.RowHeadersVisible = false;
             this.DGV_Spectrum.RowTemplate.Height = 24;
-            this.DGV_Spectrum.Size = new System.Drawing.Size(838, 206);
+            this.DGV_Spectrum.Size = new System.Drawing.Size(967, 206);
             this.DGV_Spectrum.TabIndex = 14;
-            this.DGV_Spectrum.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Light_CellContentClick);
+            this.DGV_Spectrum.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Spectrum_CellContentClick);
             this.DGV_Spectrum.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Spectrum_CellEnter);
+            // 
+            // Btn_Load
+            // 
+            this.Btn_Load.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Load.Location = new System.Drawing.Point(978, 58);
+            this.Btn_Load.Name = "Btn_Load";
+            this.Btn_Load.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Load.TabIndex = 30;
+            this.Btn_Load.Text = "Load";
+            this.Btn_Load.UseVisualStyleBackColor = true;
+            this.Btn_Load.Click += new System.EventHandler(this.Btn_Load_Click);
+            // 
+            // Btn_Save
+            // 
+            this.Btn_Save.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Save.Location = new System.Drawing.Point(978, 5);
+            this.Btn_Save.Name = "Btn_Save";
+            this.Btn_Save.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Save.TabIndex = 29;
+            this.Btn_Save.Text = "Save";
+            this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
+            // 
+            // Btn_Remove
+            // 
+            this.Btn_Remove.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Remove.Location = new System.Drawing.Point(978, 164);
+            this.Btn_Remove.Name = "Btn_Remove";
+            this.Btn_Remove.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Remove.TabIndex = 26;
+            this.Btn_Remove.Text = "Remove";
+            this.Btn_Remove.UseVisualStyleBackColor = true;
+            this.Btn_Remove.Click += new System.EventHandler(this.Btn_Remove_Click);
+            // 
+            // Btn_Add
+            // 
+            this.Btn_Add.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Add.Location = new System.Drawing.Point(978, 111);
+            this.Btn_Add.Name = "Btn_Add";
+            this.Btn_Add.Size = new System.Drawing.Size(123, 47);
+            this.Btn_Add.TabIndex = 25;
+            this.Btn_Add.Text = "Add";
+            this.Btn_Add.UseVisualStyleBackColor = true;
+            this.Btn_Add.Click += new System.EventHandler(this.Btn_Add_Click);
+            // 
+            // Btn_FunctionTest
+            // 
+            this.Btn_FunctionTest.Location = new System.Drawing.Point(1091, 366);
+            this.Btn_FunctionTest.Name = "Btn_FunctionTest";
+            this.Btn_FunctionTest.Size = new System.Drawing.Size(145, 48);
+            this.Btn_FunctionTest.TabIndex = 31;
+            this.Btn_FunctionTest.Text = "FunctionTest";
+            this.Btn_FunctionTest.UseVisualStyleBackColor = true;
+            this.Btn_FunctionTest.Visible = false;
+            this.Btn_FunctionTest.Click += new System.EventHandler(this.Btn_FunctionTest_Click);
+            // 
+            // Plot_Spectrom
+            // 
+            this.Plot_Spectrom.DisplayScale = 0F;
+            this.Plot_Spectrom.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Plot_Spectrom.Location = new System.Drawing.Point(5, 217);
+            this.Plot_Spectrom.Name = "Plot_Spectrom";
+            this.Plot_Spectrom.Size = new System.Drawing.Size(967, 437);
+            this.Plot_Spectrom.TabIndex = 32;
             // 
             // Title_SpectrumType
             // 
@@ -108,74 +174,17 @@ namespace DeviceUI.Spectrometer
             this.Title_ID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Title_ID.Width = 200;
             // 
+            // Title_IntegralTime
+            // 
+            this.Title_IntegralTime.HeaderText = "IntegralTime(ms)";
+            this.Title_IntegralTime.Name = "Title_IntegralTime";
+            this.Title_IntegralTime.Width = 150;
+            // 
             // Title_GetSpectrum
             // 
             this.Title_GetSpectrum.HeaderText = "Get Spectrum";
             this.Title_GetSpectrum.Name = "Title_GetSpectrum";
             this.Title_GetSpectrum.Width = 200;
-            // 
-            // Btn_Load
-            // 
-            this.Btn_Load.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Load.Location = new System.Drawing.Point(849, 58);
-            this.Btn_Load.Name = "Btn_Load";
-            this.Btn_Load.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Load.TabIndex = 30;
-            this.Btn_Load.Text = "Load";
-            this.Btn_Load.UseVisualStyleBackColor = true;
-            this.Btn_Load.Click += new System.EventHandler(this.Btn_Load_Click);
-            // 
-            // Btn_Save
-            // 
-            this.Btn_Save.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Save.Location = new System.Drawing.Point(849, 5);
-            this.Btn_Save.Name = "Btn_Save";
-            this.Btn_Save.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Save.TabIndex = 29;
-            this.Btn_Save.Text = "Save";
-            this.Btn_Save.UseVisualStyleBackColor = true;
-            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
-            // 
-            // Btn_Remove
-            // 
-            this.Btn_Remove.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Remove.Location = new System.Drawing.Point(849, 164);
-            this.Btn_Remove.Name = "Btn_Remove";
-            this.Btn_Remove.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Remove.TabIndex = 26;
-            this.Btn_Remove.Text = "Remove";
-            this.Btn_Remove.UseVisualStyleBackColor = true;
-            this.Btn_Remove.Click += new System.EventHandler(this.Btn_Remove_Click);
-            // 
-            // Btn_Add
-            // 
-            this.Btn_Add.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Add.Location = new System.Drawing.Point(849, 111);
-            this.Btn_Add.Name = "Btn_Add";
-            this.Btn_Add.Size = new System.Drawing.Size(123, 47);
-            this.Btn_Add.TabIndex = 25;
-            this.Btn_Add.Text = "Add";
-            this.Btn_Add.UseVisualStyleBackColor = true;
-            this.Btn_Add.Click += new System.EventHandler(this.Btn_Add_Click);
-            // 
-            // Btn_FunctionTest
-            // 
-            this.Btn_FunctionTest.Location = new System.Drawing.Point(978, 391);
-            this.Btn_FunctionTest.Name = "Btn_FunctionTest";
-            this.Btn_FunctionTest.Size = new System.Drawing.Size(145, 48);
-            this.Btn_FunctionTest.TabIndex = 31;
-            this.Btn_FunctionTest.Text = "FunctionTest";
-            this.Btn_FunctionTest.UseVisualStyleBackColor = true;
-            this.Btn_FunctionTest.Click += new System.EventHandler(this.Btn_FunctionTest_Click);
-            // 
-            // Plot_Spectrom
-            // 
-            this.Plot_Spectrom.DisplayScale = 0F;
-            this.Plot_Spectrom.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Plot_Spectrom.Location = new System.Drawing.Point(5, 217);
-            this.Plot_Spectrom.Name = "Plot_Spectrom";
-            this.Plot_Spectrom.Size = new System.Drawing.Size(967, 437);
-            this.Plot_Spectrom.TabIndex = 32;
             // 
             // F_Spectrometer
             // 
@@ -192,7 +201,7 @@ namespace DeviceUI.Spectrometer
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_Spectrometer";
             this.Text = "F_Equipment_Setting";
-            this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
+            this.VisibleChanged += new System.EventHandler(this.F_Spectrometer_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Spectrum)).EndInit();
             this.ResumeLayout(false);
 
@@ -209,6 +218,7 @@ namespace DeviceUI.Spectrometer
         private System.Windows.Forms.DataGridViewComboBoxColumn Title_SpectrumType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_IntegralTime;
         private System.Windows.Forms.DataGridViewButtonColumn Title_GetSpectrum;
     }
 }
