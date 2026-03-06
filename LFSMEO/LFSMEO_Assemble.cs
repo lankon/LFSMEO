@@ -13,6 +13,7 @@ using DeviceFunction;
 using DeviceUI.Motion;
 using DeviceUI.IO;
 using DeviceUI.LightControl;
+using DeviceUI.Spectrometer;
 using Device_MN200;
 using Device_PCIS_DASK;
 using Device_Virtual;
@@ -32,6 +33,7 @@ using RGBTester;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing;
+using Device_Spectrum_Virtual;
 
 namespace LFSMEO
 {
@@ -84,6 +86,7 @@ namespace LFSMEO
             services.AddSingleton<IIOCard>(pcis_9111HR);
             services.AddSingleton<IIOCard>(virtual_io);
             services.AddSingleton<ISpectrometer>(Spectro_OTO);
+            services.AddSingleton<ISpectrometer, Virtual_Spectrum>();
             services.AddSingleton<ILightControl, Light_FT_116>();
             services.AddSingleton<ILightControl, VirtualLight>();
             services.AddSingleton<IChillerControl>(Klxz);
@@ -95,6 +98,7 @@ namespace LFSMEO
             services.AddSingleton<IF_IO_Card, F_IO_Card>();
             services.AddSingleton<IF_LightControl, F_LightControl>();
             services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
+            services.AddSingleton<IF_Spectrometer, F_Spectrometer>();
 
             //[Form Logic]
             services.AddSingleton<F_MotionSettingLogic>();

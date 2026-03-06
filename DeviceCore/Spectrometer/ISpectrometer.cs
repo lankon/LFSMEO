@@ -7,11 +7,16 @@ using System.IO.Ports;
 
 namespace DeviceCore
 {
+    
+
     public interface ISpectrometer
     {
         ESpectrometerType GetSpectrometerType();
+        
         int Open();
-        float[] GetSpectrumOneShot(uint integral_time, uint avg_time = 1);
-        float[] GetSpectrum(uint integral_time, uint avg_time = 1);
+        void BindingDeviceIndex(string serialNumber);
+        float[] GetWavelength(string sn);
+        float[] GetSpectrumOneShot(string sn, uint integral_time, uint avg_time = 1);
+        float[] GetSpectrum(string sn, uint integral_time, uint avg_time = 1);
     }
 }

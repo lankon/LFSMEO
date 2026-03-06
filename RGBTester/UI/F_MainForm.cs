@@ -64,9 +64,7 @@ namespace RGBTester.UI
 
             MainFormLogic.DeleteExpireFileInFolder();
             MainFormLogic.ReadAllSetting();
-            MainFormLogic.Initial_IO_Function();
-            MainFormLogic.Initial_Motion_Function();
-            MainFormLogic.Initial_Light_Function();
+            MainFormLogic.Initial_AllDevice_Function();
             Labl_Version.Text = MainFormLogic.GetVersion();
 
             //先觸發執行用

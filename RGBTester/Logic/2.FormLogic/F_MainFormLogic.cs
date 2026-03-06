@@ -27,6 +27,43 @@ namespace RGBTester.Logic
         IServiceProvider ServiceProvider;
         #endregion
 
+        #region private function
+        private void Initial_IO_Function()
+        {
+            ServiceProvider.GetRequiredService<IF_IO_Card>();
+
+            RGBTesterMachine.DIOL.Initial_All_IO();
+        }
+        private void Initial_Motion_Function()
+        {
+            Tool.SaveLogToFile("Initial Motion Card");
+            RGBTesterMachine.DML.Initial_All_Motion();
+            Tool.SaveLogToFile("Load Motion Config");
+            RGBTesterMachine.DML.LoadAxisConfig();
+            RGBTesterMachine.DML.BindingAxis();
+        }
+        private void Initial_Light_Function()
+        {
+            IF_LightControl f_light = ServiceProvider.GetRequiredService<IF_LightControl>();
+            f_light.Update_Light_List();
+            RGBTesterMachine.Light.Initial_All_LightControl();
+        }
+        private void Initial_Spectrometer_Function()
+        {
+            IF_Spectrometer f_spectrometer = ServiceProvider.GetRequiredService<IF_Spectrometer>();
+            f_spectrometer.Update_Spectrum_List();
+            RGBTesterMachine.Spectrometer.Initial_All_Spectrometer();
+        }
+        #endregion
+
+        public void Initial_AllDevice_Function()
+        {
+            Initial_IO_Function();
+            Initial_Motion_Function();
+            Initial_Light_Function();
+            Initial_Spectrometer_Function();
+        }
+
         public void ReadAllSetting()
         {
             ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
@@ -37,29 +74,6 @@ namespace RGBTester.Logic
             var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
             string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             recipe.ReadRecipe(cur_recipe_name);
-        }
-
-        public void Initial_IO_Function()
-        {
-            ServiceProvider.GetRequiredService<IF_IO_Card>();
-
-            RGBTesterMachine.DIOL.Initial_All_IO();
-        }
-
-        public void Initial_Motion_Function()
-        {
-            Tool.SaveLogToFile("Initial Motion Card");
-            RGBTesterMachine.DML.Initial_All_Motion();
-            Tool.SaveLogToFile("Load Motion Config");
-            RGBTesterMachine.DML.LoadAxisConfig();
-            RGBTesterMachine.DML.BindingAxis();
-        }
-
-        public void Initial_Light_Function()
-        {
-            IF_LightControl f_light = ServiceProvider.GetRequiredService<IF_LightControl>();
-            f_light.Update_Light_List();
-            RGBTesterMachine.Light.Initial_All_LightControl();
         }
 
         public int DeleteExpireFileInFolder()

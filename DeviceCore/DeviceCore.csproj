@@ -46,6 +46,7 @@
     <Compile Include="LightControl\IF_LightControl.cs" />
     <Compile Include="LightControl\ILightControl.cs" />
     <Compile Include="Spectrometer\IFunction_Spectrometer.cs" />
+    <Compile Include="Spectrometer\IF_Spectrometer.cs" />
     <Compile Include="Spectrometer\ISpectrometer.cs" />
     <Compile Include="IO\IF_IO_Card.cs" />
     <Compile Include="IO\IIOCardVirtual.cs" />
