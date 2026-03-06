@@ -25,9 +25,11 @@ namespace DeviceSourceHikvision
         public const int CO_FAIL = -1;
         public const int CO_OK = 0;
         public bool IsConnected = false;
+        public IntPtr[] RawBufferPtrs = new IntPtr[2];      //雙重緩衝
+        public int WriteIndex = 0;                         // 目前相機要寫入的指標Index
         private MyCamera m_pCSI;
-        public UInt32 m_nBufSizeForSaveImage = 3072 * 2048 * 3 * 3 + 2048;
-        public byte[] m_pBufForSaveImage = new byte[3072 * 2048 * 3 * 3 + 2048];         // 用于保存图像的缓存
+        //public UInt32 m_nBufSizeForSaveImage = 3072 * 2048 * 3 * 3 + 2048;
+        //public byte[] m_pBufForSaveImage = new byte[3072 * 2048 * 3 * 3 + 2048];         // 用于保存图像的缓存
 
         public CameraOperator()
         {

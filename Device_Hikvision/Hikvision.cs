@@ -18,17 +18,12 @@ namespace Device_Hikvision
         //CameraOperator cameraOperator = new CameraOperator();
         #region parameter define
         private MV_CC_DEVICE_INFO_LIST MV_INFO_LIST = new MV_CC_DEVICE_INFO_LIST();
-        private MyCamera m_MyCamera;
         private CameraOperator[] m_pOperator;
         private Dictionary<uint, int> m_KeyIndex = new Dictionary<uint, int>();
 
 
-        private GCHandle _rawBufferHandle;
-        private GCHandle _processedBufferHandle;
-        private IntPtr _rawBufferPtr = IntPtr.Zero;
-        private IntPtr _processedBufferPtr = IntPtr.Zero;
-        private byte[] _rawImageBuffer;
-        private byte[] _processedImageBuffer;
+        
+        //private IntPtr _currentStableBuffer => _rawBufferPtrs[1 - _writeIndex]; //目前穩定的緩衝區指標
 
 
         enum ERROR_CODE
@@ -47,28 +42,13 @@ namespace Device_Hikvision
         #endregion
 
         #region private function
-        private int InitializeBuffers(uint payloadSize)
+        private void InitBuffer(uint payloadsize)   //只能呼叫一次
         {
-            try
-            {
-                // 1. 根據相機 PayloadSize 分配空間
-                // 建議多留一點空間，例如 * 3 是為了轉成 RGB24 (3 bytes per pixel) 使用
-                _rawImageBuffer = new byte[payloadSize];
-                _processedImageBuffer = new byte[payloadSize * 3];
-
-                // 2. 釘住記憶體 (Pinning)
-                _rawBufferHandle = GCHandle.Alloc(_rawImageBuffer, GCHandleType.Pinned);
-                _rawBufferPtr = _rawBufferHandle.AddrOfPinnedObject();
-
-                _processedBufferHandle = GCHandle.Alloc(_processedImageBuffer, GCHandleType.Pinned);
-                _processedBufferPtr = _processedBufferHandle.AddrOfPinnedObject();
-
-                return (int)ERROR_CODE.STATUS_OK;
-            }
-            catch (Exception ex)
-            {
-                return -1;
-            }
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    if (_rawBufferPtrs[i] != IntPtr.Zero) Marshal.FreeHGlobal(_rawBufferPtrs[i]);
+            //    _rawBufferPtrs[i] = Marshal.AllocHGlobal((int)payloadsize);
+            //}
         }
         private int CheckConnect(uint id, ref int index)
         {
@@ -82,16 +62,6 @@ namespace Device_Hikvision
 
             return (int)ERROR_CODE.STATUS_OK;
         }
-        public void Deinitialize()
-        {
-            if (_rawBufferHandle.IsAllocated) _rawBufferHandle.Free();
-            if (_processedBufferHandle.IsAllocated) _processedBufferHandle.Free();
-
-            _rawBufferPtr = IntPtr.Zero;
-            _processedBufferPtr = IntPtr.Zero;
-        }
-        
-        
         #endregion
 
         public int Connect()
@@ -247,62 +217,29 @@ namespace Device_Hikvision
 
         public int GetImage(uint id)
         {
-            int ret, index = -1;
-
-            ret = CheckConnect(id, ref index);
-            if (ret != (int)ERROR_CODE.STATUS_OK) return ret;
-
-            // 檢查指標是否已初始化
-            if (_rawBufferPtr == IntPtr.Zero || _processedBufferPtr == IntPtr.Zero)
-                return (int)ERROR_CODE.ERROR_GETIMAGE;
-
-            MV_FRAME_OUT_INFO_EX frameInfo = new MV_FRAME_OUT_INFO_EX();
-
-            // 1. 直接取圖，不需要再 Alloc
-            uint bytePerPixel = 0;
-            int nRet = m_pOperator[index].GetOneFrameTimeOut(_rawBufferPtr, ref bytePerPixel, (uint)_rawImageBuffer.Length,  ref frameInfo, 3000);
-            if (nRet != MyCamera.MV_OK) return (int)ERROR_CODE.ERROR_GETIMAGE;
-
-            //// 2. 設定轉換參數
-            //MyCamera.MV_PIXEL_CONVERT_PARAM convertParam = new MyCamera.MV_PIXEL_CONVERT_PARAM
-            //{
-            //    nWidth = frameInfo.nWidth,
-            //    nHeight = frameInfo.nHeight,
-            //    pSrcData = _rawBufferPtr,
-            //    nSrcDataLen = frameInfo.nFrameLen,
-            //    enSrcPixelType = frameInfo.enPixelType,
-            //    pDstBuffer = _processedBufferPtr,
-            //    nDstBufferSize = (uint)_processedImageBuffer.Length
-            //};
-
-            //// 根據你的機台設定決定目標格式 (Leo 習慣使用 Mono8 或 BGR8)
-            //convertParam.enDstPixelType = (frameInfo.enPixelType == MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono8)
-            //                              ? MyCamera.MvGvspPixelType.PixelType_Gvsp_Mono8
-            //                              : MyCamera.MvGvspPixelType.PixelType_Gvsp_BGR8_Packed;
-
-            //nRet = Camera.MV_CC_ConvertPixelType_NET(ref convertParam);
-
-
             return 0;
+            //int ret, index = -1;
+
+            //ret = CheckConnect(id, ref index);
+            //if (ret != (int)ERROR_CODE.STATUS_OK) return ret;
+
+            //// 檢查指標是否已初始化
+            //if (_rawBufferPtrs[0] == IntPtr.Zero)
+            //    return (int)ERROR_CODE.ERROR_GETIMAGE;
+
+            //MV_FRAME_OUT_INFO_EX frameInfo = new MV_FRAME_OUT_INFO_EX();
+
+            //// 直接取圖不需要再Alloc
+            //uint bytePerPixel = 0;
+            //int nRet = m_pOperator[index].GetOneFrameTimeOut(_rawBufferPtrs[0], ref bytePerPixel, (uint)_rawImageBuffers[0].Length,  ref frameInfo, 3000);
+            
+            //if (nRet == MyCamera.MV_OK)
+            //{
+            //    _writeIndex = 1 - _writeIndex;
+            //    return 0;
+            //}
+                
+            //return (int)ERROR_CODE.ERROR_GETIMAGE;
         }
-
-        //public override int Set_ExposureAutoTime(int t) //20220428 Evans
-        //{
-        //    if (!Manager.IsConnected)
-        //    {
-        //        return -1;
-        //    }
-
-        //    int nRet;
-
-        //    nRet = SetIntValue("AutoExposureTimeUpperLimit", (uint)t);
-
-        //    return nRet;
-        //}
-
-
-
-
-
     }
 }

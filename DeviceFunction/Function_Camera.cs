@@ -40,6 +40,33 @@ namespace DeviceFunction
 
             return 0;
         }
+
+        public bool StartGrab()
+        {
+            CameraList[0].StartGrabbing(5056);
+
+
+            return false;
+        }
+
+        public bool StopGrab()
+        {
+            return false;
+        }
+
+        public bool SoftTrigger()
+        {
+            CameraList[0].SoftwareTrigger(5056);
+
+            return false;
+        }
+
+        public bool GetImage()
+        {
+            CameraList[0].GetImage(5056);
+            return false;
+        }
+
         public bool StopGrabAllCamera()
         {
 
