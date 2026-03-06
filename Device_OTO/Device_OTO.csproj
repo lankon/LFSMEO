@@ -53,13 +53,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DeviceLibrary.dll">
+    <Content Include="x64_dll\DeviceLibrary.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SiUSBXp.dll">
+    <Content Include="x64_dll\SiUSBXp.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="UserApplication.dll">
+    <Content Include="x64_dll\UserApplication.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

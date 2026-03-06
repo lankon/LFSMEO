@@ -46,8 +46,8 @@ namespace Device_Spectrum_Virtual
         {
             for(int i=0; i<Wavelength.Length; i++)
             {
-                Wavelength[i] = 400 + (float)i * 0.1f;
-                Intensity[i] = 10;
+                Wavelength[i] = Wavelength.Length;
+                Intensity[i] = 0;
             }
 
             string path = AppDomain.CurrentDomain.BaseDirectory + @"\Setting\Virtual_Spectrum_Data.csv";
@@ -76,6 +76,12 @@ namespace Device_Spectrum_Virtual
                 index++;
                  if (index >= Wavelength.Length)
                     break;
+            }
+
+            for(int i=index; i<Wavelength.Length; i++)
+            {
+                Wavelength[i] = Wavelength[index-1]+1;
+                Intensity[i] = 0;
             }
 
             return 0;    

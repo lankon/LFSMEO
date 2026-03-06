@@ -29,20 +29,20 @@ namespace DeviceUI.Spectrometer
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_Spectrum = new System.Windows.Forms.DataGridView();
+            this.Title_SpectrumType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_IntegralTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_GetSpectrum = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Btn_Load = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.Btn_FunctionTest = new System.Windows.Forms.Button();
             this.Plot_Spectrom = new ScottPlot.WinForms.FormsPlot();
-            this.Title_SpectrumType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_IntegralTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_GetSpectrum = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Spectrum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,14 +52,14 @@ namespace DeviceUI.Spectrometer
             this.DGV_Spectrum.AllowUserToDeleteRows = false;
             this.DGV_Spectrum.AllowUserToResizeColumns = false;
             this.DGV_Spectrum.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_Spectrum.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_Spectrum.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_Spectrum.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_Spectrum.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_SpectrumType,
@@ -67,14 +67,14 @@ namespace DeviceUI.Spectrometer
             this.Title_ID,
             this.Title_IntegralTime,
             this.Title_GetSpectrum});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_Spectrum.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_Spectrum.DefaultCellStyle = dataGridViewCellStyle2;
             this.DGV_Spectrum.Location = new System.Drawing.Point(5, 5);
             this.DGV_Spectrum.Name = "DGV_Spectrum";
             this.DGV_Spectrum.RowHeadersVisible = false;
@@ -83,6 +83,44 @@ namespace DeviceUI.Spectrometer
             this.DGV_Spectrum.TabIndex = 14;
             this.DGV_Spectrum.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Spectrum_CellContentClick);
             this.DGV_Spectrum.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_Spectrum_CellEnter);
+            // 
+            // Title_SpectrumType
+            // 
+            this.Title_SpectrumType.HeaderText = "Spectrum Type";
+            this.Title_SpectrumType.Items.AddRange(new object[] {
+            "None",
+            "VIRTUAL",
+            "OTO"});
+            this.Title_SpectrumType.Name = "Title_SpectrumType";
+            this.Title_SpectrumType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_SpectrumType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Title_SpectrumType.Width = 200;
+            // 
+            // Title_Name
+            // 
+            this.Title_Name.HeaderText = "Name";
+            this.Title_Name.Name = "Title_Name";
+            this.Title_Name.Width = 200;
+            // 
+            // Title_ID
+            // 
+            this.Title_ID.HeaderText = "ID";
+            this.Title_ID.Name = "Title_ID";
+            this.Title_ID.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_ID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Title_ID.Width = 200;
+            // 
+            // Title_IntegralTime
+            // 
+            this.Title_IntegralTime.HeaderText = "IntegralTime(ms)";
+            this.Title_IntegralTime.Name = "Title_IntegralTime";
+            this.Title_IntegralTime.Width = 150;
+            // 
+            // Title_GetSpectrum
+            // 
+            this.Title_GetSpectrum.HeaderText = "Get Spectrum";
+            this.Title_GetSpectrum.Name = "Title_GetSpectrum";
+            this.Title_GetSpectrum.Width = 200;
             // 
             // Btn_Load
             // 
@@ -130,7 +168,7 @@ namespace DeviceUI.Spectrometer
             // 
             // Btn_FunctionTest
             // 
-            this.Btn_FunctionTest.Location = new System.Drawing.Point(1091, 366);
+            this.Btn_FunctionTest.Location = new System.Drawing.Point(1026, 375);
             this.Btn_FunctionTest.Name = "Btn_FunctionTest";
             this.Btn_FunctionTest.Size = new System.Drawing.Size(145, 48);
             this.Btn_FunctionTest.TabIndex = 31;
@@ -147,44 +185,6 @@ namespace DeviceUI.Spectrometer
             this.Plot_Spectrom.Name = "Plot_Spectrom";
             this.Plot_Spectrom.Size = new System.Drawing.Size(967, 437);
             this.Plot_Spectrom.TabIndex = 32;
-            // 
-            // Title_SpectrumType
-            // 
-            this.Title_SpectrumType.HeaderText = "Spectrum Type";
-            this.Title_SpectrumType.Items.AddRange(new object[] {
-            "None",
-            "VIRTUAL",
-            "OTO"});
-            this.Title_SpectrumType.Name = "Title_SpectrumType";
-            this.Title_SpectrumType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_SpectrumType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Title_SpectrumType.Width = 200;
-            // 
-            // Title_Name
-            // 
-            this.Title_Name.HeaderText = "Name";
-            this.Title_Name.Name = "Title_Name";
-            this.Title_Name.Width = 200;
-            // 
-            // Title_ID
-            // 
-            this.Title_ID.HeaderText = "ID";
-            this.Title_ID.Name = "Title_ID";
-            this.Title_ID.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_ID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Title_ID.Width = 200;
-            // 
-            // Title_IntegralTime
-            // 
-            this.Title_IntegralTime.HeaderText = "IntegralTime(ms)";
-            this.Title_IntegralTime.Name = "Title_IntegralTime";
-            this.Title_IntegralTime.Width = 150;
-            // 
-            // Title_GetSpectrum
-            // 
-            this.Title_GetSpectrum.HeaderText = "Get Spectrum";
-            this.Title_GetSpectrum.Name = "Title_GetSpectrum";
-            this.Title_GetSpectrum.Width = 200;
             // 
             // F_Spectrometer
             // 
