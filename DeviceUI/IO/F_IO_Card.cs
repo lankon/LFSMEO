@@ -321,8 +321,25 @@ namespace DeviceUI.IO
 
         private void Btn_IO_Test_Click(object sender, EventArgs e)
         {
-            DIOL.AddIORule(0, 0, 0, 0, true, (0, 0, 0, 5, false), (0, 0, 0, 7, true));
-            DIOL.AddIORule(0, 0, 0, 0, false, (0, 0, 0, 5, true), (0, 0, 0, 7, false));
+            DIOL.AddIORule(0, 0, 1, 3, true,(0, 0, 1, 5, false),(0, 0, 1, 7, true));
+            DIOL.AddIORule(0, 0, 1, 3, false, (0, 0, 1, 5, true), (0, 0, 1, 7, false));
+
+            int state = 0;
+            switch (state)
+            {
+                case 0:
+                    DIOL.SetOutputStatus(EIOName.GoToSafePos, true);
+                    goto case 1;
+                case 1:
+                    if (DIOL.GetInputStatus(EIOName.SafePos_Sensor_Out) == true &&
+                        DIOL.GetInputStatus(EIOName.SafePos_Sensor_In) == false)
+                    {
+                        int aa = 0;
+                        //Success
+                    }
+                    break;
+            }
+
         }
     }
 }

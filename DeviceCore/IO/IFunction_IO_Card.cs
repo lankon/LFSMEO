@@ -41,9 +41,12 @@ namespace DeviceCore
         #endregion
 
         SafePos_Sensor,
+        GoToSafePos,
         #endregion
 
         #region Output
+        SafePos_Sensor_In,
+        SafePos_Sensor_Out,
         Vacuum_Pump,
         #endregion
     }
