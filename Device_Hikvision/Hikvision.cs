@@ -15,16 +15,10 @@ namespace Device_Hikvision
 {
     public class Hikvision: ICamera
     {
-        //CameraOperator cameraOperator = new CameraOperator();
         #region parameter define
         private MV_CC_DEVICE_INFO_LIST MV_INFO_LIST = new MV_CC_DEVICE_INFO_LIST();
         private CameraOperator[] m_pOperator;
         private Dictionary<string, int> m_KeyIndex = new Dictionary<string, int>();
-
-
-        
-        //private IntPtr _currentStableBuffer => _rawBufferPtrs[1 - _writeIndex]; //目前穩定的緩衝區指標
-
 
         enum ERROR_CODE
         {
@@ -38,7 +32,6 @@ namespace Device_Hikvision
             ERROR_TRIGGER = -6,
             ERROR_GETIMAGE = -7,
         }
-
         #endregion
 
         #region private function
@@ -228,7 +221,7 @@ namespace Device_Hikvision
                 return (int)ERROR_CODE.STATUS_OK;
         }
 
-        public int GetImage(string id)
+        public int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height)
         {
             int ret, index = -1;
 
@@ -239,17 +232,26 @@ namespace Device_Hikvision
             if (m_pOperator[index].RawBufferPtrs[m_pOperator[index].WriteIndex]  == IntPtr.Zero)
                 return (int)ERROR_CODE.ERROR_GETIMAGE;
 
+            int currentIndex = m_pOperator[index].WriteIndex;
+            IntPtr currentPtr = m_pOperator[index].RawBufferPtrs[currentIndex];
+
+            if (currentPtr == IntPtr.Zero)
+                return (int)ERROR_CODE.ERROR_GETIMAGE;
+
             MV_FRAME_OUT_INFO_EX frameInfo = new MV_FRAME_OUT_INFO_EX();
 
             // 直接取圖不需要再Alloc
             uint bytePerPixel = 0;
-            int nRet = m_pOperator[index].GetOneFrameTimeOut(m_pOperator[index].RawBufferPtrs[m_pOperator[index].WriteIndex], 
-                                                             ref bytePerPixel, 
+            int nRet = m_pOperator[index].GetOneFrameTimeOut(currentPtr, ref bytePerPixel, 
                                                              (uint)m_pOperator[index].ImageSize, 
                                                              ref frameInfo, 3000);
 
             if (nRet == MyCamera.MV_OK)
             {
+                image = currentPtr;
+                image_height = frameInfo.nHeight;
+                image_width = frameInfo.nWidth;
+
                 m_pOperator[index].WriteIndex = 1 - m_pOperator[index].WriteIndex;
                 return 0;
             }

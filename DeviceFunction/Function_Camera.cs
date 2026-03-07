@@ -14,10 +14,14 @@ namespace DeviceFunction
 {
     public class Function_Camera: IFunction_Camera
     {
+        
+
         public Function_Camera(IEnumerable<ICamera> spec)
         {
             Camera = spec;
         }
+
+        public event EventHandler<ImageReadyEventArgs> OnImageUpdated;
 
         #region parameter define
         private bool IsInitial = false;
@@ -60,15 +64,35 @@ namespace DeviceFunction
         public bool SoftTrigger()
         {
             CameraList[0].SoftwareTrigger(ID);
-            CameraList[0].GetImage(ID);
+            GetImageDisplay();
+            //CameraList[0].GetImage(ID);
             return false;
         }
 
-        public bool GetImage()
+        public bool GetImageDisplay()
         {
-            
+            IntPtr image = IntPtr.Zero;
+            int width = 0;
+            int height = 0;
+            int ret = CameraList[0].GetImage(ID, ref image, ref width, ref height);
+
+            if(ret == 0)
+            {
+                OnImageUpdated?.Invoke(this, new ImageReadyEventArgs
+                {
+                    ImageData = image,
+                    Width = width,
+                    Height = height,
+                    Format = IMAGE_FORMAT.MONO8
+                });
+
+                return true;
+            }
+
             return false;
         }
+
+        
 
         public bool StopGrabAllCamera()
         {
