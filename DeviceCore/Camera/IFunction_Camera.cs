@@ -10,5 +10,8 @@ namespace DeviceCore
     public interface IFunction_Camera
     {
         int Initial_All_Camera();
+        bool StartGrab();
+        bool StopGrab();
+        bool SoftTrigger();
     }
 }

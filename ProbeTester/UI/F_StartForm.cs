@@ -100,5 +100,12 @@ namespace ProbeTester.UI
             IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
             function_Camera.Initial_All_Camera();
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
+            function_Camera.StartGrab();
+            function_Camera.SoftTrigger();
+        }
     }
 }

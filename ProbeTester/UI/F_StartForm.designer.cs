@@ -50,11 +50,11 @@ namespace ProbeTester.UI
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.Btn_Home = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.Btn_Home = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.Pnl_Mapping = new System.Windows.Forms.Panel();
             this.PicBx_Mapping = new System.Windows.Forms.PictureBox();
@@ -316,16 +316,6 @@ namespace ProbeTester.UI
             this.button5.TabIndex = 35;
             this.button5.UseVisualStyleBackColor = true;
             // 
-            // Btn_Home
-            // 
-            this.Btn_Home.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Home.BackgroundImage")));
-            this.Btn_Home.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_Home.Location = new System.Drawing.Point(156, 4);
-            this.Btn_Home.Name = "Btn_Home";
-            this.Btn_Home.Size = new System.Drawing.Size(69, 69);
-            this.Btn_Home.TabIndex = 30;
-            this.Btn_Home.UseVisualStyleBackColor = true;
-            // 
             // button4
             // 
             this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
@@ -355,6 +345,7 @@ namespace ProbeTester.UI
             this.button9.Size = new System.Drawing.Size(69, 69);
             this.button9.TabIndex = 36;
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button1
             // 
@@ -365,6 +356,16 @@ namespace ProbeTester.UI
             this.button1.Size = new System.Drawing.Size(69, 69);
             this.button1.TabIndex = 31;
             this.button1.UseVisualStyleBackColor = true;
+            // 
+            // Btn_Home
+            // 
+            this.Btn_Home.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Home.BackgroundImage")));
+            this.Btn_Home.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Home.Location = new System.Drawing.Point(156, 4);
+            this.Btn_Home.Name = "Btn_Home";
+            this.Btn_Home.Size = new System.Drawing.Size(69, 69);
+            this.Btn_Home.TabIndex = 30;
+            this.Btn_Home.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 

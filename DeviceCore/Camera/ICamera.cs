@@ -10,9 +10,9 @@ namespace DeviceCore
     public interface ICamera
     {
         int Connect();
-        int StartGrabbing(uint id);
-        int StopGrabbing(uint id);
-        int SoftwareTrigger(uint id);
-        int GetImage(uint id);
+        int StartGrabbing(string id);
+        int StopGrabbing(string id);
+        int SoftwareTrigger(string id);
+        int GetImage(string id);
     }
 }

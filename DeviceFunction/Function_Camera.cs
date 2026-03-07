@@ -41,29 +41,32 @@ namespace DeviceFunction
             return 0;
         }
 
+        string ID = "4.235.33.40";
+
         public bool StartGrab()
         {
-            CameraList[0].StartGrabbing(5056);
-
+            CameraList[0].StartGrabbing(ID);
 
             return false;
         }
 
         public bool StopGrab()
         {
+            CameraList[0].StopGrabbing(ID);
+
             return false;
         }
 
         public bool SoftTrigger()
         {
-            CameraList[0].SoftwareTrigger(5056);
-
+            CameraList[0].SoftwareTrigger(ID);
+            CameraList[0].GetImage(ID);
             return false;
         }
 
         public bool GetImage()
         {
-            CameraList[0].GetImage(5056);
+            
             return false;
         }
 
