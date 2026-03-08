@@ -95,6 +95,12 @@
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
     <Compile Include="Base\IBaseTask.cs" />
     <Compile Include="Base\IF_StateControl.cs" />
+    <Compile Include="UI\F_SampleFull.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_SampleFull.designer.cs">
+      <DependentUpon>F_SampleFull.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_Sample.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +130,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="UI\F_SampleFull.resx">
+      <DependentUpon>F_SampleFull.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_Sample.resx">
       <DependentUpon>F_Sample.cs</DependentUpon>
     </EmbeddedResource>

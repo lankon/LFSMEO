@@ -11,9 +11,9 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
-using ProbeTester.Base.SettingEnum;
 using DeviceUI.Camera;
 using DeviceCore;
+using ProbeTester.Base;
 
 
 namespace ProbeTester.UI
@@ -38,19 +38,19 @@ namespace ProbeTester.UI
         void InitialForm()
         {
             ReadAllEnumRecipe();
-            ApplicationSetting.UpdataRecipeToForm<eOEMSetting>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_Equipment_Setting>(this);
 
             CreateDynamicElemet();
 
             ShowHint();
 
-            if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
         }
         private void ReadAllEnumRecipe()
         {
-            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
-            ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
+            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
         }
         void ShowHint()
         {

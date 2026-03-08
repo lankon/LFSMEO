@@ -31,7 +31,7 @@ namespace ProbeTester
             //[Form]
             services.AddSingleton<F_MainForm>();
             services.AddSingleton<F_StartForm>();
-            //services.AddSingleton<F_StartForm_ButtonGroup>();
+            services.AddSingleton<F_StartForm_ButtonGroup>();
             //services.AddSingleton<F_Recipe>();
             //services.AddSingleton<F_DAQ_SamplingTest>();
             //services.AddSingleton<IF_StatusBox, F_StatusBox>();
@@ -40,7 +40,7 @@ namespace ProbeTester
 
             //[Form]
             //退出Form後即close掉,要用再new
-            //services.AddTransient<F_OEM_Setting>();
+            services.AddTransient<F_OEM_Setting>();
             //services.AddTransient<F_Equipment_Setting>();
             //services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
             //services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl

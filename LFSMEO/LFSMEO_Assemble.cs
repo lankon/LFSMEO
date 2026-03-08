@@ -16,6 +16,7 @@ using DeviceFunction;
 using DeviceUI.Motion;
 using DeviceUI.IO;
 using DeviceUI.LightControl;
+using DeviceUI.Camera;
 using Device_MN200;
 using Device_PCIS_DASK;
 using Device_Virtual;
@@ -94,6 +95,7 @@ namespace LFSMEO
 
             //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
+            services.AddSingleton<IF_CameraSetting, F_CameraSetting >();
             services.AddSingleton<IF_AxisSetting, F_AxisSetting>();
             services.AddSingleton<IF_AxisButton, F_AxisButton>();
             services.AddSingleton<IF_IO_Card, F_IO_Card>();

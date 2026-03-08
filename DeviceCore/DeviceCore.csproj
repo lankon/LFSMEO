@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera\eCameraSetting.cs" />
+    <Compile Include="Camera\IF_CameraSetting.cs" />
     <Compile Include="Camera\ICameraDisplayPanel.cs" />
     <Compile Include="Camera\IFunction_Camera.cs" />
     <Compile Include="Camera\ICamera.cs" />

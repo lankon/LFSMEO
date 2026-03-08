@@ -74,6 +74,7 @@
     <Compile Include="Function_LightControl.cs" />
     <Compile Include="Function_Spectrometer.cs" />
     <Compile Include="Function_Motion_Card.cs" />
+    <Compile Include="F_CameraSettingLogic.cs" />
     <Compile Include="F_MotionSettingLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

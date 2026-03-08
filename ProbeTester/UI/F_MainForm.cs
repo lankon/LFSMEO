@@ -76,7 +76,7 @@ namespace ProbeTester.UI
             // Panel 顯示上方選項頁面
             //
             Scope.UpButtonPanel = new Panel();
-            Scope.UpButtonPanel.Location = new System.Drawing.Point(69, 0);
+            Scope.UpButtonPanel.Location = new System.Drawing.Point(79, 2);
             Scope.UpButtonPanel.Size = new System.Drawing.Size(1738, 72);
             Scope.UpButtonPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.Pnl_Function.Controls.Add(Scope.UpButtonPanel);
@@ -124,9 +124,9 @@ namespace ProbeTester.UI
                 form.Show();
             }
 
-            //var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
-            //Tool.SetForm(Scope.UpButtonPanel, group);
-            //group.Show();
+            var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
+            Tool.SetForm(Scope.UpButtonPanel, group);
+            group.Show();
         }
         #endregion
 

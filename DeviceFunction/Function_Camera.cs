@@ -8,7 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using ToolFunction;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+
+
+using DeviceCore;
 
 namespace DeviceFunction
 {
@@ -28,9 +30,47 @@ namespace DeviceFunction
         private int DeviceIndex = -1;
         private IEnumerable<ICamera> Camera;
         private List<ICamera> CameraList = new List<ICamera>();
+        private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
         #endregion
 
         #region private function
+        private void LoadCameraConfig(string path)
+        {
+            XDocument doc = XDocument.Load(path);
+
+            // 直接讀出所有 Axis
+            foreach (var axis in doc.Descendants("Camera"))
+            {
+                string name = (string)axis.Attribute("name");
+
+                // 讀出每個 Parameter
+                foreach (var param in axis.Elements("Parameter"))
+                {
+                    string key = (string)param.Attribute("key");
+                    string value = (string)param.Attribute("value");
+
+                    Project2AxisInfo(int.Parse(name.Replace("Camera", "")), key, value);
+                }
+            }
+        }
+        private void Project2AxisInfo(int axis, string item, string value)
+        {
+            //新增相機參數時需添加
+
+            var info = CCD_INFO[axis];
+
+            //[Connect Configuration]
+            if (item == eF_CaneraSetting.Cmbx_AxisType.ToString())
+                info.CCD_TYPE = Tool.StringToInt(value);
+            else if (item == eF_CaneraSetting.TxtBx_ID_IP.ToString())
+                info.IP_ID = value;
+            else if (item == eF_CaneraSetting.TxtBx_CCD_Name.ToString())
+                info.CCD_NAME = value;
+            else if (item == eF_CaneraSetting.Cmbx_AxisUse.ToString())
+                info.CCD_USE = Tool.StringToInt(value);
+
+            CCD_INFO[axis] = info;
+        }
         #endregion
 
         #region public function
@@ -44,6 +84,27 @@ namespace DeviceFunction
 
             return 0;
         }
+
+
+        public IReadOnlyList<CAMERA_INFO> GetCameraConfig()
+        {
+            return CCD_INFO.AsReadOnly();
+        }
+        public bool LoadCameraConfig()
+        {
+            string AppPath = AppDomain.CurrentDomain.BaseDirectory;
+            string load_path = AppPath + @"\Setting\CameraConfig.xml";
+
+            if (!File.Exists(load_path))
+                return false;
+
+            LoadCameraConfig(load_path);
+
+            return true;
+        }
+
+
+
 
         string ID = "4.235.33.40";
 

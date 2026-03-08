@@ -22,6 +22,11 @@ namespace DeviceCore
 
     public interface IFunction_Camera
     {
+        IReadOnlyList<CAMERA_INFO> GetCameraConfig();
+        bool LoadCameraConfig();
+
+
+
         int Initial_All_Camera();
         bool StartGrab();
         bool StopGrab();

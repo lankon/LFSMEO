@@ -97,8 +97,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\eF_Equipment_Setting.cs" />
     <Compile Include="Base\Scope.cs" />
-    <Compile Include="Base\SettingEnum\eOEMSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProbeTesterAssemble.cs" />
     <Compile Include="UI\F_MainForm.cs">
@@ -107,19 +107,37 @@
     <Compile Include="UI\F_MainForm.designer.cs">
       <DependentUpon>F_MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_OEM_Setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_OEM_Setting.designer.cs">
+      <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_StartForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\F_StartForm.designer.cs">
       <DependentUpon>F_StartForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_StartForm_ButtonGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_StartForm_ButtonGroup.designer.cs">
+      <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\F_MainForm.resx">
       <DependentUpon>F_MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_OEM_Setting.resx">
+      <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StartForm.resx">
       <DependentUpon>F_StartForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_StartForm_ButtonGroup.resx">
+      <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
