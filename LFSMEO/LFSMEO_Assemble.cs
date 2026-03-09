@@ -96,6 +96,7 @@ namespace LFSMEO
             //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
             services.AddSingleton<IF_CameraSetting, F_CameraSetting >();
+            services.AddSingleton<IF_CameraButton, F_CameraButton>();
             services.AddSingleton<IF_AxisSetting, F_AxisSetting>();
             services.AddSingleton<IF_AxisButton, F_AxisButton>();
             services.AddSingleton<IF_IO_Card, F_IO_Card>();
@@ -104,6 +105,7 @@ namespace LFSMEO
 
             //[Form Logic]
             services.AddSingleton<F_MotionSettingLogic>();
+            services.AddSingleton<F_CameraSettingLogic>();
             services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();
 
             //[Function]

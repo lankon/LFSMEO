@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DeviceCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,23 +9,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-
 using ToolFunction;
-using DeviceCore;
 
 namespace DeviceUI.Camera
 {
     public partial class F_CameraSetting : Form, IF_CameraSetting
     {
-        public F_CameraSetting()
+        public F_CameraSetting(IServiceProvider serviceProvider, IF_CameraButton f_CameraButton)
         {
             InitializeComponent();
+
+            ServiceProvider = serviceProvider;
+            CameraButton = f_CameraButton;
 
             InitialForm();
         }
 
         #region parameter define
+        IServiceProvider ServiceProvider;
+        IF_CameraButton CameraButton;
         #endregion
 
         #region private function
@@ -33,6 +37,8 @@ namespace DeviceUI.Camera
             UpdateEnumSettingToForm();
 
             ShowHint();
+
+            DockCameraButton(typeof(IF_CameraButton));
 
             //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
@@ -69,12 +75,33 @@ namespace DeviceUI.Camera
         private void LeavePage()
         {
         }
+
+        private void DockCameraButton(Type child_form)
+        {
+            object service = ServiceProvider.GetRequiredService(child_form);
+
+            if (service is Form childForm)
+            {
+                Tool.SetForm(this.Pnl_CameraButton, childForm);
+                childForm.Show();
+            }
+        }
         #endregion
 
         #region public function
         public void ShowFormName(bool show)
         {
 
+        }
+        public void UpdateParmeter()
+        {
+            ApplicationSetting.SaveAllRecipe<eF_CameraSetting>();
+            ApplicationSetting.UpdataRecipeToForm<eF_CameraSetting>(this);
+        }
+        public void SaveCameraParameter()
+        {
+            ApplicationSetting.SaveRecipeFromForm<eF_CameraSetting>(this);
+            ApplicationSetting.ReadAllRecipe<eF_CameraSetting>();
         }
         #endregion
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)

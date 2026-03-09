@@ -22,15 +22,17 @@ namespace DeviceCore
 
     public interface IFunction_Camera
     {
-        IReadOnlyList<CAMERA_INFO> GetCameraConfig();
-        bool LoadCameraConfig();
-
-
-
         int Initial_All_Camera();
         bool StartGrab();
         bool StopGrab();
         bool SoftTrigger();
         event EventHandler<ImageReadyEventArgs> OnImageUpdated;
+
+
+        //[Read&Save Axis Information]
+        void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters);
+        bool LoadCameraConfig(); 
+        IReadOnlyList<CAMERA_INFO> GetCameraConfig();
+
     }
 }

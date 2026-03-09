@@ -60,13 +60,13 @@ namespace DeviceFunction
             var info = CCD_INFO[axis];
 
             //[Connect Configuration]
-            if (item == eF_CaneraSetting.Cmbx_AxisType.ToString())
+            if (item == eF_CameraSetting.Cmbx_AxisType.ToString())
                 info.CCD_TYPE = Tool.StringToInt(value);
-            else if (item == eF_CaneraSetting.TxtBx_ID_IP.ToString())
+            else if (item == eF_CameraSetting.TxtBx_ID_IP.ToString())
                 info.IP_ID = value;
-            else if (item == eF_CaneraSetting.TxtBx_CCD_Name.ToString())
+            else if (item == eF_CameraSetting.TxtBx_CCD_Name.ToString())
                 info.CCD_NAME = value;
-            else if (item == eF_CaneraSetting.Cmbx_AxisUse.ToString())
+            else if (item == eF_CameraSetting.Cmbx_AxisUse.ToString())
                 info.CCD_USE = Tool.StringToInt(value);
 
             CCD_INFO[axis] = info;
@@ -86,22 +86,8 @@ namespace DeviceFunction
         }
 
 
-        public IReadOnlyList<CAMERA_INFO> GetCameraConfig()
-        {
-            return CCD_INFO.AsReadOnly();
-        }
-        public bool LoadCameraConfig()
-        {
-            string AppPath = AppDomain.CurrentDomain.BaseDirectory;
-            string load_path = AppPath + @"\Setting\CameraConfig.xml";
-
-            if (!File.Exists(load_path))
-                return false;
-
-            LoadCameraConfig(load_path);
-
-            return true;
-        }
+        
+        
 
 
 
@@ -161,6 +147,61 @@ namespace DeviceFunction
             return false;
         }
 
+
+        //[Read&Save Axis Information]
+        public void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters)
+        {
+            XDocument doc;
+
+            if (File.Exists(filePath))
+                doc = XDocument.Load(filePath);
+            else
+                doc = new XDocument(new XElement("CameraConfig"));
+
+            XElement root = doc.Element("CameraConfig");
+
+            // 找出 Axis 節點
+            var existingAxis = root.Elements("Camera")
+                                   .FirstOrDefault(x => (string)x.Attribute("name") == axisName);
+
+            if (existingAxis != null)
+            {
+                // 清空舊的參數
+                existingAxis.RemoveNodes();
+            }
+            else
+            {
+                existingAxis = new XElement("Camera", new XAttribute("name", axisName));
+                root.Add(existingAxis);
+            }
+
+            // 新增參數
+            foreach (var kvp in parameters)
+            {
+                existingAxis.Add(new XElement("Parameter",
+                    new XAttribute("key", kvp.Key),
+                    new XAttribute("value", kvp.Value)
+                ));
+            }
+
+            doc.Save(filePath);
+        }
+        public bool LoadCameraConfig()
+        {
+            string AppPath = AppDomain.CurrentDomain.BaseDirectory;
+            string load_path = AppPath + @"\Setting\CameraConfig.xml";
+
+            if (!File.Exists(load_path))
+                return false;
+
+            LoadCameraConfig(load_path);
+
+            return true;
+        }
+        public IReadOnlyList<CAMERA_INFO> GetCameraConfig()
+        {
+            return CCD_INFO.AsReadOnly();
+        }
         #endregion
 
     }

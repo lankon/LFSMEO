@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DeviceCore
 {
-    public enum eF_CaneraSetting
+    public enum eF_CameraSetting
     {
         //新增相機參數時需添加
 

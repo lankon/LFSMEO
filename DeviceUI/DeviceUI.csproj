@@ -97,6 +97,12 @@
     <Compile Include="Camera\CameraDisplayPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Camera\F_CameraButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Camera\F_CameraButton.designer.cs">
+      <DependentUpon>F_CameraButton.cs</DependentUpon>
+    </Compile>
     <Compile Include="Camera\F_CameraSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +147,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Camera\F_CameraButton.resx">
+      <DependentUpon>F_CameraButton.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Camera\F_CameraSetting.resx">
       <DependentUpon>F_CameraSetting.cs</DependentUpon>
     </EmbeddedResource>

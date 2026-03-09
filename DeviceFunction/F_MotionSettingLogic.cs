@@ -150,7 +150,6 @@ namespace DeviceFunction
 
             AxisSetting.UpdateParmeter();
         }
-
         public void SaveAxis()
         {
             AxisSetting.SaveAxisParameter();

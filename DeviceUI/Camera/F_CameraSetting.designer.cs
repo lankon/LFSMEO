@@ -29,8 +29,9 @@ namespace DeviceUI.Camera
         /// </summary>
         private void InitializeComponent()
         {
-            this.Pnl_AxisButton = new System.Windows.Forms.Panel();
+            this.Pnl_CameraButton = new System.Windows.Forms.Panel();
             this.Pnl_DockCameraDisplay = new System.Windows.Forms.Panel();
+            this.LyPnl_DockCameraDisplay = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -44,7 +45,6 @@ namespace DeviceUI.Camera
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_CCD_Name = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.LyPnl_DockCameraDisplay = new System.Windows.Forms.TableLayoutPanel();
             this.Pnl_DockCameraDisplay.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -52,13 +52,13 @@ namespace DeviceUI.Camera
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // Pnl_AxisButton
+            // Pnl_CameraButton
             // 
-            this.Pnl_AxisButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Pnl_AxisButton.Location = new System.Drawing.Point(4, 845);
-            this.Pnl_AxisButton.Name = "Pnl_AxisButton";
-            this.Pnl_AxisButton.Size = new System.Drawing.Size(1888, 119);
-            this.Pnl_AxisButton.TabIndex = 5;
+            this.Pnl_CameraButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_CameraButton.Location = new System.Drawing.Point(4, 845);
+            this.Pnl_CameraButton.Name = "Pnl_CameraButton";
+            this.Pnl_CameraButton.Size = new System.Drawing.Size(1888, 119);
+            this.Pnl_CameraButton.TabIndex = 5;
             // 
             // Pnl_DockCameraDisplay
             // 
@@ -69,6 +69,21 @@ namespace DeviceUI.Camera
             this.Pnl_DockCameraDisplay.Name = "Pnl_DockCameraDisplay";
             this.Pnl_DockCameraDisplay.Size = new System.Drawing.Size(920, 690);
             this.Pnl_DockCameraDisplay.TabIndex = 6;
+            // 
+            // LyPnl_DockCameraDisplay
+            // 
+            this.LyPnl_DockCameraDisplay.ColumnCount = 3;
+            this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.LyPnl_DockCameraDisplay.Location = new System.Drawing.Point(3, 3);
+            this.LyPnl_DockCameraDisplay.Name = "LyPnl_DockCameraDisplay";
+            this.LyPnl_DockCameraDisplay.RowCount = 3;
+            this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.LyPnl_DockCameraDisplay.Size = new System.Drawing.Size(912, 682);
+            this.LyPnl_DockCameraDisplay.TabIndex = 0;
             // 
             // panel2
             // 
@@ -213,21 +228,6 @@ namespace DeviceUI.Camera
             this.tabControl1.Size = new System.Drawing.Size(962, 827);
             this.tabControl1.TabIndex = 4;
             // 
-            // LyPnl_DockCameraDisplay
-            // 
-            this.LyPnl_DockCameraDisplay.ColumnCount = 3;
-            this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.Location = new System.Drawing.Point(3, 3);
-            this.LyPnl_DockCameraDisplay.Name = "LyPnl_DockCameraDisplay";
-            this.LyPnl_DockCameraDisplay.RowCount = 3;
-            this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.Size = new System.Drawing.Size(912, 682);
-            this.LyPnl_DockCameraDisplay.TabIndex = 0;
-            // 
             // F_CameraSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -235,7 +235,7 @@ namespace DeviceUI.Camera
             this.ClientSize = new System.Drawing.Size(1898, 967);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.Pnl_DockCameraDisplay);
-            this.Controls.Add(this.Pnl_AxisButton);
+            this.Controls.Add(this.Pnl_CameraButton);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_CameraSetting";
@@ -252,7 +252,7 @@ namespace DeviceUI.Camera
         }
 
         #endregion
-        private System.Windows.Forms.Panel Pnl_AxisButton;
+        private System.Windows.Forms.Panel Pnl_CameraButton;
         private System.Windows.Forms.Panel Pnl_DockCameraDisplay;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TabPage tabPage1;

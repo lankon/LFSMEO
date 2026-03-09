@@ -9,6 +9,8 @@ namespace DeviceCore
 {
     public interface IF_CameraSetting
     {
+        void UpdateParmeter();
+        void SaveCameraParameter();
         //int Connect();
         //int StartGrabbing(string id);
         //int StopGrabbing(string id);
