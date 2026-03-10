@@ -12,7 +12,7 @@ using RGBTester.Base;
 
 namespace RGBTester.Device
 {
-    public class GL18Command:ILightEngineCommand
+    public class GL18Command//:ILightEngineCommand
     {
         public GL18Command()
         {
@@ -275,6 +275,11 @@ namespace RGBTester.Device
         }
 
         public bool Set_RegisterValue(byte adr, byte len, byte[] value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SetLed_AllColorDAC(byte side, int value)
         {
             throw new NotImplementedException();
         }

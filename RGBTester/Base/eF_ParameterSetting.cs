@@ -20,5 +20,14 @@ namespace RGBTester.Base
         TxtBx_HCM_Slope_UL,
         TxtBx_HCM_Slope_LL,
         TxtBx_ClampingFailDAC,
+
+        TxtBx_BurnInCurrent1,
+        TxtBx_BurnInCurrent2,
+        TxtBx_BurnInCurrent3,
+        TxtBx_BurnInCurrent4,
+
+        TxtBx_BurnInTime,
+        TxtBx_BurnInRepeat,
+        TxtBx_FailOverTemp,
     }
 }

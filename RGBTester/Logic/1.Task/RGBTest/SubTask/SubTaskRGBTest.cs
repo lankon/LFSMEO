@@ -57,6 +57,9 @@ namespace RGBTester.Logic
             WAIT_LED_G_TEST,
             WAIT_LED_B_TEST,
 
+            BURN_IN_TEST,
+            WAIT_BURN_IN_TEST,
+
             END,
 
             SUCCESS,
@@ -245,6 +248,22 @@ namespace RGBTester.Logic
                     }
                     break;
                 case WORK.WAIT_LED_B_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
+                    }
+                    break;
+                #endregion
+                #region BURN_IN
+                case WORK.BURN_IN_TEST:
+                    {
+                        Tool.SaveLogToFile("BURN_IN_TEST", level: "INF");
+                        SubTask = new SubTaskBurnInTest(Deps, F_StateControl);
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_BURN_IN_TEST);
+                    }
+                    break;
+                case WORK.WAIT_BURN_IN_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
                         CheckResult(check);

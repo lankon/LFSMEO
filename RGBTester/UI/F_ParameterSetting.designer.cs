@@ -30,9 +30,9 @@ namespace RGBTester.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_TestFileCopyPath = new System.Windows.Forms.TextBox();
@@ -44,6 +44,11 @@ namespace RGBTester.UI
             this.label2 = new System.Windows.Forms.Label();
             this.TxtBx_LCM_Slope_UL = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_BurnInRepeat = new System.Windows.Forms.TextBox();
+            this.TxtBx_BurnInTime = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.TxtBx_FailOverTemp = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.TxtBx_ClampingFailDAC = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -51,6 +56,13 @@ namespace RGBTester.UI
             this.label9 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_BurnInCurrent4 = new System.Windows.Forms.TextBox();
+            this.TxtBx_BurnInCurrent3 = new System.Windows.Forms.TextBox();
+            this.TxtBx_BurnInCurrent2 = new System.Windows.Forms.TextBox();
+            this.TxtBx_BurnInCurrent1 = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.DGV_ProductRawData = new System.Windows.Forms.DataGridView();
             this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_ProductType = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,9 +93,11 @@ namespace RGBTester.UI
             this.Cmbx_YieldRecord = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label17 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ProductRawData)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
@@ -198,17 +212,81 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.58228F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 73.41772F));
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_BurnInRepeat, 1, 6);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_BurnInTime, 1, 5);
+            this.tableLayoutPanel3.Controls.Add(this.label14, 0, 5);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_FailOverTemp, 1, 2);
+            this.tableLayoutPanel3.Controls.Add(this.label4, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.TxtBx_ClampingFailDAC, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.label11, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label5, 0, 4);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel2, 1, 4);
+            this.tableLayoutPanel3.Controls.Add(this.label16, 0, 6);
+            this.tableLayoutPanel3.Controls.Add(this.label17, 0, 3);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(667, 12);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowCount = 8;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 78F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(635, 122);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(635, 318);
             this.tableLayoutPanel3.TabIndex = 10;
+            // 
+            // TxtBx_BurnInRepeat
+            // 
+            this.TxtBx_BurnInRepeat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInRepeat.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInRepeat.Location = new System.Drawing.Point(175, 273);
+            this.TxtBx_BurnInRepeat.Name = "TxtBx_BurnInRepeat";
+            this.TxtBx_BurnInRepeat.Size = new System.Drawing.Size(454, 29);
+            this.TxtBx_BurnInRepeat.TabIndex = 14;
+            // 
+            // TxtBx_BurnInTime
+            // 
+            this.TxtBx_BurnInTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInTime.Location = new System.Drawing.Point(175, 235);
+            this.TxtBx_BurnInTime.Name = "TxtBx_BurnInTime";
+            this.TxtBx_BurnInTime.Size = new System.Drawing.Size(454, 29);
+            this.TxtBx_BurnInTime.TabIndex = 13;
+            // 
+            // label14
+            // 
+            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Location = new System.Drawing.Point(3, 232);
+            this.label14.Margin = new System.Windows.Forms.Padding(0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(166, 35);
+            this.label14.TabIndex = 11;
+            this.label14.Text = "Time (s)";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_FailOverTemp
+            // 
+            this.TxtBx_FailOverTemp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_FailOverTemp.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_FailOverTemp.Location = new System.Drawing.Point(175, 125);
+            this.TxtBx_FailOverTemp.Name = "TxtBx_FailOverTemp";
+            this.TxtBx_FailOverTemp.Size = new System.Drawing.Size(454, 29);
+            this.TxtBx_FailOverTemp.TabIndex = 9;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(3, 122);
+            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(166, 35);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Fail Over Temp.";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TxtBx_ClampingFailDAC
             // 
@@ -294,20 +372,96 @@ namespace RGBTester.UI
             this.label8.Text = "LCM Lower";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Location = new System.Drawing.Point(3, 188);
+            this.label5.Margin = new System.Windows.Forms.Padding(0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(166, 41);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Current (mA)";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_BurnInCurrent4, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_BurnInCurrent3, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_BurnInCurrent2, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_BurnInCurrent1, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(175, 191);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(454, 35);
+            this.tableLayoutPanel2.TabIndex = 10;
+            // 
+            // TxtBx_BurnInCurrent4
+            // 
+            this.TxtBx_BurnInCurrent4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInCurrent4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInCurrent4.Location = new System.Drawing.Point(342, 3);
+            this.TxtBx_BurnInCurrent4.Name = "TxtBx_BurnInCurrent4";
+            this.TxtBx_BurnInCurrent4.Size = new System.Drawing.Size(109, 29);
+            this.TxtBx_BurnInCurrent4.TabIndex = 13;
+            // 
+            // TxtBx_BurnInCurrent3
+            // 
+            this.TxtBx_BurnInCurrent3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInCurrent3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInCurrent3.Location = new System.Drawing.Point(229, 3);
+            this.TxtBx_BurnInCurrent3.Name = "TxtBx_BurnInCurrent3";
+            this.TxtBx_BurnInCurrent3.Size = new System.Drawing.Size(107, 29);
+            this.TxtBx_BurnInCurrent3.TabIndex = 12;
+            // 
+            // TxtBx_BurnInCurrent2
+            // 
+            this.TxtBx_BurnInCurrent2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInCurrent2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInCurrent2.Location = new System.Drawing.Point(116, 3);
+            this.TxtBx_BurnInCurrent2.Name = "TxtBx_BurnInCurrent2";
+            this.TxtBx_BurnInCurrent2.Size = new System.Drawing.Size(107, 29);
+            this.TxtBx_BurnInCurrent2.TabIndex = 11;
+            // 
+            // TxtBx_BurnInCurrent1
+            // 
+            this.TxtBx_BurnInCurrent1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInCurrent1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInCurrent1.Location = new System.Drawing.Point(3, 3);
+            this.TxtBx_BurnInCurrent1.Name = "TxtBx_BurnInCurrent1";
+            this.TxtBx_BurnInCurrent1.Size = new System.Drawing.Size(107, 29);
+            this.TxtBx_BurnInCurrent1.TabIndex = 10;
+            // 
+            // label16
+            // 
+            this.label16.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label16.Location = new System.Drawing.Point(3, 270);
+            this.label16.Margin = new System.Windows.Forms.Padding(0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(166, 31);
+            this.label16.TabIndex = 12;
+            this.label16.Text = "Repeat Count";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // DGV_ProductRawData
             // 
             this.DGV_ProductRawData.AllowUserToAddRows = false;
             this.DGV_ProductRawData.AllowUserToDeleteRows = false;
             this.DGV_ProductRawData.AllowUserToResizeColumns = false;
             this.DGV_ProductRawData.AllowUserToResizeRows = false;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_ProductRawData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_ProductRawData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_ProductRawData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_ProductRawData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_ID,
@@ -317,15 +471,15 @@ namespace RGBTester.UI
             this.Title_IsPass,
             this.Title_Exclude,
             this.Title_Description});
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_ProductRawData.DefaultCellStyle = dataGridViewCellStyle12;
-            this.DGV_ProductRawData.Location = new System.Drawing.Point(3, 103);
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_ProductRawData.DefaultCellStyle = dataGridViewCellStyle3;
+            this.DGV_ProductRawData.Location = new System.Drawing.Point(3, 80);
             this.DGV_ProductRawData.Name = "DGV_ProductRawData";
             this.DGV_ProductRawData.RowHeadersVisible = false;
             this.DGV_ProductRawData.RowTemplate.Height = 24;
@@ -363,8 +517,8 @@ namespace RGBTester.UI
             // 
             this.Title_TestTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.Title_TestTime.DataPropertyName = "TestTime";
-            dataGridViewCellStyle11.Format = "yyyy-MM-dd HH:mm:ss";
-            this.Title_TestTime.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle2.Format = "yyyy-MM-dd HH:mm:ss";
+            this.Title_TestTime.DefaultCellStyle = dataGridViewCellStyle2;
             this.Title_TestTime.HeaderText = "Test Time";
             this.Title_TestTime.Name = "Title_TestTime";
             this.Title_TestTime.ReadOnly = true;
@@ -428,7 +582,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.Controls.Add(this.label15, 6, 0);
             this.tableLayoutPanel5.Controls.Add(this.TxtBx_Yield, 7, 0);
             this.tableLayoutPanel5.Controls.Add(this.Btn_OutputResult, 8, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 452);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 429);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -543,7 +697,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel6.Controls.Add(this.TxtBx_Description, 6, 0);
             this.tableLayoutPanel6.Controls.Add(this.Cmbx_Pass, 4, 0);
             this.tableLayoutPanel6.Controls.Add(this.Cmbx_Exclude, 5, 0);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 59);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 36);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -612,7 +766,7 @@ namespace RGBTester.UI
             // Btn_Search
             // 
             this.Btn_Search.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Search.Location = new System.Drawing.Point(809, 28);
+            this.Btn_Search.Location = new System.Drawing.Point(809, 5);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(99, 28);
             this.Btn_Search.TabIndex = 30;
@@ -627,7 +781,7 @@ namespace RGBTester.UI
             this.Cmbx_YieldRecord.Items.AddRange(new object[] {
             "NoRecord",
             "Record"});
-            this.Cmbx_YieldRecord.Location = new System.Drawing.Point(704, 28);
+            this.Cmbx_YieldRecord.Location = new System.Drawing.Point(704, 5);
             this.Cmbx_YieldRecord.Name = "Cmbx_YieldRecord";
             this.Cmbx_YieldRecord.Size = new System.Drawing.Size(99, 28);
             this.Cmbx_YieldRecord.TabIndex = 32;
@@ -640,10 +794,22 @@ namespace RGBTester.UI
             this.panel1.Controls.Add(this.tableLayoutPanel6);
             this.panel1.Controls.Add(this.DGV_ProductRawData);
             this.panel1.Controls.Add(this.tableLayoutPanel5);
-            this.panel1.Location = new System.Drawing.Point(12, 161);
+            this.panel1.Location = new System.Drawing.Point(12, 336);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1019, 496);
+            this.panel1.Size = new System.Drawing.Size(913, 472);
             this.panel1.TabIndex = 33;
+            // 
+            // label17
+            // 
+            this.label17.BackColor = System.Drawing.Color.Silver;
+            this.tableLayoutPanel3.SetColumnSpan(this.label17, 2);
+            this.label17.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label17.Location = new System.Drawing.Point(6, 160);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(623, 25);
+            this.label17.TabIndex = 15;
+            this.label17.Text = "Burn In Setting";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // F_ParameterSetting
             // 
@@ -663,6 +829,8 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ProductRawData)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
@@ -723,5 +891,18 @@ namespace RGBTester.UI
         private System.Windows.Forms.DataGridViewCheckBoxColumn Title_Exclude;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Description;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.TextBox TxtBx_FailOverTemp;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TextBox TxtBx_BurnInCurrent4;
+        private System.Windows.Forms.TextBox TxtBx_BurnInCurrent3;
+        private System.Windows.Forms.TextBox TxtBx_BurnInCurrent2;
+        private System.Windows.Forms.TextBox TxtBx_BurnInCurrent1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox TxtBx_BurnInRepeat;
+        private System.Windows.Forms.TextBox TxtBx_BurnInTime;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
     }
 }

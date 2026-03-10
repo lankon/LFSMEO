@@ -454,7 +454,8 @@ namespace RGBTester.Logic
         }
         private void CheckTestTemperature(double temperature)
         {
-            if(temperature > 50)
+            double limit = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_FailOverTemp);
+            if (temperature > limit)
             {
                 Scope.TestFail = true;
                 RGBfunc.FailReasonFlag.IsTemperatureErr = true;
@@ -635,6 +636,7 @@ namespace RGBTester.Logic
                                 IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, false);
                             else
                                 IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, true);
+                            RGBfunc.SlopeOffsetResult.SetResult(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
 
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
                             CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
@@ -769,6 +771,7 @@ namespace RGBTester.Logic
                                 IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, false);
                             else
                                 IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, true);
+                            RGBfunc.SlopeOffsetResult.SetResult(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
 
                             Deps.File.SetCalibrationData(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
                             CheckTestResult(LinearCurveFitting_H.Slope, "HCM");
