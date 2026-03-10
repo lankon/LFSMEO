@@ -10,7 +10,7 @@ namespace RGBTester.Base
     {
         TxtBx_TestFileCopyPath,
         TxtBx_TestFileCopyPath1,
-        Cmbx_YieldRecord,
+        //Cmbx_YieldRecord,
     }
 
     public enum eF_ParameterSettingRecipe
@@ -21,10 +21,9 @@ namespace RGBTester.Base
         TxtBx_HCM_Slope_LL,
         TxtBx_ClampingFailDAC,
 
-        TxtBx_BurnInCurrent1,
-        TxtBx_BurnInCurrent2,
-        TxtBx_BurnInCurrent3,
-        TxtBx_BurnInCurrent4,
+        TxtBx_BurnInCurrent_R,
+        TxtBx_BurnInCurrent_G,
+        TxtBx_BurnInCurrent_B,
 
         TxtBx_BurnInTime,
         TxtBx_BurnInRepeat,

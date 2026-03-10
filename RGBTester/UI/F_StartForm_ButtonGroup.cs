@@ -39,6 +39,7 @@ namespace RGBTester.UI
             toolTip1.SetToolTip(Btn_ParameterSetting, "Parameter Setting");
             toolTip1.SetToolTip(Btn_LogIn, "LogIn");
             toolTip1.SetToolTip(Btn_Recipe, "Recipe");
+            toolTip1.SetToolTip(Btn_YieldReport, "Yield Report");
         }
         private void InitialForm()
         {
@@ -177,6 +178,15 @@ namespace RGBTester.UI
             Tool.HideElementOnPanel(Scope.MainPanel);
             Tool.SetForm(Scope.MainPanel, chart);
             chart.Show();
+        }
+
+        private void Btn_YieldReport_Click(object sender, EventArgs e)
+        {
+            var yield = ServiceProvider.GetRequiredService<F_YieldReport>();
+
+            Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.SetForm(Scope.MainPanel, yield);
+            yield.Show();
         }
     }
 }

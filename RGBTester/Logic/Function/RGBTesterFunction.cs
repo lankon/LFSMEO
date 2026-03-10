@@ -213,7 +213,7 @@ namespace RGBTester.Logic
         }
         public void YieldStatistics(bool pass, string sn, string description = "None")
         {
-            if (ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.Cmbx_YieldRecord) == 0)
+            if (ApplicationSetting.Get_Int_Recipe<eF_YieldReport>((int)eF_YieldReport.Cmbx_YieldRecord) == 0)
                 return;
             
             string product_type = "None";
