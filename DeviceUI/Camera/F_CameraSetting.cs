@@ -1,4 +1,5 @@
 ﻿using DeviceCore;
+using DeviceFunction;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,15 @@ namespace DeviceUI.Camera
 {
     public partial class F_CameraSetting : Form, IF_CameraSetting
     {
-        public F_CameraSetting(IServiceProvider serviceProvider, IF_CameraButton f_CameraButton)
+        public F_CameraSetting(IServiceProvider serviceProvider, IF_CameraButton f_CameraButton, 
+                                F_CameraSettingLogic f_CameraSettingLogic)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
             CameraButton = f_CameraButton;
+            f_CameraSettingLogic.SetCameraSettingIF(this);
+            CameraSettingLogic = f_CameraSettingLogic;
 
             InitialForm();
         }
@@ -28,6 +32,7 @@ namespace DeviceUI.Camera
         #region parameter define
         IServiceProvider ServiceProvider;
         IF_CameraButton CameraButton;
+        F_CameraSettingLogic CameraSettingLogic;
         #endregion
 
         #region private function
@@ -69,8 +74,10 @@ namespace DeviceUI.Camera
         }
         private void UpdatePage()
         {
-            ReadAllEnumSetting();
-            UpdateEnumSettingToForm();
+            CameraSettingLogic.UpdateCameraInfo2Form(CameraSettingLogic.GetCurrentBtnNum());
+
+            //ReadAllEnumSetting();
+            //UpdateEnumSettingToForm();
         }
         private void LeavePage()
         {

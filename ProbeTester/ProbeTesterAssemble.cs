@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using ProbeTester.Base;
 using ProbeTester.UI;
-
+using ProbeTester.Logic;
 
 namespace ProbeTester
 {
@@ -15,8 +16,8 @@ namespace ProbeTester
     {
         public static IServiceCollection AddProbeTesterServices(this IServiceCollection services)
         {
-            //[RGBTesterMachine]
-            //services.AddSingleton<IRGBTesterMachine, RGBTesterMachine>();
+            //[ProbeTesterMachine]
+            services.AddSingleton<IProbeTesterMachine, ProbeTesterMachine>();
 
             //[Device]
             //services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
@@ -46,7 +47,7 @@ namespace ProbeTester
             //services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
             //[Form Logic]
-            //services.AddSingleton<F_MainFormLogic>();
+            services.AddSingleton<F_MainFormLogic>();
             //services.AddSingleton<F_StartFormLogic>();
             //services.AddSingleton<F_RecipeLogic>();
             //services.AddSingleton<F_DAQ_ChartLogic>();

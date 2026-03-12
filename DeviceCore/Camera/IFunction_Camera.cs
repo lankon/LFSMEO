@@ -14,6 +14,15 @@ namespace DeviceCore
         public int Height { get; set; }
         public IMAGE_FORMAT Format { get; set; }
     }
+    public enum CCD_NAME
+    {
+        CCD_0,
+        CCD_1,
+        CCD_2,
+        CCD_3,
+        CCD_4,
+        CCD_5,
+    }
     public enum IMAGE_FORMAT
     {
         MONO8,

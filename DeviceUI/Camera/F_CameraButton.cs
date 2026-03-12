@@ -21,7 +21,8 @@ namespace DeviceUI.Camera
             InitializeComponent();
             InitialForm();
 
-            f_CameraSettingLogic.SetCameraButtonIF(this);
+            f_CameraSettingLogic.SetCameraButtonIF(this);            
+
             CameraSettingLogic = f_CameraSettingLogic;
         }
 

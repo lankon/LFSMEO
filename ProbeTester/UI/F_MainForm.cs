@@ -14,18 +14,19 @@ using System.Windows.Forms;
 using ToolFunction;
 
 using ProbeTester.Base;
+using ProbeTester.Logic;
 
 
 namespace ProbeTester.UI
 {
     public partial class F_MainForm : Form
     {
-        public F_MainForm(IServiceProvider serviceProvider)
+        public F_MainForm(IServiceProvider serviceProvider, F_MainFormLogic f_MainFormLogic)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
-
+            MainFormLogic = f_MainFormLogic;
 
             InitialApplication();
 
@@ -37,6 +38,7 @@ namespace ProbeTester.UI
 
         #region parameter define
         private IServiceProvider ServiceProvider;
+        private F_MainFormLogic MainFormLogic;
         #endregion
 
         #region private function
@@ -59,7 +61,9 @@ namespace ProbeTester.UI
             CreateDynamicElement();
             CreateFolder();
 
-
+            MainFormLogic.DeleteExpireFileInFolder();
+            MainFormLogic.ReadAllSetting();
+            MainFormLogic.Initial_All_Device();
         }
         private void CreateDynamicElement()
         {

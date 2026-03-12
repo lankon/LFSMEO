@@ -8,26 +8,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using ToolFunction;
-
-
-using DeviceCore;
+using static DeviceFunction.Function_Motion_Card;
 
 namespace DeviceFunction
 {
     public class Function_Camera: IFunction_Camera
     {
-        
-
-        public Function_Camera(IEnumerable<ICamera> spec)
+        public Function_Camera(IEnumerable<ICamera> ccd)
         {
-            Camera = spec;
+            Camera = ccd;
         }
 
         public event EventHandler<ImageReadyEventArgs> OnImageUpdated;
 
         #region parameter define
-        private bool IsInitial = false;
-        private int DeviceIndex = -1;
         private IEnumerable<ICamera> Camera;
         private List<ICamera> CameraList = new List<ICamera>();
         private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
@@ -38,26 +32,37 @@ namespace DeviceFunction
         {
             XDocument doc = XDocument.Load(path);
 
-            // 直接讀出所有 Axis
-            foreach (var axis in doc.Descendants("Camera"))
+            // 直接讀出所有Camera
+            foreach (var ccd in doc.Descendants("Camera"))
             {
-                string name = (string)axis.Attribute("name");
+                string name = (string)ccd.Attribute("name");
 
                 // 讀出每個 Parameter
-                foreach (var param in axis.Elements("Parameter"))
+                foreach (var param in ccd.Elements("Parameter"))
                 {
                     string key = (string)param.Attribute("key");
                     string value = (string)param.Attribute("value");
 
-                    Project2AxisInfo(int.Parse(name.Replace("Camera", "")), key, value);
-                }
+                    Project2CameraInfo(int.Parse(name.Replace("Camera", "")), key, value);
+                }  
             }
         }
-        private void Project2AxisInfo(int axis, string item, string value)
+        private void InitialCameraInfo()
+        {
+            CAMERA_INFO ccd_info = new CAMERA_INFO();
+            
+            int count = Enum.GetNames(typeof(CCD_NAME)).Length;
+
+            for (int i = 0; i < count; i++)
+            {
+                ccd_info.CCD_USE = 0;
+                CCD_INFO.Add(ccd_info);
+            }
+        }
+        private void Project2CameraInfo(int camera, string item, string value)
         {
             //新增相機參數時需添加
-
-            var info = CCD_INFO[axis];
+            var info = CCD_INFO[camera];
 
             //[Connect Configuration]
             if (item == eF_CameraSetting.Cmbx_AxisType.ToString())
@@ -69,13 +74,16 @@ namespace DeviceFunction
             else if (item == eF_CameraSetting.Cmbx_AxisUse.ToString())
                 info.CCD_USE = Tool.StringToInt(value);
 
-            CCD_INFO[axis] = info;
+            CCD_INFO[camera] = info;
         }
         #endregion
 
         #region public function
         public int Initial_All_Camera()
         {
+            //此函式程式開啟後只能呼叫一次
+            InitialCameraInfo();
+
             foreach (ICamera camera in Camera)
             {
                 if (camera.Connect() == 0)
@@ -84,13 +92,6 @@ namespace DeviceFunction
 
             return 0;
         }
-
-
-        
-        
-
-
-
 
         string ID = "4.235.33.40";
 
@@ -139,16 +140,13 @@ namespace DeviceFunction
             return false;
         }
 
-        
-
         public bool StopGrabAllCamera()
         {
 
             return false;
         }
 
-
-        //[Read&Save Axis Information]
+        //[Read&Save Camera Information]
         public void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters)
         {
             XDocument doc;

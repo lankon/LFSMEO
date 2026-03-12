@@ -100,29 +100,26 @@ namespace ProbeTester.UI
 
         private void button8_Click(object sender, EventArgs e)
         {
-            IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
-            function_Camera.Initial_All_Camera();
+            //// 訂閱中介層的影像事件
+            //function_Camera.OnImageUpdated += (s, fe) =>
+            //{
+            //    // 使用你寫好的 CreateUniversalBitmap 轉換成 Bitmap
+            //    Bitmap bmp = CameraDisplay.CreateUniversalBitmap(
+            //        fe.Width, fe.Height, fe.ImageData, fe.Format);
 
-            // 訂閱中介層的影像事件
-            function_Camera.OnImageUpdated += (s, fe) =>
-            {
-                // 使用你寫好的 CreateUniversalBitmap 轉換成 Bitmap
-                Bitmap bmp = CameraDisplay.CreateUniversalBitmap(
-                    fe.Width, fe.Height, fe.ImageData, fe.Format);
-
-                // 更新到 UI (注意跨執行緒問題)
-                if (this.InvokeRequired)
-                {
-                    this.BeginInvoke(new Action(() =>
-                    {
-                        CameraDisplay.CurrentImage = bmp;
-                    }));
-                }
-                else
-                {
-                    CameraDisplay.CurrentImage = bmp;
-                }
-            };
+            //    // 更新到 UI (注意跨執行緒問題)
+            //    if (this.InvokeRequired)
+            //    {
+            //        this.BeginInvoke(new Action(() =>
+            //        {
+            //            CameraDisplay.CurrentImage = bmp;
+            //        }));
+            //    }
+            //    else
+            //    {
+            //        CameraDisplay.CurrentImage = bmp;
+            //    }
+            //};
         }
 
         private void button9_Click(object sender, EventArgs e)
