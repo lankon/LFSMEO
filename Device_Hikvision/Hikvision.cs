@@ -82,6 +82,10 @@ namespace Device_Hikvision
             nRet = m_pOperator[index].GetIntValue("PayloadSize", ref payloadsize);
         }
         #endregion
+        public CCD_TYPE GetCameraType()
+        {
+            return CCD_TYPE.Hikvision;
+        }
 
         public int Connect()
         {

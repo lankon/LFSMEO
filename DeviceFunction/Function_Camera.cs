@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using ToolFunction;
-using static DeviceFunction.Function_Motion_Card;
 
 namespace DeviceFunction
 {
@@ -23,6 +22,7 @@ namespace DeviceFunction
 
         #region parameter define
         private IEnumerable<ICamera> Camera;
+        private int[] CCD_Info2List;
         private List<ICamera> CameraList = new List<ICamera>();
         private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
         #endregion
@@ -76,9 +76,28 @@ namespace DeviceFunction
 
             CCD_INFO[camera] = info;
         }
+        private string GetCameraType(int index)
+        {
+            if (index == 0)
+                return "None";
+            else if (index == 1)
+                return "Virtual";
+            else if (index == 2)
+                return "Hikvision";
+            else
+                return "None";
+        }
+        private bool CheckCameraEnable(int ccd)
+        {
+            if (CCD_INFO[ccd].CCD_USE == 0 || CCD_Info2List[ccd] == -1)
+                return false;
+            else
+                return true;
+        }
         #endregion
 
         #region public function
+        // [Initial]
         public int Initial_All_Camera()
         {
             //此函式程式開啟後只能呼叫一次
@@ -93,36 +112,90 @@ namespace DeviceFunction
             return 0;
         }
 
-        string ID = "4.235.33.40";
-
-        public bool StartGrab()
+        public void BindingCamera()
         {
-            CameraList[0].StartGrabbing(ID);
+            CCD_Info2List = new int[CCD_INFO.Count];
 
-            return false;
+            Dictionary<string, int> nameToIndex = new Dictionary<string, int>();
+
+            for (int j = 0; j < CameraList.Count; j++)
+            {
+                string name = CameraList[j].GetCameraType().ToString();
+
+                nameToIndex[name] = j;
+            }
+
+            for (int i = 0; i < CCD_INFO.Count; i++)
+            {
+                CCD_Info2List[i] = -1;
+
+                if (CCD_INFO[i].CCD_TYPE < 0)
+                    continue;
+
+                string ccd_type = GetCameraType(CCD_INFO[i].CCD_TYPE);
+
+                if (nameToIndex.TryGetValue(ccd_type, out int idx))
+                {
+                    CCD_Info2List[i] = idx;
+                }
+            }
         }
 
-        public bool StopGrab()
-        {
-            CameraList[0].StopGrabbing(ID);
 
-            return false;
+
+
+        public bool StartGrab(int ccd)
+        {
+            if (!CheckCameraEnable(ccd))
+                return false;
+
+            string ip = CCD_INFO[ccd].IP_ID;
+            int ret = CameraList[CCD_Info2List[ccd]].StartGrabbing(ip);
+
+            if(ret == 0)
+                return true;
+            else
+                return false;
         }
 
-        public bool SoftTrigger()
+        public bool StopGrab(int ccd)
         {
-            CameraList[0].SoftwareTrigger(ID);
-            GetImageDisplay();
-            //CameraList[0].GetImage(ID);
-            return false;
+            if (!CheckCameraEnable(ccd))
+                return false;
+
+            string ip = CCD_INFO[ccd].IP_ID;
+            int ret = CameraList[CCD_Info2List[ccd]].StopGrabbing(ip);
+
+            if(ret == 0)
+                return true;
+            else
+                return false;
         }
 
-        public bool GetImageDisplay()
+        public bool SoftTrigger(int ccd)
         {
+            if (!CheckCameraEnable(ccd))
+                return false;
+
+            string ip = CCD_INFO[ccd].IP_ID;
+            int ret = CameraList[CCD_Info2List[ccd]].SoftwareTrigger(ip);
+
+            if(ret == 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool GetImageDisplay(int ccd)
+        {
+            if (!CheckCameraEnable(ccd))
+                return false;
+
+            string ip = CCD_INFO[ccd].IP_ID;
             IntPtr image = IntPtr.Zero;
             int width = 0;
             int height = 0;
-            int ret = CameraList[0].GetImage(ID, ref image, ref width, ref height);
+            int ret = CameraList[CCD_Info2List[ccd]].GetImage(ip, ref image, ref width, ref height);
 
             if(ret == 0)
             {

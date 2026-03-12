@@ -14,6 +14,12 @@ namespace DeviceCore
         public int Height { get; set; }
         public IMAGE_FORMAT Format { get; set; }
     }
+    public enum CCD_TYPE
+    {         
+        //Basler,
+        Hikvision,
+        //Dalsa,
+    }
     public enum CCD_NAME
     {
         CCD_0,
@@ -31,10 +37,14 @@ namespace DeviceCore
 
     public interface IFunction_Camera
     {
+        //[Initial]
         int Initial_All_Camera();
-        bool StartGrab();
-        bool StopGrab();
-        bool SoftTrigger();
+        void BindingCamera();
+
+
+        bool StartGrab(int ccd);
+        bool StopGrab(int ccd);
+        bool SoftTrigger(int ccd);
         event EventHandler<ImageReadyEventArgs> OnImageUpdated;
 
 

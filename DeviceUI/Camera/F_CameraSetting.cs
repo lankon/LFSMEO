@@ -16,13 +16,14 @@ namespace DeviceUI.Camera
 {
     public partial class F_CameraSetting : Form, IF_CameraSetting
     {
-        public F_CameraSetting(IServiceProvider serviceProvider, IF_CameraButton f_CameraButton, 
-                                F_CameraSettingLogic f_CameraSettingLogic)
+        public F_CameraSetting(IServiceProvider serviceProvider, IF_CameraButton f_CameraButton,
+                                IFunction_Camera function_Camera, F_CameraSettingLogic f_CameraSettingLogic)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
             CameraButton = f_CameraButton;
+            Function_Camera = function_Camera;
             f_CameraSettingLogic.SetCameraSettingIF(this);
             CameraSettingLogic = f_CameraSettingLogic;
 
@@ -30,9 +31,11 @@ namespace DeviceUI.Camera
         }
 
         #region parameter define
+        CameraDisplayPanel[] DisplayPanels = new CameraDisplayPanel[CCD_NAME.GetNames(typeof(CCD_NAME)).Length];
         IServiceProvider ServiceProvider;
         IF_CameraButton CameraButton;
         F_CameraSettingLogic CameraSettingLogic;
+        IFunction_Camera Function_Camera;
         #endregion
 
         #region private function
@@ -110,7 +113,33 @@ namespace DeviceUI.Camera
             ApplicationSetting.SaveRecipeFromForm<eF_CameraSetting>(this);
             ApplicationSetting.ReadAllRecipe<eF_CameraSetting>();
         }
+        public void Test()
+        {
+            //// 訂閱中介層的影像事件
+            //Function_Camera.OnImageUpdated += (s, fe) =>
+            //{
+            //    // 使用你寫好的 CreateUniversalBitmap 轉換成 Bitmap
+            //    Bitmap bmp = CameraDisplay.CreateUniversalBitmap(
+            //        fe.Width, fe.Height, fe.ImageData, fe.Format);
+
+            //    // 更新到 UI (注意跨執行緒問題)
+            //    if (this.InvokeRequired)
+            //    {
+            //        this.BeginInvoke(new Action(() =>
+            //        {
+            //            CameraDisplay.CurrentImage = bmp;
+            //        }));
+            //    }
+            //    else
+            //    {
+            //        CameraDisplay.CurrentImage = bmp;
+            //    }
+            //};
+        }
         #endregion
+
+
+
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
         {
             if (!this.Visible)

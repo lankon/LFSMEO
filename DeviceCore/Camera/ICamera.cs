@@ -19,6 +19,7 @@ namespace DeviceCore
     }
     public interface ICamera
     {
+        CCD_TYPE GetCameraType();
         int Connect();
         int StartGrabbing(string id);
         int StopGrabbing(string id);

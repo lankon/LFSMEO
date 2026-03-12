@@ -50,6 +50,9 @@ namespace ProbeTester.Logic
         {
             Tool.SaveLogToFile("Initial Camera");
             ProbeTesterMachine.CCD.Initial_All_Camera();
+            Tool.SaveLogToFile("Load Camera Config");
+            ProbeTesterMachine.CCD.LoadCameraConfig();
+            ProbeTesterMachine.CCD.BindingCamera();
         }
         #endregion
 
