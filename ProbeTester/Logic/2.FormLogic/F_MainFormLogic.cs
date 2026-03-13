@@ -53,6 +53,8 @@ namespace ProbeTester.Logic
             Tool.SaveLogToFile("Load Camera Config");
             ProbeTesterMachine.CCD.LoadCameraConfig();
             ProbeTesterMachine.CCD.BindingCamera();
+            IF_CameraSetting f_CameraSetting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            f_CameraSetting.BindingDisplayEvent();
         }
         #endregion
 

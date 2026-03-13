@@ -12,6 +12,7 @@ namespace DeviceCore
         public IntPtr ImageData { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public int CCD_Index { get; set; }
         public IMAGE_FORMAT Format { get; set; }
     }
     public enum CCD_TYPE
@@ -37,15 +38,17 @@ namespace DeviceCore
 
     public interface IFunction_Camera
     {
+        EventHandler<ImageReadyEventArgs>[] OnImageUpdates { get; } 
+
         //[Initial]
         int Initial_All_Camera();
         void BindingCamera();
-
+        void Subscribe(int ccd, EventHandler<ImageReadyEventArgs> handler);
 
         bool StartGrab(int ccd);
         bool StopGrab(int ccd);
         bool SoftTrigger(int ccd);
-        event EventHandler<ImageReadyEventArgs> OnImageUpdated;
+        bool GetImageDisplay(int ccd);
 
 
         //[Read&Save Axis Information]

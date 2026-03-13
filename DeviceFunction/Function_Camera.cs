@@ -18,13 +18,12 @@ namespace DeviceFunction
             Camera = ccd;
         }
 
-        public event EventHandler<ImageReadyEventArgs> OnImageUpdated;
-
         #region parameter define
         private IEnumerable<ICamera> Camera;
         private int[] CCD_Info2List;
         private List<ICamera> CameraList = new List<ICamera>();
         private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
+        public EventHandler<ImageReadyEventArgs>[] OnImageUpdates { get; private set; }
         #endregion
 
         #region private function
@@ -58,6 +57,8 @@ namespace DeviceFunction
                 ccd_info.CCD_USE = 0;
                 CCD_INFO.Add(ccd_info);
             }
+
+            OnImageUpdates = new EventHandler<ImageReadyEventArgs>[Enum.GetNames(typeof(CCD_NAME)).Length];
         }
         private void Project2CameraInfo(int camera, string item, string value)
         {
@@ -93,6 +94,10 @@ namespace DeviceFunction
                 return false;
             else
                 return true;
+        }
+        private void FireImageUpdate(int ccd, ImageReadyEventArgs e)
+        {
+            OnImageUpdates[(int)ccd]?.Invoke(this, e);
         }
         #endregion
 
@@ -199,13 +204,16 @@ namespace DeviceFunction
 
             if(ret == 0)
             {
-                OnImageUpdated?.Invoke(this, new ImageReadyEventArgs
+                ImageReadyEventArgs e = new ImageReadyEventArgs
                 {
                     ImageData = image,
                     Width = width,
                     Height = height,
-                    Format = IMAGE_FORMAT.MONO8
-                });
+                    Format = IMAGE_FORMAT.MONO8,
+                    CCD_Index = ccd
+                };
+
+                FireImageUpdate(ccd, e);
 
                 return true;
             }
@@ -218,6 +226,15 @@ namespace DeviceFunction
 
             return false;
         }
+
+        public void Subscribe(int ccd, EventHandler<ImageReadyEventArgs> handler)
+        {
+            OnImageUpdates[ccd] += handler;
+        }
+
+        
+        
+
 
         //[Read&Save Camera Information]
         public void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters)
@@ -273,7 +290,7 @@ namespace DeviceFunction
         {
             return CCD_INFO.AsReadOnly();
         }
-        #endregion
+        #endregion 
 
     }
 }

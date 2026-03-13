@@ -31,7 +31,7 @@ namespace DeviceUI.Camera
         }
 
         #region parameter define
-        CameraDisplayPanel[] DisplayPanels = new CameraDisplayPanel[CCD_NAME.GetNames(typeof(CCD_NAME)).Length];
+        CameraDisplayPanel[] DisplayPanels;
         IServiceProvider ServiceProvider;
         IF_CameraButton CameraButton;
         F_CameraSettingLogic CameraSettingLogic;
@@ -47,6 +47,7 @@ namespace DeviceUI.Camera
             ShowHint();
 
             DockCameraButton(typeof(IF_CameraButton));
+            DockCameraDisplay();
 
             //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
@@ -96,12 +97,56 @@ namespace DeviceUI.Camera
                 childForm.Show();
             }
         }
+        private void DockCameraDisplay()
+        {
+            int length = CCD_NAME.GetNames(typeof(CCD_NAME)).Length;
+            DisplayPanels = new CameraDisplayPanel[length];
+            for (int i = 0; i < DisplayPanels.Length; i++)
+            {
+                DisplayPanels[i] = new CameraDisplayPanel();
+            }
+
+            foreach (CameraDisplayPanel panel in DisplayPanels)
+            {
+                Pnl_DockCameraDisplay.Controls.Add(panel);
+                panel.Dock = DockStyle.Fill;
+            }
+        }
         #endregion
 
         #region public function
         public void ShowFormName(bool show)
         {
 
+        }
+        public void BindingDisplayEvent()
+        {
+            int i = 0;
+
+            foreach (CameraDisplayPanel panel in DisplayPanels)
+            {
+                Function_Camera.OnImageUpdates[i] += (s, fe) =>
+                {
+                    int realID = fe.CCD_Index;
+
+                    Bitmap bmp = DisplayPanels[realID].CreateUniversalBitmap(
+                        fe.Width, fe.Height, fe.ImageData, fe.Format);
+
+                    if (this.InvokeRequired)
+                    {
+                        int index = i;
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            DisplayPanels[realID].CurrentImage = bmp;
+                        }));
+                    }
+                    else
+                    {
+                        DisplayPanels[realID].CurrentImage = bmp;
+                    }
+                };
+                i++;
+            }
         }
         public void UpdateParmeter()
         {
@@ -113,32 +158,11 @@ namespace DeviceUI.Camera
             ApplicationSetting.SaveRecipeFromForm<eF_CameraSetting>(this);
             ApplicationSetting.ReadAllRecipe<eF_CameraSetting>();
         }
-        public void Test()
+        public void SwitchToCameraDisplay(int ccd)
         {
-            //// 訂閱中介層的影像事件
-            //Function_Camera.OnImageUpdated += (s, fe) =>
-            //{
-            //    // 使用你寫好的 CreateUniversalBitmap 轉換成 Bitmap
-            //    Bitmap bmp = CameraDisplay.CreateUniversalBitmap(
-            //        fe.Width, fe.Height, fe.ImageData, fe.Format);
-
-            //    // 更新到 UI (注意跨執行緒問題)
-            //    if (this.InvokeRequired)
-            //    {
-            //        this.BeginInvoke(new Action(() =>
-            //        {
-            //            CameraDisplay.CurrentImage = bmp;
-            //        }));
-            //    }
-            //    else
-            //    {
-            //        CameraDisplay.CurrentImage = bmp;
-            //    }
-            //};
+            DisplayPanels[ccd].BringToFront();
         }
         #endregion
-
-
 
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
         {
@@ -159,5 +183,10 @@ namespace DeviceUI.Camera
             }
         }
 
+        private void Btn_FunctionTest_Click(object sender, EventArgs e)
+        {
+            SwitchToCameraDisplay(0);
+            Function_Camera.GetImageDisplay(0);
+        }
     }
 }

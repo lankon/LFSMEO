@@ -11,6 +11,7 @@ namespace DeviceCore
     {
         void UpdateParmeter();
         void SaveCameraParameter();
+        void BindingDisplayEvent();
         //int Connect();
         //int StartGrabbing(string id);
         //int StopGrabbing(string id);
