@@ -185,8 +185,12 @@ namespace DeviceUI.Camera
 
         private void Btn_FunctionTest_Click(object sender, EventArgs e)
         {
-            SwitchToCameraDisplay(0);
-            Function_Camera.GetImageDisplay(0);
+            int index = CameraButton.GetCurrentBtnNum();
+
+            SwitchToCameraDisplay(index);
+            Function_Camera.StartGrab(index);
+            Function_Camera.SoftTrigger(index);
+            Function_Camera.GetImageDisplay(index);
         }
     }
 }

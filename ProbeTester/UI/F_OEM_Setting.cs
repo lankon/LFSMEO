@@ -112,5 +112,17 @@ namespace ProbeTester.UI
                 form.Show();
             }
         }
+
+        private void Btn_Light_Click(object sender, EventArgs e)
+        {
+            var light = ServiceProvider.GetRequiredService<IF_LightControl>();
+
+            if (light is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
+        }
     }
 }

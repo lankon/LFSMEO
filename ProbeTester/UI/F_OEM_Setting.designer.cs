@@ -31,6 +31,8 @@ namespace ProbeTester.UI
         {
             this.label6 = new System.Windows.Forms.Label();
             this.Btn_CCD = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Btn_Light = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label6
@@ -53,11 +55,33 @@ namespace ProbeTester.UI
             this.Btn_CCD.UseVisualStyleBackColor = true;
             this.Btn_CCD.Click += new System.EventHandler(this.Btn_CCD_Click);
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(592, 320);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 23);
+            this.label1.TabIndex = 49;
+            this.label1.Text = "Light";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Btn_Light
+            // 
+            this.Btn_Light.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Light.Location = new System.Drawing.Point(596, 247);
+            this.Btn_Light.Name = "Btn_Light";
+            this.Btn_Light.Size = new System.Drawing.Size(70, 70);
+            this.Btn_Light.TabIndex = 48;
+            this.Btn_Light.UseVisualStyleBackColor = true;
+            this.Btn_Light.Click += new System.EventHandler(this.Btn_Light_Click);
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.Btn_Light);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.Btn_CCD);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -72,5 +96,7 @@ namespace ProbeTester.UI
 
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button Btn_CCD;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button Btn_Light;
     }
 }
