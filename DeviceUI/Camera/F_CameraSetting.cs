@@ -80,13 +80,15 @@ namespace DeviceUI.Camera
         {
             CameraSettingLogic.UpdateCameraInfo2Form(CameraSettingLogic.GetCurrentBtnNum());
 
+            DockDisplayToPanel(Pnl_DockCameraDisplay);
+            SwitchToCameraDisplay(CameraButton.GetCurrentBtnNum());
+
             //ReadAllEnumSetting();
             //UpdateEnumSettingToForm();
         }
         private void LeavePage()
         {
         }
-
         private void DockCameraButton(Type child_form)
         {
             object service = ServiceProvider.GetRequiredService(child_form);
@@ -99,18 +101,15 @@ namespace DeviceUI.Camera
         }
         private void DockCameraDisplay()
         {
+            //此Function程式執行後只能呼叫一次
             int length = CCD_NAME.GetNames(typeof(CCD_NAME)).Length;
             DisplayPanels = new CameraDisplayPanel[length];
             for (int i = 0; i < DisplayPanels.Length; i++)
             {
-                DisplayPanels[i] = new CameraDisplayPanel();
+                DisplayPanels[i] = new CameraDisplayPanel(i);
             }
 
-            foreach (CameraDisplayPanel panel in DisplayPanels)
-            {
-                Pnl_DockCameraDisplay.Controls.Add(panel);
-                panel.Dock = DockStyle.Fill;
-            }
+            DockDisplayToPanel(Pnl_DockCameraDisplay);
         }
         #endregion
 
@@ -121,6 +120,7 @@ namespace DeviceUI.Camera
         }
         public void BindingDisplayEvent()
         {
+            //此Fcuntion程式執行後只能呼叫一次
             int i = 0;
 
             foreach (CameraDisplayPanel panel in DisplayPanels)
@@ -161,6 +161,17 @@ namespace DeviceUI.Camera
         public void SwitchToCameraDisplay(int ccd)
         {
             DisplayPanels[ccd].BringToFront();
+        }
+        public void DockDisplayToPanel(object container)
+        {
+            if (container is Control parent)
+            {
+                foreach (CameraDisplayPanel panel in DisplayPanels)
+                {
+                    parent.Controls.Add(panel);
+                    panel.Dock = DockStyle.Fill;
+                }
+            }
         }
         #endregion
 

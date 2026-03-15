@@ -26,6 +26,7 @@ using Device_APS;
 using Device_FTLight;
 using Device_VirtualLight;
 using Device_Hikvision;
+using Device_VirtualCamera;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -91,6 +92,7 @@ namespace LFSMEO
             services.AddSingleton<ILightControl, Light_FT_116>();
             services.AddSingleton<ILightControl, VirtualLight>();
             services.AddSingleton<ICamera, Hikvision>();
+            services.AddSingleton<ICamera, VirtualCamera>();
             services.AddSingleton<IChillerControl>(Klxz);
 
             //[Form]

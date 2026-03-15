@@ -25,9 +25,9 @@ namespace ProbeTester
             //services.AddSingleton<ILightEngineFunction, LightEngineFunction>();
 
             //[Thread]
-            //services.AddSingleton<IBaseMainTask, MainTask>();
+            services.AddSingleton<IBaseMainTask, MainTask>();
             //services.AddSingleton<IBaseMainTaskMulti, MainTaskMulti>();
-            //services.AddSingleton<IBaseTaskDependence, BaseTaskDependence>();
+            services.AddSingleton<IBaseTaskDependence, BaseTaskDependence>();
 
             //[Form]
             services.AddSingleton<F_MainForm>();
@@ -44,7 +44,7 @@ namespace ProbeTester
             services.AddTransient<F_OEM_Setting>();
             //services.AddTransient<F_Equipment_Setting>();
             //services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
-            //services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
+            services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
@@ -54,7 +54,7 @@ namespace ProbeTester
 
             //[Logic]
             //services.AddSingleton<IWriteFile, RGBTesterDataFile>();
-            //services.AddSingleton<RGBTesterFunction>();
+            services.AddSingleton<ProbeTesterFunction>();
             //services.AddSingleton<TestResultDataBase>();
 
             return services;

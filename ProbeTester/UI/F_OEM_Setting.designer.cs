@@ -33,6 +33,8 @@ namespace ProbeTester.UI
             this.Btn_CCD = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Btn_Light = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.Btn_Motion = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label6
@@ -75,11 +77,33 @@ namespace ProbeTester.UI
             this.Btn_Light.UseVisualStyleBackColor = true;
             this.Btn_Light.Click += new System.EventHandler(this.Btn_Light_Click);
             // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(757, 320);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(78, 23);
+            this.label2.TabIndex = 51;
+            this.label2.Text = "Motion";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Btn_Motion
+            // 
+            this.Btn_Motion.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Motion.Location = new System.Drawing.Point(761, 247);
+            this.Btn_Motion.Name = "Btn_Motion";
+            this.Btn_Motion.Size = new System.Drawing.Size(70, 70);
+            this.Btn_Motion.TabIndex = 50;
+            this.Btn_Motion.UseVisualStyleBackColor = true;
+            this.Btn_Motion.Click += new System.EventHandler(this.Btn_Motion_Click);
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.Btn_Motion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Btn_Light);
             this.Controls.Add(this.label6);
@@ -98,5 +122,7 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Button Btn_CCD;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Btn_Light;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button Btn_Motion;
     }
 }

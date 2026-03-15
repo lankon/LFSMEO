@@ -29,24 +29,7 @@ namespace DeviceFunction
         private readonly IEnumerable<IMotionCard> Cards;
         private SINGLE_MOVE_MODE SingleMoveMode = SINGLE_MOVE_MODE.INDEX;
 
-        public enum AXIS_NAME
-        {
-            AXIS_X,
-            AXIS_Y,
-            AXIS_Z,
-            AXIS_A,
-            AXIS_AX,
-            AXIS_AY,
-            AXIS_AZ,
-            AXIS_AA,
-            AXIS_EX,
-            AXIS_EY,
-            AXIS_EZ,
-            AXIS_EA,
-            AXIS_IX,
-            AXIS_IY,
-            AXIS_IZ,
-        }
+        
         public enum WORK
         {
             INITIAL,

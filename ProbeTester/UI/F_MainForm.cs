@@ -64,6 +64,10 @@ namespace ProbeTester.UI
             MainFormLogic.DeleteExpireFileInFolder();
             MainFormLogic.ReadAllSetting();
             MainFormLogic.Initial_All_Device();
+
+            //先觸發執行用
+            ServiceProvider.GetRequiredService<IBaseMainTask>();
+            //ServiceProvider.GetRequiredService<IF_StatusBox>();
         }
         private void CreateDynamicElement()
         {

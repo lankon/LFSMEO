@@ -14,6 +14,7 @@ using ToolFunction;
 using DeviceUI.Camera;
 using DeviceCore;
 using ProbeTester.Base;
+using ProbeTester.Logic;
 
 
 namespace ProbeTester.UI
@@ -57,13 +58,13 @@ namespace ProbeTester.UI
         }
         private void CreateDynamicElemet()
         {
-            CameraDisplay = new CameraDisplayPanel();
-            this.panel1.Controls.Add(CameraDisplay);
-            CameraDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            CameraDisplay.Location = new System.Drawing.Point(0, 0);
-            CameraDisplay.Name = "CameraDisplay_1";
-            CameraDisplay.Size = new System.Drawing.Size(807, 523);
-            CameraDisplay.TabIndex = 0;
+            //CameraDisplay = new CameraDisplayPanel();
+            //this.panel1.Controls.Add(CameraDisplay);
+            //CameraDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            //CameraDisplay.Location = new System.Drawing.Point(0, 0);
+            //CameraDisplay.Name = "CameraDisplay_1";
+            //CameraDisplay.Size = new System.Drawing.Size(807, 523);
+            //CameraDisplay.TabIndex = 0;
         }
         #endregion
 
@@ -72,30 +73,29 @@ namespace ProbeTester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            GC.Collect();
+            //GC.Collect();
 
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                //ofd.Filter = "Image Files|*.bmp;*.jpg;*.png;*.tif";
-                //if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    // 讀取圖片檔案
-                    // 注意：直接 new Bitmap(path) 會導致檔案被程式鎖住
-                    // 建議用以下方式讀取，讀完後檔案就不會被佔用
-                    string fileName = "C:\\Users\\lankon\\Desktop\\Desktop.PNG";
-                    using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                    {
-                        Bitmap bmp = new Bitmap(fs);
+            //using (OpenFileDialog ofd = new OpenFileDialog())
+            //{
+            //    //ofd.Filter = "Image Files|*.bmp;*.jpg;*.png;*.tif";
+            //    //if (ofd.ShowDialog() == DialogResult.OK)
+            //    {
+            //        // 讀取圖片檔案
+            //        // 注意：直接 new Bitmap(path) 會導致檔案被程式鎖住
+            //        // 建議用以下方式讀取，讀完後檔案就不會被佔用
+            //        string fileName = "C:\\Users\\lankon\\Desktop\\Desktop.PNG";
+            //        using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            //        {
+            //            Bitmap bmp = new Bitmap(fs);
 
-                        // 丟進你的 Panel 測試
-                        CameraDisplay.CurrentImage = (Bitmap)bmp.Clone();
-                    }
-                }
-            }
-            
-
-
-
+            //            // 丟進你的 Panel 測試
+            //            CameraDisplay.CurrentImage = (Bitmap)bmp.Clone();
+            //        }
+            //    }
+            //}
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+            MainTask.SetTask<TaskInitial>();
+            MainTask.Run();
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -120,6 +120,11 @@ namespace ProbeTester.UI
             //        CameraDisplay.CurrentImage = bmp;
             //    }
             //};
+
+            IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            setting.SwitchToCameraDisplay(2);
+            setting.DockDisplayToPanel(panel1);
+
         }
 
         private void button9_Click(object sender, EventArgs e)

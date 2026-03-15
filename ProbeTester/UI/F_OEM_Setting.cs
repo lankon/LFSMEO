@@ -124,5 +124,17 @@ namespace ProbeTester.UI
                 form.Show();
             }
         }
+
+        private void Btn_Motion_Click(object sender, EventArgs e)
+        {
+            var motion = ServiceProvider.GetRequiredService<IF_MotionSetting>();
+
+            if (motion is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
+        }
     }
 }

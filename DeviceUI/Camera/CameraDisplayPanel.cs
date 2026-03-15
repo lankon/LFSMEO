@@ -13,8 +13,10 @@ namespace DeviceUI.Camera
 {
     public class CameraDisplayPanel:Panel, ICameraDisplayPanel
     {
-        public CameraDisplayPanel()
+        public CameraDisplayPanel(int number = 0)
         {
+            Number = number;
+
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.AllPaintingInWmPaint |
                           ControlStyles.UserPaint |
@@ -30,6 +32,7 @@ namespace DeviceUI.Camera
         }
 
         #region parameter define
+        private int Number = 0;                         //物件編號
         private float _zoomScale = 1.0f;                //影像放大縮小比例
         private PointF _offset = new PointF(0, 0);      //影像放大縮小位移
         private Point _startPoint;                      // 滑鼠按下時的起點
@@ -60,6 +63,73 @@ namespace DeviceUI.Camera
         #endregion
 
         #region private function
+        private Rectangle GetNormalizedRect(Point p1, Point p2)
+        {
+            return new Rectangle(
+                Math.Min(p1.X, p2.X),
+                Math.Min(p1.Y, p2.Y),
+                Math.Abs(p1.X - p2.X),
+                Math.Abs(p1.Y - p2.Y)
+            );
+        }
+        private void DrawSelectionRectangle(Graphics g)
+        {
+            if (!_isSelecting) return;
+
+            Rectangle drawRect = GetNormalizedRect(_startPoint, _endPoint);
+
+            using (Pen dashPen = new Pen(Color.Blue, 1))
+            {
+                dashPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                g.DrawRectangle(dashPen, drawRect);
+            }
+
+            // 如果之後想加填充，也可以寫在這裡
+            // using (SolidBrush brush = new SolidBrush(Color.FromArgb(50, Color.Yellow))) {
+            //     g.FillRectangle(brush, drawRect);
+            // }
+        }
+        private void DrawCrosshair(Graphics g)
+        {
+            Color crosshairColor = Color.Red;
+            float thickness = 1.0f;
+
+            using (Pen pen = new Pen(crosshairColor, thickness))
+            {
+                // 畫水平線
+                g.DrawLine(pen, 0, this.Height / 2, this.Width, this.Height / 2);
+                // 畫垂直線
+                g.DrawLine(pen, this.Width / 2, 0, this.Width / 2, this.Height);
+            }
+        }
+        private void DrawStatusText(Graphics g)
+        {
+            string textToShow = $"Number:{Number}"; // 舉例：顯示縮放倍率
+
+            // 工業自動化建議：字體和刷子應該定義為類別成員，不要在 OnPaint 裡 new
+            using (Font font = new Font("Consolas", 12, FontStyle.Bold))
+            {
+                // 為了在深色/淺色影像上都能看清，建議畫個簡單的外框或背景
+                g.DrawString(textToShow, font, Brushes.Black, new PointF(6, 6)); // 陰影
+                g.DrawString(textToShow, font, Brushes.Lime, new PointF(5, 5));  // 主色（螢光綠很適合工業風）
+            }
+        }
+        private Rectangle GetImageInternalRect()
+        {
+            //將框選的螢幕矩形範圍推回實際影像的範圍
+
+            if (_currentImage == null) return Rectangle.Empty;
+
+            int ix = (int)((_selectedRect.X - _offset.X) / _zoomScale);
+            int iy = (int)((_selectedRect.Y - _offset.Y) / _zoomScale);
+            int iw = (int)(_selectedRect.Width / _zoomScale);
+            int ih = (int)(_selectedRect.Height / _zoomScale);
+
+            return new Rectangle(ix, iy, iw, ih);
+        }
+        #endregion
+
+        #region public function
         public Bitmap CreateUniversalBitmap(int width, int height, IntPtr ptr, IMAGE_FORMAT type)
         {
             PixelFormat format = PixelFormat.Format8bppIndexed;
@@ -101,76 +171,6 @@ namespace DeviceUI.Camera
 
             return bmp;
         }
-        private Rectangle GetDisplayRect(Bitmap bmp)
-        {
-            if (bmp == null) return Rectangle.Empty;
-
-            // 計算縮放比例
-            float ratio = Math.Min((float)this.Width / bmp.Width, (float)this.Height / bmp.Height);
-            int tw = (int)(bmp.Width * ratio);
-            int th = (int)(bmp.Height * ratio);
-
-            // 計算居中位移
-            int tx = (this.Width - tw) / 2;
-            int ty = (this.Height - th) / 2;
-
-            return new Rectangle(tx, ty, tw, th);
-        }
-        private Rectangle GetNormalizedRect(Point p1, Point p2)
-        {
-            return new Rectangle(
-                Math.Min(p1.X, p2.X),
-                Math.Min(p1.Y, p2.Y),
-                Math.Abs(p1.X - p2.X),
-                Math.Abs(p1.Y - p2.Y)
-            );
-        }
-        private void DrawSelectionRectangle(Graphics g)
-        {
-            if (!_isSelecting) return;
-
-            Rectangle drawRect = GetNormalizedRect(_startPoint, _endPoint);
-
-            using (Pen dashPen = new Pen(Color.Blue, 1))
-            {
-                dashPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-                g.DrawRectangle(dashPen, drawRect);
-            }
-
-            // 如果之後想加填充，也可以寫在這裡
-            // using (SolidBrush brush = new SolidBrush(Color.FromArgb(50, Color.Yellow))) {
-            //     g.FillRectangle(brush, drawRect);
-            // }
-        }
-        private void DrawCrosshair(Graphics g)
-        {
-            Color crosshairColor = Color.Red;
-            float thickness = 1.0f;
-
-            using (Pen pen = new Pen(crosshairColor, thickness))
-            {
-                // 畫水平線
-                g.DrawLine(pen, 0, this.Height / 2, this.Width, this.Height / 2);
-                // 畫垂直線
-                g.DrawLine(pen, this.Width / 2, 0, this.Width / 2, this.Height);
-            }
-        }
-        private Rectangle GetImageInternalRect()
-        {
-            //將框選的螢幕矩形範圍推回實際影像的範圍
-
-            if (_currentImage == null) return Rectangle.Empty;
-
-            int ix = (int)((_selectedRect.X - _offset.X) / _zoomScale);
-            int iy = (int)((_selectedRect.Y - _offset.Y) / _zoomScale);
-            int iw = (int)(_selectedRect.Width / _zoomScale);
-            int ih = (int)(_selectedRect.Height / _zoomScale);
-
-            return new Rectangle(ix, iy, iw, ih);
-        }
-        #endregion
-
-        #region public function
         public void FitWindow()
         {
             if (_currentImage == null) return;
@@ -236,7 +236,7 @@ namespace DeviceUI.Camera
                     g.ResetTransform();
                 }
             }
-
+            DrawStatusText(g);
             DrawCrosshair(g);
             DrawSelectionRectangle(g);
 

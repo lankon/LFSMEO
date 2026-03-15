@@ -34,6 +34,7 @@ namespace DeviceUI.Camera
             this.LyPnl_DockCameraDisplay = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.Btn_FunctionTest = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_AxisType = new System.Windows.Forms.ComboBox();
@@ -45,7 +46,7 @@ namespace DeviceUI.Camera
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_CCD_Name = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.Btn_FunctionTest = new System.Windows.Forms.Button();
+            this.Pnl_DockCameraDisplay.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -64,6 +65,7 @@ namespace DeviceUI.Camera
             // 
             this.Pnl_DockCameraDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.Pnl_DockCameraDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_DockCameraDisplay.Controls.Add(this.LyPnl_DockCameraDisplay);
             this.Pnl_DockCameraDisplay.Location = new System.Drawing.Point(4, 12);
             this.Pnl_DockCameraDisplay.Name = "Pnl_DockCameraDisplay";
             this.Pnl_DockCameraDisplay.Size = new System.Drawing.Size(920, 690);
@@ -75,13 +77,14 @@ namespace DeviceUI.Camera
             this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.LyPnl_DockCameraDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.Location = new System.Drawing.Point(42, 422);
+            this.LyPnl_DockCameraDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LyPnl_DockCameraDisplay.Location = new System.Drawing.Point(0, 0);
             this.LyPnl_DockCameraDisplay.Name = "LyPnl_DockCameraDisplay";
             this.LyPnl_DockCameraDisplay.RowCount = 3;
             this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.LyPnl_DockCameraDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.LyPnl_DockCameraDisplay.Size = new System.Drawing.Size(912, 200);
+            this.LyPnl_DockCameraDisplay.Size = new System.Drawing.Size(918, 688);
             this.LyPnl_DockCameraDisplay.TabIndex = 0;
             // 
             // panel2
@@ -96,7 +99,6 @@ namespace DeviceUI.Camera
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.tabPage1.Controls.Add(this.Btn_FunctionTest);
-            this.tabPage1.Controls.Add(this.LyPnl_DockCameraDisplay);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
@@ -104,6 +106,16 @@ namespace DeviceUI.Camera
             this.tabPage1.Size = new System.Drawing.Size(954, 794);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Connect";
+            // 
+            // Btn_FunctionTest
+            // 
+            this.Btn_FunctionTest.Location = new System.Drawing.Point(12, 724);
+            this.Btn_FunctionTest.Name = "Btn_FunctionTest";
+            this.Btn_FunctionTest.Size = new System.Drawing.Size(154, 53);
+            this.Btn_FunctionTest.TabIndex = 1;
+            this.Btn_FunctionTest.Text = "Function Test";
+            this.Btn_FunctionTest.UseVisualStyleBackColor = true;
+            this.Btn_FunctionTest.Click += new System.EventHandler(this.Btn_FunctionTest_Click);
             // 
             // groupBox1
             // 
@@ -229,16 +241,6 @@ namespace DeviceUI.Camera
             this.tabControl1.Size = new System.Drawing.Size(962, 827);
             this.tabControl1.TabIndex = 4;
             // 
-            // Btn_FunctionTest
-            // 
-            this.Btn_FunctionTest.Location = new System.Drawing.Point(12, 724);
-            this.Btn_FunctionTest.Name = "Btn_FunctionTest";
-            this.Btn_FunctionTest.Size = new System.Drawing.Size(154, 53);
-            this.Btn_FunctionTest.TabIndex = 1;
-            this.Btn_FunctionTest.Text = "Function Test";
-            this.Btn_FunctionTest.UseVisualStyleBackColor = true;
-            this.Btn_FunctionTest.Click += new System.EventHandler(this.Btn_FunctionTest_Click);
-            // 
             // F_CameraSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -252,6 +254,7 @@ namespace DeviceUI.Camera
             this.Name = "F_CameraSetting";
             this.Text = "F_Equipment_Setting";
             this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
+            this.Pnl_DockCameraDisplay.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36804.6
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFSMEO", "LFSMEO\LFSMEO.csproj", "{7C488242-29C2-4687-8933-FAE874C6AA80}"
 EndProject
@@ -58,6 +58,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Camera", "Camera", "{03591898-7DC8-43A7-B3D3-AB515175B9A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device_Hikvision", "Device_Hikvision\Device_Hikvision.csproj", "{FFA19EDB-00B0-4A6E-AC8E-BD87597601EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device_VirtualCamera", "Device_VirtualCamera\Device_VirtualCamera.csproj", "{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -453,6 +455,26 @@ Global
 		{FFA19EDB-00B0-4A6E-AC8E-BD87597601EE}.Release|x64.Build.0 = Release|Any CPU
 		{FFA19EDB-00B0-4A6E-AC8E-BD87597601EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{FFA19EDB-00B0-4A6E-AC8E-BD87597601EE}.Release|x86.Build.0 = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|ARM.Build.0 = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|x64.Build.0 = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Debug|x86.Build.0 = Debug|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|ARM.Build.0 = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|ARM64.Build.0 = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|x64.ActiveCfg = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|x64.Build.0 = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|x86.ActiveCfg = Release|Any CPU
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -480,6 +502,7 @@ Global
 		{4E720C40-9608-4C4E-B2E6-ADDF51FAE62F} = {4D20E765-394D-4D08-9711-1F965614D35D}
 		{03591898-7DC8-43A7-B3D3-AB515175B9A3} = {C1BC67B0-D3E5-4E39-B51B-277DEBF16BFE}
 		{FFA19EDB-00B0-4A6E-AC8E-BD87597601EE} = {03591898-7DC8-43A7-B3D3-AB515175B9A3}
+		{4B021977-FA50-49A0-AC58-BFA3F34FCBD0} = {03591898-7DC8-43A7-B3D3-AB515175B9A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EBBAD61-81A3-4A7E-8737-48277F9A45EB}
