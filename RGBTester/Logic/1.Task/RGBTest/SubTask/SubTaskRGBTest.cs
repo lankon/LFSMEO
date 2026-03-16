@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToolFunction;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace RGBTester.Logic
 {
@@ -202,7 +203,19 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.LED_R_TEST);
+
+                        if (Scope.TaskRGBTest.IsSingleTest == true)
+                        {
+                            int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
+
+                            if (select == (int)ePartTestItem.BurinIn)
+                                Transition(WORK.BURN_IN_TEST);
+                            else
+                                Transition(WORK.LED_R_TEST);
+                        }
+                        else
+                            Transition(WORK.LED_R_TEST);
+
                     }
                     break;
 
@@ -250,7 +263,19 @@ namespace RGBTester.Logic
                 case WORK.WAIT_LED_B_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
+
+                        if (Scope.TaskRGBTest.IsSingleTest == true)
+                        {
+                            int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
+
+                            if (select == (int)ePartTestItem.IV_Test_LCM || select == (int)ePartTestItem.IV_Test ||
+                                select == (int)ePartTestItem.IV_Test_HCM)
+                                CheckResult(check, SUCCESS: WORK.SUCCESS);
+                            else if (select == (int)ePartTestItem.BurinIn)
+                                CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
+                        }
+                        else
+                            CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
                     }
                     break;
                 #endregion

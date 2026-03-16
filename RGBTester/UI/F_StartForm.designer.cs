@@ -164,6 +164,12 @@ namespace RGBTester.UI
             this.label42 = new System.Windows.Forms.Label();
             this.label43 = new System.Windows.Forms.Label();
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.LyPnl_MaxCurrent = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_HCM_MaxCurrent = new System.Windows.Forms.TextBox();
+            this.label71 = new System.Windows.Forms.Label();
+            this.label72 = new System.Windows.Forms.Label();
+            this.TxtBx_LCM_MaxCurrent = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.LyPnl_RfbSetting = new System.Windows.Forms.TableLayoutPanel();
             this.TxtBx_Rfb_HCM = new System.Windows.Forms.TextBox();
@@ -195,18 +201,12 @@ namespace RGBTester.UI
             this.label15 = new System.Windows.Forms.Label();
             this.Pnl_HighLowMode = new System.Windows.Forms.Panel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.Cmbx_Select_HL_Mode = new System.Windows.Forms.ComboBox();
+            this.Cmbx_PartTest = new System.Windows.Forms.ComboBox();
             this.label46 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.LyPnl_ProductType = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_ProductType = new System.Windows.Forms.ComboBox();
             this.label50 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.LyPnl_MaxCurrent = new System.Windows.Forms.TableLayoutPanel();
-            this.TxtBx_HCM_MaxCurrent = new System.Windows.Forms.TextBox();
-            this.label71 = new System.Windows.Forms.Label();
-            this.label72 = new System.Windows.Forms.Label();
-            this.TxtBx_LCM_MaxCurrent = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.TbCtrl_Left_DAC_Setting.SuspendLayout();
@@ -228,6 +228,8 @@ namespace RGBTester.UI
             this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.Pnl_MainButton.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.LyPnl_MaxCurrent.SuspendLayout();
             this.panel1.SuspendLayout();
             this.LyPnl_RfbSetting.SuspendLayout();
             this.Pnl_OEM_Test.SuspendLayout();
@@ -238,8 +240,6 @@ namespace RGBTester.UI
             this.Pnl_HighLowMode.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.LyPnl_ProductType.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.LyPnl_MaxCurrent.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -1708,6 +1708,72 @@ namespace RGBTester.UI
             this.Pnl_MainButton.Size = new System.Drawing.Size(1182, 83);
             this.Pnl_MainButton.TabIndex = 3;
             // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.LyPnl_MaxCurrent);
+            this.panel2.Location = new System.Drawing.Point(699, 4);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(284, 75);
+            this.panel2.TabIndex = 11;
+            // 
+            // LyPnl_MaxCurrent
+            // 
+            this.LyPnl_MaxCurrent.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.LyPnl_MaxCurrent.ColumnCount = 2;
+            this.LyPnl_MaxCurrent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LyPnl_MaxCurrent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LyPnl_MaxCurrent.Controls.Add(this.TxtBx_HCM_MaxCurrent, 1, 1);
+            this.LyPnl_MaxCurrent.Controls.Add(this.label71, 0, 0);
+            this.LyPnl_MaxCurrent.Controls.Add(this.label72, 1, 0);
+            this.LyPnl_MaxCurrent.Controls.Add(this.TxtBx_LCM_MaxCurrent, 0, 1);
+            this.LyPnl_MaxCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LyPnl_MaxCurrent.Location = new System.Drawing.Point(0, 0);
+            this.LyPnl_MaxCurrent.Name = "LyPnl_MaxCurrent";
+            this.LyPnl_MaxCurrent.RowCount = 2;
+            this.LyPnl_MaxCurrent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LyPnl_MaxCurrent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LyPnl_MaxCurrent.Size = new System.Drawing.Size(282, 73);
+            this.LyPnl_MaxCurrent.TabIndex = 6;
+            // 
+            // TxtBx_HCM_MaxCurrent
+            // 
+            this.TxtBx_HCM_MaxCurrent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_HCM_MaxCurrent.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_HCM_MaxCurrent.Location = new System.Drawing.Point(144, 40);
+            this.TxtBx_HCM_MaxCurrent.Name = "TxtBx_HCM_MaxCurrent";
+            this.TxtBx_HCM_MaxCurrent.Size = new System.Drawing.Size(134, 29);
+            this.TxtBx_HCM_MaxCurrent.TabIndex = 9;
+            // 
+            // label71
+            // 
+            this.label71.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label71.Location = new System.Drawing.Point(4, 1);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(133, 35);
+            this.label71.TabIndex = 5;
+            this.label71.Text = "LCM Max I(mA) ";
+            this.label71.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label72
+            // 
+            this.label72.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label72.Location = new System.Drawing.Point(144, 1);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(134, 35);
+            this.label72.TabIndex = 6;
+            this.label72.Text = "HCM Max I(mA)";
+            this.label72.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_LCM_MaxCurrent
+            // 
+            this.TxtBx_LCM_MaxCurrent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_LCM_MaxCurrent.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_LCM_MaxCurrent.Location = new System.Drawing.Point(4, 40);
+            this.TxtBx_LCM_MaxCurrent.Name = "TxtBx_LCM_MaxCurrent";
+            this.TxtBx_LCM_MaxCurrent.Size = new System.Drawing.Size(133, 29);
+            this.TxtBx_LCM_MaxCurrent.TabIndex = 8;
+            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -2061,9 +2127,9 @@ namespace RGBTester.UI
             // 
             this.tableLayoutPanel7.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
             this.tableLayoutPanel7.ColumnCount = 2;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.94152F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.05848F));
-            this.tableLayoutPanel7.Controls.Add(this.Cmbx_Select_HL_Mode, 1, 0);
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel7.Controls.Add(this.Cmbx_PartTest, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.label46, 0, 0);
             this.tableLayoutPanel7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 10);
@@ -2073,26 +2139,28 @@ namespace RGBTester.UI
             this.tableLayoutPanel7.Size = new System.Drawing.Size(345, 40);
             this.tableLayoutPanel7.TabIndex = 5;
             // 
-            // Cmbx_Select_HL_Mode
+            // Cmbx_PartTest
             // 
-            this.Cmbx_Select_HL_Mode.FormattingEnabled = true;
-            this.Cmbx_Select_HL_Mode.Items.AddRange(new object[] {
-            "High",
-            "Low"});
-            this.Cmbx_Select_HL_Mode.Location = new System.Drawing.Point(210, 6);
-            this.Cmbx_Select_HL_Mode.Name = "Cmbx_Select_HL_Mode";
-            this.Cmbx_Select_HL_Mode.Size = new System.Drawing.Size(129, 28);
-            this.Cmbx_Select_HL_Mode.TabIndex = 5;
-            this.Cmbx_Select_HL_Mode.Text = "High";
+            this.Cmbx_PartTest.FormattingEnabled = true;
+            this.Cmbx_PartTest.Items.AddRange(new object[] {
+            "IV Test HCM",
+            "IV Test LCM",
+            "IV Test H/LCM",
+            "Burn-In"});
+            this.Cmbx_PartTest.Location = new System.Drawing.Point(177, 6);
+            this.Cmbx_PartTest.Name = "Cmbx_PartTest";
+            this.Cmbx_PartTest.Size = new System.Drawing.Size(162, 28);
+            this.Cmbx_PartTest.TabIndex = 5;
+            this.Cmbx_PartTest.Text = "IV Test HCM";
             // 
             // label46
             // 
             this.label46.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label46.Location = new System.Drawing.Point(6, 3);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(195, 30);
+            this.label46.Size = new System.Drawing.Size(162, 30);
             this.label46.TabIndex = 4;
-            this.label46.Text = "High/Low Mode";
+            this.label46.Text = "Part Test";
             this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // LyPnl_ProductType
@@ -2133,72 +2201,6 @@ namespace RGBTester.UI
             this.label50.TabIndex = 4;
             this.label50.Text = "Product Type";
             this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.LyPnl_MaxCurrent);
-            this.panel2.Location = new System.Drawing.Point(699, 4);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(284, 75);
-            this.panel2.TabIndex = 11;
-            // 
-            // LyPnl_MaxCurrent
-            // 
-            this.LyPnl_MaxCurrent.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.LyPnl_MaxCurrent.ColumnCount = 2;
-            this.LyPnl_MaxCurrent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LyPnl_MaxCurrent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LyPnl_MaxCurrent.Controls.Add(this.TxtBx_HCM_MaxCurrent, 1, 1);
-            this.LyPnl_MaxCurrent.Controls.Add(this.label71, 0, 0);
-            this.LyPnl_MaxCurrent.Controls.Add(this.label72, 1, 0);
-            this.LyPnl_MaxCurrent.Controls.Add(this.TxtBx_LCM_MaxCurrent, 0, 1);
-            this.LyPnl_MaxCurrent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LyPnl_MaxCurrent.Location = new System.Drawing.Point(0, 0);
-            this.LyPnl_MaxCurrent.Name = "LyPnl_MaxCurrent";
-            this.LyPnl_MaxCurrent.RowCount = 2;
-            this.LyPnl_MaxCurrent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LyPnl_MaxCurrent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LyPnl_MaxCurrent.Size = new System.Drawing.Size(282, 73);
-            this.LyPnl_MaxCurrent.TabIndex = 6;
-            // 
-            // TxtBx_HCM_MaxCurrent
-            // 
-            this.TxtBx_HCM_MaxCurrent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_HCM_MaxCurrent.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_HCM_MaxCurrent.Location = new System.Drawing.Point(144, 40);
-            this.TxtBx_HCM_MaxCurrent.Name = "TxtBx_HCM_MaxCurrent";
-            this.TxtBx_HCM_MaxCurrent.Size = new System.Drawing.Size(134, 29);
-            this.TxtBx_HCM_MaxCurrent.TabIndex = 9;
-            // 
-            // label71
-            // 
-            this.label71.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label71.Location = new System.Drawing.Point(4, 1);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(133, 35);
-            this.label71.TabIndex = 5;
-            this.label71.Text = "LCM Max I(mA) ";
-            this.label71.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label72
-            // 
-            this.label72.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label72.Location = new System.Drawing.Point(144, 1);
-            this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(134, 35);
-            this.label72.TabIndex = 6;
-            this.label72.Text = "HCM Max I(mA)";
-            this.label72.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TxtBx_LCM_MaxCurrent
-            // 
-            this.TxtBx_LCM_MaxCurrent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_LCM_MaxCurrent.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_LCM_MaxCurrent.Location = new System.Drawing.Point(4, 40);
-            this.TxtBx_LCM_MaxCurrent.Name = "TxtBx_LCM_MaxCurrent";
-            this.TxtBx_LCM_MaxCurrent.Size = new System.Drawing.Size(133, 29);
-            this.TxtBx_LCM_MaxCurrent.TabIndex = 8;
             // 
             // F_StartForm
             // 
@@ -2247,6 +2249,9 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.Pnl_MainButton.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.LyPnl_MaxCurrent.ResumeLayout(false);
+            this.LyPnl_MaxCurrent.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.LyPnl_RfbSetting.ResumeLayout(false);
             this.LyPnl_RfbSetting.PerformLayout();
@@ -2260,9 +2265,6 @@ namespace RGBTester.UI
             this.Pnl_HighLowMode.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.LyPnl_ProductType.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.LyPnl_MaxCurrent.ResumeLayout(false);
-            this.LyPnl_MaxCurrent.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2342,7 +2344,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.TextBox TxtBx_LeftTemperature;
         private System.Windows.Forms.Panel Pnl_HighLowMode;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
-        private System.Windows.Forms.ComboBox Cmbx_Select_HL_Mode;
+        private System.Windows.Forms.ComboBox Cmbx_PartTest;
         private System.Windows.Forms.Label label46;
         private System.Windows.Forms.Button Btn_SingleTest;
         private System.Windows.Forms.Panel Pnl_OEM_Test;

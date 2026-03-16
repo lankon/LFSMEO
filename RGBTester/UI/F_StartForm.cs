@@ -221,6 +221,7 @@ namespace RGBTester.UI
             else
                 method = "Both";
 
+            Scope.TaskRGBTest.IsSingleTest = false;
             StartFormLogic.StartTaskAction(method);
         }
 

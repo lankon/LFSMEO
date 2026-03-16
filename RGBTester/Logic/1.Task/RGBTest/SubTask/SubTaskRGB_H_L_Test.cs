@@ -27,11 +27,11 @@ namespace RGBTester.Logic
 
             if(Scope.TaskRGBTest.IsSingleTest == true)
             {
-                int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_Select_HL_Mode);
+                int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
                 
-                if (select == 0)
+                if (select == (int)ePartTestItem.IV_Test_HCM)
                     OnlyHeighMode = true;
-                else if (select == 1)
+                else if (select == (int)ePartTestItem.IV_Test_LCM)
                     OnlyLowMode = true;
             }
 

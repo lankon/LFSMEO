@@ -156,16 +156,16 @@ namespace RGBTester.Logic
                 Tool.SaveLogToFile($"Burn In Test Current is set to default value: {current}mA, because the input value is invalid.", level: "WRN");
             }
 
-            if (current > ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_LCM_MaxCurrent))
-            {
-                int R_DAC = (int)((current - offset_h) / slope_h);
-                dac.Enqueue(R_DAC);
-            }
-            else
-            {
-                int R_DAC = (int)((current - offset_l) / slope_l);
-                dac.Enqueue(R_DAC);
-            }
+            bool isHigh = current > ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_LCM_MaxCurrent);
+            double slope = isHigh ? slope_h : slope_l;
+            double offset = isHigh ? offset_h : offset_l;
+
+            int R_DAC = (slope < 0.0000001) ? 0 : (int)((current - offset) / slope);
+
+            if (R_DAC < 0 || R_DAC > 1023)
+                R_DAC = 0;
+
+            dac.Enqueue(R_DAC);
         }
         private void SetCurrent()
         {
@@ -188,37 +188,6 @@ namespace RGBTester.Logic
                 Test_CurrentMode.Enqueue("LCM");
             else
                 Test_CurrentMode.Enqueue("HCM");
-
-
-
-            //for (int i = 0; i < 4; i++)
-            //{
-            //    double current = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_BurnInCurrent1 + i);
-
-            //    if (current < 0)
-            //        break;
-
-            //    if (current > ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_LCM_MaxCurrent))
-            //    {
-            //        int R_DAC = (int)((current - RGBfunc.SlopeOffsetResult.R_Offset_HCM) / RGBfunc.SlopeOffsetResult.R_Slope_HCM);
-            //        Test_R_DAC.Enqueue(R_DAC);
-            //        int G_DAC = (int)((current - RGBfunc.SlopeOffsetResult.G_Offset_HCM) / RGBfunc.SlopeOffsetResult.G_Slope_HCM);
-            //        Test_G_DAC.Enqueue(G_DAC);
-            //        int B_DAC = (int)((current - RGBfunc.SlopeOffsetResult.B_Offset_HCM) / RGBfunc.SlopeOffsetResult.B_Slope_HCM);
-            //        Test_B_DAC.Enqueue(B_DAC);
-            //        Test_CurrentMode.Enqueue("HCM");
-            //    }
-            //    else
-            //    {
-            //        int R_DAC = (int)((current - RGBfunc.SlopeOffsetResult.R_Offset_LCM) / RGBfunc.SlopeOffsetResult.R_Slope_LCM);
-            //        Test_R_DAC.Enqueue(R_DAC);
-            //        int G_DAC = (int)((current - RGBfunc.SlopeOffsetResult.G_Offset_LCM) / RGBfunc.SlopeOffsetResult.G_Slope_LCM);
-            //        Test_G_DAC.Enqueue(G_DAC);
-            //        int B_DAC = (int)((current - RGBfunc.SlopeOffsetResult.B_Offset_LCM) / RGBfunc.SlopeOffsetResult.B_Slope_LCM);
-            //        Test_B_DAC.Enqueue(B_DAC);
-            //        Test_CurrentMode.Enqueue("LCM");
-            //    }
-            //}
         }
         private bool CheckTestTemperature(double temperature)
         {
