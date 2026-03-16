@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -204,6 +205,47 @@ namespace RGBTester.UI
         {
             YieldReportLogic1.OutPutYieldReport();
             MessageBox.Show("Save Yield Report Success!");
+        }
+
+        private void Btn_SerchOldFile_Click(object sender, EventArgs e)
+        {
+            string folderPath = $@"{TxtBx_Folder.Text}";
+            Dictionary<string, string> fileDictionary = new Dictionary<string, string>();
+
+            var allCsvFiles = Directory.GetFiles(folderPath, "*.csv", SearchOption.AllDirectories);
+
+            foreach (var name in allCsvFiles)
+            {
+                string file_name = Path.GetFileNameWithoutExtension(name);
+
+                if(file_name.Contains("Z23A_LEDIV") && file_name.Contains("Calibration"))
+                {
+                    string SN = file_name.Split('_')[3];
+                    fileDictionary[SN] = SN;
+                }
+            }
+
+            StreamWriter result_file;
+            result_file = Tool.CreateFile("Result\\SN_Name", ".csv", false);
+            Tool.WriteFile(result_file, "Test SN");
+
+            int i = 0;
+
+            foreach (var kvp in fileDictionary)
+            {
+                if (i == 0)
+                {
+
+                }
+                else
+                {
+                    Tool.WriteFile(result_file, kvp.Key);
+                }
+                i++;
+            }
+            result_file.Close();
+
+            MessageBox.Show("Save Success");
         }
     }
 }

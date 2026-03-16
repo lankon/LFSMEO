@@ -35,6 +35,7 @@ namespace RGBTester
             services.AddSingleton<F_StartForm_ButtonGroup>();
             services.AddSingleton<F_Recipe>();
             services.AddSingleton<F_DAQ_SamplingTest>();
+            services.AddSingleton<F_DAQ_SingleChannelTest>();
             services.AddSingleton<IF_StatusBox, F_StatusBox>();
             services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
             services.AddSingleton<F_DAQ_Chart>();

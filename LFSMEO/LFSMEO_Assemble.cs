@@ -128,7 +128,7 @@ namespace LFSMEO
                     break;
             }
 
-            CreateShortcut(AppIcon, AppName);
+            //CreateShortcut(AppIcon, AppName);
         }
 
         //建立應用程式捷徑

@@ -192,6 +192,12 @@
     <Compile Include="UI\F_YieldReport.designer.cs">
       <DependentUpon>F_YieldReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\OEM\F_DAQ_SingleChannelTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OEM\F_DAQ_SingleChannelTest.designer.cs">
+      <DependentUpon>F_DAQ_SingleChannelTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\OEM\F_Equipment_Setting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,6 +272,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_YieldReport.resx">
       <DependentUpon>F_YieldReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OEM\F_DAQ_SingleChannelTest.resx">
+      <DependentUpon>F_DAQ_SingleChannelTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OEM\F_Equipment_Setting.resx">
       <DependentUpon>F_Equipment_Setting.cs</DependentUpon>

@@ -126,7 +126,7 @@ namespace RGBTester.UI
         {
             Tool.HideElementOnPanel(Scope.MainPanel);
 
-            var form = ServiceProvider.GetRequiredService<F_DAQ_SamplingTest>();
+            var form = ServiceProvider.GetRequiredService<F_DAQ_SingleChannelTest>();
             Tool.SetForm(Scope.MainPanel, form);
             form.Show();
         }

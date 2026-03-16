@@ -30,9 +30,9 @@ namespace RGBTester.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Btn_Search = new System.Windows.Forms.Button();
             this.Cmbx_YieldRecord = new System.Windows.Forms.ComboBox();
@@ -63,6 +63,8 @@ namespace RGBTester.UI
             this.TxtBx_Yield = new System.Windows.Forms.TextBox();
             this.Btn_OutputResult = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.Btn_SerchOldFile = new System.Windows.Forms.Button();
+            this.TxtBx_Folder = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_ProductRawData)).BeginInit();
@@ -204,14 +206,14 @@ namespace RGBTester.UI
             this.DGV_ProductRawData.AllowUserToDeleteRows = false;
             this.DGV_ProductRawData.AllowUserToResizeColumns = false;
             this.DGV_ProductRawData.AllowUserToResizeRows = false;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_ProductRawData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_ProductRawData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_ProductRawData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_ProductRawData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_ID,
@@ -221,14 +223,14 @@ namespace RGBTester.UI
             this.Title_IsPass,
             this.Title_Exclude,
             this.Title_Description});
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_ProductRawData.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_ProductRawData.DefaultCellStyle = dataGridViewCellStyle3;
             this.DGV_ProductRawData.Location = new System.Drawing.Point(3, 80);
             this.DGV_ProductRawData.Name = "DGV_ProductRawData";
             this.DGV_ProductRawData.RowHeadersVisible = false;
@@ -267,8 +269,8 @@ namespace RGBTester.UI
             // 
             this.Title_TestTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.Title_TestTime.DataPropertyName = "TestTime";
-            dataGridViewCellStyle11.Format = "yyyy-MM-dd HH:mm:ss";
-            this.Title_TestTime.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle2.Format = "yyyy-MM-dd HH:mm:ss";
+            this.Title_TestTime.DefaultCellStyle = dataGridViewCellStyle2;
             this.Title_TestTime.HeaderText = "Test Time";
             this.Title_TestTime.Name = "Title_TestTime";
             this.Title_TestTime.ReadOnly = true;
@@ -420,11 +422,31 @@ namespace RGBTester.UI
             this.Btn_OutputResult.UseVisualStyleBackColor = true;
             this.Btn_OutputResult.Click += new System.EventHandler(this.Btn_OutputResult_Click);
             // 
+            // Btn_SerchOldFile
+            // 
+            this.Btn_SerchOldFile.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_SerchOldFile.Location = new System.Drawing.Point(960, 337);
+            this.Btn_SerchOldFile.Name = "Btn_SerchOldFile";
+            this.Btn_SerchOldFile.Size = new System.Drawing.Size(334, 65);
+            this.Btn_SerchOldFile.TabIndex = 35;
+            this.Btn_SerchOldFile.Text = "Search Old File";
+            this.Btn_SerchOldFile.UseVisualStyleBackColor = true;
+            this.Btn_SerchOldFile.Click += new System.EventHandler(this.Btn_SerchOldFile_Click);
+            // 
+            // TxtBx_Folder
+            // 
+            this.TxtBx_Folder.Location = new System.Drawing.Point(960, 298);
+            this.TxtBx_Folder.Name = "TxtBx_Folder";
+            this.TxtBx_Folder.Size = new System.Drawing.Size(334, 22);
+            this.TxtBx_Folder.TabIndex = 36;
+            // 
             // F_YieldReport
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.TxtBx_Folder);
+            this.Controls.Add(this.Btn_SerchOldFile);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_YieldReport";
@@ -437,6 +459,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -472,5 +495,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.TextBox TxtBx_Yield;
         private System.Windows.Forms.Button Btn_OutputResult;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button Btn_SerchOldFile;
+        private System.Windows.Forms.TextBox TxtBx_Folder;
     }
 }
