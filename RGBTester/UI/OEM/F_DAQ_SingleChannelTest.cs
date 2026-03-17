@@ -88,8 +88,22 @@ namespace RGBTester.UI
             List<string[]> buffer = new List<string[]>();
             int AvgCount = Int32.Parse(TxtBx_AveraingCount.Text);
             int IO_Channel = Int32.Parse(TxtBx_IOChannel.Text);
+            int IO_Range = Cmbx_Range.SelectedIndex;
+            EIOCardType card_type;
 
-            _ = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, (byte)IO_Channel, "+-10V",0);
+            if(Cmbx_CardType.SelectedIndex == 0)
+                card_type = EIOCardType.PCI_9111DG;
+            else
+                card_type = EIOCardType.PCI_9111HR;
+
+            string str_range = "";
+
+            if (IO_Range == 0)
+                str_range = "+-5V";
+            else
+                str_range = "+10V";
+
+            _ = DIOL.GetAInputStatus(card_type, 0, 0, 0, (byte)IO_Channel, str_range, 0);
 
             DGV_DAQ_Result.Rows.Clear();
 
@@ -102,7 +116,7 @@ namespace RGBTester.UI
             {
                 for (int j = 0; j < AvgCount; j++)
                 {
-                    double res = DIOL.GetAInputStatus(EIOCardType.PCI_9111HR, 0, 0, 0, (byte)IO_Channel, "+-10V", 0);
+                    double res = DIOL.GetAInputStatus(card_type, 0, 0, 0, (byte)IO_Channel, str_range, 0);
                     total_res += res;
                 }
 
