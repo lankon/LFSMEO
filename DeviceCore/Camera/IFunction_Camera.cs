@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using System.Drawing.Imaging;
 
 namespace DeviceCore
 {
@@ -13,7 +14,7 @@ namespace DeviceCore
         public int Width { get; set; }
         public int Height { get; set; }
         public int CCD_Index { get; set; }
-        public IMAGE_FORMAT Format { get; set; }
+        public PixelFormat Format { get; set; }
     }
     public enum CCD_TYPE
     {         
@@ -49,7 +50,7 @@ namespace DeviceCore
         bool StartGrab(int ccd);
         bool StopGrab(int ccd);
         bool SoftTrigger(int ccd);
-        bool GetImageDisplay(int ccd);
+        bool GetImageDisplay(int ccd, string image_path);
 
 
         //[Read&Save Axis Information]

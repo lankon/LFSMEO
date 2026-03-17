@@ -60,6 +60,7 @@ namespace ProbeTester.UI
             this.PicBx_Mapping = new System.Windows.Forms.PictureBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.button10 = new System.Windows.Forms.Button();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -69,13 +70,14 @@ namespace ProbeTester.UI
             this.Pnl_Mapping.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBx_Mapping)).BeginInit();
             this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(7, 141);
+            this.panel1.Location = new System.Drawing.Point(7, 101);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(850, 680);
             this.panel1.TabIndex = 0;
@@ -121,9 +123,9 @@ namespace ProbeTester.UI
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.tableLayoutPanel1);
-            this.panel3.Location = new System.Drawing.Point(7, 827);
+            this.panel3.Location = new System.Drawing.Point(7, 786);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(850, 37);
+            this.panel3.Size = new System.Drawing.Size(850, 78);
             this.panel3.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -146,10 +148,11 @@ namespace ProbeTester.UI
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label3, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.textBox2, 3, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(2, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(457, 34);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
@@ -249,6 +252,7 @@ namespace ProbeTester.UI
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(321, 246);
             this.panel4.TabIndex = 4;
+            this.panel4.Visible = false;
             // 
             // tableLayoutPanel2
             // 
@@ -275,6 +279,7 @@ namespace ProbeTester.UI
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(311, 236);
             this.tableLayoutPanel2.TabIndex = 0;
+            this.tableLayoutPanel2.Visible = false;
             // 
             // button3
             // 
@@ -371,7 +376,7 @@ namespace ProbeTester.UI
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.Pnl_Mapping);
-            this.panel2.Location = new System.Drawing.Point(1451, 68);
+            this.panel2.Location = new System.Drawing.Point(191, 25);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(423, 443);
             this.panel2.TabIndex = 5;
@@ -399,7 +404,7 @@ namespace ProbeTester.UI
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.button10);
-            this.panel5.Location = new System.Drawing.Point(1375, 68);
+            this.panel5.Location = new System.Drawing.Point(115, 25);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(69, 443);
             this.panel5.TabIndex = 6;
@@ -413,13 +418,22 @@ namespace ProbeTester.UI
             this.button10.TabIndex = 37;
             this.button10.UseVisualStyleBackColor = true;
             // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.panel5);
+            this.panel6.Controls.Add(this.panel2);
+            this.panel6.Location = new System.Drawing.Point(1061, 74);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(759, 519);
+            this.panel6.TabIndex = 7;
+            this.panel6.Visible = false;
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
-            this.Controls.Add(this.panel5);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.Pnl_MainButton);
@@ -437,6 +451,7 @@ namespace ProbeTester.UI
             this.Pnl_Mapping.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PicBx_Mapping)).EndInit();
             this.panel5.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -473,5 +488,6 @@ namespace ProbeTester.UI
         private System.Windows.Forms.PictureBox PicBx_Mapping;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Panel panel6;
     }
 }

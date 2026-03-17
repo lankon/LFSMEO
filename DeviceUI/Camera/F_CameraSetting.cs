@@ -201,7 +201,7 @@ namespace DeviceUI.Camera
             SwitchToCameraDisplay(index);
             Function_Camera.StartGrab(index);
             Function_Camera.SoftTrigger(index);
-            Function_Camera.GetImageDisplay(index);
+            Function_Camera.GetImageDisplay(index, @"C:\Users\lankon\Desktop\tmep\picture.png");
         }
     }
 }

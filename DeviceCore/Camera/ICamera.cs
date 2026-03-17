@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using System.Drawing.Imaging;
 
 namespace DeviceCore
 {
@@ -24,6 +25,9 @@ namespace DeviceCore
         int StartGrabbing(string id);
         int StopGrabbing(string id);
         int SoftwareTrigger(string id);
-        int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height);
+        int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height, ref PixelFormat pixelFormat);
+
+        //[Virtual Camera Function]
+        void SetVirtualImagePath(string path);
     }
 }

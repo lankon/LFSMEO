@@ -1,6 +1,7 @@
 ﻿using DeviceCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -191,7 +192,7 @@ namespace DeviceFunction
                 return false;
         }
 
-        public bool GetImageDisplay(int ccd)
+        public bool GetImageDisplay(int ccd, string image_path)
         {
             if (!CheckCameraEnable(ccd))
                 return false;
@@ -200,7 +201,10 @@ namespace DeviceFunction
             IntPtr image = IntPtr.Zero;
             int width = 0;
             int height = 0;
-            int ret = CameraList[CCD_Info2List[ccd]].GetImage(ip, ref image, ref width, ref height);
+            PixelFormat pixelFormat = PixelFormat.Format32bppArgb;
+
+            CameraList[CCD_Info2List[ccd]].SetVirtualImagePath(image_path);
+            int ret = CameraList[CCD_Info2List[ccd]].GetImage(ip, ref image, ref width, ref height, ref pixelFormat);
 
             if(ret == 0)
             {
@@ -209,7 +213,7 @@ namespace DeviceFunction
                     ImageData = image,
                     Width = width,
                     Height = height,
-                    Format = IMAGE_FORMAT.MONO8,
+                    Format = pixelFormat,
                     CCD_Index = ccd
                 };
 

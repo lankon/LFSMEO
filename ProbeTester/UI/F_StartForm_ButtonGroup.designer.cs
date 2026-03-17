@@ -76,9 +76,9 @@ namespace ProbeTester.UI
             // 
             this.Btn_Recipe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Recipe.BackgroundImage")));
             this.Btn_Recipe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_Recipe.Location = new System.Drawing.Point(91, 5);
+            this.Btn_Recipe.Location = new System.Drawing.Point(98, 3);
             this.Btn_Recipe.Name = "Btn_Recipe";
-            this.Btn_Recipe.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Recipe.Size = new System.Drawing.Size(70, 70);
             this.Btn_Recipe.TabIndex = 37;
             this.Btn_Recipe.UseVisualStyleBackColor = true;
             this.Btn_Recipe.Click += new System.EventHandler(this.Btn_Recipe_Click);
@@ -87,9 +87,9 @@ namespace ProbeTester.UI
             // 
             this.Btn_LogIn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_LogIn.BackgroundImage")));
             this.Btn_LogIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_LogIn.Location = new System.Drawing.Point(25, 5);
+            this.Btn_LogIn.Location = new System.Drawing.Point(23, 3);
             this.Btn_LogIn.Name = "Btn_LogIn";
-            this.Btn_LogIn.Size = new System.Drawing.Size(60, 60);
+            this.Btn_LogIn.Size = new System.Drawing.Size(70, 70);
             this.Btn_LogIn.TabIndex = 36;
             this.Btn_LogIn.UseVisualStyleBackColor = true;
             this.Btn_LogIn.Click += new System.EventHandler(this.Btn_LogIn_Click);
@@ -131,11 +131,12 @@ namespace ProbeTester.UI
             // 
             this.Btn_ParameterSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_ParameterSetting.BackgroundImage")));
             this.Btn_ParameterSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_ParameterSetting.Location = new System.Drawing.Point(1480, 3);
+            this.Btn_ParameterSetting.Location = new System.Drawing.Point(1512, 3);
             this.Btn_ParameterSetting.Name = "Btn_ParameterSetting";
             this.Btn_ParameterSetting.Size = new System.Drawing.Size(70, 70);
             this.Btn_ParameterSetting.TabIndex = 31;
             this.Btn_ParameterSetting.UseVisualStyleBackColor = true;
+            this.Btn_ParameterSetting.Visible = false;
             this.Btn_ParameterSetting.Click += new System.EventHandler(this.Btn_ParameterSetting_Click);
             // 
             // Pnl_Part2

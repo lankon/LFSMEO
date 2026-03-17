@@ -130,7 +130,7 @@ namespace DeviceUI.Camera
         #endregion
 
         #region public function
-        public Bitmap CreateUniversalBitmap(int width, int height, IntPtr ptr, IMAGE_FORMAT type)
+        public Bitmap CreateUniversalBitmap(int width, int height, IntPtr ptr, PixelFormat type)
         {
             PixelFormat format = PixelFormat.Format8bppIndexed;
             int bytesPerPixel = 1;
@@ -139,13 +139,14 @@ namespace DeviceUI.Camera
             // 1. 根據 PixelType 判定格式與位元組數
             switch (type)
             {
-                case IMAGE_FORMAT.MONO8:
+                case PixelFormat.Format8bppIndexed:
                     format = PixelFormat.Format8bppIndexed;
                     bytesPerPixel = 1;
                     isMono = true;
                     break;
 
-                case IMAGE_FORMAT.RGB8:
+                case PixelFormat.Format24bppRgb:
+                default:
                     format = PixelFormat.Format24bppRgb;
                     bytesPerPixel = 3;
                     break;

@@ -3,12 +3,15 @@ using DeviceSourceHikvision;
 using MvCamCtrl.NET;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
+
 using static MvCamCtrl.NET.MyCamera;
 
 namespace Device_Hikvision
@@ -82,6 +85,8 @@ namespace Device_Hikvision
             nRet = m_pOperator[index].GetIntValue("PayloadSize", ref payloadsize);
         }
         #endregion
+
+
         public CCD_TYPE GetCameraType()
         {
             return CCD_TYPE.Hikvision;
@@ -225,7 +230,7 @@ namespace Device_Hikvision
                 return (int)ERROR_CODE.STATUS_OK;
         }
 
-        public int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height)
+        public int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height, ref PixelFormat pixelFormat)
         {
             int ret, index = -1;
 
@@ -255,12 +260,18 @@ namespace Device_Hikvision
                 image = currentPtr;
                 image_height = frameInfo.nHeight;
                 image_width = frameInfo.nWidth;
+                pixelFormat = PixelFormat.Format24bppRgb;   //先暫時固定回傳
 
                 m_pOperator[index].WriteIndex = 1 - m_pOperator[index].WriteIndex;
                 return 0;
             }
 
             return (int)ERROR_CODE.ERROR_GETIMAGE;
+        }
+
+        public void SetVirtualImagePath(string path)
+        {
+            
         }
     }
 }
