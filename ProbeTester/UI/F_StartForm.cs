@@ -100,6 +100,8 @@ namespace ProbeTester.UI
 
         private void button8_Click(object sender, EventArgs e)
         {
+            
+
             //// 訂閱中介層的影像事件
             //function_Camera.OnImageUpdated += (s, fe) =>
             //{
@@ -121,9 +123,9 @@ namespace ProbeTester.UI
             //    }
             //};
 
-            IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
-            setting.SwitchToCameraDisplay(2);
-            setting.DockDisplayToPanel(panel1);
+            //IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            //setting.SwitchToCameraDisplay(2);
+            //setting.DockDisplayToPanel(panel1);
 
         }
 
@@ -133,6 +135,13 @@ namespace ProbeTester.UI
 
             function_Camera.StartGrab(0);
             function_Camera.SoftTrigger(0);
+        }
+
+        private void Btn_PTPA_Click(object sender, EventArgs e)
+        {
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+            MainTask.SetTask<Task_PTPA>();
+            MainTask.Run();
         }
     }
 }

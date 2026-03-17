@@ -32,7 +32,7 @@ namespace ProbeTester.UI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
-            this.button8 = new System.Windows.Forms.Button();
+            this.Btn_PTPA = new System.Windows.Forms.Button();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -84,25 +84,25 @@ namespace ProbeTester.UI
             // 
             this.Pnl_MainButton.AutoScroll = true;
             this.Pnl_MainButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Pnl_MainButton.Controls.Add(this.button8);
+            this.Pnl_MainButton.Controls.Add(this.Btn_PTPA);
             this.Pnl_MainButton.Controls.Add(this.Btn_Start);
             this.Pnl_MainButton.Location = new System.Drawing.Point(7, 870);
             this.Pnl_MainButton.Name = "Pnl_MainButton";
             this.Pnl_MainButton.Size = new System.Drawing.Size(850, 94);
             this.Pnl_MainButton.TabIndex = 1;
             // 
-            // button8
+            // Btn_PTPA
             // 
-            this.button8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button8.BackgroundImage")));
-            this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button8.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button8.Location = new System.Drawing.Point(95, 3);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(85, 85);
-            this.button8.TabIndex = 6;
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.Btn_PTPA.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_PTPA.BackgroundImage")));
+            this.Btn_PTPA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_PTPA.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_PTPA.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Btn_PTPA.Location = new System.Drawing.Point(95, 3);
+            this.Btn_PTPA.Name = "Btn_PTPA";
+            this.Btn_PTPA.Size = new System.Drawing.Size(85, 85);
+            this.Btn_PTPA.TabIndex = 6;
+            this.Btn_PTPA.UseVisualStyleBackColor = true;
+            this.Btn_PTPA.Click += new System.EventHandler(this.Btn_PTPA_Click);
             // 
             // Btn_Start
             // 
@@ -464,7 +464,7 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button Btn_PTPA;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button button9;

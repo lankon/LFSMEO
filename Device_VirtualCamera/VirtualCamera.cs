@@ -33,8 +33,6 @@ namespace Device_VirtualCamera
         }
         #endregion
 
-
-
         #region public function
         public int Connect()
         {

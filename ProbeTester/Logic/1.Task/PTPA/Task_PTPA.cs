@@ -36,10 +36,6 @@ namespace ProbeTester.Logic
         }
 
         #region parameter
-        private double UpCCDFocusPosX = 50.0;
-        private double UpCCDFocusPosY = 50.0;
-        private double UpCCDFocusPosZ = 7.0;
-        private long Delay = 0;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
@@ -49,14 +45,8 @@ namespace ProbeTester.Logic
             NONE,
             INITIAL,
 
-            GOTO_UP_DOWN_CCD_FOCUS_POS,
-            WAIT_GOTO_UP_DOWN_CCD_FOCUS_POS,
-
-            WAIT_AXIS_STABE,
-            CAPTURE_IMAGE,
-            CALCULATE_OFFSET,
-
-
+            CHUCK_GOTO_UP_CCD_FOCUS_POS,
+            WAIT_CHUCK_GOTO_UP_CCD_FOCUS_POS,
 
             END,
 
@@ -201,40 +191,29 @@ namespace ProbeTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.GOTO_UP_DOWN_CCD_FOCUS_POS);
+                        Transition(WORK.CHUCK_GOTO_UP_CCD_FOCUS_POS);
                     }
                     break;
 
-                case WORK.GOTO_UP_DOWN_CCD_FOCUS_POS:
+                case WORK.CHUCK_GOTO_UP_CCD_FOCUS_POS:
                     {
-                        Deps.DML.PTP_Move(Axis.AxisX, UpCCDFocusPosX);
-                        Deps.DML.PTP_Move(Axis.AxisX, UpCCDFocusPosY);
-                        Deps.DML.PTP_Move(Axis.AxisZ, UpCCDFocusPosZ);
-                        Transition(WORK.WAIT_GOTO_UP_DOWN_CCD_FOCUS_POS);
+                        //建立SubTask
+                        SubTask = new SubTaskGoToUpCCDFocusPos(Deps, F_StateControl);
+                        //委派必要Function
+                        //SubTask.SetForm(TaskForm);
+                        //設定是否有SubTask執行
+                        SetSubTaskProcessing(true);
+
+                        Transition(WORK.WAIT_CHUCK_GOTO_UP_CCD_FOCUS_POS);
                     }
                     break;
-                case WORK.WAIT_GOTO_UP_DOWN_CCD_FOCUS_POS:
+                case WORK.WAIT_CHUCK_GOTO_UP_CCD_FOCUS_POS:
                     {
-                        if(Deps.DML.Get_Motion_Complete(Axis.AxisX) && Deps.DML.Get_Motion_Complete(Axis.AxisY) &&
-                           Deps.DML.Get_Motion_Complete(Axis.AxisZ))
-                        {
-                            Tool.ResetTimeCount(out Delay);
-                            Transition(WORK.WAIT_AXIS_STABE);
-                        }
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check);
                     }
                     break;
 
-                case WORK.WAIT_AXIS_STABE:
-                    {
-                        if(Tool.GetTime(Delay) > 200)
-                        {
-                            Transition(WORK.SUCCESS);
-                        }
-                    }
-                    break;
-
-                
-                
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);

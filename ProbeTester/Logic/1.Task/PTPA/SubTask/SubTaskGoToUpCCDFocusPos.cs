@@ -13,9 +13,9 @@ using ProbeTester.Base;
 namespace ProbeTester.Logic
 {
     #region Task
-    public class TaskInitial : IBaseTask<TaskInitial.WORK>
+    public class SubTaskGoToUpCCDFocusPos : IBaseTask<SubTaskGoToUpCCDFocusPos.WORK>
     {
-        public TaskInitial(IBaseTaskDependence dependencies,
+        public SubTaskGoToUpCCDFocusPos(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -36,6 +36,11 @@ namespace ProbeTester.Logic
         }
 
         #region parameter
+        private double UpCCDFocusPosX = 166.546;
+        private double UpCCDFocusPosY = 457.302;
+        private double UpCCDFocusPosZ = 9.8;
+        private double ChuckSafePosZ = 7.0;
+        private long Delay = 0;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
@@ -45,18 +50,20 @@ namespace ProbeTester.Logic
             NONE,
             INITIAL,
 
-            GO_HOME_Z,
-            WAIT_GO_HOME_Z,
+            CHUCK_Z_GOTO_SAFE,
+            WAIT_CHUCK_Z_GOTO_SAFE,
 
-            GO_HOME_XYA,
-            WAIT_GO_HOME_XYA,
+            GOTO_UP_DOWN_CCD_FOCUS_POS,
+            WAIT_GOTO_UP_DOWN_CCD_FOCUS_POS,
 
-            IDLE,
+            GOTO_FOCUS_Z_POS,
+            WAIT_GOTO_FOCUS_Z_POS,
 
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
+            WAIT_AXIS_STABE,
+            CAPTURE_IMAGE,
+            CALCULATE_OFFSET,
+
+
 
             END,
 
@@ -201,45 +208,67 @@ namespace ProbeTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.GO_HOME_Z);
+                        Transition(WORK.CHUCK_Z_GOTO_SAFE);
                     }
                     break;
 
-                case WORK.GO_HOME_Z:
+                case WORK.CHUCK_Z_GOTO_SAFE:
                     {
-                       Deps.DML.GoHome(Axis.AxisZ);
-                        Transition(WORK.WAIT_GO_HOME_Z);
+                        Deps.DML.PTP_Move(Axis.AxisZ, ChuckSafePosZ);
+                        Transition(WORK.WAIT_CHUCK_Z_GOTO_SAFE);
                     }
                     break;
-                case WORK.WAIT_GO_HOME_Z:
+                case WORK.WAIT_CHUCK_Z_GOTO_SAFE:
                     {
-                        if(Deps.DML.Get_Home_Complete(Axis.AxisZ))
+                        if(Deps.DML.Get_Motion_Complete(Axis.AxisZ))
                         {
-                            Transition(WORK.GO_HOME_XYA);
+                            Transition(WORK.GOTO_UP_DOWN_CCD_FOCUS_POS);
                         }
                     }
                     break;
 
-                case WORK.GO_HOME_XYA:
+                case WORK.GOTO_UP_DOWN_CCD_FOCUS_POS:
                     {
-                        Deps.DML.GoHome(Axis.AxisX);
-                        Deps.DML.GoHome(Axis.AxisY);
-                        Deps.DML.GoHome(Axis.AxisA);
-
-                        Transition(WORK.WAIT_GO_HOME_XYA);
+                        Deps.DML.PTP_Move(Axis.AxisX, UpCCDFocusPosX);
+                        Deps.DML.PTP_Move(Axis.AxisY, UpCCDFocusPosY);
+                        Transition(WORK.WAIT_GOTO_UP_DOWN_CCD_FOCUS_POS);
                     }
                     break;
-                case WORK.WAIT_GO_HOME_XYA:
+                case WORK.WAIT_GOTO_UP_DOWN_CCD_FOCUS_POS:
                     {
-                        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY) &&
-                           Deps.DML.Get_Home_Complete(Axis.AxisA))
+                        if(Deps.DML.Get_Motion_Complete(Axis.AxisX) && Deps.DML.Get_Motion_Complete(Axis.AxisY))
+                        {
+                            Tool.ResetTimeCount(out Delay);
+                            Transition(WORK.GOTO_FOCUS_Z_POS);
+                        }
+                    }
+                    break;
+
+                case WORK.GOTO_FOCUS_Z_POS:
+                    {
+                        Deps.DML.PTP_Move(Axis.AxisZ, UpCCDFocusPosZ);
+                        Transition(WORK.WAIT_GOTO_FOCUS_Z_POS);
+                    }
+                    break;
+                case WORK.WAIT_GOTO_FOCUS_Z_POS:
+                    {
+                        if(Deps.DML.Get_Motion_Complete(Axis.AxisZ))
+                        {
+                            Tool.ResetTimeCount(out Delay);
+                            Transition(WORK.WAIT_AXIS_STABE);
+                        }
+                    }
+                    break;
+
+                case WORK.WAIT_AXIS_STABE:
+                    {
+                        if(Tool.GetTime(Delay) > 200)
                         {
                             Transition(WORK.SUCCESS);
                         }
                     }
                     break;
-                
-                
+
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);
