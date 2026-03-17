@@ -335,7 +335,7 @@ namespace RGBTester.Logic
                             break;
                         }
 
-                        DelayTime = Tool.GetCurrentTickCount() + 500;   //500為了讓計時顯示同步
+                        DelayTime = Tool.GetCurrentTickCount();
                         Transition(WORK.WAIT_COOLING_TIME);
                     }
                     break;
