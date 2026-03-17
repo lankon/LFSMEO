@@ -28,6 +28,8 @@ namespace RGBTester.Logic
         private StreamWriter RightBlueFile;
         private StreamWriter LeftCalibrationFile;
         private StreamWriter RightCalibrationFile;
+        private StreamWriter LeftBurnInFile;
+        private StreamWriter RightBurnInFile;
         public double R_Offset_HCM { get; private set; }
         public double G_Offset_HCM { get; private set; }
         public double B_Offset_HCM { get; private set; }
@@ -50,7 +52,7 @@ namespace RGBTester.Logic
             string SN = "";
             string Side = "";
             string Color = "";
-            string Calibration = "";
+            string KeyText = "";
 
             string[] res = describe.Split('_'); //ex.Right_G
 
@@ -75,7 +77,10 @@ namespace RGBTester.Logic
                     Color = "B";
 
                 if (res[i] == "Calibration")
-                    Calibration = "Calibration";
+                    KeyText = "Calibration";
+
+                if (res[i] == "BurnIn")
+                    KeyText = "BurnIn";
             }
 
             file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_{Side}_{Color}_{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
@@ -102,10 +107,20 @@ namespace RGBTester.Logic
                 file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_R_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
                 RightCalibrationFile = Tool.CreateFile(file_name, ".csv", false);
             }
-                
-            if (Side != "" && Calibration == "")
+            else if (describe == "Left_BurnIn")
+            {
+                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_L_{SN}_BurnIn_{now.ToString("yyyyMMddHHmmss")}";
+                LeftBurnInFile = Tool.CreateFile(file_name, ".csv", false);
+            }
+            else if (describe == "Right_BurnIn")
+            {
+                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_R_{SN}_BurnIn_{now.ToString("yyyyMMddHHmmss")}";
+                RightBurnInFile = Tool.CreateFile(file_name, ".csv", false);
+            }
+
+            if (Side != "" && KeyText == "")
                 WriteTitle_RGBTester(describe);
-            else
+            else if(KeyText == "Calibration")
                 WriteTitle(describe);
         }
         public void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
@@ -163,6 +178,10 @@ namespace RGBTester.Logic
                 Tool.WriteFile(LeftCalibrationFile, context, NewLine: NewLine);
             else if (describe == "Right_Calibration")
                 Tool.WriteFile(RightCalibrationFile, context, NewLine: NewLine);
+            else if (describe == "Left_BurnIn")
+                Tool.WriteFile(LeftBurnInFile, context, NewLine: NewLine);
+            else if (describe == "Right_BurnIn")
+                Tool.WriteFile(RightBurnInFile, context, NewLine: NewLine);
         }
         public void CloseFile(string describe = "")
         {
@@ -182,6 +201,10 @@ namespace RGBTester.Logic
                 Tool.CloseFile(LeftCalibrationFile);
             else if(describe == "Right_Calibration")
                 Tool.CloseFile(RightCalibrationFile);
+            else if(describe =="Left_BurnIn")
+                Tool.CloseFile(LeftBurnInFile);
+            else if(describe =="Right_BurnIn")
+                Tool.CloseFile(RightBurnInFile);
         }
         public void CloseAndDeleteFile(string describe = "")
         {
@@ -201,6 +224,10 @@ namespace RGBTester.Logic
                 Tool.CloseAndDeleteFile(LeftCalibrationFile);
             else if (describe == "Right_Calibration")
                 Tool.CloseAndDeleteFile(RightCalibrationFile);
+            else if (describe == "Left_BurnIn")
+                Tool.CloseAndDeleteFile(LeftBurnInFile);
+            else if (describe == "Right_BurnIn")
+                Tool.CloseAndDeleteFile(RightBurnInFile);
         }
         public void CopyAndCloseTestFile(string describe)
         {
@@ -229,7 +256,10 @@ namespace RGBTester.Logic
                 Tool.CopyFile(LeftCalibrationFile, copy_path, copy_path1);
             else if (describe == "Right_Calibration")
                 Tool.CopyFile(RightCalibrationFile, copy_path, copy_path1);
-                
+            else if (describe == "Left_BurnIn")
+                Tool.CopyFile(LeftBurnInFile, copy_path, copy_path1);
+            else if (describe == "Right_BurnIn")
+                Tool.CopyFile(RightBurnInFile, copy_path, copy_path1);
         }
         public void ResetCalibrationData()
         {

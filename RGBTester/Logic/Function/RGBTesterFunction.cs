@@ -143,13 +143,28 @@ namespace RGBTester.Logic
 
             public string GetFailDescription()
             {
+                List<string> error_message = new List<string>();
+
                 if (IsSlopeErr)
-                    return "Slope Fail";
+                    error_message.Add("Slope Fail");
                 if (IsClampingErr)
-                    return "Clamping Fail";
+                    error_message.Add("Clamping Fail");
                 if (IsTemperatureErr)
-                    return "Temperature Fail";
-                return "None";
+                    error_message.Add("Temperature Fail");
+
+                if(IsSlopeErr == false && IsClampingErr == false && IsTemperatureErr == false)
+                    error_message.Add("None");
+
+                string res = "";
+                for(int i=0; i<error_message.Count; i++)
+                {
+                    if (i == error_message.Count - 1)
+                        res += error_message[i];
+                    else
+                        res += error_message[i] + " && ";
+                }
+
+                return res;
             }
         }
 

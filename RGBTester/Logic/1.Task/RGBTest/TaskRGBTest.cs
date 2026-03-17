@@ -76,7 +76,7 @@ namespace RGBTester.Logic
                 Deps.File.CreateFile("Left_G");
                 Deps.File.CreateFile("Left_B");
                 Deps.File.CreateFile("Left_Calibration");
-
+                Deps.File.CreateFile("Left_BurnIn");
                 string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                 Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
@@ -87,6 +87,7 @@ namespace RGBTester.Logic
                 Deps.File.CreateFile("Right_G");
                 Deps.File.CreateFile("Right_B");
                 Deps.File.CreateFile("Right_Calibration");
+                Deps.File.CreateFile("Right_BurnIn");
 
                 string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                 Tool.SaveLogToFile("測試樣品SN:" + SN);
@@ -100,6 +101,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Left_G");
                 Deps.File.CloseFile("Left_B");
                 Deps.File.CloseFile("Left_Calibration");
+                Deps.File.CloseFile("Left_BurnIn");
             }
 
             if (!OnlyLeftTest)
@@ -108,6 +110,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Right_G");
                 Deps.File.CloseFile("Right_B");
                 Deps.File.CloseFile("Right_Calibration");
+                Deps.File.CloseFile("Right_BurnIn");
             }
         }
         private void CopyAndCloseTestFile()
@@ -118,6 +121,7 @@ namespace RGBTester.Logic
                 Deps.File.CopyAndCloseTestFile("Left_G");
                 Deps.File.CopyAndCloseTestFile("Left_B");
                 Deps.File.CopyAndCloseTestFile("Left_Calibration");
+                Deps.File.CopyAndCloseTestFile("Left_BurnIn");
             }
 
             if (!OnlyLeftTest)
@@ -126,6 +130,7 @@ namespace RGBTester.Logic
                 Deps.File.CopyAndCloseTestFile("Right_G");
                 Deps.File.CopyAndCloseTestFile("Right_B");
                 Deps.File.CopyAndCloseTestFile("Right_Calibration");
+                Deps.File.CopyAndCloseTestFile("Right_BurnIn");
             }
         }
         private void CloseAndDeleteTestFile()
@@ -136,6 +141,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseAndDeleteFile("Left_G");
                 Deps.File.CloseAndDeleteFile("Left_B");
                 Deps.File.CloseAndDeleteFile("Left_Calibration");
+                Deps.File.CloseAndDeleteFile("Left_BurnIn");
             }
             if (!OnlyLeftTest)
             {
@@ -143,13 +149,12 @@ namespace RGBTester.Logic
                 Deps.File.CloseAndDeleteFile("Right_G");
                 Deps.File.CloseAndDeleteFile("Right_B");
                 Deps.File.CloseAndDeleteFile("Right_Calibration");
+                Deps.File.CloseAndDeleteFile("Right_BurnIn");
             }
         }
-        private void Preset()
+        private void Preset() 
         {
             CreateTestFile();
-
-            
         }
         protected override void Transition(WORK target)
         {

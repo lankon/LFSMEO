@@ -4,6 +4,7 @@ using RGBTester.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace RGBTester.Logic
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
 
+            TestType = set_state;
+
             switch (set_state)
             {
                 default:
@@ -37,6 +40,7 @@ namespace RGBTester.Logic
         private IF_BaseTask SubTask;                            //子流程
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
+        private string TestType = "";
         private int DelayTime = 0;
         private int BurnInDuration = 0;                         //Burn In時間(單位:秒)
         private int RepeatTimes = 0;                            //重複次數
@@ -156,16 +160,32 @@ namespace RGBTester.Logic
                 Tool.SaveLogToFile($"Burn In Test Current is set to default value: {current}mA, because the input value is invalid.", level: "WRN");
             }
 
-            bool isHigh = current > ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_LCM_MaxCurrent);
-            double slope = isHigh ? slope_h : slope_l;
-            double offset = isHigh ? offset_h : offset_l;
+            if (Scope.TaskRGBTest.IsSingleTest == false)
+            {
+                bool isHigh = current > ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_LCM_MaxCurrent);
+                double slope = isHigh ? slope_h : slope_l;
+                double offset = isHigh ? offset_h : offset_l;
 
-            int R_DAC = (slope < 0.0000001) ? 0 : (int)((current - offset) / slope);
+                int R_DAC = (slope < 0.0000001) ? 0 : (int)((current - offset) / slope);
 
-            if (R_DAC < 0 || R_DAC > 1023)
-                R_DAC = 0;
+                if (R_DAC < 0 || R_DAC > 1023)
+                    R_DAC = 0;
 
-            dac.Enqueue(R_DAC);
+                dac.Enqueue(R_DAC);
+            }
+            else
+            {
+                bool isHigh = current > ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_LCM_MaxCurrent);
+                double R_sense = isHigh ? ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_HCM) : 
+                                          ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_LCM);
+
+                int R_DAC = (int)(current * 1023 * R_sense / 160);
+
+                if (R_DAC < 0 || R_DAC > 1023)
+                    R_DAC = 0;
+
+                dac.Enqueue(R_DAC);
+            }
         }
         private void SetCurrent()
         {
@@ -253,6 +273,14 @@ namespace RGBTester.Logic
                     {
                         Preset();
 
+                        string sn = "";
+                        if (TestType == "Left_BurnIn")
+                            sn = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
+                        else 
+                            sn = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+                        Deps.File.WriteFile($"SN,{sn}", TestType);
+                        Deps.File.WriteFile($"Temperature,TestTime", TestType);
+
                         Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0);
 
                         Transition(WORK.INITIAL_SETTING);
@@ -286,6 +314,7 @@ namespace RGBTester.Logic
                         if(Tool.CheckTimeOverSec(DelayTime, BurnInDuration))
                         {
                             double temperature = double.Parse(Deps.LightEngine.GetTemperature());
+                            Deps.File.WriteFile($"{temperature},{DateTime.Now.ToString("HH:mm:ss")}", TestType);
                             if (!CheckTestTemperature(temperature))
                             {
                                 Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0);
@@ -306,7 +335,7 @@ namespace RGBTester.Logic
                             break;
                         }
 
-                        DelayTime = Tool.GetCurrentTickCount();
+                        DelayTime = Tool.GetCurrentTickCount() + 500;   //500為了讓計時顯示同步
                         Transition(WORK.WAIT_COOLING_TIME);
                     }
                     break;

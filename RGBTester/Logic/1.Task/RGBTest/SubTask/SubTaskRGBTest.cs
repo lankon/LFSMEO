@@ -283,7 +283,7 @@ namespace RGBTester.Logic
                 case WORK.BURN_IN_TEST:
                     {
                         Tool.SaveLogToFile("BURN_IN_TEST", level: "INF");
-                        SubTask = new SubTaskBurnInTest(Deps, F_StateControl);
+                        SubTask = new SubTaskBurnInTest(Deps, F_StateControl, Type+"_BurnIn");
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_BURN_IN_TEST);
                     }
@@ -300,8 +300,8 @@ namespace RGBTester.Logic
                     {
                         if(Scope.TestFail == true)
                         {
-                            StatusBox.ShowMessage("Fail");
                             string description = RGBfunc.FailReasonFlag.GetFailDescription();
+                            StatusBox.ShowMessage(description);
                             RGBfunc.YieldStatistics(false, SN, description);
                         }
                         else
