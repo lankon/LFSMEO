@@ -48,7 +48,7 @@ namespace ProbeTester
 
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
-            //services.AddSingleton<F_StartFormLogic>();
+            services.AddSingleton<F_StartFormLogic>();
             //services.AddSingleton<F_RecipeLogic>();
             //services.AddSingleton<F_DAQ_ChartLogic>();
 

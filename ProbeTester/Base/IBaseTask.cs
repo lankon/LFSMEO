@@ -30,6 +30,7 @@ namespace ProbeTester.Base
         IFunction_IO_Card DIOL { get; }
         IFunction_MotionCard DML { get; }
         IFunction_Camera CCD { get; }
+        IFunction_LightControl Light { get; }
     }
     public class BaseTaskDependence : IBaseTaskDependence
     {
@@ -37,14 +38,16 @@ namespace ProbeTester.Base
         public IFunction_IO_Card DIOL { get; }
         public IFunction_MotionCard DML { get; }
         public IFunction_Camera CCD { get; }
+        public IFunction_LightControl Light { get; }
 
         public BaseTaskDependence(IServiceProvider serviceProvider, IFunction_IO_Card io, IFunction_MotionCard motion,
-                                  IFunction_Camera ccd)
+                                  IFunction_Camera ccd, IFunction_LightControl light)
         {
             ServiceProvider = serviceProvider;
             DML = motion;
             DIOL = io;
             CCD = ccd;
+            Light = light;
         }
     }
     public interface IF_BaseTask

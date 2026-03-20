@@ -30,7 +30,7 @@ namespace ProbeTester.UI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.Pnl_CCD = new System.Windows.Forms.Panel();
             this.Pnl_MainButton = new System.Windows.Forms.Panel();
             this.Btn_PTPA = new System.Windows.Forms.Button();
             this.Btn_Start = new System.Windows.Forms.Button();
@@ -73,14 +73,14 @@ namespace ProbeTester.UI
             this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // Pnl_CCD
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(7, 101);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(850, 680);
-            this.panel1.TabIndex = 0;
+            this.Pnl_CCD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.Pnl_CCD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_CCD.Location = new System.Drawing.Point(7, 101);
+            this.Pnl_CCD.Name = "Pnl_CCD";
+            this.Pnl_CCD.Size = new System.Drawing.Size(850, 680);
+            this.Pnl_CCD.TabIndex = 0;
             // 
             // Pnl_MainButton
             // 
@@ -437,10 +437,11 @@ namespace ProbeTester.UI
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.Pnl_MainButton);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.Pnl_CCD);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StartForm";
             this.Text = "F_StartForm";
+            this.VisibleChanged += new System.EventHandler(this.F_StartForm_VisibleChanged);
             this.Pnl_MainButton.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -458,7 +459,7 @@ namespace ProbeTester.UI
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel Pnl_CCD;
         private System.Windows.Forms.Panel Pnl_MainButton;
         private System.Windows.Forms.Button Btn_Start;
         private System.Windows.Forms.Panel panel3;

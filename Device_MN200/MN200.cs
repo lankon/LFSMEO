@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DeviceCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-
-using DeviceCore;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Device_MN200
 {
@@ -14,28 +14,19 @@ namespace Device_MN200
         #region parameter define
         private Int16 nErrCode;
         private bool Initial_Success = false;
-        private const Byte MaxNumDevicesPerLine = 64;
+        private bool Initial_IO_Success = false;
+        private bool Initial_Motion_Success = false;
         private const Byte MaxNumLine = 5;
+        private const Byte MaxNumDevicesPerLine = 64;
         private const Byte MaxNumStatus = 32;
         private MN200_Parameter MN200_Param = new MN200_Parameter();
+        private IO_PARAMETER MN200_IO_Param = new IO_PARAMETER();
         PISO_MN200.MOTION_DEV_IO MOTION_DEV_IO = new PISO_MN200.MOTION_DEV_IO();
-        public List<byte> InputLineNo 
-        {
-            get { return MN200_Param.IO_LineNo; } 
-        }
-        public List<byte> InputDevNo
-        {
-            get { return MN200_Param.IO_DevNo; }
-        }
+        
 
         struct MN200_Parameter
         {
-            public bool[] UseLine;          //紀錄使用的LineNo.
             public byte[,] DevNoType;       //紀錄[LineNo,DevNo]對應的Type
-            public bool[,,] Input_Status;   //紀錄[LineNo,DevNo,Port]對應的Input訊號
-            public bool[,,] Output_Status;  //紀錄[LineNo,DevNo,Port]對應的Output訊號
-            public List<byte> IO_LineNo;    //紀錄IO Type Line No.
-            public List<byte> IO_DevNo;     //紀錄IO Type Device No.
             public bool[,,] Motion_Status;  //紀錄[LineNo,DevNo,State]對應的Motion訊號
             public List<byte> Motion_LineNo;//紀錄Motion Type Line No.
             public List<byte> Motion_DevNo; //紀錄Motion Type Device No.
@@ -60,15 +51,37 @@ namespace Device_MN200
 
         public MN200()
         {
+            // [Motion Parameter Initial]
             MN200_Param.DevNoType = new byte[MaxNumLine, MaxNumDevicesPerLine];
-            MN200_Param.Input_Status = new bool[MaxNumLine, MaxNumDevicesPerLine, MaxNumStatus];
-            MN200_Param.Output_Status = new bool[MaxNumLine, MaxNumDevicesPerLine, MaxNumStatus];
-            MN200_Param.IO_DevNo = new List<byte>();
-            MN200_Param.IO_LineNo = new List<byte>();
             MN200_Param.Motion_Status = new bool[MaxNumLine, MaxNumDevicesPerLine, 16];
             MN200_Param.Motion_DevNo = new List<byte>();
             MN200_Param.Motion_LineNo = new List<byte>();
+
+            // [IO Parameter Initial]
+            MN200_IO_Param.Input_Status = new bool[MaxNumLine, MaxNumDevicesPerLine, MaxNumStatus];
+            MN200_IO_Param.Output_Status = new bool[MaxNumLine, MaxNumDevicesPerLine, MaxNumStatus];
+            MN200_IO_Param.IO_DevNo = new List<byte>();
+            MN200_IO_Param.IO_LineNo = new List<byte>();
         }
+
+        #region private function
+        private bool Check_IO_DeviceUse(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        {
+            bool res = true;
+
+            if(Initial_IO_Success == false)
+                res = false;
+
+            if (lineNo >= MaxNumLine || devNo >= MaxNumDevicesPerLine || port >= MaxNumStatus)
+                res = false;
+
+            if(lineNo < 0 || devNo < 0 || port < 0)
+                res = false;
+
+            return res;
+        }
+        #endregion
+
 
         public bool Open()
         {
@@ -132,16 +145,16 @@ namespace Device_MN200
                         case PISO_MN200.Param.DEV_INFO_IO_16IN_16OUT_DEV:
                         case PISO_MN200.Param.DEV_INFO_IO_32IN_DEV:
                             {
-                                MN200_Param.DevNoType[lineNo, bDevNo] = bDevType;
-                                MN200_Param.IO_LineNo.Add(lineNo);
-                                MN200_Param.IO_DevNo.Add(bDevNo);
+                                MN200_IO_Param.DevNoType[lineNo, bDevNo] = bDevType;
+                                MN200_IO_Param.IO_LineNo.Add(lineNo);
+                                MN200_IO_Param.IO_DevNo.Add(bDevNo);
                                 IO_DevNum++;
                             }
                             break;
                         case PISO_MN200.Param.DEV_INFO_IO_32OUT_DEV:
                             {
-                                MN200_Param.DevNoType[lineNo, bDevNo] = bDevType;
-                                IO_DevNum++;
+                                //MN200_IO_Param.DevNoType[lineNo, bDevNo] = bDevType;
+                                //IO_DevNum++;
                             }
                             break;
                     }
@@ -150,6 +163,12 @@ namespace Device_MN200
 
             if(IO_DevNum == 0 && Motion_DevNum == 0)
                 return false;
+            
+            if(IO_DevNum > 0)
+                Initial_IO_Success = true;
+
+            if(Motion_DevNum > 0)
+                Initial_Motion_Success = true;
 
             Initial_Success = true;
 
@@ -163,12 +182,18 @@ namespace Device_MN200
             else
                 return "None";
         }
-        
+
+        #region Motion function
+        public int GetDeviceNo()
+        {
+            return 1;
+        }
+
         public bool SetMotionConfig(AXIS_INFO axisInfo, int UI_AxisId)
         {
             throw new NotImplementedException();
         }
-        
+
         public short UpdateMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
             PISO_MN200.Functions.mn_get_mdio_status(lineNo, devNo, ref MOTION_DEV_IO);
@@ -189,7 +214,7 @@ namespace Device_MN200
 
             return 0;
         }
-        
+
         public bool Servo_ONOff(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, bool flag = false)
         {
             try
@@ -206,100 +231,40 @@ namespace Device_MN200
                 return false;
             }
         }
-        
+
         public int GoHome(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int count = 1)
         {
             throw new NotImplementedException();
         }
-        
+
         public double GetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
             throw new NotImplementedException();
         }
-        
+
         public bool GetMotionStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, int state = 0)
         {
             throw new NotImplementedException();
         }
-        
+
         public bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
             throw new NotImplementedException();
         }
-        
+
         public int SetPosition(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double pos = 0)
         {
             throw new NotImplementedException();
         }
-        
+
         public int AbsoluteSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sacc, double Tdec, double Sdec)
         {
             throw new NotImplementedException();
         }
-        
+
         public int RelativeSMove(int axis, double position, double velocity_max, double velocity_start, double Tacc, double Sacc, double Tdec, double Sdec)
         {
             throw new NotImplementedException();
-        }
-        
-        public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
-        {
-            throw new NotImplementedException();
-        }
-        
-        public bool GetInputStatus(byte lineNo, byte DevNo, byte port)
-        {
-            throw new NotImplementedException();
-        }
-        
-        public void UpdateOutput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
-        {
-            throw new NotImplementedException();
-        }
-        
-        public bool GetOutputStatus(byte lineNo, byte DevNo, byte port)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SetOutputStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool GetOutputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
-        {
-            throw new NotImplementedException();
-        }
-
-        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
-        {
-            throw new NotImplementedException();
-        }
-
-        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Add_AI_VirtualData(byte port, double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Clear_AI_VirtualData()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetDeviceNo()
-        {
-            return 1;
         }
 
         public int ContinuousMove(int axis, int dir, double acc, double dec, double velocity_max)
@@ -310,6 +275,149 @@ namespace Device_MN200
         public int Stop(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, double Tdec = 0)
         {
             throw new NotImplementedException();
+        }
+        #endregion
+
+        #region IO Funciton
+        public IO_PARAMETER Get_IO_Info()
+        {
+            return MN200_IO_Param;
+        }
+
+        public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        {
+            if(!Check_IO_DeviceUse(cardNo, lineNo, devNo, port))
+                return;
+
+            UInt16 wData = 0;
+            byte m_CurDevType = MN200_IO_Param.DevNoType[lineNo, devNo];
+
+            if (m_CurDevType == PISO_MN200.Param.DEV_INFO_IO_32IN_DEV)
+            {
+                //讀取 DI 資料
+                PISO_MN200.Functions.mn_get_di_word(lineNo, devNo, 0, ref wData);
+
+                for (byte status = 0; status < 16; status++)
+                {
+                    MN200_IO_Param.Input_Status[lineNo, devNo, status] = (wData & (1 << status)) != 0;
+                }
+
+                PISO_MN200.Functions.mn_get_di_word(lineNo, devNo, 1, ref wData);
+
+                for (byte status = 16; status < 32; status++)
+                {
+                    MN200_IO_Param.Input_Status[lineNo, devNo, status] = (wData & (1 << (status - 16))) != 0;
+                }
+            }
+        }
+
+        public bool GetInputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
+        {
+            if (!Check_IO_DeviceUse(cardNo, lineNo, DevNo, port))
+                return false;
+
+            return MN200_IO_Param.Input_Status[lineNo, DevNo, port];
+        }
+
+        public void UpdateOutput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        {
+            if (!Check_IO_DeviceUse(cardNo, lineNo, devNo, port))
+                return;
+
+            byte dev = MN200_Param.DevNoType[lineNo, devNo];
+
+            if (dev == PISO_MN200.Param.DEV_INFO_IO_32OUT_DEV)
+            {
+                ushort uData_0 = 0;
+                ushort uData_1 = 0;
+
+                PISO_MN200.Functions.mn_get_do_word(lineNo, devNo, 0, ref uData_0);
+                Thread.Sleep(1);
+                PISO_MN200.Functions.mn_get_do_word(lineNo, devNo, 1, ref uData_1);
+
+                for (int i = 0; i < 16; i++)
+                {
+                    if (((uData_0 >> i) & 1) == 1)
+                        MN200_IO_Param.Output_Status[lineNo, devNo, i] = true;
+                    else
+                        MN200_IO_Param.Output_Status[lineNo, devNo, i] = false;
+
+                    if (((uData_1 >> i) & 1) == 1)
+                        MN200_IO_Param.Output_Status[lineNo, devNo, i + 16] = true;
+                    else
+                        MN200_IO_Param.Output_Status[lineNo, devNo, i + 16] = false;
+                }
+            }
+        }
+
+        public bool GetOutputStatus(byte cardNo, byte lineNo, byte DevNo, byte port)
+        {
+            if (!Check_IO_DeviceUse(cardNo, lineNo, DevNo, port))
+                return false;
+
+            UpdateOutput(0, lineNo, DevNo, port);
+
+            bool res = MN200_IO_Param.Output_Status[lineNo, DevNo, port];
+
+            return res;
+        }
+
+        public bool SetOutputStatus(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false)
+        {
+            if (!Check_IO_DeviceUse(cardNo, lineNo, devNo, port))
+                return false;
+
+            byte dev = MN200_Param.DevNoType[lineNo, devNo];
+
+            if (dev == PISO_MN200.Param.DEV_INFO_IO_32OUT_DEV)
+            {
+                ushort uData = 0;
+                short res = -1;
+                byte word_no = 0;
+
+                if (port < 16)
+                    word_no = 0;
+                else
+                {
+                    word_no = 1;
+                    port -= 16;
+                }
+
+                //取得目前DO狀態
+                PISO_MN200.Functions.mn_get_do_word(lineNo, devNo, word_no, ref uData);
+
+                if (truefalse)
+                    uData |= (ushort)(1 << port);    // 設為 1
+                else
+                    uData &= (ushort)~(1 << port);    // 設為 0
+
+                res = PISO_MN200.Functions.mn_set_do_word(lineNo, devNo, word_no, uData);
+            }
+
+            return true;
+        }
+
+        //[未開發]
+        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        // [Virtual IO Function]
+        public int Add_AI_VirtualData(byte port, double value)
+        {
+            return -1;
+        }
+
+        public int Clear_AI_VirtualData()
+        {
+            return 0;
         }
     }
 }

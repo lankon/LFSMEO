@@ -1,21 +1,22 @@
-﻿using System;
+﻿using DeviceCore;
+using DeviceUI.Camera;
+using Microsoft.Extensions.DependencyInjection;
+using ProbeTester.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Extensions.DependencyInjection;
-
 using ToolFunction;
-using ProbeTester.Base;
 
 namespace ProbeTester.Logic
 {
     #region Task
-    public class Task_PTPA : IBaseTask<Task_PTPA.WORK>
+    public class SubTaskCalibrationUpCCD : IBaseTask<SubTaskCalibrationUpCCD.WORK>
     {
-        public Task_PTPA(IBaseTaskDependence dependencies,
+        public SubTaskCalibrationUpCCD(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -36,20 +37,26 @@ namespace ProbeTester.Logic
         }
 
         #region parameter
+        private double UpCCDFocusPosX = 166.546;
+        private double UpCCDFocusPosY = 457.302;
+        private double UpCCDFocusPosZ = 9.8;
+        private double ChuckSafePosZ = 7.0;
+        private long Delay = 0;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private IF_CameraSetting CameraSetting;
         ProbeTesterFunction.AxisHardwareParam Axis;
+        ProbeTesterFunction.CameraHardwareParam Camera;
         ProbeTesterFunction ProbeTesterFunc;
         public enum WORK
         {
             NONE,
             INITIAL,
 
-            CHUCK_GOTO_UP_CCD_FOCUS_POS,
-            WAIT_CHUCK_GOTO_UP_CCD_FOCUS_POS,
+            TRIGGER_CCD,
+            GET_IMAGE,
 
-            CALIBRATION_UP_CCD,
-            WAIT_CALIBRATION_UP_CCD,
+
 
             END,
 
@@ -141,8 +148,10 @@ namespace ProbeTester.Logic
 
         private void Preset()
         {
+            CameraSetting = Deps.ServiceProvider.GetRequiredService<IF_CameraSetting>();
             ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
             Axis = ProbeTesterFunc.Axis_HardwareParam;
+            Camera = ProbeTesterFunc.Camera_HardwareParam;
         }
         #endregion
 
@@ -194,50 +203,27 @@ namespace ProbeTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.CHUCK_GOTO_UP_CCD_FOCUS_POS);
+
+                        CameraSetting.SwitchToCameraDisplay(Camera.Needle);
+                        Deps.CCD.StartGrab(Camera.Needle);
+                        Deps.Light.SetLightValue(ELightName.LIGHT_1, 20);
+
+                        Transition(WORK.TRIGGER_CCD);
                     }
                     break;
 
-                case WORK.CHUCK_GOTO_UP_CCD_FOCUS_POS:
+                case WORK.TRIGGER_CCD:
                     {
-                        //建立SubTask
-                        SubTask = new SubTaskGoToUpCCDFocusPos(Deps, F_StateControl);
-                        //委派必要Function
-                        //SubTask.SetForm(TaskForm);
-                        //設定是否有SubTask執行
-                        SetSubTaskProcessing(true);
-
-                        Transition(WORK.WAIT_CHUCK_GOTO_UP_CCD_FOCUS_POS);
+                        Deps.CCD.SoftTrigger(Camera.Needle);
+                        Transition(WORK.GET_IMAGE);
                     }
                     break;
-                case WORK.WAIT_CHUCK_GOTO_UP_CCD_FOCUS_POS:
+                case WORK.GET_IMAGE:
                     {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS:WORK.CALIBRATION_UP_CCD);
+                        Deps.CCD.GetImageDisplay(Camera.Needle, AppDomain.CurrentDomain.BaseDirectory + @"Setting\\VirtualData\\桌面.JPG");
+                        Transition(WORK.SUCCESS);
                     }
                     break;
-
-                case WORK.CALIBRATION_UP_CCD:
-                    {
-                        //建立SubTask
-                        SubTask = new SubTaskCalibrationUpCCD(Deps, F_StateControl);
-                        //委派必要Function
-                        //SubTask.SetForm(TaskForm);
-                        //設定是否有SubTask執行
-                        SetSubTaskProcessing(true);
-
-                        Transition(WORK.WAIT_CALIBRATION_UP_CCD);
-                    }
-                    break;
-                case WORK.WAIT_CALIBRATION_UP_CCD:
-                    {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check);
-                    }
-                    break;
-
-
-
 
                 case WORK.SUCCESS:
                     {

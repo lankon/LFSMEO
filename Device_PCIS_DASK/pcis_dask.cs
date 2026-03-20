@@ -189,5 +189,10 @@ namespace Device_PCIS_DASK
         {
             throw new NotImplementedException();
         }
+
+        public IO_PARAMETER Get_IO_Info()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

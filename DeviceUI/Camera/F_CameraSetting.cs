@@ -160,7 +160,10 @@ namespace DeviceUI.Camera
         }
         public void SwitchToCameraDisplay(int ccd)
         {
-            DisplayPanels[ccd].BringToFront();
+            if (DisplayPanels[ccd].InvokeRequired)
+                DisplayPanels[ccd].Invoke(new Action(() => SwitchToCameraDisplay(ccd)));
+            else
+                DisplayPanels[ccd].BringToFront();
         }
         public void DockDisplayToPanel(object container)
         {

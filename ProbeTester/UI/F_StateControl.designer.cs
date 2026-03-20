@@ -63,16 +63,16 @@ namespace ProbeTester.UI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 98F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(399, 159);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(411, 159);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // BtnRetry
             // 
             this.BtnRetry.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnRetry.BackgroundImage")));
             this.BtnRetry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnRetry.Location = new System.Drawing.Point(301, 4);
+            this.BtnRetry.Location = new System.Drawing.Point(310, 4);
             this.BtnRetry.Name = "BtnRetry";
-            this.BtnRetry.Size = new System.Drawing.Size(92, 92);
+            this.BtnRetry.Size = new System.Drawing.Size(97, 92);
             this.BtnRetry.TabIndex = 33;
             this.BtnRetry.UseVisualStyleBackColor = true;
             this.BtnRetry.Visible = false;
@@ -81,9 +81,9 @@ namespace ProbeTester.UI
             // 
             this.BtnContinue.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnContinue.BackgroundImage")));
             this.BtnContinue.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnContinue.Location = new System.Drawing.Point(202, 4);
+            this.BtnContinue.Location = new System.Drawing.Point(208, 4);
             this.BtnContinue.Name = "BtnContinue";
-            this.BtnContinue.Size = new System.Drawing.Size(92, 92);
+            this.BtnContinue.Size = new System.Drawing.Size(95, 92);
             this.BtnContinue.TabIndex = 32;
             this.BtnContinue.UseVisualStyleBackColor = true;
             this.BtnContinue.Click += new System.EventHandler(this.BtnContinue_Click);
@@ -94,7 +94,7 @@ namespace ProbeTester.UI
             this.BtnPause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BtnPause.Location = new System.Drawing.Point(4, 4);
             this.BtnPause.Name = "BtnPause";
-            this.BtnPause.Size = new System.Drawing.Size(92, 92);
+            this.BtnPause.Size = new System.Drawing.Size(95, 92);
             this.BtnPause.TabIndex = 31;
             this.BtnPause.UseVisualStyleBackColor = true;
             this.BtnPause.Click += new System.EventHandler(this.BtnPause_Click);
@@ -104,8 +104,8 @@ namespace ProbeTester.UI
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel1.SetColumnSpan(this.tableLayoutPanel2, 4);
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.78881F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 69.2112F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.67533F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75.32468F));
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.LablTaskState, 1, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 100);
@@ -113,7 +113,7 @@ namespace ProbeTester.UI
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(397, 58);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(409, 58);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // label1
@@ -121,7 +121,7 @@ namespace ProbeTester.UI
             this.label1.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(4, 1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 56);
+            this.label1.Size = new System.Drawing.Size(94, 56);
             this.label1.TabIndex = 2;
             this.label1.Text = "Processing";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -129,9 +129,9 @@ namespace ProbeTester.UI
             // LablTaskState
             // 
             this.LablTaskState.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LablTaskState.Location = new System.Drawing.Point(126, 1);
+            this.LablTaskState.Location = new System.Drawing.Point(105, 1);
             this.LablTaskState.Name = "LablTaskState";
-            this.LablTaskState.Size = new System.Drawing.Size(267, 56);
+            this.LablTaskState.Size = new System.Drawing.Size(269, 56);
             this.LablTaskState.TabIndex = 1;
             this.LablTaskState.Text = "Show";
             this.LablTaskState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -141,9 +141,9 @@ namespace ProbeTester.UI
             this.BtnAbort.BackColor = System.Drawing.Color.White;
             this.BtnAbort.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnAbort.BackgroundImage")));
             this.BtnAbort.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnAbort.Location = new System.Drawing.Point(103, 4);
+            this.BtnAbort.Location = new System.Drawing.Point(106, 4);
             this.BtnAbort.Name = "BtnAbort";
-            this.BtnAbort.Size = new System.Drawing.Size(92, 92);
+            this.BtnAbort.Size = new System.Drawing.Size(95, 92);
             this.BtnAbort.TabIndex = 30;
             this.BtnAbort.UseVisualStyleBackColor = false;
             this.BtnAbort.Click += new System.EventHandler(this.BtnAbort_Click);
@@ -153,7 +153,7 @@ namespace ProbeTester.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(406, 166);
+            this.ClientSize = new System.Drawing.Size(418, 166);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StateControl";

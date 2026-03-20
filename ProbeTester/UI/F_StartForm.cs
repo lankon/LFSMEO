@@ -21,17 +21,19 @@ namespace ProbeTester.UI
 {
     public partial class F_StartForm : Form
     {
-        public F_StartForm(IServiceProvider serviceProvider)
+        public F_StartForm(IServiceProvider serviceProvider, F_StartFormLogic startFormLogic)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
+            StartFormLogic = startFormLogic;
 
             InitialForm();
         }
 
         #region parameter define
         private CameraDisplayPanel CameraDisplay;
+        F_StartFormLogic StartFormLogic;
         IServiceProvider ServiceProvider;
         #endregion
 
@@ -42,6 +44,7 @@ namespace ProbeTester.UI
             ApplicationSetting.UpdataRecipeToForm<eF_Equipment_Setting>(this);
 
             CreateDynamicElemet();
+            StartFormLogic.SetVirtual_IO_Rule();
 
             ShowHint();
 
@@ -65,6 +68,15 @@ namespace ProbeTester.UI
             //CameraDisplay.Name = "CameraDisplay_1";
             //CameraDisplay.Size = new System.Drawing.Size(807, 523);
             //CameraDisplay.TabIndex = 0;
+        }
+        private void UpdatePage()
+        {
+            IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            setting.DockDisplayToPanel(Pnl_CCD);
+        }
+        private void LeavePage()
+        {
+
         }
         #endregion
 
@@ -142,6 +154,25 @@ namespace ProbeTester.UI
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             MainTask.SetTask<Task_PTPA>();
             MainTask.Run();
+        }
+
+        private void F_StartForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!this.Visible)
+            {
+                //SaveAllEnumSetting();
+                //ReadAllEnumSetting();
+
+                LeavePage();
+                ////釋放記憶體資源
+                //Tool.ReleaseButtonImages(this);
+                //this.Close();
+                //this.Dispose();
+            }
+            else
+            {
+                UpdatePage();
+            }
         }
     }
 }

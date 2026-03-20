@@ -30,20 +30,19 @@ namespace DeviceFunction
         #region private function
         private void Process()
         {
-            while(true)
+            while (true)
             {
                 //Thread持續讀取Input訊號
                 for (int k = 0; k < IO.Count; k++)
                 {
                     if(IO[k].GetName() == "MN200")
                     {
-                        //List<byte> LineNo = IO[k].Get_IO_LineNo();
-                        //List<byte> DevNo = IO[k].Get_IO_DevNo();
+                        IO_PARAMETER info = IO[k].Get_IO_Info();
 
-                        //for (byte i = 0; i < LineNo.Count; i++)
-                        //{
-                        //    IO[k].UpdateInput(lineNo: LineNo[i], devNo: DevNo[i]);
-                        //}
+                        for (byte i = 0; i < info.IO_LineNo.Count; i++)
+                        {
+                            IO[k].UpdateInput(lineNo: info.IO_LineNo[i], devNo: info.IO_DevNo[i]);
+                        }
                     }
                     else if(IO[k].GetName() == "PCI_9111DG")
                     {

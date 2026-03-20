@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using ProbeTester.Base;
+using DeviceCore;
 
 namespace ProbeTester.Logic
 {
@@ -254,6 +255,9 @@ namespace ProbeTester.Logic
                     {
                         if(Deps.DML.Get_Motion_Complete(Axis.AxisZ))
                         {
+                            Deps.DIOL.SetOutputStatus(EIOName.CCD_FiducialMaskWork, true);
+                            Deps.DIOL.SetOutputStatus(EIOName.CCD_FiducialMaskIdle, false);
+
                             Tool.ResetTimeCount(out Delay);
                             Transition(WORK.WAIT_AXIS_STABE);
                         }
@@ -262,9 +266,15 @@ namespace ProbeTester.Logic
 
                 case WORK.WAIT_AXIS_STABE:
                     {
-                        if(Tool.GetTime(Delay) > 200)
+                        if(Tool.GetTime(Delay) > 200 && 
+                           Deps.DIOL.GetInputStatus(EIOName.CCD_FiducialMaskWork_Sensor) == true &&
+                           Deps.DIOL.GetInputStatus(EIOName.CCD_FiducialMaskIdle_Sensor) == false)
                         {
                             Transition(WORK.SUCCESS);
+                        }
+                        else if(Tool.GetTime(Delay) > 5000)
+                        {
+                            Transition(WORK.ABORT);
                         }
                     }
                     break;

@@ -22,6 +22,7 @@ namespace Device_Virtual
         }
 
         #region parameter define
+        private bool PassSimulationTime = true;                                                 //是否跳過模擬運動,直接到達目標位置
         private Dictionary<int, AXIS_INFO> AxisInfoMap = new Dictionary<int, AXIS_INFO>();
         private Dictionary<int, double> CurrentPosition = new Dictionary<int, double>();        //當前位置(mm)
         private Dictionary<int, double> MoveTime = new Dictionary<int, double>();               //模擬運動時間(ms)
@@ -158,6 +159,9 @@ namespace Device_Virtual
         }
         public bool GetMotionComplete(byte cardNo = 0, byte lineNo = 0, byte devNo = 0)
         {
+            if(PassSimulationTime == true)
+                return true;
+            
             if (Tool.GetTime(MoveTimer[devNo]) < MoveTime[devNo])
                 return false;
             else
@@ -253,6 +257,9 @@ namespace Device_Virtual
                         break;
 
                     double time = Tool.GetTime(startTicks, time: "s");
+
+                    //if (PassSimulationTime == true)
+                    //    time = 5;
 
                     if (dir == 1)    //負向
                         CurrentPosition[axis] = CurrentPosition[axis] - time * velocity_max;

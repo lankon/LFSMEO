@@ -41,10 +41,15 @@ namespace DeviceCore
         #endregion
 
         SafePos_Sensor,
+
+        CCD_FiducialMaskWork_Sensor,
+        CCD_FiducialMaskIdle_Sensor,
         #endregion
 
         #region Output
         Vacuum_Pump,
+        CCD_FiducialMaskWork,
+        CCD_FiducialMaskIdle,
         #endregion
     }
 
