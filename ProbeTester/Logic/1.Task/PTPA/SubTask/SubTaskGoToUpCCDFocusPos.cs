@@ -39,7 +39,7 @@ namespace ProbeTester.Logic
         #region parameter
         private double UpCCDFocusPosX = 166.546;
         private double UpCCDFocusPosY = 457.302;
-        private double UpCCDFocusPosZ = 9.8;
+        private double UpCCDFocusPosZ = 9.82;
         private double ChuckSafePosZ = 7.0;
         private long Delay = 0;
         private IF_BaseTask SubTask;                  //子流程

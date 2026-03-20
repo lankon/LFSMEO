@@ -260,7 +260,11 @@ namespace Device_Hikvision
                 image = currentPtr;
                 image_height = frameInfo.nHeight;
                 image_width = frameInfo.nWidth;
-                pixelFormat = PixelFormat.Format24bppRgb;   //先暫時固定回傳
+
+                if (frameInfo.enPixelType == MvGvspPixelType.PixelType_Gvsp_Mono8)
+                    pixelFormat = PixelFormat.Format8bppIndexed;
+                else
+                    pixelFormat = PixelFormat.Format24bppRgb;
 
                 m_pOperator[index].WriteIndex = 1 - m_pOperator[index].WriteIndex;
                 return 0;

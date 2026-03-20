@@ -58,6 +58,7 @@ namespace Device_MN200
             MN200_Param.Motion_LineNo = new List<byte>();
 
             // [IO Parameter Initial]
+            MN200_IO_Param.DevNoType = new byte[MaxNumLine, MaxNumDevicesPerLine];
             MN200_IO_Param.Input_Status = new bool[MaxNumLine, MaxNumDevicesPerLine, MaxNumStatus];
             MN200_IO_Param.Output_Status = new bool[MaxNumLine, MaxNumDevicesPerLine, MaxNumStatus];
             MN200_IO_Param.IO_DevNo = new List<byte>();
@@ -144,17 +145,12 @@ namespace Device_MN200
 
                         case PISO_MN200.Param.DEV_INFO_IO_16IN_16OUT_DEV:
                         case PISO_MN200.Param.DEV_INFO_IO_32IN_DEV:
+                        case PISO_MN200.Param.DEV_INFO_IO_32OUT_DEV:
                             {
                                 MN200_IO_Param.DevNoType[lineNo, bDevNo] = bDevType;
                                 MN200_IO_Param.IO_LineNo.Add(lineNo);
                                 MN200_IO_Param.IO_DevNo.Add(bDevNo);
                                 IO_DevNum++;
-                            }
-                            break;
-                        case PISO_MN200.Param.DEV_INFO_IO_32OUT_DEV:
-                            {
-                                //MN200_IO_Param.DevNoType[lineNo, bDevNo] = bDevType;
-                                //IO_DevNum++;
                             }
                             break;
                     }
@@ -324,7 +320,7 @@ namespace Device_MN200
             if (!Check_IO_DeviceUse(cardNo, lineNo, devNo, port))
                 return;
 
-            byte dev = MN200_Param.DevNoType[lineNo, devNo];
+            byte dev = MN200_IO_Param.DevNoType[lineNo, devNo];
 
             if (dev == PISO_MN200.Param.DEV_INFO_IO_32OUT_DEV)
             {
@@ -367,7 +363,7 @@ namespace Device_MN200
             if (!Check_IO_DeviceUse(cardNo, lineNo, devNo, port))
                 return false;
 
-            byte dev = MN200_Param.DevNoType[lineNo, devNo];
+            byte dev = MN200_IO_Param.DevNoType[lineNo, devNo];
 
             if (dev == PISO_MN200.Param.DEV_INFO_IO_32OUT_DEV)
             {

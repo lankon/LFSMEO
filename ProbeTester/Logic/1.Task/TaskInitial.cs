@@ -224,15 +224,15 @@ namespace ProbeTester.Logic
                     {
                         Deps.DML.GoHome(Axis.AxisX);
                         Deps.DML.GoHome(Axis.AxisY);
-                        Deps.DML.GoHome(Axis.AxisA);
+                        //Deps.DML.GoHome(Axis.AxisA);
 
                         Transition(WORK.WAIT_GO_HOME_XYA);
                     }
                     break;
                 case WORK.WAIT_GO_HOME_XYA:
                     {
-                        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY) &&
-                           Deps.DML.Get_Home_Complete(Axis.AxisA))
+                        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY)/* &&
+                           Deps.DML.Get_Home_Complete(Axis.AxisA)*/)
                         {
                             Transition(WORK.SUCCESS);
                         }

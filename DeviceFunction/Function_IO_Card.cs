@@ -302,6 +302,9 @@ namespace DeviceFunction
             {
                 ioListDict.TryGetValue(effects[i].in_name.ToString(), out effects_io[i]);
 
+                if (effects_io[i] == null)
+                    continue;
+
                 effects_data[i] = (effects_io[i].Title_CardNum,
                                     effects_io[i].Title_LineNum,
                                     effects_io[i].Title_DevNum,

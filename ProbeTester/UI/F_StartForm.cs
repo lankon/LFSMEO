@@ -72,6 +72,9 @@ namespace ProbeTester.UI
         private void UpdatePage()
         {
             IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            IF_CameraButton btn = ServiceProvider.GetRequiredService<IF_CameraButton>();
+
+            setting.SwitchToCameraDisplay(btn.GetCurrentBtnNum());
             setting.DockDisplayToPanel(Pnl_CCD);
         }
         private void LeavePage()
