@@ -220,7 +220,7 @@ namespace ProbeTester.Logic
                     break;
                 case WORK.GET_IMAGE:
                     {
-                        Deps.CCD.GetImageDisplay(Camera.Needle, AppDomain.CurrentDomain.BaseDirectory + @"Setting\\VirtualData\\桌面.JPG");
+                        Deps.CCD.GetImageDisplay(Camera.Needle, AppDomain.CurrentDomain.BaseDirectory + @"Setting\\VirtualData\\CCD_Fiducial.bmp");
                         Transition(WORK.SUCCESS);
                     }
                     break;

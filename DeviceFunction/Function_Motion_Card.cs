@@ -648,14 +648,14 @@ namespace DeviceFunction
             if (mode == "Abs")
             {
                 res = DML[DML2Axis[axis]].AbsoluteSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
-                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{pos}");
+                Tool.SaveLogToFile($"[Action] 軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{pos}");
             }
             else if(mode == "Rel")
             {
                 res = DML[DML2Axis[axis]].RelativeSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
 
                 double new_pos = DML[DML2Axis[axis]].GetPosition(devNo: dev_no) + pos;
-                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{new_pos}");
+                Tool.SaveLogToFile($"[Action] 軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{new_pos}");
             }
 
             if(res != 0)
@@ -699,7 +699,7 @@ namespace DeviceFunction
                 res = DML[DML2Axis[axis]].RelativeSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, sfac);
 
                 double new_pos = DML[DML2Axis[axis]].GetPosition(devNo: dev_no) + pos;
-                Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{new_pos}");
+                Tool.SaveLogToFile($"[Action] 軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{new_pos}");
             }
             else
             {

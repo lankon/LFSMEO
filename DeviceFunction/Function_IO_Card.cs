@@ -165,6 +165,12 @@ namespace DeviceFunction
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
 
+            if (iOData == null)
+            {
+                Tool.SaveLogToFile($"Input:{name}不存在", level: "WRN");
+                return false;
+            }
+
             byte card = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
             byte devNo = (byte)iOData.Title_DevNum;
@@ -215,6 +221,12 @@ namespace DeviceFunction
         public bool SetOutputStatus(EIOName name, bool truefalse)
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
+
+            if(iOData == null)
+            {
+                Tool.SaveLogToFile($"Output:{name}不存在", level:"WRN");
+                return false;
+            }
 
             byte cardNo = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;

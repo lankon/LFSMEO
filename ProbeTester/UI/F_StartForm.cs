@@ -157,6 +157,7 @@ namespace ProbeTester.UI
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             MainTask.SetTask<Task_PTPA>();
             MainTask.Run();
+
         }
 
         private void F_StartForm_VisibleChanged(object sender, EventArgs e)
