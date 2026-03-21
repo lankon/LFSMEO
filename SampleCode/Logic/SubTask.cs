@@ -11,7 +11,6 @@ using SampleCode.Base;
 
 namespace SampleCode.Logic
 {
-    #region Task
     public class StdSubTask:IBaseTask<StdSubTask.WORK>
     {
         public StdSubTask(IBaseTaskDependence dependencies, 
@@ -245,6 +244,4 @@ namespace SampleCode.Logic
             }
         }
     }
-    #endregion
- 
 }

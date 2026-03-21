@@ -71,6 +71,10 @@ namespace RGBTester.Device
 
             return true;
         }
+        public bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b)
+        {
+            return true;
+        }
         public bool SetLed_CurrentMode(string mode)
         {
             //Tool.SaveLogToFile($"Set LED Board {mode}", level: "DBG");
@@ -164,6 +168,8 @@ namespace RGBTester.Device
         {
             return true;
         }
+
+        
         #endregion
     }
 }

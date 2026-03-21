@@ -9,7 +9,7 @@ namespace RGBTester.Base
     public enum eF_StartForm
     {
         Cmbx_TestMode,
-        Cmbx_Select_HL_Mode,
+        Cmbx_PartTest,
         TxtBx_Left_SN,
         TxtBx_Right_SN,
         Cmbx_ProductType,
@@ -57,5 +57,12 @@ namespace RGBTester.Base
 
         TxtBx_LCM_MaxCurrent,
         TxtBx_HCM_MaxCurrent,
+    }
+    public enum ePartTestItem
+    {
+        IV_Test_HCM,
+        IV_Test_LCM,
+        IV_Test,
+        BurinIn,
     }
 }

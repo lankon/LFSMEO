@@ -28,6 +28,7 @@ namespace RGBTester.Logic
         ILightEngineFunction LEA;
         public TestHardwareParam HardwareParam { get; private set; }
         public TestFailReasonFlag FailReasonFlag { get; set; } = new TestFailReasonFlag();
+        public TestSlopeOffsetResult SlopeOffsetResult { get; set; } = new TestSlopeOffsetResult();
         #endregion
 
         public class AvgData
@@ -75,6 +76,58 @@ namespace RGBTester.Logic
             public EIOName DAQ_Iin_LCM;
         }
 
+        public class TestSlopeOffsetResult
+        {
+            public double R_Slope_HCM;
+            public double R_Slope_LCM;
+            public double G_Slope_HCM;
+            public double G_Slope_LCM;
+            public double B_Slope_HCM;
+            public double B_Slope_LCM;
+            public double R_Offset_HCM;
+            public double R_Offset_LCM;
+            public double G_Offset_HCM;
+            public double G_Offset_LCM;
+            public double B_Offset_HCM;
+            public double B_Offset_LCM;
+
+            public void SetResult(string color, string mode, double slope, double offset)
+            {
+                //[RGB/High]
+                if (color == "R" && mode == "HCM")
+                {
+                    R_Slope_HCM = slope;
+                    R_Offset_HCM = offset;
+                }
+                else if (color == "G" && mode == "HCM")
+                {
+                    G_Slope_HCM = slope;
+                    G_Offset_HCM = offset;
+                }
+                else if (color == "B" && mode == "HCM")
+                {
+                    B_Slope_HCM = slope;
+                    B_Offset_HCM = offset;
+                }
+                //[RGB/Low]
+                else if (color == "R" && mode == "LCM")
+                {
+                    R_Slope_LCM = slope;
+                    R_Offset_LCM = offset;
+                }
+                else if (color == "G" && mode == "LCM")
+                {
+                    G_Slope_LCM = slope;
+                    G_Offset_LCM = offset;
+                }
+                else if (color == "B" && mode == "LCM")
+                {
+                    B_Slope_LCM = slope;
+                    B_Offset_LCM = offset;
+                }
+            }
+        }
+
         public class TestFailReasonFlag
         {
             public bool IsSlopeErr = false;
@@ -90,13 +143,28 @@ namespace RGBTester.Logic
 
             public string GetFailDescription()
             {
+                List<string> error_message = new List<string>();
+
                 if (IsSlopeErr)
-                    return "Slope Fail";
+                    error_message.Add("Slope Fail");
                 if (IsClampingErr)
-                    return "Clamping Fail";
+                    error_message.Add("Clamping Fail");
                 if (IsTemperatureErr)
-                    return "Temperature Fail";
-                return "None";
+                    error_message.Add("Temperature Fail");
+
+                if(IsSlopeErr == false && IsClampingErr == false && IsTemperatureErr == false)
+                    error_message.Add("None");
+
+                string res = "";
+                for(int i=0; i<error_message.Count; i++)
+                {
+                    if (i == error_message.Count - 1)
+                        res += error_message[i];
+                    else
+                        res += error_message[i] + " && ";
+                }
+
+                return res;
             }
         }
 
@@ -160,7 +228,7 @@ namespace RGBTester.Logic
         }
         public void YieldStatistics(bool pass, string sn, string description = "None")
         {
-            if (ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.Cmbx_YieldRecord) == 0)
+            if (ApplicationSetting.Get_Int_Recipe<eF_YieldReport>((int)eF_YieldReport.Cmbx_YieldRecord) == 0)
                 return;
             
             string product_type = "None";

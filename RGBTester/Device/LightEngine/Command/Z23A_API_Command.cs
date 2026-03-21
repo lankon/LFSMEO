@@ -102,6 +102,29 @@ namespace RGBTester.Device
             else
                 return false;
         }
+        public bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b)
+        {
+            if (IsInitial == false) return false;
+
+            Z23A_FW.Color color = Z23A_FW.Color.COLOR_ALL;
+            int value_R = value_r, value_G = value_g, value_B = value_b;
+
+            if (value_R > 1023)   //硬體限制最大1023
+                value_R = 1023;
+            if (value_G > 1023)   //硬體限制最大1023
+                value_G = 1023;
+            if (value_B > 1023)   //硬體限制最大1023
+                value_B = 1023;
+
+            int[] set_value = new int[] { value_R, value_G, value_B };
+
+            Z23A_FW.Error_Code res = api.RAA491901_Set_DAC_Value(Z23A_FW.Color.COLOR_ALL, set_value);
+
+            if (res == Z23A_FW.Error_Code.STATUS_OK)
+                return true;
+            else
+                return false;
+        }
 
         public bool SetLed_CurrentMode(string mode)
         {

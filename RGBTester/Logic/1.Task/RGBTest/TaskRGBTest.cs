@@ -42,6 +42,7 @@ namespace RGBTester.Logic
         #region parameter
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private ePartTestItem part_test_mode;
         private bool OnlyLeftTest = false;
         private bool OnlyRightTest = false;
         public enum WORK
@@ -70,12 +71,24 @@ namespace RGBTester.Logic
         #region private function
         private void CreateTestFile()
         {
-            if(!OnlyRightTest)
+            part_test_mode = (ePartTestItem)ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
+
+            if (!OnlyRightTest)
             {
-                Deps.File.CreateFile("Left_R");
-                Deps.File.CreateFile("Left_G");
-                Deps.File.CreateFile("Left_B");
-                Deps.File.CreateFile("Left_Calibration");
+                if (Scope.TaskRGBTest.IsSingleTest == false || 
+                   (Scope.TaskRGBTest.IsSingleTest == true && part_test_mode != ePartTestItem.BurinIn))
+                {
+                    Deps.File.CreateFile("Left_R");
+                    Deps.File.CreateFile("Left_G");
+                    Deps.File.CreateFile("Left_B");
+                    Deps.File.CreateFile("Left_Calibration");
+                }
+
+                if (Scope.TaskRGBTest.IsSingleTest == false ||
+                   (Scope.TaskRGBTest.IsSingleTest == true && part_test_mode == ePartTestItem.BurinIn))
+                {
+                    Deps.File.CreateFile("Left_BurnIn");
+                }
 
                 string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                 Tool.SaveLogToFile("測試樣品SN:" + SN);
@@ -83,10 +96,20 @@ namespace RGBTester.Logic
 
             if(!OnlyLeftTest)
             {
-                Deps.File.CreateFile("Right_R");
-                Deps.File.CreateFile("Right_G");
-                Deps.File.CreateFile("Right_B");
-                Deps.File.CreateFile("Right_Calibration");
+                if (Scope.TaskRGBTest.IsSingleTest == false ||
+                   (Scope.TaskRGBTest.IsSingleTest == true && part_test_mode != ePartTestItem.BurinIn))
+                {
+                    Deps.File.CreateFile("Right_R");
+                    Deps.File.CreateFile("Right_G");
+                    Deps.File.CreateFile("Right_B");
+                    Deps.File.CreateFile("Right_Calibration");
+                }
+
+                if (Scope.TaskRGBTest.IsSingleTest == false ||
+                   (Scope.TaskRGBTest.IsSingleTest == true && part_test_mode == ePartTestItem.BurinIn))
+                {
+                    Deps.File.CreateFile("Right_BurnIn");
+                }
 
                 string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                 Tool.SaveLogToFile("測試樣品SN:" + SN);
@@ -100,6 +123,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Left_G");
                 Deps.File.CloseFile("Left_B");
                 Deps.File.CloseFile("Left_Calibration");
+                Deps.File.CloseFile("Left_BurnIn");
             }
 
             if (!OnlyLeftTest)
@@ -108,6 +132,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseFile("Right_G");
                 Deps.File.CloseFile("Right_B");
                 Deps.File.CloseFile("Right_Calibration");
+                Deps.File.CloseFile("Right_BurnIn");
             }
         }
         private void CopyAndCloseTestFile()
@@ -118,6 +143,7 @@ namespace RGBTester.Logic
                 Deps.File.CopyAndCloseTestFile("Left_G");
                 Deps.File.CopyAndCloseTestFile("Left_B");
                 Deps.File.CopyAndCloseTestFile("Left_Calibration");
+                Deps.File.CopyAndCloseTestFile("Left_BurnIn");
             }
 
             if (!OnlyLeftTest)
@@ -126,6 +152,7 @@ namespace RGBTester.Logic
                 Deps.File.CopyAndCloseTestFile("Right_G");
                 Deps.File.CopyAndCloseTestFile("Right_B");
                 Deps.File.CopyAndCloseTestFile("Right_Calibration");
+                Deps.File.CopyAndCloseTestFile("Right_BurnIn");
             }
         }
         private void CloseAndDeleteTestFile()
@@ -136,6 +163,7 @@ namespace RGBTester.Logic
                 Deps.File.CloseAndDeleteFile("Left_G");
                 Deps.File.CloseAndDeleteFile("Left_B");
                 Deps.File.CloseAndDeleteFile("Left_Calibration");
+                Deps.File.CloseAndDeleteFile("Left_BurnIn");
             }
             if (!OnlyLeftTest)
             {
@@ -143,13 +171,12 @@ namespace RGBTester.Logic
                 Deps.File.CloseAndDeleteFile("Right_G");
                 Deps.File.CloseAndDeleteFile("Right_B");
                 Deps.File.CloseAndDeleteFile("Right_Calibration");
+                Deps.File.CloseAndDeleteFile("Right_BurnIn");
             }
         }
-        private void Preset()
+        private void Preset() 
         {
             CreateTestFile();
-
-            
         }
         protected override void Transition(WORK target)
         {
@@ -288,7 +315,7 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        if (check == TASK_STATUS.SUCCESS)
+                        if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
                             Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN), "Left_Calibration");
 
                         if(OnlyLeftTest) 
@@ -311,7 +338,7 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        if (check == TASK_STATUS.SUCCESS)
+                        if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
                             Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN), "Right_Calibration");
 
                         CheckResult(check, SUCCESS: WORK.SUCCESS);

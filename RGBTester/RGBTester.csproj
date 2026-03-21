@@ -121,10 +121,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\eF_ParameterSetting.cs" />
-    <Compile Include="Base\eF_Recipe.cs" />
-    <Compile Include="Base\eF_StartForm.cs" />
-    <Compile Include="Base\eF_Equipment_Setting.cs" />
+    <Compile Include="Base\eElement_Form\eF_YieldReport.cs" />
+    <Compile Include="Base\eElement_Form\eF_ParameterSetting.cs" />
+    <Compile Include="Base\eElement_Form\eF_Recipe.cs" />
+    <Compile Include="Base\eElement_Form\eF_StartForm.cs" />
+    <Compile Include="Base\eElement_Form\eF_Equipment_Setting.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
     <Compile Include="Base\IF_Form\IF_ParameterSetting.cs" />
     <Compile Include="Base\IF_Form\IF_StartForm.cs" />
@@ -136,6 +137,8 @@
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskBurnInTest.cs" />
+    <Compile Include="Logic\2.FormLogic\F_YieldReportLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_ParameterSettingLogic.cs" />
     <Compile Include="Logic\Function\TestResultDataBase.cs" />
     <Compile Include="UI\F_ParameterSetting.cs">
@@ -182,6 +185,12 @@
     </Compile>
     <Compile Include="UI\F_DAQ_Chart.designer.cs">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_YieldReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_YieldReport.designer.cs">
+      <DependentUpon>F_YieldReport.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\OEM\F_Equipment_Setting.cs">
       <SubType>Form</SubType>
@@ -254,6 +263,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_DAQ_Chart.resx">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_YieldReport.resx">
+      <DependentUpon>F_YieldReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OEM\F_Equipment_Setting.resx">
       <DependentUpon>F_Equipment_Setting.cs</DependentUpon>

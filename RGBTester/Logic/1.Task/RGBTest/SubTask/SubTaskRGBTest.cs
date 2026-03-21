@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToolFunction;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace RGBTester.Logic
 {
@@ -56,6 +57,9 @@ namespace RGBTester.Logic
             WAIT_LED_R_TEST,
             WAIT_LED_G_TEST,
             WAIT_LED_B_TEST,
+
+            BURN_IN_TEST,
+            WAIT_BURN_IN_TEST,
 
             END,
 
@@ -199,7 +203,19 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.LED_R_TEST);
+
+                        if (Scope.TaskRGBTest.IsSingleTest == true)
+                        {
+                            int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
+
+                            if (select == (int)ePartTestItem.BurinIn)
+                                Transition(WORK.BURN_IN_TEST);
+                            else
+                                Transition(WORK.LED_R_TEST);
+                        }
+                        else
+                            Transition(WORK.LED_R_TEST);
+
                     }
                     break;
 
@@ -247,6 +263,34 @@ namespace RGBTester.Logic
                 case WORK.WAIT_LED_B_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
+
+                        if (Scope.TaskRGBTest.IsSingleTest == true)
+                        {
+                            int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
+
+                            if (select == (int)ePartTestItem.IV_Test_LCM || select == (int)ePartTestItem.IV_Test ||
+                                select == (int)ePartTestItem.IV_Test_HCM)
+                                CheckResult(check, SUCCESS: WORK.SUCCESS);
+                            else if (select == (int)ePartTestItem.BurinIn)
+                                CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
+                        }
+                        else
+                            CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
+                    }
+                    break;
+                #endregion
+                #region BURN_IN
+                case WORK.BURN_IN_TEST:
+                    {
+                        Tool.SaveLogToFile("BURN_IN_TEST", level: "INF");
+                        SubTask = new SubTaskBurnInTest(Deps, F_StateControl, Type+"_BurnIn");
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_BURN_IN_TEST);
+                    }
+                    break;
+                case WORK.WAIT_BURN_IN_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
                         CheckResult(check);
                     }
                     break;
@@ -256,8 +300,8 @@ namespace RGBTester.Logic
                     {
                         if(Scope.TestFail == true)
                         {
-                            StatusBox.ShowMessage("Fail");
                             string description = RGBfunc.FailReasonFlag.GetFailDescription();
+                            StatusBox.ShowMessage(description);
                             RGBfunc.YieldStatistics(false, SN, description);
                         }
                         else

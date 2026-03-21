@@ -12,7 +12,7 @@ using ToolFunction;
 
 namespace RGBTester.Device
 {
-    public class Z23ACommand : ILightEngineCommand
+    public class Z23ACommand //: ILightEngineCommand
     {
         public Z23ACommand()
         {
@@ -302,6 +302,11 @@ namespace RGBTester.Device
         }
 
         public bool Set_RegisterValue(byte adr, byte len, byte[] value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SetLed_AllColorDAC(byte side, int value)
         {
             throw new NotImplementedException();
         }
