@@ -76,7 +76,7 @@ namespace RGBTester.UI
             this.Cmbx_MachineType.FormattingEnabled = true;
             this.Cmbx_MachineType.Items.AddRange(new object[] {
             "NONE",
-            "VPT_3IN1",
+            "ProbeTester",
             "RGBTester"});
             this.Cmbx_MachineType.Location = new System.Drawing.Point(304, 6);
             this.Cmbx_MachineType.Name = "Cmbx_MachineType";

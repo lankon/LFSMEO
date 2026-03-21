@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
+using System.Drawing;
 
 //[Device]
 using DeviceCore;
@@ -13,6 +16,7 @@ using DeviceFunction;
 using DeviceUI.Motion;
 using DeviceUI.IO;
 using DeviceUI.LightControl;
+using DeviceUI.Camera;
 using DeviceUI.Spectrometer;
 using Device_MN200;
 using Device_PCIS_DASK;
@@ -22,6 +26,8 @@ using Device_OTO;
 using Device_APS;
 using Device_FTLight;
 using Device_VirtualLight;
+using Device_Hikvision;
+using Device_VirtualCamera;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -30,10 +36,12 @@ using UserPrivilege.Logic;
 
 //[Machine]
 using RGBTester;
+using ProbeTester;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing;
 using Device_Spectrum_Virtual;
+
 
 namespace LFSMEO
 {
@@ -45,8 +53,8 @@ namespace LFSMEO
         {
             switch (Scope.MachineType)
             {
-                case EMachineType.VPT_3IN1:
-                //return host.Services.GetRequiredService<F_VPT3IN1_Main>();
+                case EMachineType.ProbeTester:
+                    return host.Services.GetRequiredService<ProbeTester.UI.F_MainForm>();
                 case EMachineType.RGBTester:
                     return host.Services.GetRequiredService<RGBTester.UI.F_MainForm>();
                 default:
@@ -89,10 +97,14 @@ namespace LFSMEO
             services.AddSingleton<ISpectrometer, Virtual_Spectrum>();
             services.AddSingleton<ILightControl, Light_FT_116>();
             services.AddSingleton<ILightControl, VirtualLight>();
+            services.AddSingleton<ICamera, Hikvision>();
+            services.AddSingleton<ICamera, VirtualCamera>();
             services.AddSingleton<IChillerControl>(Klxz);
 
             //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
+            services.AddSingleton<IF_CameraSetting, F_CameraSetting >();
+            services.AddSingleton<IF_CameraButton, F_CameraButton>();
             services.AddSingleton<IF_AxisSetting, F_AxisSetting>();
             services.AddSingleton<IF_AxisButton, F_AxisButton>();
             services.AddSingleton<IF_IO_Card, F_IO_Card>();
@@ -102,6 +114,7 @@ namespace LFSMEO
 
             //[Form Logic]
             services.AddSingleton<F_MotionSettingLogic>();
+            services.AddSingleton<F_CameraSettingLogic>();
             services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();
 
             //[Function]
@@ -109,14 +122,14 @@ namespace LFSMEO
             services.AddSingleton<IFunction_IO_Card, Function_IO_Card>();
             services.AddSingleton<IFunction_Spectrometer, Function_Spectrometer>();
             services.AddSingleton<IFunction_LightControl, Function_LightControl>();
+            services.AddSingleton<IFunction_Camera, Function_Camera>();
 
             //[Machine]
             Icon AppIcon = null; string AppName = "";
             switch (Scope.MachineType)
             {
-                case EMachineType.VPT_3IN1:
-                    //services.AddTransient<, ProbeTesterLogic>();
-                    //services.AddTransient<IMachineLogic, ProbeTesterLogic>();
+                case EMachineType.ProbeTester:
+                    services.AddProbeTesterServices();
                     break;
                 case EMachineType.RGBTester:
                     services.AddRGBTesterServices();

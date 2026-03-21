@@ -30,20 +30,19 @@ namespace DeviceFunction
         #region private function
         private void Process()
         {
-            while(true)
+            while (true)
             {
                 //Thread持續讀取Input訊號
                 for (int k = 0; k < IO.Count; k++)
                 {
                     if(IO[k].GetName() == "MN200")
                     {
-                        //List<byte> LineNo = IO[k].Get_IO_LineNo();
-                        //List<byte> DevNo = IO[k].Get_IO_DevNo();
+                        IO_PARAMETER info = IO[k].Get_IO_Info();
 
-                        //for (byte i = 0; i < LineNo.Count; i++)
-                        //{
-                        //    IO[k].UpdateInput(lineNo: LineNo[i], devNo: DevNo[i]);
-                        //}
+                        for (byte i = 0; i < info.IO_LineNo.Count; i++)
+                        {
+                            IO[k].UpdateInput(lineNo: info.IO_LineNo[i], devNo: info.IO_DevNo[i]);
+                        }
                     }
                     else if(IO[k].GetName() == "PCI_9111DG")
                     {
@@ -166,6 +165,12 @@ namespace DeviceFunction
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
 
+            if (iOData == null)
+            {
+                Tool.SaveLogToFile($"Input:{name}不存在", level: "WRN");
+                return false;
+            }
+
             byte card = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
             byte devNo = (byte)iOData.Title_DevNum;
@@ -216,6 +221,12 @@ namespace DeviceFunction
         public bool SetOutputStatus(EIOName name, bool truefalse)
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
+
+            if(iOData == null)
+            {
+                Tool.SaveLogToFile($"Output:{name}不存在", level:"WRN");
+                return false;
+            }
 
             byte cardNo = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
@@ -302,6 +313,9 @@ namespace DeviceFunction
             for (int i=0; i<effects.Length; i++)
             {
                 ioListDict.TryGetValue(effects[i].in_name.ToString(), out effects_io[i]);
+
+                if (effects_io[i] == null)
+                    continue;
 
                 effects_data[i] = (effects_io[i].Title_CardNum,
                                     effects_io[i].Title_LineNum,

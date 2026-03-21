@@ -191,6 +191,11 @@ namespace Device_Virtual
                 return false;
             return true;
         }
+
+        public IO_PARAMETER Get_IO_Info()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

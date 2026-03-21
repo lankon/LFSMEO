@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera\eF_CameraSetting.cs" />
+    <Compile Include="Camera\IF_CameraButton.cs" />
+    <Compile Include="Camera\IF_CameraSetting.cs" />
+    <Compile Include="Camera\ICameraDisplayPanel.cs" />
+    <Compile Include="Camera\IFunction_Camera.cs" />
+    <Compile Include="Camera\ICamera.cs" />
     <Compile Include="LightControl\IFunction_LightControl.cs" />
     <Compile Include="LightControl\IF_LightControl.cs" />
     <Compile Include="LightControl\ILightControl.cs" />

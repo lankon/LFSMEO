@@ -19,6 +19,24 @@ namespace DeviceCore
         CONTINUOUS_FAST,
         CONTINUOUS_NORMAL,
     }
+    public enum AXIS_NAME
+    {
+        AXIS_X,
+        AXIS_Y,
+        AXIS_Z,
+        AXIS_A,
+        AXIS_AX,
+        AXIS_AY,
+        AXIS_AZ,
+        AXIS_AA,
+        AXIS_EX,
+        AXIS_EY,
+        AXIS_EZ,
+        AXIS_EA,
+        AXIS_IX,
+        AXIS_IY,
+        AXIS_IZ,
+    }
 
     public interface IFunction_MotionCard
     {

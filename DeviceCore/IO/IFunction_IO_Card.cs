@@ -40,6 +40,11 @@ namespace DeviceCore
         Right_VLED_B,
         #endregion
 
+        SafePos_Sensor_In,
+        SafePos_Sensor_Out,
+
+        CCD_FiducialMaskWork_Sensor,
+        CCD_FiducialMaskIdle_Sensor,
         SafePos_Sensor,
         GoToSafePos,
         #endregion
@@ -48,6 +53,9 @@ namespace DeviceCore
         SafePos_Sensor_In,
         SafePos_Sensor_Out,
         Vacuum_Pump,
+        CCD_FiducialMaskWork,
+        CCD_FiducialMaskIdle,
+        GoToSafePos,
         #endregion
     }
 

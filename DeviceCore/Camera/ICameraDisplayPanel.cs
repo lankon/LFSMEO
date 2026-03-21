@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO.Ports;
 
-namespace ProbeTester.Base.SettingEnum
+namespace DeviceCore
 {
-    public enum eOEMSetting
+    public interface ICameraDisplayPanel
     {
-        Cmbx_ShowFormName,
+        
     }
 }
