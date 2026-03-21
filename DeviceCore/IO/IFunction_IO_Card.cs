@@ -50,12 +50,9 @@ namespace DeviceCore
         #endregion
 
         #region Output
-        SafePos_Sensor_In,
-        SafePos_Sensor_Out,
         Vacuum_Pump,
         CCD_FiducialMaskWork,
         CCD_FiducialMaskIdle,
-        GoToSafePos,
         #endregion
     }
 

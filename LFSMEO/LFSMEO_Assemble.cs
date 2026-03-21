@@ -28,6 +28,7 @@ using Device_FTLight;
 using Device_VirtualLight;
 using Device_Hikvision;
 using Device_VirtualCamera;
+using Device_Spectrum_Virtual;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -37,10 +38,7 @@ using UserPrivilege.Logic;
 //[Machine]
 using RGBTester;
 using ProbeTester;
-using System.IO;
-using System.Diagnostics;
-using System.Drawing;
-using Device_Spectrum_Virtual;
+
 
 
 namespace LFSMEO
