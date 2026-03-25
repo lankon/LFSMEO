@@ -186,6 +186,12 @@
     <Compile Include="UI\F_DAQ_Chart.designer.cs">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_FunctionTester.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_FunctionTester.designer.cs">
+      <DependentUpon>F_FunctionTester.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_YieldReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_DAQ_Chart.resx">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_FunctionTester.resx">
+      <DependentUpon>F_FunctionTester.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_YieldReport.resx">
       <DependentUpon>F_YieldReport.cs</DependentUpon>

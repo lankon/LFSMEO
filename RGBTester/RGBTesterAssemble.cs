@@ -38,6 +38,7 @@ namespace RGBTester
             services.AddSingleton<IF_StatusBox, F_StatusBox>();
             services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
             services.AddSingleton<F_DAQ_Chart>();
+            services.AddSingleton<F_FunctionTester>();
 
             //[Form]
             //退出Form後即close掉,要用再new

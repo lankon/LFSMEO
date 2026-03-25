@@ -54,16 +54,16 @@ namespace RGBTester.UI
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.TxtBx_BurnInCurrent_B = new System.Windows.Forms.TextBox();
-            this.TxtBx_BurnInCurrent_G = new System.Windows.Forms.TextBox();
-            this.TxtBx_BurnInCurrent_R = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.label6 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.TxtBx_BurnInCurrent_B = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.TxtBx_BurnInCurrent_G = new System.Windows.Forms.TextBox();
+            this.TxtBx_BurnInCurrent_R = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -349,33 +349,6 @@ namespace RGBTester.UI
             this.label5.Text = "Current (mA)";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // TxtBx_BurnInCurrent_B
-            // 
-            this.TxtBx_BurnInCurrent_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_BurnInCurrent_B.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_BurnInCurrent_B.Location = new System.Drawing.Point(366, 4);
-            this.TxtBx_BurnInCurrent_B.Name = "TxtBx_BurnInCurrent_B";
-            this.TxtBx_BurnInCurrent_B.Size = new System.Drawing.Size(84, 29);
-            this.TxtBx_BurnInCurrent_B.TabIndex = 12;
-            // 
-            // TxtBx_BurnInCurrent_G
-            // 
-            this.TxtBx_BurnInCurrent_G.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_BurnInCurrent_G.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_BurnInCurrent_G.Location = new System.Drawing.Point(216, 4);
-            this.TxtBx_BurnInCurrent_G.Name = "TxtBx_BurnInCurrent_G";
-            this.TxtBx_BurnInCurrent_G.Size = new System.Drawing.Size(81, 29);
-            this.TxtBx_BurnInCurrent_G.TabIndex = 11;
-            // 
-            // TxtBx_BurnInCurrent_R
-            // 
-            this.TxtBx_BurnInCurrent_R.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
-            this.TxtBx_BurnInCurrent_R.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_BurnInCurrent_R.Location = new System.Drawing.Point(66, 4);
-            this.TxtBx_BurnInCurrent_R.Name = "TxtBx_BurnInCurrent_R";
-            this.TxtBx_BurnInCurrent_R.Size = new System.Drawing.Size(81, 29);
-            this.TxtBx_BurnInCurrent_R.TabIndex = 10;
-            // 
             // label16
             // 
             this.label16.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -422,6 +395,25 @@ namespace RGBTester.UI
             this.tableLayoutPanel5.Size = new System.Drawing.Size(454, 35);
             this.tableLayoutPanel5.TabIndex = 16;
             // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label12.Location = new System.Drawing.Point(154, 1);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(55, 33);
+            this.label12.TabIndex = 11;
+            this.label12.Text = "G:";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_BurnInCurrent_B
+            // 
+            this.TxtBx_BurnInCurrent_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInCurrent_B.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInCurrent_B.Location = new System.Drawing.Point(366, 4);
+            this.TxtBx_BurnInCurrent_B.Name = "TxtBx_BurnInCurrent_B";
+            this.TxtBx_BurnInCurrent_B.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_BurnInCurrent_B.TabIndex = 12;
+            // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -432,15 +424,23 @@ namespace RGBTester.UI
             this.label6.Text = "R:";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label12
+            // TxtBx_BurnInCurrent_G
             // 
-            this.label12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label12.Location = new System.Drawing.Point(154, 1);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(55, 33);
-            this.label12.TabIndex = 11;
-            this.label12.Text = "G:";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.TxtBx_BurnInCurrent_G.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInCurrent_G.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInCurrent_G.Location = new System.Drawing.Point(216, 4);
+            this.TxtBx_BurnInCurrent_G.Name = "TxtBx_BurnInCurrent_G";
+            this.TxtBx_BurnInCurrent_G.Size = new System.Drawing.Size(81, 29);
+            this.TxtBx_BurnInCurrent_G.TabIndex = 11;
+            // 
+            // TxtBx_BurnInCurrent_R
+            // 
+            this.TxtBx_BurnInCurrent_R.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_BurnInCurrent_R.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BurnInCurrent_R.Location = new System.Drawing.Point(66, 4);
+            this.TxtBx_BurnInCurrent_R.Name = "TxtBx_BurnInCurrent_R";
+            this.TxtBx_BurnInCurrent_R.Size = new System.Drawing.Size(81, 29);
+            this.TxtBx_BurnInCurrent_R.TabIndex = 10;
             // 
             // label13
             // 

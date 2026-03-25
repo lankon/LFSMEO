@@ -11,6 +11,12 @@ using ToolFunction;
 
 namespace RGBTester.Logic
 {
+    public enum eModuleType
+    {
+        IV_Calibration,
+        Function_Test,
+    }
+    
     public class RGBTesterFunction
     {
         public RGBTesterFunction(IServiceProvider serviceProvider)
@@ -251,6 +257,16 @@ namespace RGBTester.Logic
 
             TestResultDataBase data_base = ServiceProvider.GetRequiredService<TestResultDataBase>();
             data_base.Manager.InsertData(log);
+        }
+        public eModuleType GetModuleType()
+        {
+            bool isElectrical = ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ElectricalModule) == 1 ? true : false;
+            bool isOptical = ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_OpticalModule) == 1 ? true : false;
+            
+            if(isElectrical && isOptical)
+                return eModuleType.Function_Test;
+            else
+                return eModuleType.IV_Calibration;
         }
     }
 }

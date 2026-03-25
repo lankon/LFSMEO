@@ -1,6 +1,7 @@
 ﻿using DeviceCore;
 using Microsoft.Extensions.DependencyInjection;
 using RGBTester.Base;
+using RGBTester.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ToolFunction;
 
 namespace RGBTester.Logic
@@ -54,6 +56,15 @@ namespace RGBTester.Logic
             f_spectrometer.Update_Spectrum_List();
             RGBTesterMachine.Spectrometer.Initial_All_Spectrometer();
         }
+        private void ShowModuleForm<T>() where T : class
+        {
+            var startForm = ServiceProvider.GetRequiredService<T>();
+            if (startForm is Form form)
+            {
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
+        }
         #endregion
 
         public void Initial_AllDevice_Function()
@@ -74,6 +85,22 @@ namespace RGBTester.Logic
             var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
             string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             recipe.ReadRecipe(cur_recipe_name);
+        }
+
+        public void ShowStartForm()
+        {
+            Tool.HideElementOnPanel(Scope.MainPanel);
+
+            RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
+
+            if(func.GetModuleType() == eModuleType.IV_Calibration)
+                ShowModuleForm<IF_StartForm>();
+            else if(func.GetModuleType() == eModuleType.Function_Test)
+                ShowModuleForm<F_FunctionTester>();
+
+            var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
+            Tool.SetForm(Scope.UpButtonPanel, group);
+            group.Show();
         }
 
         public int DeleteExpireFileInFolder()

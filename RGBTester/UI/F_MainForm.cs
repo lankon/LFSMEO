@@ -126,19 +126,7 @@ namespace RGBTester.UI
         }
         private void ShowStartForm()
         {
-            Tool.HideElementOnPanel(Scope.MainPanel);
-
-            var startForm = ServiceProvider.GetRequiredService<IF_StartForm>();
-
-            if(startForm is Form form)
-            {
-                Tool.SetForm(Scope.MainPanel, form);
-                form.Show();
-            }
-
-            var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
-            Tool.SetForm(Scope.UpButtonPanel, group);
-            group.Show();
+            MainFormLogic.ShowStartForm();
         }
         #endregion
 
