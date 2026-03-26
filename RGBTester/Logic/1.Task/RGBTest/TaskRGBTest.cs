@@ -9,6 +9,8 @@ using System.IO;
 
 using ToolFunction;
 using RGBTester.Base;
+using Microsoft.Extensions.DependencyInjection;
+using SampleCode.Logic;
 
 namespace RGBTester.Logic
 {
@@ -43,6 +45,7 @@ namespace RGBTester.Logic
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         private ePartTestItem part_test_mode;
+        private RGBTesterFunction RGBfunc;
         private bool OnlyLeftTest = false;
         private bool OnlyRightTest = false;
         public enum WORK
@@ -50,6 +53,9 @@ namespace RGBTester.Logic
             NONE,
             INITIAL,
             IDLE,
+
+            MOVE_TO_TEST_POS,
+            WAIT_MOVE_TO_TEST_POS,
 
             LEFT_GLASSES_TEST,
             RIGHT_GLASSES_TEST,
@@ -176,6 +182,8 @@ namespace RGBTester.Logic
         }
         private void Preset() 
         {
+            RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+
             CreateTestFile();
         }
         protected override void Transition(WORK target)
@@ -291,13 +299,45 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        
-                        if(OnlyRightTest)
-                            Transition(WORK.RIGHT_GLASSES_TEST);
+
+                        if(RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                        {
+                            Transition(WORK.MOVE_TO_TEST_POS);
+                        }
                         else
-                            Transition(WORK.LEFT_GLASSES_TEST);
+                        {
+                            if (OnlyRightTest)
+                                Transition(WORK.RIGHT_GLASSES_TEST);
+                            else
+                                Transition(WORK.LEFT_GLASSES_TEST);
+                        }
                     }
                     break;
+
+                #region MOVE_TO_TEST_POS
+                case WORK.MOVE_TO_TEST_POS:
+                    {
+                        Tool.SaveLogToFile("MOVE_TO_TEST_POS", level: "INF");
+                        SubTask = new SubTaskMoveToElectrical(Deps, F_StateControl);
+                        SetSubTaskProcessing(true);
+
+                        Transition(WORK.WAIT_MOVE_TO_TEST_POS);
+                    }
+                    break;
+                case WORK.WAIT_MOVE_TO_TEST_POS:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+
+                        if (check == TASK_STATUS.SUCCESS)
+                        {
+                            if (OnlyRightTest)
+                                Transition(WORK.RIGHT_GLASSES_TEST);
+                            else
+                                Transition(WORK.LEFT_GLASSES_TEST);
+                        }
+                    }
+                    break;
+                #endregion
 
                 #region Left
                 case WORK.LEFT_GLASSES_TEST:
@@ -325,6 +365,7 @@ namespace RGBTester.Logic
                     }
                     break;
                 #endregion
+
                 #region Right
                 case WORK.RIGHT_GLASSES_TEST:
                     {

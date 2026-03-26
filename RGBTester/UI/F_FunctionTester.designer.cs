@@ -33,14 +33,14 @@ namespace RGBTester.UI
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_Left_SN = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.Btn_StartTest = new System.Windows.Forms.Button();
             this.Btn_ElectricalFrom = new System.Windows.Forms.Button();
             this.Pnl_Setting = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.Btn_OpticalForm = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.Btn_OpticalForm = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.Pnl_Setting.SuspendLayout();
@@ -91,6 +91,13 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(563, 39);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
+            // TxtBx_Left_SN
+            // 
+            this.TxtBx_Left_SN.Location = new System.Drawing.Point(261, 6);
+            this.TxtBx_Left_SN.Name = "TxtBx_Left_SN";
+            this.TxtBx_Left_SN.Size = new System.Drawing.Size(296, 29);
+            this.TxtBx_Left_SN.TabIndex = 5;
+            // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -100,13 +107,6 @@ namespace RGBTester.UI
             this.label1.TabIndex = 3;
             this.label1.Text = "SN";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_Left_SN
-            // 
-            this.TxtBx_Left_SN.Location = new System.Drawing.Point(261, 6);
-            this.TxtBx_Left_SN.Name = "TxtBx_Left_SN";
-            this.TxtBx_Left_SN.Size = new System.Drawing.Size(296, 29);
-            this.TxtBx_Left_SN.TabIndex = 5;
             // 
             // Btn_StartTest
             // 
@@ -130,6 +130,7 @@ namespace RGBTester.UI
             this.Btn_ElectricalFrom.TabIndex = 10;
             this.Btn_ElectricalFrom.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.Btn_ElectricalFrom.UseVisualStyleBackColor = true;
+            this.Btn_ElectricalFrom.Click += new System.EventHandler(this.Btn_ElectricalFrom_Click);
             // 
             // Pnl_Setting
             // 
@@ -143,15 +144,15 @@ namespace RGBTester.UI
             this.Pnl_Setting.Size = new System.Drawing.Size(1302, 116);
             this.Pnl_Setting.TabIndex = 11;
             // 
-            // label2
+            // label3
             // 
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(5, 86);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(107, 24);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Electrical";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Location = new System.Drawing.Point(100, 86);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(107, 24);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Optical";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Btn_OpticalForm
             // 
@@ -166,15 +167,15 @@ namespace RGBTester.UI
             this.Btn_OpticalForm.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.Btn_OpticalForm.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // label2
             // 
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(100, 86);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(107, 24);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "Optical";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(5, 86);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(107, 24);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Electrical";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel1
             // 

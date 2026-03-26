@@ -228,6 +228,8 @@ namespace DeviceFunction
                 return false;
             }
 
+            Tool.SaveLogToFile($"[Action] Output:{name}, Value:{truefalse}");
+
             byte cardNo = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
             byte devNo = (byte)iOData.Title_DevNum;

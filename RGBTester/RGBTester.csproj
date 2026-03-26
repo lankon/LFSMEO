@@ -137,7 +137,9 @@
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskMoveToElectrical.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskBurnInTest.cs" />
+    <Compile Include="Logic\2.FormLogic\F_FunctionTesterLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_YieldReportLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_ParameterSettingLogic.cs" />
     <Compile Include="Logic\Function\TestResultDataBase.cs" />

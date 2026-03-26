@@ -40,6 +40,11 @@ namespace DeviceCore
         Right_VLED_B,
         #endregion
 
+        SphereUpSensor,
+        ChuckDownSensor,
+        ChuckRightSensor,
+        ChuckUpSensor,
+
         SafePos_Sensor_In,
         SafePos_Sensor_Out,
 
@@ -50,6 +55,14 @@ namespace DeviceCore
         #endregion
 
         #region Output
+        SphereUp,
+        SphereDown,
+        ChuckRight,
+        ChuckLeft,
+        ChuckUp,
+        ChuckDown,
+
+
         Vacuum_Pump,
         CCD_FiducialMaskWork,
         CCD_FiducialMaskIdle,

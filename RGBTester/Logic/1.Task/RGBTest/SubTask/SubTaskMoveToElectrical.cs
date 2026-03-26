@@ -7,13 +7,14 @@ using System.Threading;
 //using System.Windows.Forms;
 
 using ToolFunction;
-using SampleCode.Base;
+using RGBTester.Base;
+using DeviceCore;
 
 namespace SampleCode.Logic
 {
-    public class StdSubTask:IBaseTask<StdSubTask.WORK>
+    public class SubTaskMoveToElectrical : IBaseTask<SubTaskMoveToElectrical.WORK>
     {
-        public StdSubTask(IBaseTaskDependence dependencies, 
+        public SubTaskMoveToElectrical(IBaseTaskDependence dependencies, 
                           IF_StateControl f_StateControl,  
                           string set_state = "Default") : base(dependencies)
         {
@@ -44,15 +45,17 @@ namespace SampleCode.Logic
             INITIAL,
             IDLE,
 
-            RUNNING,
-            RUNNING_1,
-            RUNNING_2,
+            CHECK_POSITION_READY,
+            SPHERE_UP,
+            CHUCK_DOWN,
+            CHUCK_RIGHT,
+            CHUCK_UP,
 
-            END,
+            END, 
 
             SUCCESS,
             FAIL,
-
+             
             PAUSE,
             ABORT,
             CONTINUE,
@@ -184,19 +187,75 @@ namespace SampleCode.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.RUNNING);
+                        Transition(WORK.CHECK_POSITION_READY);
                     }
                     break;
-                case WORK.RUNNING:
+
+                case WORK.CHECK_POSITION_READY:
                     {
-                        Transition(WORK.RUNNING_1);
+                        if(Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor) == true &&
+                           Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
+                           Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor) == true)
+                        {
+                            Transition(WORK.SUCCESS);
+                        }
+                        else
+                        {
+                            Transition(WORK.SPHERE_UP);
+                        }
                     }
                     break;
-                case WORK.RUNNING_1:
+
+                case WORK.SPHERE_UP:
                     {
+                        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, false);
+                        Transition(WORK.CHUCK_DOWN);
+                    }
+                    break;
+
+                case WORK.CHUCK_DOWN:
+                    if (Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.CHUCK_RIGHT);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+
+                case WORK.CHUCK_RIGHT:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.CHUCK_UP);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+
+                case WORK.CHUCK_UP:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, false);
+                        ResetTimeCount(out task_delay);
                         Transition(WORK.SUCCESS);
                     }
+                    else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        Transition(WORK.ABORT);
+                    }
                     break;
+
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);

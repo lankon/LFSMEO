@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RGBTester.Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,22 +12,25 @@ using System.Windows.Forms;
 
 
 using ToolFunction;
+using RGBTester.Base;
 
 namespace RGBTester.UI
 {
     public partial class F_FunctionTester : Form
     {
-        public F_FunctionTester(IServiceProvider serviceProvider)
+        public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
+            FunctionTesterLogic = f_FunctionTesterLogic;
 
             InitialForm();
         }
 
         #region parameter define
         IServiceProvider ServiceProvider;
+        F_FunctionTesterLogic FunctionTesterLogic;
         #endregion
 
         #region private function
@@ -34,6 +38,8 @@ namespace RGBTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
+
+            FunctionTesterLogic.SetVirtual_IO_Rule();
 
             ShowHint();
 
@@ -72,6 +78,16 @@ namespace RGBTester.UI
         private void LeavePage()
         {
         }
+        private void ShowForm<T>() where T : class
+        {
+            var startForm = ServiceProvider.GetRequiredService<T>();
+            if (startForm is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
+        }
         #endregion
 
         #region public function
@@ -100,5 +116,9 @@ namespace RGBTester.UI
             }
         }
 
+        private void Btn_ElectricalFrom_Click(object sender, EventArgs e)
+        {
+            ShowForm<IF_StartForm>();
+        }
     }
 }
