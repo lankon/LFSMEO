@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Windows.Forms;
 
 using ToolFunction;
+using DeviceCore;
 using RGBTester.Base;
 
 namespace RGBTester.Logic
 {
-    #region Task
-    public class TaskMotionTest : IBaseTask<TaskMotionTest.WORK>
+    public class SubTaskUnLoad : IBaseTask<SubTaskUnLoad.WORK>
     {
-        public TaskMotionTest(IBaseTaskDependence dependencies,
-            IF_StateControl f_StateControl,
-            string set_state = "Default")
-            : base(dependencies)
+        public SubTaskUnLoad(IBaseTaskDependence dependencies, 
+                          IF_StateControl f_StateControl,  
+                          string set_state = "Default") : base(dependencies)
         {
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
@@ -28,37 +26,35 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
+            ResetTimeCount(out task_delay);
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
+        private int task_delay = 0;
+        private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        //private F_StateControl TaskForm;
         public enum WORK
         {
             NONE,
             INITIAL,
             IDLE,
 
-            INITIAL_XY,
-            WAIT_INITIAL_XY,
+            CHECK_POSITION_READY,
+            SPHERE_UP,
+            CHUCK_DOWN,
+            CHUCK_RIGHT,
+            CHUCK_UP,
 
-            XY_MOVE,
-            WAIT_XY_MOVE,
-
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
-
-            END,
+            END, 
 
             SUCCESS,
             FAIL,
-
+             
             PAUSE,
             ABORT,
             CONTINUE,
@@ -190,62 +186,74 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.INITIAL_XY);
+                        Transition(WORK.CHECK_POSITION_READY);
                     }
                     break;
 
-                case WORK.INITIAL_XY:
+                case WORK.CHECK_POSITION_READY:
                     {
-                        Deps.DML.GoHome(0);
-                        Deps.DML.GoHome(1);
-                        Transition(WORK.WAIT_INITIAL_XY);
-                    }
-                    break;
-                case WORK.WAIT_INITIAL_XY:
-                    {
-                        if(Deps.DML.Get_Home_Complete(0) && Deps.DML.Get_Home_Complete(1))
-                            Transition(WORK.XY_MOVE);
-                    }
-                    break;
-                case WORK.XY_MOVE:
-                    {
-                        Deps.DML.PTP_Move(0, 50);
-                        Deps.DML.PTP_Move(1, 50);
-                        Transition(WORK.WAIT_XY_MOVE);
-                    }
-                    break;
-                case WORK.WAIT_XY_MOVE:
-                    {
-                        if(Deps.DML.Get_Motion_Complete(0) && Deps.DML.Get_Motion_Complete(1))
+                        if(Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor) == true &&
+                           Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
+                           Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor) == true)
+                        {
                             Transition(WORK.SUCCESS);
+                        }
+                        else
+                        {
+                            Transition(WORK.SPHERE_UP);
+                        }
                     }
                     break;
 
-                #region SubTask
-                //case WORK.INITIAL_SUBTASK:
-                //    {
-                //        Transition(WORK.SUBTASK_PROCESS);
-                //    }
-                //    break;
-                //case WORK.SUBTASK_PROCESS:
-                //    {
-                //        //建立SubTask
-                //        SubTask = new StdSubTask(Deps, F_StateControl);
-                //        //委派必要Function
-                //        //SubTask.SetForm(TaskForm);
-                //        //設定是否有SubTask執行
-                //        SetSubTaskProcessing(true);
+                case WORK.SPHERE_UP:
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, false);
+                        Transition(WORK.CHUCK_DOWN);
+                    }
+                    break;
 
-                //        Transition(WORK.WAIT_SUBTASK_PROCESS);
-                //    }
-                //    break;
-                //case WORK.WAIT_SUBTASK_PROCESS:
-                //    {
-                //        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                //        CheckResult(check);
-                //    }
-                //    break;
-                #endregion
+                case WORK.CHUCK_DOWN:
+                    if (Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.CHUCK_RIGHT);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+
+                case WORK.CHUCK_RIGHT:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.CHUCK_UP);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+
+                case WORK.CHUCK_UP:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.SUCCESS);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
 
                 case WORK.SUCCESS:
                     {
@@ -255,7 +263,10 @@ namespace RGBTester.Logic
                     break;
                 case WORK.FAIL:
                     {
-                        SetStatus(TASK_STATUS.FAIL);
+                        if (CheckTimeOverSec(task_delay, delay_time))
+                        {
+                            SetStatus(TASK_STATUS.FAIL);
+                        }
                     }
                     break;
                 case WORK.PAUSE:
@@ -266,7 +277,6 @@ namespace RGBTester.Logic
                 case WORK.ABORT:
                     {
                         SetStatus(TASK_STATUS.ABORT);
-                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -280,13 +290,13 @@ namespace RGBTester.Logic
                     break;
                 case WORK.END:
                     {
-                        
-                        SetStatus(TASK_STATUS.SUCCESS);
+                        if (CheckTimeOverSec(task_delay, delay_time))
+                        {
+                            SetStatus(TASK_STATUS.SUCCESS);
+                        }
                     }
                     break;
             }
         }
     }
-    #endregion
- 
 }

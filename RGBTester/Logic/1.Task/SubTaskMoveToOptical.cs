@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-//using System.Windows.Forms;
 
 using ToolFunction;
 using DeviceCore;
@@ -12,9 +11,9 @@ using RGBTester.Base;
 
 namespace RGBTester.Logic
 {
-    public class SubTaskMoveToElectrical : IBaseTask<SubTaskMoveToElectrical.WORK>
+    public class SubTaskMoveToOptical : IBaseTask<SubTaskMoveToOptical.WORK>
     {
-        public SubTaskMoveToElectrical(IBaseTaskDependence dependencies, 
+        public SubTaskMoveToOptical(IBaseTaskDependence dependencies, 
                           IF_StateControl f_StateControl,  
                           string set_state = "Default") : base(dependencies)
         {

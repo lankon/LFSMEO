@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using RGBTester.Base;
-using Microsoft.Extensions.DependencyInjection;
-using SampleCode.Logic;
 
 namespace RGBTester.Logic
 {
