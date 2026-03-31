@@ -58,6 +58,7 @@ namespace RGBTester.Base
         TxtBx_LCM_MaxCurrent,
         TxtBx_HCM_MaxCurrent,
     }
+
     public enum ePartTestItem
     {
         IV_Test_HCM,
@@ -65,4 +66,10 @@ namespace RGBTester.Base
         IV_Test,
         BurinIn,
     }
+}
+
+//Form中的選項
+namespace RGBTester.Base.F_StartForm
+{
+    
 }

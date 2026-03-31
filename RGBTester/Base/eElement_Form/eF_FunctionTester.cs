@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RGBTester.Base
+{
+    public enum eF_FunctionTester
+    {
+        Cmbx_TestMode,
+        TxtBx_SerialNumber,
+    }
+}
+
+namespace RGBTester.Base.F_FunctionTester
+{
+    public enum eTestMode
+    {
+        LEFT,
+        RIGHT,
+        BOTH,
+    }
+}

@@ -78,6 +78,9 @@ namespace RGBTester.Logic
         {
             part_test_mode = (ePartTestItem)ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
 
+            string SN = RGBfunc.SerialNumber;
+            Tool.SaveLogToFile("測試樣品SN:" + SN);
+
             if (!OnlyRightTest)
             {
                 if (Scope.TaskRGBTest.IsSingleTest == false || 
@@ -94,9 +97,6 @@ namespace RGBTester.Logic
                 {
                     Deps.File.CreateFile("Left_BurnIn");
                 }
-
-                string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-                Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
 
             if(!OnlyLeftTest)
@@ -115,9 +115,6 @@ namespace RGBTester.Logic
                 {
                     Deps.File.CreateFile("Right_BurnIn");
                 }
-
-                string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
-                Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
         }
         private void CloseTestFile()
@@ -355,7 +352,7 @@ namespace RGBTester.Logic
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
                         if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
-                            Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN), "Left_Calibration");
+                            Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Left_Calibration");
 
                         if(OnlyLeftTest) 
                             CheckResult(check, SUCCESS: WORK.SUCCESS);
@@ -379,7 +376,7 @@ namespace RGBTester.Logic
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
                         if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
-                            Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN), "Right_Calibration");
+                            Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Right_Calibration");
 
                         CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }

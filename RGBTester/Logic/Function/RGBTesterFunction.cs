@@ -26,6 +26,7 @@ namespace RGBTester.Logic
         }
 
         #region parameter define
+        public string SerialNumber = "";
         private double Rfb_LCM = 1;
         private double Rfb_HCM = 1;
         private double MaxCurrent_LCM = 30;

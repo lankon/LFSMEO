@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-//using System.Windows.Forms;
 
 using ToolFunction;
-using SampleCode.Base;
+using DeviceCore;
+using RGBTester.Base;
 
-namespace SampleCode.Logic
+namespace RGBTester.Logic
 {
-    public class StdSubTask:IBaseTask<StdSubTask.WORK>
+    public class SubTaskMoveToOptical : IBaseTask<SubTaskMoveToOptical.WORK>
     {
-        public StdSubTask(IBaseTaskDependence dependencies, 
+        public SubTaskMoveToOptical(IBaseTaskDependence dependencies, 
                           IF_StateControl f_StateControl,  
                           string set_state = "Default") : base(dependencies)
         {
@@ -26,12 +26,15 @@ namespace SampleCode.Logic
                     State = WORK.INITIAL;
                     break;
             }
+            ResetTimeCount(out task_delay);
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
         }
 
         #region parameter
+        private int task_delay = 0;
+        private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         //private F_StateControl TaskForm;
@@ -41,15 +44,19 @@ namespace SampleCode.Logic
             INITIAL,
             IDLE,
 
-            RUNNING,
-            RUNNING_1,
-            RUNNING_2,
+            CHECK_POSITION_READY,
+            CHUCK_DOWN,
+            CHUCK_LEFT,
+            SPHERE_LR_SIDE,
+            CHUCK_UP,
+            SPHERE_DOWN,
+            CHECK_ACTION_FINISH,
 
-            END,
+            END, 
 
             SUCCESS,
             FAIL,
-
+             
             PAUSE,
             ABORT,
             CONTINUE,
@@ -181,19 +188,99 @@ namespace SampleCode.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.RUNNING);
+                        Transition(WORK.CHECK_POSITION_READY);
                     }
                     break;
-                case WORK.RUNNING:
+
+                case WORK.CHECK_POSITION_READY:
                     {
-                        Transition(WORK.RUNNING_1);
+                        if(Deps.DIOL.GetInputStatus(EIOName.SphereDownSensor) == true &&
+                           Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
+                           Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor) == true)
+                        {
+                            Transition(WORK.SUCCESS);
+                        }
+                        else
+                        {
+                            Transition(WORK.CHUCK_DOWN);
+                        }
                     }
                     break;
-                case WORK.RUNNING_1:
+                case WORK.CHUCK_DOWN:
                     {
-                        Transition(WORK.SUCCESS);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, false);
+                        Transition(WORK.CHUCK_LEFT);
                     }
                     break;
+                case WORK.CHUCK_LEFT:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.SPHERE_LR_SIDE);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+                case WORK.SPHERE_LR_SIDE:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor))
+                    {
+                        //Deps.DIOL.SetOutputStatus(EIOName.Sp, true);
+                        //Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.CHUCK_UP);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+                case WORK.CHUCK_UP:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.SPHERE_DOWN);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+                case WORK.SPHERE_DOWN:
+                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor))
+                    {
+                        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, false);
+                        ResetTimeCount(out task_delay);
+                        Transition(WORK.CHECK_ACTION_FINISH);
+                    }
+                    else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        Transition(WORK.ABORT);
+                    }
+                    break;
+                case WORK.CHECK_ACTION_FINISH:
+                    {
+                        if (Deps.DIOL.GetInputStatus(EIOName.SphereDownSensor) == true &&
+                            Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
+                            Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor) == true)
+                        {
+                            Transition(WORK.SUCCESS);
+                        }
+                        else
+                        {
+                            Transition(WORK.ABORT);
+                        }
+                    }
+                    break;
+
+
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);
@@ -202,7 +289,10 @@ namespace SampleCode.Logic
                     break;
                 case WORK.FAIL:
                     {
-                        SetStatus(TASK_STATUS.FAIL);
+                        if (CheckTimeOverSec(task_delay, delay_time))
+                        {
+                            SetStatus(TASK_STATUS.FAIL);
+                        }
                     }
                     break;
                 case WORK.PAUSE:
@@ -226,7 +316,10 @@ namespace SampleCode.Logic
                     break;
                 case WORK.END:
                     {
-                        SetStatus(TASK_STATUS.SUCCESS);
+                        if (CheckTimeOverSec(task_delay, delay_time))
+                        {
+                            SetStatus(TASK_STATUS.SUCCESS);
+                        }
                     }
                     break;
             }

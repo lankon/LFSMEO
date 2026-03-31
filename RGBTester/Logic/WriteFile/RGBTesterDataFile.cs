@@ -13,12 +13,13 @@ namespace RGBTester.Logic
 {
     public class RGBTesterDataFile: IWriteFile
     {
-        public RGBTesterDataFile()
+        public RGBTesterDataFile(RGBTesterFunction rGBTesterFunction)
         {
-
+            RGBfunc = rGBTesterFunction;
         }
 
         #region paramter define
+        private RGBTesterFunction RGBfunc;
         DateTime now;
         private StreamWriter LeftRedFile;
         private StreamWriter LeftGreenFile;
@@ -49,7 +50,7 @@ namespace RGBTester.Logic
         {
             now = DateTime.Now;
             string file_name = "";
-            string SN = "";
+            string SN = RGBfunc.SerialNumber;
             string Side = "";
             string Color = "";
             string KeyText = "";
@@ -59,15 +60,9 @@ namespace RGBTester.Logic
             for(int i=0; i<res.Length; i++)
             {
                 if (res[i] == "Left")
-                {
-                    SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                     Side = "L";
-                }
                 else if (res[i] == "Right")
-                {
-                    SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                     Side = "R";
-                }
 
                 if (res[i] == "R")
                     Color = "R";

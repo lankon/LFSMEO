@@ -33,7 +33,7 @@ namespace RGBTester.UI
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.TxtBx_Left_SN = new System.Windows.Forms.TextBox();
+            this.TxtBx_SerialNumber = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Btn_StartTest = new System.Windows.Forms.Button();
             this.Btn_ElectricalFrom = new System.Windows.Forms.Button();
@@ -42,7 +42,7 @@ namespace RGBTester.UI
             this.Btn_OpticalForm = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Btn_UnLoad = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.Pnl_Setting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -80,7 +80,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154F));
             this.tableLayoutPanel1.Controls.Add(this.Cmbx_TestMode, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Left_SN, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_SerialNumber, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label15, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(380, 189);
@@ -92,12 +92,12 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(563, 39);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
-            // TxtBx_Left_SN
+            // TxtBx_SerialNumber
             // 
-            this.TxtBx_Left_SN.Location = new System.Drawing.Point(261, 6);
-            this.TxtBx_Left_SN.Name = "TxtBx_Left_SN";
-            this.TxtBx_Left_SN.Size = new System.Drawing.Size(296, 29);
-            this.TxtBx_Left_SN.TabIndex = 5;
+            this.TxtBx_SerialNumber.Location = new System.Drawing.Point(261, 6);
+            this.TxtBx_SerialNumber.Name = "TxtBx_SerialNumber";
+            this.TxtBx_SerialNumber.Size = new System.Drawing.Size(296, 29);
+            this.TxtBx_SerialNumber.TabIndex = 5;
             // 
             // label1
             // 
@@ -118,6 +118,7 @@ namespace RGBTester.UI
             this.Btn_StartTest.TabIndex = 9;
             this.Btn_StartTest.Text = "Start Test";
             this.Btn_StartTest.UseVisualStyleBackColor = true;
+            this.Btn_StartTest.Click += new System.EventHandler(this.Btn_StartTest_Click);
             // 
             // Btn_ElectricalFrom
             // 
@@ -167,6 +168,7 @@ namespace RGBTester.UI
             this.Btn_OpticalForm.TabIndex = 12;
             this.Btn_OpticalForm.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.Btn_OpticalForm.UseVisualStyleBackColor = true;
+            this.Btn_OpticalForm.Click += new System.EventHandler(this.Btn_OpticalForm_Click);
             // 
             // label2
             // 
@@ -181,22 +183,23 @@ namespace RGBTester.UI
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.Btn_UnLoad);
             this.panel1.Controls.Add(this.Btn_StartTest);
             this.panel1.Location = new System.Drawing.Point(380, 234);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(563, 199);
             this.panel1.TabIndex = 12;
             // 
-            // button1
+            // Btn_UnLoad
             // 
-            this.button1.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button1.Location = new System.Drawing.Point(4, 134);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(555, 59);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "UnLoad";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Btn_UnLoad.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_UnLoad.Location = new System.Drawing.Point(4, 134);
+            this.Btn_UnLoad.Name = "Btn_UnLoad";
+            this.Btn_UnLoad.Size = new System.Drawing.Size(555, 59);
+            this.Btn_UnLoad.TabIndex = 10;
+            this.Btn_UnLoad.Text = "UnLoad";
+            this.Btn_UnLoad.UseVisualStyleBackColor = true;
+            this.Btn_UnLoad.Click += new System.EventHandler(this.Btn_UnLoad_Click);
             // 
             // F_FunctionTester
             // 
@@ -223,7 +226,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.ComboBox Cmbx_TestMode;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox TxtBx_Left_SN;
+        private System.Windows.Forms.TextBox TxtBx_SerialNumber;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Btn_StartTest;
         private System.Windows.Forms.Button Btn_ElectricalFrom;
@@ -232,6 +235,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Btn_OpticalForm;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Btn_UnLoad;
     }
 }

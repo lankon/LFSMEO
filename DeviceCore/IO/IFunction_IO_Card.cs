@@ -41,9 +41,13 @@ namespace DeviceCore
         #endregion
 
         SphereUpSensor,
-        ChuckDownSensor,
-        ChuckRightSensor,
+        SphereDownSensor,
+        SphereLeftSensor,
+        SphereRightSensor,
         ChuckUpSensor,
+        ChuckDownSensor,
+        ChuckLeftSensor,
+        ChuckRightSensor,
 
         SafePos_Sensor_In,
         SafePos_Sensor_Out,
@@ -57,11 +61,13 @@ namespace DeviceCore
         #region Output
         SphereUp,
         SphereDown,
-        ChuckRight,
-        ChuckLeft,
+        SphereLeft,
+        SphereRight,
         ChuckUp,
         ChuckDown,
-
+        ChuckLeft,
+        ChuckRight,
+        
 
         Vacuum_Pump,
         CCD_FiducialMaskWork,

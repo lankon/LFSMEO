@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-//using System.Windows.Forms;
 
 using ToolFunction;
-using SampleCode.Base;
+using DeviceCore;
+using RGBTester.Base;
 
-namespace SampleCode.Logic
+namespace RGBTester.Logic
 {
-    public class StdSubTask:IBaseTask<StdSubTask.WORK>
+    public class SubTaskTestOptical : IBaseTask<SubTaskTestOptical.WORK>
     {
-        public StdSubTask(IBaseTaskDependence dependencies, 
+        public SubTaskTestOptical(IBaseTaskDependence dependencies, 
                           IF_StateControl f_StateControl,  
                           string set_state = "Default") : base(dependencies)
         {
@@ -32,6 +32,10 @@ namespace SampleCode.Logic
         }
 
         #region parameter
+        private int delay_time = 1;
+        private LuminousFlux LF = new LuminousFlux();
+        private float[] fSpectrumRawData;
+        private double[] SpectrumRawData;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         //private F_StateControl TaskForm;
@@ -41,9 +45,9 @@ namespace SampleCode.Logic
             INITIAL,
             IDLE,
 
-            RUNNING,
-            RUNNING_1,
-            RUNNING_2,
+            SET_LED_DAC,
+            GET_SPECTRUM,
+            CALCULATE_LUMEN,
 
             END,
 
@@ -125,10 +129,10 @@ namespace SampleCode.Logic
         {
             tick = Environment.TickCount;
         }
-        private bool CheckTimeOverSec(int tick, int time)
+        private bool CheckTimeOverMilSec(int tick, int time)
         {
             var time_count = Environment.TickCount - tick;
-            bool res = time_count > time * 1000;
+            bool res = time_count > time;
 
             return res;
         }
@@ -181,19 +185,49 @@ namespace SampleCode.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.RUNNING);
+                        Transition(WORK.SET_LED_DAC);
                     }
                     break;
-                case WORK.RUNNING:
+                case WORK.SET_LED_DAC:
                     {
-                        Transition(WORK.RUNNING_1);
+                        Deps.LightEngine.SetLed_AllColorDAC(Deps.LightEngine.LED_LeftSide, 50, 50, 50);
+                        ResetTimeCount(out delay_time);
+                        Transition(WORK.GET_SPECTRUM);
                     }
                     break;
-                case WORK.RUNNING_1:
+                case WORK.GET_SPECTRUM:
                     {
-                        Transition(WORK.SUCCESS);
+                        if(CheckTimeOverMilSec(delay_time, 100))
+                        {
+                            fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, 100);
+
+                            if(fSpectrumRawData == null)
+                            {
+                                Tool.SaveLogToFile($"Get Spectrum Failed", level: "ERR");
+                                Transition(WORK.ABORT);
+                                break;
+                            }
+
+                            SpectrumRawData = fSpectrumRawData.Select(x => (double)x).ToArray();
+
+                            Transition(WORK.CALCULATE_LUMEN);
+                        }
                     }
                     break;
+                case WORK.CALCULATE_LUMEN:
+                    {
+                        if (CheckTimeOverMilSec(delay_time, 100))
+                        {
+                            float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
+                            double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
+
+                            double lm = LF.CalculateTotalLumens(wavelength, SpectrumRawData);
+                            Transition(WORK.SUCCESS);
+                        }
+                    }
+                    break;
+
+
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);

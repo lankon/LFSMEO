@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\eElement_Form\eF_FunctionTester.cs" />
     <Compile Include="Base\eElement_Form\eF_YieldReport.cs" />
     <Compile Include="Base\eElement_Form\eF_ParameterSetting.cs" />
     <Compile Include="Base\eElement_Form\eF_Recipe.cs" />
@@ -137,14 +138,18 @@
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskTestOptical.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\TaskOpticalTest.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskMoveToElectrical.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskBurnInTest.cs" />
-    <Compile Include="Logic\1.Task\SubTaskMoveToOptical.cs" />
-    <Compile Include="Logic\1.Task\UnLoad\SubTaskUnLoad.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskMoveToOptical.cs" />
+    <Compile Include="Logic\1.Task\UnLoad\SubTask\SubTaskUnLoad.cs" />
     <Compile Include="Logic\1.Task\UnLoad\TaskUnLoad.cs" />
     <Compile Include="Logic\2.FormLogic\F_FunctionTesterLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_YieldReportLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_ParameterSettingLogic.cs" />
+    <Compile Include="Logic\Function\LuminousFlux.cs" />
     <Compile Include="Logic\Function\TestResultDataBase.cs" />
     <Compile Include="UI\F_ParameterSetting.cs">
       <SubType>Form</SubType>
@@ -332,6 +337,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

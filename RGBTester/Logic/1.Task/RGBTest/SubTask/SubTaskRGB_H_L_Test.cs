@@ -809,19 +809,14 @@ namespace RGBTester.Logic
                 case WORK.WRITE_TEST_DATA:
                     {
                         int data_count = Math.Max(TesterData_L.Vin.Count, TesterData_H.Vin.Count);
-                        string SN = "";
+                        string SN = RGBfunc.SerialNumber;
                         string log_name = "";
                         DateTime now = DateTime.Now;
+
                         if (TestSide == "Left")
-                        {
-                            SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                             log_name = $"Z23A_LEDIV L{SN}_Summary{now.ToString("yyyyMMdd")}()";
-                        }
                         else if (TestSide == "Right")
-                        {
-                            SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                             log_name = $"Z23A_LEDIV R{SN}_Summary{now.ToString("yyyyMMdd")}()";
-                        }
 
                         for (int i = 0; i < data_count; i++)
                         {

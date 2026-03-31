@@ -18,18 +18,21 @@ namespace RGBTester.UI
 {
     public partial class F_FunctionTester : Form
     {
-        public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic)
+        public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic,
+                                ILightEngineFunction lea)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
             FunctionTesterLogic = f_FunctionTesterLogic;
+            LEA = lea;
 
             InitialForm();
         }
 
         #region parameter define
         IServiceProvider ServiceProvider;
+        ILightEngineFunction LEA;
         F_FunctionTesterLogic FunctionTesterLogic;
         #endregion
 
@@ -43,8 +46,11 @@ namespace RGBTester.UI
 
             ShowHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
-            //    Tool.ShowFormName(this);
+            LEA.Set_LEA_Type();
+            LEA.Open();
+
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                Tool.ShowFormName(this);
         }
         void ShowHint()
         {
@@ -52,7 +58,7 @@ namespace RGBTester.UI
         }
         private void ReadAllEnumSetting()
         {
-            //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_FunctionTester>();
             //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 
             //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
@@ -60,12 +66,12 @@ namespace RGBTester.UI
         }
         private void UpdateEnumSettingToForm()
         {
-            //ApplicationSetting.UpdataRecipeToForm<eF_StartForm>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_FunctionTester>(this);
             //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
         }
         private void SaveAllEnumSetting()
         {
-            //ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
+            ApplicationSetting.SaveRecipeFromForm<eF_FunctionTester>(this);
 
             //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
             //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
@@ -119,6 +125,29 @@ namespace RGBTester.UI
         private void Btn_ElectricalFrom_Click(object sender, EventArgs e)
         {
             ShowForm<IF_StartForm>();
+        }
+
+        private void Btn_OpticalForm_Click(object sender, EventArgs e)
+        {
+            //先暫時寫成流程測試
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+            MainTask.SetTask<TaskOpticalTest>();
+            MainTask.Run();
+        }
+
+        private void Btn_UnLoad_Click(object sender, EventArgs e)
+        {
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+            MainTask.SetTask<TaskUnLoad>();
+            MainTask.Run();
+        }
+
+        private void Btn_StartTest_Click(object sender, EventArgs e)
+        {
+            SaveAllEnumSetting();
+            ReadAllEnumSetting();
+
+            FunctionTesterLogic.StartFunctionTest();
         }
     }
 }

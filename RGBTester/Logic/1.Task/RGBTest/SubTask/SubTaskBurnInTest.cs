@@ -273,11 +273,7 @@ namespace RGBTester.Logic
                     {
                         Preset();
 
-                        string sn = "";
-                        if (TestType == "Left_BurnIn")
-                            sn = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-                        else 
-                            sn = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+                        string sn = RGBfunc.SerialNumber;
                         Deps.File.WriteFile($"SN,{sn}", TestType);
                         Deps.File.WriteFile($"Temperature,TestTime", TestType);
 

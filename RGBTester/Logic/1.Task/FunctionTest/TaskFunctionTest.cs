@@ -1,21 +1,25 @@
-﻿using System;
+﻿using RGBTester.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using ToolFunction;
-using DeviceCore;
 using RGBTester.Base;
+using RGBTester.Base.F_FunctionTester;
 
 namespace RGBTester.Logic
 {
-    public class SubTaskUnLoad : IBaseTask<SubTaskUnLoad.WORK>
+    #region Task
+    public class TaskFunctionTest : IBaseTask<TaskFunctionTest.WORK>
     {
-        public SubTaskUnLoad(IBaseTaskDependence dependencies, 
-                          IF_StateControl f_StateControl,  
-                          string set_state = "Default") : base(dependencies)
+        public TaskFunctionTest(IBaseTaskDependence dependencies,
+            IF_StateControl f_StateControl,
+            string set_state = "Default")
+            : base(dependencies)
         {
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
@@ -26,35 +30,32 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            ResetTimeCount(out task_delay);
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
+
         }
 
         #region parameter
-        private int task_delay = 0;
-        private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
-        //private F_StateControl TaskForm;
         public enum WORK
         {
             NONE,
             INITIAL,
             IDLE,
 
-            CHECK_POSITION_READY,
-            SPHERE_UP,
-            CHUCK_DOWN,
-            CHUCK_RIGHT,
-            CHUCK_UP,
+            ELECTRIC_TEST,
+            WAIT_ELECTRIC_TEST,
 
-            END, 
+            OPTICAL_TEST,
+            WAIT_OPTICAL_TEST,
+
+            END,
 
             SUCCESS,
             FAIL,
-             
+
             PAUSE,
             ABORT,
             CONTINUE,
@@ -186,72 +187,53 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.CHECK_POSITION_READY);
+                        Transition(WORK.ELECTRIC_TEST);
                     }
                     break;
-
-                case WORK.CHECK_POSITION_READY:
+                
+                case WORK.ELECTRIC_TEST:
                     {
-                        if(Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor) == true &&
-                           Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
-                           Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor) == true)
-                        {
-                            Transition(WORK.SUCCESS);
-                        }
+                        string test_side;
+                        int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
+                        if(method == (int)eTestMode.LEFT)
+                            test_side = "Left";
+                        else if(method == (int)eTestMode.RIGHT)
+                            test_side = "Right";
                         else
-                        {
-                            Transition(WORK.SPHERE_UP);
-                        }
+                            test_side = "Both";
+
+                        //建立SubTask
+                        SubTask = new TaskRGBTest(Deps, F_StateControl, test_side);
+                        //委派必要Function
+                        //SubTask.SetForm(TaskForm);
+                        //設定是否有SubTask執行
+                        SetSubTaskProcessing(true);
+
+                        Transition(WORK.WAIT_ELECTRIC_TEST);
+                    }
+                    break;
+                case WORK.WAIT_ELECTRIC_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS:WORK.OPTICAL_TEST);
                     }
                     break;
 
-                case WORK.SPHERE_UP:
+                case WORK.OPTICAL_TEST:
                     {
-                        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, false);
-                        Transition(WORK.CHUCK_DOWN);
+                        //建立SubTask
+                        SubTask = new TaskOpticalTest(Deps, F_StateControl);
+                        //委派必要Function
+                        //SubTask.SetForm(TaskForm);
+                        //設定是否有SubTask執行
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_OPTICAL_TEST);
                     }
                     break;
-
-                case WORK.CHUCK_DOWN:
-                    if (Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor))
+                case WORK.WAIT_OPTICAL_TEST:
                     {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, false);
-                        ResetTimeCount(out task_delay);
-                        Transition(WORK.CHUCK_RIGHT);
-                    }
-                    else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
-                    {
-                        Transition(WORK.ABORT);
-                    }
-                    break;
-
-                case WORK.CHUCK_RIGHT:
-                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
-                    {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, false);
-                        ResetTimeCount(out task_delay);
-                        Transition(WORK.CHUCK_UP);
-                    }
-                    else if (CheckTimeOverSec(task_delay, 5))
-                    {
-                        Transition(WORK.ABORT);
-                    }
-                    break;
-
-                case WORK.CHUCK_UP:
-                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor))
-                    {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, false);
-                        ResetTimeCount(out task_delay);
-                        Transition(WORK.SUCCESS);
-                    }
-                    else if (CheckTimeOverSec(task_delay, 5))
-                    {
-                        Transition(WORK.ABORT);
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check);
                     }
                     break;
 
@@ -263,10 +245,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.FAIL:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.FAIL);
-                        }
+                        SetStatus(TASK_STATUS.FAIL);
                     }
                     break;
                 case WORK.PAUSE:
@@ -277,6 +256,7 @@ namespace RGBTester.Logic
                 case WORK.ABORT:
                     {
                         SetStatus(TASK_STATUS.ABORT);
+                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -290,13 +270,13 @@ namespace RGBTester.Logic
                     break;
                 case WORK.END:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                        }
+                        
+                        SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
             }
         }
     }
+    #endregion
+ 
 }

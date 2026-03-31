@@ -90,13 +90,19 @@ namespace RGBTester.Logic
 
             if (res < 0)
                 return res;
-
+            var RGBFunc = ServiceProvider.GetRequiredService<RGBTesterFunction>();
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             
             if(method == "Left")
+            {
+                RGBFunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                 MainTask.SetTask<TaskRGBTest>("Left");
+            }
             else if(method == "Right")
+            {
+                RGBFunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                 MainTask.SetTask<TaskRGBTest>("Right");
+            }
             else
                 MainTask.SetTask<TaskRGBTest>("Both");
 

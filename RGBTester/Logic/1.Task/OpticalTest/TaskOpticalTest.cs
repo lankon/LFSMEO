@@ -4,18 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Windows.Forms;
 
 using ToolFunction;
-using DeviceCore;
 using RGBTester.Base;
 
 namespace RGBTester.Logic
 {
-    public class SubTaskMoveToOptical : IBaseTask<SubTaskMoveToOptical.WORK>
+    #region Task
+    public class TaskOpticalTest : IBaseTask<TaskOpticalTest.WORK>
     {
-        public SubTaskMoveToOptical(IBaseTaskDependence dependencies, 
-                          IF_StateControl f_StateControl,  
-                          string set_state = "Default") : base(dependencies)
+        public TaskOpticalTest(IBaseTaskDependence dependencies,
+            IF_StateControl f_StateControl,
+            string set_state = "Default")
+            : base(dependencies)
         {
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
@@ -26,35 +28,32 @@ namespace RGBTester.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            ResetTimeCount(out task_delay);
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
+
         }
 
         #region parameter
-        private int task_delay = 0;
-        private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
-        //private F_StateControl TaskForm;
         public enum WORK
         {
             NONE,
             INITIAL,
             IDLE,
 
-            CHECK_POSITION_READY,
-            SPHERE_UP,
-            CHUCK_DOWN,
-            CHUCK_RIGHT,
-            CHUCK_UP,
+            GOTO_OPTICAL_TEST_POSITION,
+            WAIT_GOTO_OPTICAL_TEST_POSITION,
 
-            END, 
+            TEST_OPTICAL,
+            WAIT_TEST_OPTICAL,
+
+            END,
 
             SUCCESS,
             FAIL,
-             
+
             PAUSE,
             ABORT,
             CONTINUE,
@@ -186,74 +185,49 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
-                        Transition(WORK.CHECK_POSITION_READY);
+                        Transition(WORK.GOTO_OPTICAL_TEST_POSITION);
                     }
                     break;
 
-                case WORK.CHECK_POSITION_READY:
+                #region GoTo Test Position
+                case WORK.GOTO_OPTICAL_TEST_POSITION:
                     {
-                        if(Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor) == true &&
-                           Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
-                           Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor) == true)
-                        {
-                            Transition(WORK.SUCCESS);
-                        }
-                        else
-                        {
-                            Transition(WORK.SPHERE_UP);
-                        }
-                    }
-                    break;
+                        //建立SubTask
+                        SubTask = new SubTaskMoveToOptical(Deps, F_StateControl);
+                        //委派必要Function
+                        //SubTask.SetForm(TaskForm);
+                        //設定是否有SubTask執行
+                        SetSubTaskProcessing(true);
 
-                case WORK.SPHERE_UP:
-                    {
-                        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, false);
-                        Transition(WORK.CHUCK_DOWN);
+                        Transition(WORK.WAIT_GOTO_OPTICAL_TEST_POSITION);
                     }
                     break;
-
-                case WORK.CHUCK_DOWN:
-                    if (Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor))
+                case WORK.WAIT_GOTO_OPTICAL_TEST_POSITION:
                     {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, false);
-                        ResetTimeCount(out task_delay);
-                        Transition(WORK.CHUCK_RIGHT);
-                    }
-                    else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
-                    {
-                        Transition(WORK.ABORT);
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.TEST_OPTICAL);
                     }
                     break;
-
-                case WORK.CHUCK_RIGHT:
-                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
+                #endregion
+                #region Test Optical
+                case WORK.TEST_OPTICAL:
                     {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, false);
-                        ResetTimeCount(out task_delay);
-                        Transition(WORK.CHUCK_UP);
-                    }
-                    else if (CheckTimeOverSec(task_delay, 5))
-                    {
-                        Transition(WORK.ABORT);
-                    }
-                    break;
-
-                case WORK.CHUCK_UP:
-                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor))
-                    {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, false);
-                        ResetTimeCount(out task_delay);
-                        Transition(WORK.SUCCESS);
-                    }
-                    else if (CheckTimeOverSec(task_delay, 5))
-                    {
-                        Transition(WORK.ABORT);
+                        //建立SubTask
+                        SubTask = new SubTaskTestOptical(Deps, F_StateControl);
+                        //委派必要Function
+                        //SubTask.SetForm(TaskForm);
+                        //設定是否有SubTask執行
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_TEST_OPTICAL);
                     }
                     break;
+                case WORK.WAIT_TEST_OPTICAL:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check);
+                    }
+                    break;
+                #endregion
 
                 case WORK.SUCCESS:
                     {
@@ -263,10 +237,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.FAIL:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.FAIL);
-                        }
+                        SetStatus(TASK_STATUS.FAIL);
                     }
                     break;
                 case WORK.PAUSE:
@@ -277,6 +248,7 @@ namespace RGBTester.Logic
                 case WORK.ABORT:
                     {
                         SetStatus(TASK_STATUS.ABORT);
+                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -290,13 +262,13 @@ namespace RGBTester.Logic
                     break;
                 case WORK.END:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                        }
+                        
+                        SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
             }
         }
     }
+    #endregion
+ 
 }

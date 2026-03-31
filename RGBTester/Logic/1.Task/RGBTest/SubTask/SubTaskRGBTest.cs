@@ -144,14 +144,7 @@ namespace RGBTester.Logic
             Scope.TestFail = false;
             RGBfunc.FailReasonFlag.ResetAllFlag();
 
-            if (Type == "Left")
-            {
-                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-            }
-            else if(Type == "Right")
-            {
-                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
-            }
+            SN = RGBfunc.SerialNumber;
         }
         #endregion
 

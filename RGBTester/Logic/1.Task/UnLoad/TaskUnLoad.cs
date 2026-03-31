@@ -44,9 +44,9 @@ namespace RGBTester.Logic
             IDLE,
 
             INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
+
+            FUNCTION_TESTER_UNLOAD,
+            WAIT_FUNCTION_TESTER_UNLOAD,
 
             END,
 
@@ -191,10 +191,10 @@ namespace RGBTester.Logic
                 #region SubTask
                 case WORK.INITIAL_SUBTASK:
                     {
-                        Transition(WORK.SUBTASK_PROCESS);
+                        Transition(WORK.FUNCTION_TESTER_UNLOAD);
                     }
                     break;
-                case WORK.SUBTASK_PROCESS:
+                case WORK.FUNCTION_TESTER_UNLOAD:
                     {
                         //建立SubTask
                         SubTask = new SubTaskUnLoad(Deps, F_StateControl);
@@ -203,10 +203,10 @@ namespace RGBTester.Logic
                         //設定是否有SubTask執行
                         SetSubTaskProcessing(true);
 
-                        Transition(WORK.WAIT_SUBTASK_PROCESS);
+                        Transition(WORK.WAIT_FUNCTION_TESTER_UNLOAD);
                     }
                     break;
-                case WORK.WAIT_SUBTASK_PROCESS:
+                case WORK.WAIT_FUNCTION_TESTER_UNLOAD:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
                         CheckResult(check);
