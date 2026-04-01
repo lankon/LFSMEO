@@ -37,6 +37,8 @@ namespace LFSMEO
                 Scope.MachineType = EMachineType.ProbeTester;
             else if(option == 2)
                 Scope.MachineType = EMachineType.RGBTester;
+            else if(option == 3)
+                Scope.MachineType = EMachineType.BurnInTester;
 
             return Scope.MachineType;
         }
