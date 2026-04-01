@@ -33,6 +33,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.Btn_GetStats = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -93,11 +94,22 @@ namespace BurnInTester.UI
             this.progressBar1.Size = new System.Drawing.Size(162, 17);
             this.progressBar1.TabIndex = 1;
             // 
+            // Btn_GetStats
+            // 
+            this.Btn_GetStats.Location = new System.Drawing.Point(816, 389);
+            this.Btn_GetStats.Name = "Btn_GetStats";
+            this.Btn_GetStats.Size = new System.Drawing.Size(138, 60);
+            this.Btn_GetStats.TabIndex = 1;
+            this.Btn_GetStats.Text = "Btn_GetStats";
+            this.Btn_GetStats.UseVisualStyleBackColor = true;
+            this.Btn_GetStats.Click += new System.EventHandler(this.Btn_GetStats_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_GetStats);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StartForm";
@@ -115,5 +127,6 @@ namespace BurnInTester.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button Btn_GetStats;
     }
 }

@@ -31,7 +31,7 @@ namespace BurnInTester
 
             //[Form]
             services.AddSingleton<F_MainForm>();
-            //services.AddSingleton<F_StartForm>();
+            services.AddSingleton<F_StartForm>();
             //services.AddSingleton<F_StartForm_ButtonGroup>();
             //services.AddSingleton<F_Recipe>();
             //services.AddSingleton<F_DAQ_SamplingTest>();

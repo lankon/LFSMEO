@@ -122,15 +122,15 @@ namespace BurnInTester.UI
         }
         private void ShowStartForm()
         {
-            //Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.HideElementOnPanel(Scope.MainPanel);
 
-            //var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
+            var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
 
-            //if(startForm is Form form)
-            //{
-            //    Tool.SetForm(Scope.MainPanel, form);
-            //    form.Show();
-            //}
+            if (startForm is Form form)
+            {
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
 
             //var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
             //Tool.SetForm(Scope.UpButtonPanel, group);
