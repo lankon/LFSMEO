@@ -22,6 +22,7 @@ namespace BurnInTester.UI
             InitializeComponent();
 
             InitialForm();
+
         }
 
         #region parameter define
@@ -99,30 +100,10 @@ namespace BurnInTester.UI
 
         private void Btn_GetStats_Click(object sender, EventArgs e)
         {
-            ResourceMonitor.GetStats();
+            
         }
     }
 
-    public static class ResourceMonitor
-    {
-        // 引入 Win32 API
-        [DllImport("user32.dll")]
-        private static extern uint GetGuiResources(IntPtr hProcess, uint uiFlags);
-
-        public static void GetStats()
-        {
-            IntPtr hProcess = Process.GetCurrentProcess().Handle;
-
-            // uiFlags: 0 = GDI Objects (畫筆、字體、圖片)
-            // uiFlags: 1 = User Objects (視窗、控制項、選單)
-            uint gdiObjects = GetGuiResources(hProcess, 0);
-            uint userObjects = GetGuiResources(hProcess, 1);
-            int totalHandles = Process.GetCurrentProcess().HandleCount;
-
-            Console.WriteLine($"[資源監控]");
-            Console.WriteLine($"- 使用者物件 (User): {userObjects} / 10000 (上限)");
-            Console.WriteLine($"- GDI 物件: {gdiObjects} / 10000 (上限)");
-            Console.WriteLine($"- 系統句柄 (Handles): {totalHandles}");
-        }
-    }
+    
 }
+
