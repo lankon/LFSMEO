@@ -1,16 +1,19 @@
-﻿using DeviceCore;
-using DeviceFunction;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+
 using ToolFunction;
+using DeviceCore;
+using DeviceFunction;
 
 namespace DeviceUI.Camera
 {
@@ -20,6 +23,8 @@ namespace DeviceUI.Camera
                                 IFunction_Camera function_Camera, F_CameraSettingLogic f_CameraSettingLogic)
         {
             InitializeComponent();
+
+            IntPtr forceHandle = this.Handle;   //強制先建立Handle
 
             ServiceProvider = serviceProvider;
             CameraButton = f_CameraButton;
@@ -31,11 +36,11 @@ namespace DeviceUI.Camera
         }
 
         #region parameter define
-        CameraDisplayPanel[] DisplayPanels;
         IServiceProvider ServiceProvider;
         IF_CameraButton CameraButton;
-        F_CameraSettingLogic CameraSettingLogic;
         IFunction_Camera Function_Camera;
+        F_CameraSettingLogic CameraSettingLogic;
+        CameraDisplayPanel[] DisplayPanels;
         #endregion
 
         #region private function
@@ -80,14 +85,21 @@ namespace DeviceUI.Camera
         {
             CameraSettingLogic.UpdateCameraInfo2Form(CameraSettingLogic.GetCurrentBtnNum());
 
-            DockDisplayToPanel(Pnl_DockCameraDisplay);
+            //DockDisplayToPanel(Pnl_DockCameraDisplay);
+            DockDisplayToLyPnl(LyPnl_DockCameraDisplay);
             SwitchToCameraDisplay(CameraButton.GetCurrentBtnNum());
-
+            FitWindow(CameraButton.GetCurrentBtnNum());
             //ReadAllEnumSetting();
             //UpdateEnumSettingToForm();
         }
         private void LeavePage()
         {
+            int length = CCD_NAME.GetNames(typeof(CCD_NAME)).Length;
+
+            for(int i=0; i<length; i++)
+            {
+                Function_Camera.StopLive(i);
+            }
         }
         private void DockCameraButton(Type child_form)
         {
@@ -106,7 +118,7 @@ namespace DeviceUI.Camera
             DisplayPanels = new CameraDisplayPanel[length];
             for (int i = 0; i < DisplayPanels.Length; i++)
             {
-                DisplayPanels[i] = new CameraDisplayPanel(i);
+                DisplayPanels[i] = new CameraDisplayPanel(Function_Camera, i);
             }
 
             DockDisplayToPanel(Pnl_DockCameraDisplay);
@@ -129,21 +141,26 @@ namespace DeviceUI.Camera
                 {
                     int realID = fe.CCD_Index;
 
+                    if (DisplayPanels[realID].IsUpdating == true)   //UI還在更新,放棄更新畫面(丟禎) 
+                        return;
+
+                    DisplayPanels[realID].IsUpdating = true;
+
                     Bitmap bmp = DisplayPanels[realID].CreateUniversalBitmap(
                         fe.Width, fe.Height, fe.ImageData, fe.Format);
 
-                    if (this.InvokeRequired)
+                    this.BeginInvoke(new Action(() =>
                     {
-                        int index = i;
-                        this.BeginInvoke(new Action(() =>
+                        try
                         {
                             DisplayPanels[realID].CurrentImage = bmp;
-                        }));
-                    }
-                    else
-                    {
-                        DisplayPanels[realID].CurrentImage = bmp;
-                    }
+                            DisplayPanels[realID].Update(); //呼叫UI立刻繪圖
+                        }
+                        finally
+                        {
+                            DisplayPanels[realID].IsUpdating = false;
+                        }
+                    }));
                 };
                 i++;
             }
@@ -176,6 +193,18 @@ namespace DeviceUI.Camera
                 }
             }
         }
+        public void DockDisplayToLyPnl(TableLayoutPanel tableLayoutPanel)
+        {
+            foreach (CameraDisplayPanel panel in DisplayPanels)
+            {
+                tableLayoutPanel.Controls.Add(panel, 0, 0);
+                panel.Dock = DockStyle.Fill;
+            }
+        }
+        public void FitWindow(int ccd)
+        {
+            DisplayPanels[ccd].FitWindow();
+        }
         #endregion
 
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
@@ -201,10 +230,19 @@ namespace DeviceUI.Camera
         {
             int index = CameraButton.GetCurrentBtnNum();
 
-            SwitchToCameraDisplay(index);
-            Function_Camera.StartGrab(index);
-            Function_Camera.SoftTrigger(index);
-            Function_Camera.GetImageDisplay(index, @"C:\Users\lankon\Desktop\tmep\picture.png");
+            //SwitchToCameraDisplay(index);
+            Function_Camera.StartLive(index);
+            //Function_Camera.StartGrab(index);
+            //Function_Camera.SoftTrigger(index);
+            //Function_Camera.GetImageDisplay(index, $@"C:\Users\lankon\Desktop\tmep\picture{index}.png");
+
+            DisplayPanels[index].FitWindow();
+        }
+
+        private void Btn_FunctionTest1_Click(object sender, EventArgs e)
+        {
+            int index = CameraButton.GetCurrentBtnNum();
+            Function_Camera.StopLive(index);
         }
     }
 }

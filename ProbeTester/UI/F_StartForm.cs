@@ -74,8 +74,9 @@ namespace ProbeTester.UI
             IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
             IF_CameraButton btn = ServiceProvider.GetRequiredService<IF_CameraButton>();
 
-            setting.SwitchToCameraDisplay(btn.GetCurrentBtnNum());
             setting.DockDisplayToPanel(Pnl_CCD);
+            setting.SwitchToCameraDisplay(btn.GetCurrentBtnNum());
+            setting.FitWindow(btn.GetCurrentBtnNum());
         }
         private void LeavePage()
         {
@@ -177,6 +178,16 @@ namespace ProbeTester.UI
             {
                 UpdatePage();
             }
+        }
+
+        private void Btn_Test_Click(object sender, EventArgs e)
+        {
+            IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            IF_CameraButton btn = ServiceProvider.GetRequiredService<IF_CameraButton>();
+
+            setting.DockDisplayToPanel(Pnl_CCD);
+            setting.SwitchToCameraDisplay(1);
+            
         }
     }
 }

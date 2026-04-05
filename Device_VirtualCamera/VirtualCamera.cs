@@ -53,9 +53,53 @@ namespace Device_VirtualCamera
             
             try
             {
-                //釋放舊資源並讀取新圖
+                // 釋放舊資源並讀取新圖
                 Cleanup();
-                _currentBmp = new Bitmap(VirtualImagePath);
+
+                // 使用 FileStream 讀取，確保讀完就能關閉檔案
+                using (FileStream fs = new FileStream(VirtualImagePath, FileMode.Open, FileAccess.Read))
+                {
+                    using (Bitmap temp = (Bitmap)Image.FromStream(fs))
+                    {
+                        image_width = temp.Width;
+                        image_height = temp.Height;
+                        pixelFormat = temp.PixelFormat;
+
+                        // 建立一個全新的、位於記憶體的 Bitmap (與檔案完全脫離)
+                        _currentBmp = new Bitmap(image_width, image_height, pixelFormat);
+
+                        // 如果是灰階圖，必須手動複製調色盤 (Palette)
+                        if (pixelFormat == PixelFormat.Format8bppIndexed)
+                        {
+                            ColorPalette pal = _currentBmp.Palette;
+                            for (int i = 0; i < 256; i++) pal.Entries[i] = Color.FromArgb(i, i, i);
+                            _currentBmp.Palette = pal;
+                        }
+
+                        // 使用 LockBits 同時鎖定「來源」與「目標」進行高速拷貝
+                        BitmapData srcData = temp.LockBits(new Rectangle(0, 0, image_width, image_height), ImageLockMode.ReadOnly, pixelFormat);
+                        BitmapData dstData = _currentBmp.LockBits(new Rectangle(0, 0, image_width, image_height), ImageLockMode.WriteOnly, pixelFormat);
+
+                        try
+                        {
+                            unsafe
+                            {
+                                long bytesToCopy = (long)srcData.Stride * image_height;
+
+                                System.Buffer.MemoryCopy(
+                                    (void*)srcData.Scan0,
+                                    (void*)dstData.Scan0,
+                                    bytesToCopy,
+                                    bytesToCopy);
+                            }
+                        }
+                        finally
+                        {
+                            temp.UnlockBits(srcData);
+                            _currentBmp.UnlockBits(dstData);
+                        }
+                    }
+                } 
 
                 image_width = _currentBmp.Width;
                 image_height = _currentBmp.Height;

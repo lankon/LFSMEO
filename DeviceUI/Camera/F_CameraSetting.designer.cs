@@ -46,6 +46,7 @@ namespace DeviceUI.Camera
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_CCD_Name = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Btn_FunctionTest1 = new System.Windows.Forms.Button();
             this.Pnl_DockCameraDisplay.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -98,6 +99,7 @@ namespace DeviceUI.Camera
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.tabPage1.Controls.Add(this.Btn_FunctionTest1);
             this.tabPage1.Controls.Add(this.Btn_FunctionTest);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
@@ -241,6 +243,16 @@ namespace DeviceUI.Camera
             this.tabControl1.Size = new System.Drawing.Size(962, 827);
             this.tabControl1.TabIndex = 4;
             // 
+            // Btn_FunctionTest1
+            // 
+            this.Btn_FunctionTest1.Location = new System.Drawing.Point(12, 667);
+            this.Btn_FunctionTest1.Name = "Btn_FunctionTest1";
+            this.Btn_FunctionTest1.Size = new System.Drawing.Size(154, 51);
+            this.Btn_FunctionTest1.TabIndex = 2;
+            this.Btn_FunctionTest1.Text = "Function Test 1";
+            this.Btn_FunctionTest1.UseVisualStyleBackColor = true;
+            this.Btn_FunctionTest1.Click += new System.EventHandler(this.Btn_FunctionTest1_Click);
+            // 
             // F_CameraSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -282,5 +294,6 @@ namespace DeviceUI.Camera
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TableLayoutPanel LyPnl_DockCameraDisplay;
         private System.Windows.Forms.Button Btn_FunctionTest;
+        private System.Windows.Forms.Button Btn_FunctionTest1;
     }
 }

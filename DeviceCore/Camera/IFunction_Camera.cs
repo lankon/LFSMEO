@@ -47,11 +47,18 @@ namespace DeviceCore
         void BindingCamera();
         void Subscribe(int ccd, EventHandler<ImageReadyEventArgs> handler);
 
+        // [Camera Grab]
         bool StartGrab(int ccd);
         bool StopGrab(int ccd);
-        bool SoftTrigger(int ccd);
-        bool GetImageDisplay(int ccd, string image_path);
 
+        // [Camera Trigger && LIVE]
+        bool SoftTrigger(int ccd);
+        bool StartLive(int ccdIndex);
+        bool StopLive(int ccdIndex);
+        void PauseLive(int ccd, bool is_pause);
+
+        // [Get Image]
+        bool GetImageDisplay(int ccd, string image_path);
 
         //[Read&Save Axis Information]
         void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters);

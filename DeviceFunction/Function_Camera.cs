@@ -22,9 +22,20 @@ namespace DeviceFunction
         #region parameter define
         private IEnumerable<ICamera> Camera;
         private int[] CCD_Info2List;
+        public bool[] PauseLiveFlag { get; set; }
         private List<ICamera> CameraList = new List<ICamera>();
         private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
+        private Dictionary<int, CancellationTokenSource> _activeLiveTasks = new Dictionary<int, CancellationTokenSource>();
         public EventHandler<ImageReadyEventArgs>[] OnImageUpdates { get; private set; }
+        
+        enum WORK
+        {
+            INIT,
+            START_GRAB,
+            TRIGGER,
+            GET_IMAGE,
+            PAUSE,
+        }
         #endregion
 
         #region private function
@@ -60,6 +71,7 @@ namespace DeviceFunction
             }
 
             OnImageUpdates = new EventHandler<ImageReadyEventArgs>[Enum.GetNames(typeof(CCD_NAME)).Length];
+            PauseLiveFlag = new bool[Enum.GetNames(typeof(CCD_NAME)).Length];
         }
         private void Project2CameraInfo(int camera, string item, string value)
         {
@@ -100,6 +112,81 @@ namespace DeviceFunction
         {
             OnImageUpdates[(int)ccd]?.Invoke(this, e);
         }
+        private void CameraLiveLoop(int ccdIndex, CancellationToken token)
+        {
+            WORK state = WORK.INIT;
+            WORK temp = WORK.INIT;
+            int index = ccdIndex;
+
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    if (PauseLiveFlag[ccdIndex] == true && state != WORK.PAUSE)
+                    {
+                        temp = state;
+                        state = WORK.PAUSE;
+                    }
+                    
+                    switch(state)
+                    {
+                        case WORK.INIT:
+                            {
+                                state = WORK.START_GRAB;
+                            }
+                            break;
+                        case WORK.START_GRAB:
+                            {
+                                if (StartGrab(ccdIndex) == false)
+                                {
+                                    Tool.SaveLogToFile("CCD Live START_GRAB fail", level:"ERR");
+                                    return;
+                                }
+
+                                state = WORK.TRIGGER;
+                            }
+                            break;
+                        case WORK.TRIGGER:
+                            {
+                                if (SoftTrigger(ccdIndex) == false)
+                                {
+                                    Tool.SaveLogToFile("CCD Live TRIGGER fail", level: "ERR");
+                                    return;
+                                }
+
+                                state = WORK.GET_IMAGE;
+                            }
+                            break;
+                        case WORK.GET_IMAGE:
+                            {
+                                if (index > 3)  //測試用
+                                    index = 0;
+                                
+                                if (GetImageDisplay(ccdIndex, $@"C:\Users\lankon\Desktop\tmep\picture{index}.png") == false)
+                                {
+                                    Tool.SaveLogToFile($"CCD{ccdIndex} Live GET_IMAGE fail", level: "ERR");
+                                    return;
+                                }
+                                index++;
+                                state = WORK.TRIGGER;
+                            }
+                            break;
+                        case WORK.PAUSE:
+                            {
+                                Thread.Sleep(200);
+
+                                if (PauseLiveFlag[ccdIndex] == false)
+                                    state = temp;
+                            }
+                            break;
+                    }
+                    
+                    // 適度休眠，避免單一相機吃光 CPU 核心
+                    Thread.Sleep(20);
+                }
+            }
+            catch (Exception ex) { /* 錯誤處理 */ }
+        }
         #endregion
 
         #region public function
@@ -117,7 +204,6 @@ namespace DeviceFunction
 
             return 0;
         }
-
         public void BindingCamera()
         {
             CCD_Info2List = new int[CCD_INFO.Count];
@@ -147,9 +233,7 @@ namespace DeviceFunction
             }
         }
 
-
-
-
+        // [Camera Grab]
         public bool StartGrab(int ccd)
         {
             if (!CheckCameraEnable(ccd))
@@ -163,7 +247,6 @@ namespace DeviceFunction
             else
                 return false;
         }
-
         public bool StopGrab(int ccd)
         {
             if (!CheckCameraEnable(ccd))
@@ -177,7 +260,13 @@ namespace DeviceFunction
             else
                 return false;
         }
+        public bool StopGrabAllCamera()
+        {
 
+            return false;
+        }
+
+        // [Camera Trigger && LIVE]
         public bool SoftTrigger(int ccd)
         {
             if (!CheckCameraEnable(ccd))
@@ -191,7 +280,45 @@ namespace DeviceFunction
             else
                 return false;
         }
+        public bool StartLive(int ccdIndex)
+        {
+            // 如果已經在跑了，就不要重複開
+            if (_activeLiveTasks.ContainsKey(ccdIndex)) 
+                return true;
 
+            // 數量限制：保護硬體頻寬與記憶體
+            if (_activeLiveTasks.Count >= 5)
+            {
+                Tool.SaveLogToFile("超出CCD Live數量", level: "WRN");
+                return false;
+            }
+
+            // 建立取消權杖
+            var cts = new CancellationTokenSource();
+            _activeLiveTasks.Add(ccdIndex, cts);
+
+            // 啟動非同步取像迴圈
+            Task.Run(() => CameraLiveLoop(ccdIndex, cts.Token), cts.Token);
+
+            return true;
+        }
+        public bool StopLive(int ccdIndex)
+        {
+            if (_activeLiveTasks.TryGetValue(ccdIndex, out var cts))
+            {
+                cts.Cancel(); // 停止迴圈
+                _activeLiveTasks.Remove(ccdIndex);
+                return true;
+            }
+
+            return false;
+        }
+        public void PauseLive(int ccd, bool is_pause)
+        {
+            PauseLiveFlag[ccd] = is_pause;
+        }
+
+        // [Get Image]
         public bool GetImageDisplay(int ccd, string image_path)
         {
             if (!CheckCameraEnable(ccd))
@@ -212,7 +339,7 @@ namespace DeviceFunction
                 {
                     ImageData = image,
                     Width = width,
-                    Height = height,
+                    Height = height, 
                     Format = pixelFormat,
                     CCD_Index = ccd
                 };
@@ -224,21 +351,6 @@ namespace DeviceFunction
 
             return false;
         }
-
-        public bool StopGrabAllCamera()
-        {
-
-            return false;
-        }
-
-        public void Subscribe(int ccd, EventHandler<ImageReadyEventArgs> handler)
-        {
-            OnImageUpdates[ccd] += handler;
-        }
-
-        
-        
-
 
         //[Read&Save Camera Information]
         public void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters)
@@ -293,6 +405,12 @@ namespace DeviceFunction
         public IReadOnlyList<CAMERA_INFO> GetCameraConfig()
         {
             return CCD_INFO.AsReadOnly();
+        }
+
+
+        public void Subscribe(int ccd, EventHandler<ImageReadyEventArgs> handler)
+        {
+            OnImageUpdates[ccd] += handler;
         }
         #endregion 
 
