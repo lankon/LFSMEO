@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Serilog;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Diagnostics;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ToolFunction
 {
@@ -522,7 +523,6 @@ namespace ToolFunction
         }
     }
 
-
     /// <summary>
     /// File Processing
     /// </summary>
@@ -797,6 +797,88 @@ namespace ToolFunction
             {
                 Tool.SaveLogToFile($"壓縮備份失敗: {ex.Message}");
                 return null;
+            }
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// System Analysis
+    /// </summary>
+    public static partial class Tool
+    {
+        #region 系統資源監控
+        public class F_Monitor : Form
+        {
+            // Windows API 宣告
+            [DllImport("user32.dll")]
+            private static extern uint GetGuiResources(IntPtr hProcess, uint uiFlags);
+
+            private Label lblStatus;
+            private Timer updateTimer;
+
+            public F_Monitor()
+            {
+                this.Text = "SYSTEM RESOURCE MONITOR"; // 改成英文感覺更硬派
+                this.Size = new Size(320, 240);
+                this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+                this.TopMost = true;
+
+                // --- 核心配色修改 ---
+                this.BackColor = Color.FromArgb(30, 30, 30); // 深灰色背景，比純黑更有質感
+                this.Opacity = 0.9; // 稍微透明，可以看到後面的視窗
+
+                lblStatus = new Label
+                {
+                    Dock = DockStyle.Fill,
+                    // 推薦使用 Consolas，等寬字體在對齊數字時最整齊
+                    Font = new Font("Consolas", 10.5F, FontStyle.Regular),
+                    ForeColor = Color.Gold, // 標準黃金色
+                    Padding = new Padding(15),
+                    TextAlign = ContentAlignment.TopLeft
+                };
+                this.Controls.Add(lblStatus);
+
+                updateTimer = new Timer { Interval = 1000 };
+                updateTimer.Tick += (s, e) => UpdateResources();
+                updateTimer.Start();
+
+                this.FormClosing += (s, e) => updateTimer.Stop();
+            }
+
+            private void UpdateResources()
+            {
+                var proc = Process.GetCurrentProcess();
+                IntPtr handle = proc.Handle;
+
+                uint user = GetGuiResources(handle, 1);
+                uint gdi = GetGuiResources(handle, 0);
+                int threads = proc.Threads.Count;
+                int handles = proc.HandleCount;
+                double mem = proc.PrivateMemorySize64 / 1024.0 / 1024.0;
+
+                bool isOK = true;
+                if (user > 5000 || gdi > 5000 || threads > 50 || mem > 2000 || handles > 3000)
+                    isOK = false;
+
+                // 使用「|」符號作為視覺分割線，看起來更像專業儀表板
+                lblStatus.Text =
+                    $"------------------------------\n" +
+                    $" [ PROCESS PERFORMANCE ]\n" +
+                    $"------------------------------\n" +
+                    $"  USER OBJS : {user.ToString().PadLeft(5)} / 10000\n" +
+                    $"  GDI  OBJS : {gdi.ToString().PadLeft(5)} / 10000\n" +
+                    $"  HANDLES   : {handles.ToString().PadLeft(5)}\n" +
+                    $"  THREADS   : {threads.ToString().PadLeft(5)}\n" +
+                    $"  MEMORY    : {mem.ToString("F2").PadLeft(8)} MB\n" +
+                    $"------------------------------\n" +
+                    $" SYSTEM STATUS: {(isOK ? "HEALTHY" : "CRITICAL")}";
+
+                // 如果資源快爆了，文字改為亮紅色閃爍感
+                if (!isOK)
+                    lblStatus.ForeColor = Color.OrangeRed;
+                else
+                    lblStatus.ForeColor = Color.Gold;
             }
         }
         #endregion

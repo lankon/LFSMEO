@@ -43,18 +43,19 @@ namespace BurnInTester
             //退出Form後即close掉,要用再new
             //services.AddTransient<F_OEM_Setting>();
             //services.AddTransient<F_Equipment_Setting>();
-            //services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
+            services.AddTransient<F_TestSetting>();
+            //services.AddTransient<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
-            //services.AddSingleton<F_StartFormLogic>();
+            services.AddSingleton<F_StartFormLogic>();
             //services.AddSingleton<F_RecipeLogic>();
             //services.AddSingleton<F_DAQ_ChartLogic>();
 
             //[Logic]
             //services.AddSingleton<IWriteFile, RGBTesterDataFile>();
-            //services.AddSingleton<ProbeTesterFunction>();
+            services.AddSingleton<AgingInformation>();
             //services.AddSingleton<TestResultDataBase>();
 
             return services;

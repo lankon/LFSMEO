@@ -8,17 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 using ToolFunction;
-using SampleCode.Base;
+using BurnInTester.Base;
 
-namespace SampleCode.UI
+namespace BurnInTester.UI
 {
-    
-
-    public partial class F_SampleFull : Form
+    public partial class F_TestSetting : Form
     {
-        public F_SampleFull()
+        public F_TestSetting()
         {
             InitializeComponent();
 
@@ -98,5 +95,22 @@ namespace SampleCode.UI
             }
         }
 
+        private void Btn_Save_Click(object sender, EventArgs e)
+        {
+            Tool.DataGrid_DataSave(DGV_IO, "IO.xml");
+        }
+
+        private void Btn_Load_Click(object sender, EventArgs e)
+        {
+            if (!Tool.DataGrid_DataLoad(DGV_IO, "IO.xml"))
+                Tool.SaveLogToFile("IO表讀取失敗");
+        }
+
+        private void Btn_Add_Click(object sender, EventArgs e)
+        {
+            string[] context = new string[] { "None", "None", "None", "None", "-1", "OFF", "Digital", "False", "0", "0", "0" };
+
+            Tool.DataGrid_AddRow(DGV_IO, context);
+        }
     }
 }

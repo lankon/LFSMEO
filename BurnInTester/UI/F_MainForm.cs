@@ -64,6 +64,7 @@ namespace BurnInTester.UI
             MainFormLogic.DeleteExpireFileInFolder();
             MainFormLogic.ReadAllSetting();
             MainFormLogic.Initial_All_Device();
+            Labl_Version.Text = MainFormLogic.GetVersion();
 
             //先觸發執行用
             ServiceProvider.GetRequiredService<IBaseMainTask>();
