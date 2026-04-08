@@ -95,6 +95,7 @@
     <Compile Include="BurnInTesterMachine.cs" />
     <Compile Include="BurnInTesterAssemble.cs" />
     <Compile Include="Logic\Function\AgingInformation.cs" />
+    <Compile Include="Logic\Function\Guishan_TC_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -160,6 +161,10 @@
     <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Guishan\Device_Guishan.csproj">
+      <Project>{55ce2e35-b0cc-47cd-9135-e624bf94ec26}</Project>
+      <Name>Device_Guishan</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>

@@ -48,6 +48,10 @@ namespace BurnInTester.UI
 
             if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
+
+            TC_Test.UpdateTemperature += UpdateTemperature;
+            TC_Test.UpdateErrorCount += UpdateErrorCount;
+            TC_Test.Open();
         }
         void ShowHint()
         {
@@ -185,9 +189,57 @@ namespace BurnInTester.UI
             }
         }
 
-        
+        #region 龜山溫控測試
+        Guishan_TC_Test TC_Test = new Guishan_TC_Test();
+
+        private void UpdateErrorCount(string count)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<string>(UpdateErrorCount), count);
+            }
+            else
+            {
+                TxtBx_ErrorCount.Text = count;
+            }
+        }
+        private void UpdateTemperature(string temp)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<string>(UpdateTemperature), temp);
+            }
+            else
+            {
+                Labl_PresentValue.Text = temp;
+            }
+        }
+        private void Btn_Start_TC_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveAllEnumSetting();
+                double sv = double.Parse(TxtBx_SetValue.Text);
+                int resp_delay = int.Parse(TxtBx_RespDelay.Text);
+                int send_delay = int.Parse(TxtBx_SendDelay.Text);
+
+                TC_Test.Start(sv, resp_delay, send_delay);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("請輸入正確的數值格式");
+                return;
+            }
+        }
+        private void Btn_Stop_TC_Click(object sender, EventArgs e)
+        {
+            TC_Test.Stop();
+        }
+        #endregion
+
+
     }
 
-    
+
 }
 
