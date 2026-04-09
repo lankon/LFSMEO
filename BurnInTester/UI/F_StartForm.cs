@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
-
 using ToolFunction;
 using BurnInTester.Base;
 using BurnInTester.Logic;

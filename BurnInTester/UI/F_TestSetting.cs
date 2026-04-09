@@ -108,7 +108,8 @@ namespace BurnInTester.UI
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            string[] context = new string[] { "None", "None", "None", "None", "-1", "OFF", "Digital", "False", "0", "0", "0" };
+                                            //Temp,BTime,RTime,IStart,IEnd,IStep,  V1,
+            string[] context = new string[] { "25", "2", "0.5", "0", "100", "10", "20" };
 
             Tool.DataGrid_AddRow(DGV_IO, context);
         }

@@ -29,12 +29,9 @@ namespace BurnInTester.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_IO = new System.Windows.Forms.DataGridView();
-            this.Title_Temperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_BurnInTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_RestTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Btn_Load = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Btn_RowDown = new System.Windows.Forms.Button();
@@ -42,6 +39,13 @@ namespace BurnInTester.UI
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.Title_Temperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_BurnInTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_RestTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TitleCurrentStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TitleCurrentEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TitleCurrentStep = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_VoltageCond1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_IO)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -52,51 +56,37 @@ namespace BurnInTester.UI
             this.DGV_IO.AllowUserToDeleteRows = false;
             this.DGV_IO.AllowUserToResizeColumns = false;
             this.DGV_IO.AllowUserToResizeRows = false;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_IO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_IO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_IO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_IO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_Temperature,
             this.Title_BurnInTime,
-            this.Title_RestTime});
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_IO.DefaultCellStyle = dataGridViewCellStyle10;
+            this.Title_RestTime,
+            this.TitleCurrentStart,
+            this.TitleCurrentEnd,
+            this.TitleCurrentStep,
+            this.Title_VoltageCond1});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_IO.DefaultCellStyle = dataGridViewCellStyle2;
             this.DGV_IO.Location = new System.Drawing.Point(3, 3);
             this.DGV_IO.Name = "DGV_IO";
             this.DGV_IO.RowHeadersVisible = false;
             this.DGV_IO.RowTemplate.Height = 24;
             this.DGV_IO.Size = new System.Drawing.Size(1738, 961);
             this.DGV_IO.TabIndex = 15;
-            // 
-            // Title_Temperature
-            // 
-            this.Title_Temperature.HeaderText = "Temperature (°C)";
-            this.Title_Temperature.Name = "Title_Temperature";
-            this.Title_Temperature.Width = 170;
-            // 
-            // Title_BurnInTime
-            // 
-            this.Title_BurnInTime.HeaderText = "BurnIn Time (hr.)";
-            this.Title_BurnInTime.Name = "Title_BurnInTime";
-            this.Title_BurnInTime.Width = 170;
-            // 
-            // Title_RestTime
-            // 
-            this.Title_RestTime.HeaderText = "Rest Time (hr.)";
-            this.Title_RestTime.Name = "Title_RestTime";
-            this.Title_RestTime.Width = 170;
             // 
             // Btn_Load
             // 
@@ -184,6 +174,47 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(145, 517);
             this.tableLayoutPanel1.TabIndex = 31;
             // 
+            // Title_Temperature
+            // 
+            this.Title_Temperature.HeaderText = "Temperature (°C)";
+            this.Title_Temperature.Name = "Title_Temperature";
+            this.Title_Temperature.Width = 170;
+            // 
+            // Title_BurnInTime
+            // 
+            this.Title_BurnInTime.HeaderText = "BurnIn Time (hr.)";
+            this.Title_BurnInTime.Name = "Title_BurnInTime";
+            this.Title_BurnInTime.Width = 170;
+            // 
+            // Title_RestTime
+            // 
+            this.Title_RestTime.HeaderText = "Rest Time (hr.)";
+            this.Title_RestTime.Name = "Title_RestTime";
+            this.Title_RestTime.Width = 170;
+            // 
+            // TitleCurrentStart
+            // 
+            this.TitleCurrentStart.HeaderText = "I Start (mA)";
+            this.TitleCurrentStart.Name = "TitleCurrentStart";
+            this.TitleCurrentStart.Width = 130;
+            // 
+            // TitleCurrentEnd
+            // 
+            this.TitleCurrentEnd.HeaderText = "I End (mA)";
+            this.TitleCurrentEnd.Name = "TitleCurrentEnd";
+            this.TitleCurrentEnd.Width = 130;
+            // 
+            // TitleCurrentStep
+            // 
+            this.TitleCurrentStep.HeaderText = "I Step (mA)";
+            this.TitleCurrentStep.Name = "TitleCurrentStep";
+            this.TitleCurrentStep.Width = 130;
+            // 
+            // Title_VoltageCond1
+            // 
+            this.Title_VoltageCond1.HeaderText = "V1 (mA)";
+            this.Title_VoltageCond1.Name = "Title_VoltageCond1";
+            // 
             // F_TestSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -204,9 +235,6 @@ namespace BurnInTester.UI
         #endregion
 
         private System.Windows.Forms.DataGridView DGV_IO;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_Temperature;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_BurnInTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_RestTime;
         private System.Windows.Forms.Button Btn_Load;
         private System.Windows.Forms.Button Btn_Save;
         private System.Windows.Forms.Button Btn_RowDown;
@@ -214,5 +242,12 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Button Btn_Remove;
         private System.Windows.Forms.Button Btn_Add;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_Temperature;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_BurnInTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_RestTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TitleCurrentStart;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TitleCurrentEnd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TitleCurrentStep;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_VoltageCond1;
     }
 }

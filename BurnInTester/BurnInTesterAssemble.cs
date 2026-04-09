@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using RecipeManage.Base;
+using RecipeManage.Logic;
+using RecipeManage.UI;
 using BurnInTester.Base;
 using BurnInTester.UI;
 using BurnInTester.Logic;
@@ -32,7 +35,7 @@ namespace BurnInTester
             //[Form]
             services.AddSingleton<F_MainForm>();
             services.AddSingleton<F_StartForm>();
-            //services.AddSingleton<F_StartForm_ButtonGroup>();
+            services.AddSingleton<F_StartForm_ButtonGroup>();
             //services.AddSingleton<F_Recipe>();
             //services.AddSingleton<F_DAQ_SamplingTest>();
             //services.AddSingleton<IF_StatusBox, F_StatusBox>();
@@ -43,6 +46,7 @@ namespace BurnInTester
             //退出Form後即close掉,要用再new
             //services.AddTransient<F_OEM_Setting>();
             //services.AddTransient<F_Equipment_Setting>();
+            services.AddTransient<IF_Recipe, F_Recipe>();
             services.AddTransient<F_TestSetting>();
             //services.AddTransient<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
@@ -50,7 +54,7 @@ namespace BurnInTester
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
             services.AddSingleton<F_StartFormLogic>();
-            //services.AddSingleton<F_RecipeLogic>();
+            services.AddSingleton<F_RecipeLogic>();
             //services.AddSingleton<F_DAQ_ChartLogic>();
 
             //[Logic]

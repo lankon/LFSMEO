@@ -76,6 +76,11 @@ namespace LFSMEO
 
         private void ConfigureApplicationServices(IServiceCollection services)
         {
+            bool IsFullScreen = true;
+
+            if(Scope.MachineType == EMachineType.RGBTester)
+                IsFullScreen = false;
+
             //[Device]
             MN200 mn200 = new MN200();
             Pcis_dask pcis_9111DG = new Pcis_dask("PCI_9111DG");

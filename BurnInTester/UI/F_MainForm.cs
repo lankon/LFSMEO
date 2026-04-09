@@ -133,9 +133,9 @@ namespace BurnInTester.UI
                 form.Show();
             }
 
-            //var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
-            //Tool.SetForm(Scope.UpButtonPanel, group);
-            //group.Show();
+            var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
+            Tool.SetForm(Scope.UpButtonPanel, group);
+            group.Show();
         }
         #endregion
 
