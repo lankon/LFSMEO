@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using ToolFunction;
+using RecipeManage.Base;
 using BurnInTester.Base;
 
 namespace BurnInTester.UI
@@ -23,6 +24,7 @@ namespace BurnInTester.UI
         }
 
         #region parameter define
+        string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
         #endregion
 
         #region private function
@@ -97,12 +99,16 @@ namespace BurnInTester.UI
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
-            Tool.DataGrid_DataSave(DGV_IO, "IO.xml");
+
+            
+
+
+            Tool.DataGrid_DataSave(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\Box.xml");
         }
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
-            if (!Tool.DataGrid_DataLoad(DGV_IO, "IO.xml"))
+            if (!Tool.DataGrid_DataLoad(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\Box.xml"))
                 Tool.SaveLogToFile("IO表讀取失敗");
         }
 
@@ -111,7 +117,7 @@ namespace BurnInTester.UI
                                             //Temp,BTime,RTime,IStart,IEnd,IStep,  V1,
             string[] context = new string[] { "25", "2", "0.5", "0", "100", "10", "20" };
 
-            Tool.DataGrid_AddRow(DGV_IO, context);
+            Tool.DataGrid_AddRow(DGV_TestCondition, context);
         }
     }
 }

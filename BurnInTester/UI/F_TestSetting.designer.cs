@@ -31,14 +31,7 @@ namespace BurnInTester.UI
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.DGV_IO = new System.Windows.Forms.DataGridView();
-            this.Btn_Load = new System.Windows.Forms.Button();
-            this.Btn_Save = new System.Windows.Forms.Button();
-            this.Btn_RowDown = new System.Windows.Forms.Button();
-            this.Btn_RowUp = new System.Windows.Forms.Button();
-            this.Btn_Remove = new System.Windows.Forms.Button();
-            this.Btn_Add = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.DGV_TestCondition = new System.Windows.Forms.DataGridView();
             this.Title_Temperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_BurnInTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_RestTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,16 +39,23 @@ namespace BurnInTester.UI
             this.TitleCurrentEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TitleCurrentStep = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_VoltageCond1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_IO)).BeginInit();
+            this.Btn_Load = new System.Windows.Forms.Button();
+            this.Btn_Save = new System.Windows.Forms.Button();
+            this.Btn_RowDown = new System.Windows.Forms.Button();
+            this.Btn_RowUp = new System.Windows.Forms.Button();
+            this.Btn_Remove = new System.Windows.Forms.Button();
+            this.Btn_Add = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_TestCondition)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // DGV_IO
+            // DGV_TestCondition
             // 
-            this.DGV_IO.AllowUserToAddRows = false;
-            this.DGV_IO.AllowUserToDeleteRows = false;
-            this.DGV_IO.AllowUserToResizeColumns = false;
-            this.DGV_IO.AllowUserToResizeRows = false;
+            this.DGV_TestCondition.AllowUserToAddRows = false;
+            this.DGV_TestCondition.AllowUserToDeleteRows = false;
+            this.DGV_TestCondition.AllowUserToResizeColumns = false;
+            this.DGV_TestCondition.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -63,9 +63,9 @@ namespace BurnInTester.UI
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_IO.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.DGV_IO.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_IO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGV_TestCondition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.DGV_TestCondition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_TestCondition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_Temperature,
             this.Title_BurnInTime,
             this.Title_RestTime,
@@ -80,13 +80,54 @@ namespace BurnInTester.UI
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_IO.DefaultCellStyle = dataGridViewCellStyle2;
-            this.DGV_IO.Location = new System.Drawing.Point(3, 3);
-            this.DGV_IO.Name = "DGV_IO";
-            this.DGV_IO.RowHeadersVisible = false;
-            this.DGV_IO.RowTemplate.Height = 24;
-            this.DGV_IO.Size = new System.Drawing.Size(1738, 961);
-            this.DGV_IO.TabIndex = 15;
+            this.DGV_TestCondition.DefaultCellStyle = dataGridViewCellStyle2;
+            this.DGV_TestCondition.Location = new System.Drawing.Point(3, 3);
+            this.DGV_TestCondition.Name = "DGV_TestCondition";
+            this.DGV_TestCondition.RowHeadersVisible = false;
+            this.DGV_TestCondition.RowTemplate.Height = 24;
+            this.DGV_TestCondition.Size = new System.Drawing.Size(1738, 961);
+            this.DGV_TestCondition.TabIndex = 15;
+            // 
+            // Title_Temperature
+            // 
+            this.Title_Temperature.HeaderText = "Temperature (°C)";
+            this.Title_Temperature.Name = "Title_Temperature";
+            this.Title_Temperature.Width = 170;
+            // 
+            // Title_BurnInTime
+            // 
+            this.Title_BurnInTime.HeaderText = "BurnIn Time (hr.)";
+            this.Title_BurnInTime.Name = "Title_BurnInTime";
+            this.Title_BurnInTime.Width = 170;
+            // 
+            // Title_RestTime
+            // 
+            this.Title_RestTime.HeaderText = "Rest Time (hr.)";
+            this.Title_RestTime.Name = "Title_RestTime";
+            this.Title_RestTime.Width = 170;
+            // 
+            // TitleCurrentStart
+            // 
+            this.TitleCurrentStart.HeaderText = "I Start (mA)";
+            this.TitleCurrentStart.Name = "TitleCurrentStart";
+            this.TitleCurrentStart.Width = 130;
+            // 
+            // TitleCurrentEnd
+            // 
+            this.TitleCurrentEnd.HeaderText = "I End (mA)";
+            this.TitleCurrentEnd.Name = "TitleCurrentEnd";
+            this.TitleCurrentEnd.Width = 130;
+            // 
+            // TitleCurrentStep
+            // 
+            this.TitleCurrentStep.HeaderText = "I Step (mA)";
+            this.TitleCurrentStep.Name = "TitleCurrentStep";
+            this.TitleCurrentStep.Width = 130;
+            // 
+            // Title_VoltageCond1
+            // 
+            this.Title_VoltageCond1.HeaderText = "V1 (mA)";
+            this.Title_VoltageCond1.Name = "Title_VoltageCond1";
             // 
             // Btn_Load
             // 
@@ -174,59 +215,18 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(145, 517);
             this.tableLayoutPanel1.TabIndex = 31;
             // 
-            // Title_Temperature
-            // 
-            this.Title_Temperature.HeaderText = "Temperature (°C)";
-            this.Title_Temperature.Name = "Title_Temperature";
-            this.Title_Temperature.Width = 170;
-            // 
-            // Title_BurnInTime
-            // 
-            this.Title_BurnInTime.HeaderText = "BurnIn Time (hr.)";
-            this.Title_BurnInTime.Name = "Title_BurnInTime";
-            this.Title_BurnInTime.Width = 170;
-            // 
-            // Title_RestTime
-            // 
-            this.Title_RestTime.HeaderText = "Rest Time (hr.)";
-            this.Title_RestTime.Name = "Title_RestTime";
-            this.Title_RestTime.Width = 170;
-            // 
-            // TitleCurrentStart
-            // 
-            this.TitleCurrentStart.HeaderText = "I Start (mA)";
-            this.TitleCurrentStart.Name = "TitleCurrentStart";
-            this.TitleCurrentStart.Width = 130;
-            // 
-            // TitleCurrentEnd
-            // 
-            this.TitleCurrentEnd.HeaderText = "I End (mA)";
-            this.TitleCurrentEnd.Name = "TitleCurrentEnd";
-            this.TitleCurrentEnd.Width = 130;
-            // 
-            // TitleCurrentStep
-            // 
-            this.TitleCurrentStep.HeaderText = "I Step (mA)";
-            this.TitleCurrentStep.Name = "TitleCurrentStep";
-            this.TitleCurrentStep.Width = 130;
-            // 
-            // Title_VoltageCond1
-            // 
-            this.Title_VoltageCond1.HeaderText = "V1 (mA)";
-            this.Title_VoltageCond1.Name = "Title_VoltageCond1";
-            // 
             // F_TestSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.DGV_IO);
+            this.Controls.Add(this.DGV_TestCondition);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_TestSetting";
             this.Text = "F_Equipment_Setting";
             this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_IO)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_TestCondition)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -234,7 +234,7 @@ namespace BurnInTester.UI
 
         #endregion
 
-        private System.Windows.Forms.DataGridView DGV_IO;
+        private System.Windows.Forms.DataGridView DGV_TestCondition;
         private System.Windows.Forms.Button Btn_Load;
         private System.Windows.Forms.Button Btn_Save;
         private System.Windows.Forms.Button Btn_RowDown;

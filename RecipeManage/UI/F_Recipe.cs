@@ -17,7 +17,7 @@ namespace RecipeManage.UI
 {
     public partial class F_Recipe : Form, IF_Recipe
     {
-        public F_Recipe(F_RecipeLogic f_RecipeLogic)
+        public F_Recipe(IF_RecipeLogic f_RecipeLogic)
         {
             InitializeComponent();
 
@@ -26,7 +26,7 @@ namespace RecipeManage.UI
         }
 
         #region parameter define
-        F_RecipeLogic RecipeLogic;
+        IF_RecipeLogic RecipeLogic;
         private string SelectRecipeName = "";
         #endregion
 

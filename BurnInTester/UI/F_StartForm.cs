@@ -50,7 +50,7 @@ namespace BurnInTester.UI
 
             TC_Test.UpdateTemperature += UpdateTemperature;
             TC_Test.UpdateErrorCount += UpdateErrorCount;
-            TC_Test.Open();
+            //TC_Test.Open();
         }
         void ShowHint()
         {
@@ -78,6 +78,7 @@ namespace BurnInTester.UI
         private void UpdatePage()
         {
             ReadAllEnumSetting();
+            StartFormLogic.UpdateAgingParam();
             UpdateEnumSettingToForm();
         }
         private void LeavePage()
