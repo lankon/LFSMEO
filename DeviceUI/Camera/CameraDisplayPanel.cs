@@ -264,7 +264,12 @@ namespace DeviceUI.Camera
                 }
 
                 // 計算符合視窗的比例
-                float ratio = Math.Min((float)this.Width / _currentImage.Width, (float)this.Height / _currentImage.Height);
+                int panel_width = this.Width;
+                int panel_height = this.Height;
+                int image_width = _currentImage.Width;
+                int image_height = _currentImage.Height;
+
+                float ratio = Math.Min((float)panel_width / image_width, (float)panel_height / image_height);
                 _zoomScale = ratio;
 
                 // 計算置中位移，並存入 _offset
