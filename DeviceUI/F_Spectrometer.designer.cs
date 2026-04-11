@@ -29,8 +29,8 @@ namespace DeviceUI.Spectrometer
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_Spectrum = new System.Windows.Forms.DataGridView();
             this.Title_SpectrumType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,7 +42,7 @@ namespace DeviceUI.Spectrometer
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.Btn_FunctionTest = new System.Windows.Forms.Button();
-            this.Plot_Spectrom = new ScottPlot.WinForms.FormsPlot();
+            this.Plot_Spectrom = new ScottPlot.FormsPlot();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Spectrum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,14 +52,14 @@ namespace DeviceUI.Spectrometer
             this.DGV_Spectrum.AllowUserToDeleteRows = false;
             this.DGV_Spectrum.AllowUserToResizeColumns = false;
             this.DGV_Spectrum.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_Spectrum.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_Spectrum.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.DGV_Spectrum.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_Spectrum.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_SpectrumType,
@@ -67,14 +67,14 @@ namespace DeviceUI.Spectrometer
             this.Title_ID,
             this.Title_IntegralTime,
             this.Title_GetSpectrum});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_Spectrum.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_Spectrum.DefaultCellStyle = dataGridViewCellStyle4;
             this.DGV_Spectrum.Location = new System.Drawing.Point(5, 5);
             this.DGV_Spectrum.Name = "DGV_Spectrum";
             this.DGV_Spectrum.RowHeadersVisible = false;
@@ -174,16 +174,15 @@ namespace DeviceUI.Spectrometer
             this.Btn_FunctionTest.TabIndex = 31;
             this.Btn_FunctionTest.Text = "FunctionTest";
             this.Btn_FunctionTest.UseVisualStyleBackColor = true;
-            this.Btn_FunctionTest.Visible = false;
             this.Btn_FunctionTest.Click += new System.EventHandler(this.Btn_FunctionTest_Click);
             // 
             // Plot_Spectrom
             // 
-            this.Plot_Spectrom.DisplayScale = 0F;
-            this.Plot_Spectrom.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Plot_Spectrom.Location = new System.Drawing.Point(5, 217);
+            this.Plot_Spectrom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Plot_Spectrom.Location = new System.Drawing.Point(5, 216);
+            this.Plot_Spectrom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Plot_Spectrom.Name = "Plot_Spectrom";
-            this.Plot_Spectrom.Size = new System.Drawing.Size(967, 437);
+            this.Plot_Spectrom.Size = new System.Drawing.Size(967, 376);
             this.Plot_Spectrom.TabIndex = 32;
             // 
             // F_Spectrometer
@@ -214,11 +213,12 @@ namespace DeviceUI.Spectrometer
         private System.Windows.Forms.Button Btn_Remove;
         private System.Windows.Forms.Button Btn_Add;
         private System.Windows.Forms.Button Btn_FunctionTest;
-        private ScottPlot.WinForms.FormsPlot Plot_Spectrom;
+        //private ScottPlot.WinForms.FormsPlot Plot_Spectrom;
         private System.Windows.Forms.DataGridViewComboBoxColumn Title_SpectrumType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_IntegralTime;
         private System.Windows.Forms.DataGridViewButtonColumn Title_GetSpectrum;
+        private ScottPlot.FormsPlot Plot_Spectrom;
     }
 }
