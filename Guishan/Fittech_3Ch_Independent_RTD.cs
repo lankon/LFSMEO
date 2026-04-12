@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using DeviceCore;
+
 namespace Device_Guishan
 {
-    public class Fittech_3Ch_Independent_RTD
+    public class Fittech_3Ch_Independent_RTD: ITemperatureControl
     {
         public Fittech_3Ch_Independent_RTD()
         {
@@ -76,7 +78,7 @@ namespace Device_Guishan
         }
         #endregion
 
-
+        #region public function
         public int Open(string com, string baudrate, string data_bits, string stop_bits, string parity)
         {
             Comport.PortName = com;
@@ -232,7 +234,6 @@ namespace Device_Guishan
                 return (int)ERROR_CODE.CMD_FAIL;
             }
         }
-
-
+        #endregion
     }
 }

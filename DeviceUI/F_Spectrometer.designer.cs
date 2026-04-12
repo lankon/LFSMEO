@@ -42,7 +42,6 @@ namespace DeviceUI.Spectrometer
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.Btn_FunctionTest = new System.Windows.Forms.Button();
-            this.Plot_Spectrom = new ScottPlot.WinForms.FormsPlot();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Spectrum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -177,21 +176,11 @@ namespace DeviceUI.Spectrometer
             this.Btn_FunctionTest.Visible = false;
             this.Btn_FunctionTest.Click += new System.EventHandler(this.Btn_FunctionTest_Click);
             // 
-            // Plot_Spectrom
-            // 
-            this.Plot_Spectrom.DisplayScale = 0F;
-            this.Plot_Spectrom.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Plot_Spectrom.Location = new System.Drawing.Point(5, 217);
-            this.Plot_Spectrom.Name = "Plot_Spectrom";
-            this.Plot_Spectrom.Size = new System.Drawing.Size(967, 437);
-            this.Plot_Spectrom.TabIndex = 32;
-            // 
             // F_Spectrometer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1920, 1080);
-            this.Controls.Add(this.Plot_Spectrom);
             this.Controls.Add(this.Btn_FunctionTest);
             this.Controls.Add(this.Btn_Load);
             this.Controls.Add(this.Btn_Save);
@@ -214,7 +203,6 @@ namespace DeviceUI.Spectrometer
         private System.Windows.Forms.Button Btn_Remove;
         private System.Windows.Forms.Button Btn_Add;
         private System.Windows.Forms.Button Btn_FunctionTest;
-        private ScottPlot.WinForms.FormsPlot Plot_Spectrom;
         private System.Windows.Forms.DataGridViewComboBoxColumn Title_SpectrumType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_ID;

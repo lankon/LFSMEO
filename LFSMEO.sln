@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36804.6
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LFSMEO", "LFSMEO\LFSMEO.csproj", "{7C488242-29C2-4687-8933-FAE874C6AA80}"
 EndProject
@@ -70,6 +70,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device_Guishan", "Guishan\Device_Guishan.csproj", "{55CE2E35-B0CC-47CD-9135-E624BF94EC26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManage", "RecipeManage\RecipeManage.csproj", "{E3A7E02C-C7A0-4E2A-8CC4-8822CFB8AC9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device_TemeratureControl_Virtual", "Device_TemeratureControl_Virtual\Device_TemeratureControl_Virtual.csproj", "{42080606-0D38-4021-A16A-D7D67353A24E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -565,6 +567,26 @@ Global
 		{E3A7E02C-C7A0-4E2A-8CC4-8822CFB8AC9D}.Release|x64.Build.0 = Release|Any CPU
 		{E3A7E02C-C7A0-4E2A-8CC4-8822CFB8AC9D}.Release|x86.ActiveCfg = Release|Any CPU
 		{E3A7E02C-C7A0-4E2A-8CC4-8822CFB8AC9D}.Release|x86.Build.0 = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|x64.Build.0 = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Debug|x86.Build.0 = Debug|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|ARM.Build.0 = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|ARM64.Build.0 = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|x64.ActiveCfg = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|x64.Build.0 = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|x86.ActiveCfg = Release|Any CPU
+		{42080606-0D38-4021-A16A-D7D67353A24E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -598,6 +620,7 @@ Global
 		{A3082684-7F36-4A7C-A42C-B9B0BCD13A11} = {C1BC67B0-D3E5-4E39-B51B-277DEBF16BFE}
 		{55CE2E35-B0CC-47CD-9135-E624BF94EC26} = {A3082684-7F36-4A7C-A42C-B9B0BCD13A11}
 		{E3A7E02C-C7A0-4E2A-8CC4-8822CFB8AC9D} = {E5C5C6A1-DABE-4ACE-B83D-A636F1D2A5F6}
+		{42080606-0D38-4021-A16A-D7D67353A24E} = {A3082684-7F36-4A7C-A42C-B9B0BCD13A11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EBBAD61-81A3-4A7E-8737-48277F9A45EB}
