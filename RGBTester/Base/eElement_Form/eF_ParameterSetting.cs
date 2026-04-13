@@ -10,6 +10,19 @@ namespace RGBTester.Base
     {
         TxtBx_TestFileCopyPath,
         TxtBx_TestFileCopyPath1,
+
+        TxtBx_LCM_Check_DAC1,
+        TxtBx_LCM_Check_DAC2,
+        TxtBx_LCM_Check_DAC3,
+        TxtBx_LCM_Check_DAC4,
+        TxtBx_LCM_Check_DAC5,
+        TxtBx_HCM_Check_DAC1,
+        TxtBx_HCM_Check_DAC2,
+        TxtBx_HCM_Check_DAC3,
+        TxtBx_HCM_Check_DAC4,
+        TxtBx_HCM_Check_DAC5,
+
+        TxtBx_DeviationLimit,
         //Cmbx_YieldRecord,
     }
 

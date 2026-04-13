@@ -107,6 +107,7 @@ namespace RGBTester.Logic
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
         RGBTesterFunction RGBfunc;
+        private ResultData ResultData;
 
         public enum WORK
         {
@@ -141,6 +142,7 @@ namespace RGBTester.Logic
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
 
             Period_DAQ_Count = RGBfunc.HardwareParam.Period_DAQ_Count * 3;   //抓三個週期的資料
 
@@ -678,6 +680,23 @@ namespace RGBTester.Logic
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
                             CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
 
+                            double[] current = new double[ResultData.CheckSlopeData.Check_LCM_DAC.Length];
+                            for (int i=0; i< ResultData.CheckSlopeData.Check_LCM_DAC.Length; i++)
+                            {
+                                int index = TesterData_L.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_LCM_DAC[i]);
+
+                                if (index == -1)
+                                {
+                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_LCM_DAC[i]} Not Found!", level: "WRN");
+                                    current[i] = 0;
+                                }
+                                else
+                                {
+                                    current[i] = TesterData_L.Iled[index] * 1000;
+                                }
+                            }
+                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "LCM", current, LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
+
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
@@ -816,7 +835,25 @@ namespace RGBTester.Logic
                             Deps.File.SetCalibrationData(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
                             CheckTestResult(LinearCurveFitting_H.Slope, "HCM");
 
-                            if(!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
+                            double[] current = new double[TesterData_H.DACpoint.Count];
+                            for (int i = 0; i < ResultData.CheckSlopeData.Check_HCM_DAC.Length; i++)
+                            {
+                                int index = TesterData_H.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_HCM_DAC[i]);
+
+                                if (index == -1)
+                                {
+                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_HCM_DAC[i]} Not Found!", level: "WRN");
+                                    current[i] = 0;
+                                }
+                                else
+                                {
+                                    current[i] = TesterData_H.Iled[index] * 1000;
+                                }
+                            }
+                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "HCM", current, LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
+
+
+                            if (!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
                                 StatusBox.ShowMessage("HCM Set DAC 0 Fail");
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
