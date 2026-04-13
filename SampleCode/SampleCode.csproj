@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\eF_Equipment_Setting.cs" />
     <Compile Include="Base\IBaseMainTask.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
     <Compile Include="Base\IBaseTask.cs" />

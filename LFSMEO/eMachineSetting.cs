@@ -11,6 +11,7 @@ namespace LFSMEO
         NONE,
         ProbeTester,
         RGBTester,
+        BurnInTester,
     }
 
     public enum eMachineSetting

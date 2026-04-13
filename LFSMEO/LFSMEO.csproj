@@ -217,6 +217,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BurnInTester\BurnInTester.csproj">
+      <Project>{6fc34b76-efaf-42f9-92da-5b7c85e40be5}</Project>
+      <Name>BurnInTester</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>
@@ -295,6 +299,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangeLog.xml" />
+    <None Include="Resources\BurnInTester.ico" />
+    <None Include="Resources\gf11n-9k6eh-001.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />

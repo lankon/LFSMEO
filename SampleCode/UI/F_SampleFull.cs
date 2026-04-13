@@ -10,9 +10,12 @@ using System.Windows.Forms;
 
 
 using ToolFunction;
+using SampleCode.Base;
 
 namespace SampleCode.UI
 {
+    
+
     public partial class F_SampleFull : Form
     {
         public F_SampleFull()
@@ -33,8 +36,8 @@ namespace SampleCode.UI
 
             ShowHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
-            //    Tool.ShowFormName(this);
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                Tool.ShowFormName(this);
         }
         void ShowHint()
         {
@@ -84,10 +87,10 @@ namespace SampleCode.UI
                 ReadAllEnumSetting();
 
                 LeavePage();
-                ////釋放記憶體資源
-                //Tool.ReleaseButtonImages(this);
-                //this.Close();
-                //this.Dispose();
+                //釋放記憶體資源
+                Tool.ReleaseButtonImages(this);
+                this.Close();
+                this.Dispose();
             }
             else
             {
