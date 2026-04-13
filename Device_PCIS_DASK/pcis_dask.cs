@@ -73,7 +73,7 @@ namespace Device_PCIS_DASK
 
         public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
-            if (card < 0 || card > 65000)
+            if (cardNo < 0 || cardNo > 65000)
                 return -1;
 
             ushort rawValue = 0;
@@ -85,8 +85,8 @@ namespace Device_PCIS_DASK
             else if (range == "+10V")
                 u_range = DASK64.AD_B_10_V;
 
-            DASK64.AI_ReadChannel((ushort)card, port, u_range, out rawValue);
-            DASK64.AI_VoltScale((ushort)card, u_range, (short)rawValue, out voltage);
+            DASK64.AI_ReadChannel((ushort)cardNo, port, u_range, out rawValue);
+            DASK64.AI_VoltScale((ushort)cardNo, u_range, (short)rawValue, out voltage);
 
             return voltage;
         }
