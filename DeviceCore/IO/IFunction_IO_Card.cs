@@ -21,23 +21,24 @@ namespace DeviceCore
     {
         #region Input
 
-        #region RGBTester
+        #region RGBTester DAQ Point
+        Left_Vin,
         Left_Iin_HCM,
         Left_Iin_LCM,
-        Left_Vin,
-        Right_VLED,
-        Left_ILED,
-        Right_Iin_LCM,
-        Right_Vin,
-        Right_ILED,
         Left_VLED,
         Left_VLED_R,
         Left_VLED_G,
         Left_VLED_B,
+        Left_ILED,
+
+        Right_Vin,
         Right_Iin_HCM,
+        Right_Iin_LCM,
+        Right_VLED,
         Right_VLED_R,
         Right_VLED_G,
         Right_VLED_B,
+        Right_ILED,
         #endregion
 
         SphereUpSensor,
