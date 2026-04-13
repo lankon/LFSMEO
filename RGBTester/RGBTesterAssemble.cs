@@ -38,14 +38,16 @@ namespace RGBTester
             services.AddSingleton<IF_StatusBox, F_StatusBox>();
             services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
             services.AddSingleton<F_DAQ_Chart>();
-            services.AddSingleton<F_FunctionTester>();
+            
 
             //[Form]
             //退出Form後即close掉,要用再new
             services.AddTransient<F_OEM_Setting>();
             services.AddTransient<F_Equipment_Setting>();
-            services.AddSingleton<F_YieldReport>();
+            services.AddTransient<F_YieldReport>();
             services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
+            services.AddTransient<F_OpticalTest>();
+            services.AddTransient<F_FunctionTester>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
             //[Form Logic]

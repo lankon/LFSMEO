@@ -13,7 +13,7 @@ namespace RGBTester.Base
     }
 }
 
-namespace RGBTester.Base.F_FunctionTester
+namespace RGBTester.Base.FunctionTesterItem
 {
     public enum eTestMode
     {

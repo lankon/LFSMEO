@@ -193,39 +193,38 @@ namespace RGBTester.Logic
 
                 case WORK.CHECK_POSITION_READY:
                     {
-                        if(Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor) == true &&
-                           Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
+                        if(Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
                            Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor) == true)
                         {
                             Transition(WORK.SUCCESS);
                         }
                         else
                         {
-                            Transition(WORK.SPHERE_UP);
+                            Transition(WORK.CHUCK_DOWN);
                         }
                     }
                     break;
 
-                case WORK.SPHERE_UP:
-                    {
-                        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, false);
-                        Transition(WORK.CHUCK_DOWN);
-                    }
-                    break;
+                //case WORK.SPHERE_UP:
+                //    {
+                //        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, true);
+                //        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, false);
+                //        Transition(WORK.CHUCK_DOWN);
+                //    }
+                //    break;
 
                 case WORK.CHUCK_DOWN:
-                    if (Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor))
+                    //if (Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor))
                     {
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, true);
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, false);
                         ResetTimeCount(out task_delay);
                         Transition(WORK.CHUCK_RIGHT);
                     }
-                    else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
-                    {
-                        Transition(WORK.ABORT);
-                    }
+                    //else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
+                    //{
+                    //    Transition(WORK.ABORT);
+                    //}
                     break;
 
                 case WORK.CHUCK_RIGHT:

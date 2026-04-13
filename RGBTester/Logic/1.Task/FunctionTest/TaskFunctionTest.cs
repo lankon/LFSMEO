@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using ToolFunction;
 using RGBTester.Base;
-using RGBTester.Base.F_FunctionTester;
+using RGBTester.Base.FunctionTesterItem;
 
 namespace RGBTester.Logic
 {

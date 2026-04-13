@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
+using RGBTester.Base.FunctionTesterItem;
 
 namespace RGBTester.Logic
 {
@@ -35,6 +36,10 @@ namespace RGBTester.Logic
         #region parameter
         private int task_delay = 0;
         private int delay_time = 1;
+        private int TestSide = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
+        private EIOName SphereWork_Output;
+        private EIOName SphereIdle_Output;
+        private EIOName SphereWork_Input;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         //private F_StateControl TaskForm;
@@ -139,6 +144,21 @@ namespace RGBTester.Logic
 
             return res;
         }
+        private void Preset()
+        {
+            if(TestSide == (int)eTestMode.LEFT)
+            {
+                SphereWork_Output = EIOName.SphereLeft;
+                SphereIdle_Output = EIOName.SphereRight;
+                SphereWork_Input = EIOName.SphereLeftSensor;
+            }
+            else
+            {
+                SphereWork_Output = EIOName.SphereRight;
+                SphereIdle_Output = EIOName.SphereLeft;
+                SphereWork_Input = EIOName.SphereRightSensor;
+            }
+        }
         #endregion
 
         #region public function
@@ -188,14 +208,15 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
+                        Preset();
                         Transition(WORK.CHECK_POSITION_READY);
                     }
                     break;
 
                 case WORK.CHECK_POSITION_READY:
-                    {
+                    {   //要分辨積分球左右
                         if(Deps.DIOL.GetInputStatus(EIOName.SphereDownSensor) == true &&
-                           Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
+                           Deps.DIOL.GetInputStatus(SphereWork_Input) == true &&
                            Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor) == true)
                         {
                             Transition(WORK.SUCCESS);
@@ -229,8 +250,8 @@ namespace RGBTester.Logic
                 case WORK.SPHERE_LR_SIDE:
                     if (Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor))
                     {
-                        //Deps.DIOL.SetOutputStatus(EIOName.Sp, true);
-                        //Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, false);
+                        Deps.DIOL.SetOutputStatus(SphereWork_Output, true);
+                        Deps.DIOL.SetOutputStatus(SphereIdle_Output, false);
                         ResetTimeCount(out task_delay);
                         Transition(WORK.CHUCK_UP);
                     }
@@ -240,7 +261,7 @@ namespace RGBTester.Logic
                     }
                     break;
                 case WORK.CHUCK_UP:
-                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor))
+                    if (Deps.DIOL.GetInputStatus(SphereWork_Input))
                     {
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, true);
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, false);
@@ -258,7 +279,7 @@ namespace RGBTester.Logic
                         Deps.DIOL.SetOutputStatus(EIOName.SphereDown, true);
                         Deps.DIOL.SetOutputStatus(EIOName.SphereUp, false);
                         ResetTimeCount(out task_delay);
-                        Transition(WORK.CHECK_ACTION_FINISH);
+                        Transition(WORK.CHECK_ACTION_FINISH); 
                     }
                     else if (CheckTimeOverSec(task_delay, 5))
                     {

@@ -111,10 +111,10 @@ namespace RGBTester.UI
                 ReadAllEnumSetting();
 
                 LeavePage();
-                ////釋放記憶體資源
-                //Tool.ReleaseButtonImages(this);
-                //this.Close();
-                //this.Dispose();
+                //釋放記憶體資源
+                Tool.ReleaseButtonImages(this);
+                this.Close();
+                this.Dispose();
             }
             else
             {
@@ -129,10 +129,7 @@ namespace RGBTester.UI
 
         private void Btn_OpticalForm_Click(object sender, EventArgs e)
         {
-            //先暫時寫成流程測試
-            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-            MainTask.SetTask<TaskOpticalTest>();
-            MainTask.Run();
+            ShowForm<F_OpticalTest>();
         }
 
         private void Btn_UnLoad_Click(object sender, EventArgs e)
@@ -144,10 +141,18 @@ namespace RGBTester.UI
 
         private void Btn_StartTest_Click(object sender, EventArgs e)
         {
-            SaveAllEnumSetting();
-            ReadAllEnumSetting();
+            if (Control.ModifierKeys == Keys.Control)
+            {
+                SaveAllEnumSetting();
+                ReadAllEnumSetting();
 
-            FunctionTesterLogic.StartFunctionTest();
+                FunctionTesterLogic.StartFunctionTest();
+            }
+            else
+            {
+                MessageBox.Show("Please press Ctrl + Click to start the test.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
         }
     }
 }
