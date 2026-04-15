@@ -126,6 +126,16 @@ namespace Device_Guishan
 
             return 0;
         }
+
+        public ETemperatureControlType Get_TC_Type()
+        {
+            return ETemperatureControlType.Guishan_3Ch_Independent_RTD;
+        }
+        public string GetPortName()
+        {
+            return Comport.PortName;
+        }
+
         public int Initialize()
         {
             string command = $"B{CtrlBox},INIT\r\n";
@@ -143,7 +153,7 @@ namespace Device_Guishan
                 return -1;
             }
         }
-        public int AskPV()
+        public int AskPV(string cmd = "")
         {
             string command = $"B{CtrlBox},GTEMP,{Channel}\r\n";
             SendCommand = command;
@@ -161,7 +171,7 @@ namespace Device_Guishan
                 return -1;
             }
         }
-        public int Start(double sv)
+        public int Start(double sv, string cmd = "")
         {
             string SV_Value = sv.ToString("F2");
             string command = $"B{CtrlBox},STEMP,1,{SV_Value},1,{Channel}\r\n";
@@ -180,7 +190,7 @@ namespace Device_Guishan
                 return -1;
             }
         }
-        public int Stop()
+        public int Stop(string cmd = "")
         {
             string command = $"B{CtrlBox},STEMP,0,25,1,{Channel}\r\n";
             SendCommand = command;
@@ -198,7 +208,7 @@ namespace Device_Guishan
                 return -1;
             }
         }
-        public int GetAnswer(out string answer)
+        public int GetAnswer(out string answer, string cmd = "")
         {
             answer = "";
 

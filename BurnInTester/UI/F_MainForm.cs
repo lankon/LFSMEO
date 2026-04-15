@@ -61,11 +61,11 @@ namespace BurnInTester.UI
             CreateDynamicElement();
             CreateFolder();
 
+            Labl_Version.Text = MainFormLogic.GetVersion();
             MainFormLogic.DeleteExpireFileInFolder();
             MainFormLogic.ReadAllSetting();
             MainFormLogic.Initial_All_Device();
-            Labl_Version.Text = MainFormLogic.GetVersion();
-
+            
             //先觸發執行用
             ServiceProvider.GetRequiredService<IBaseMainTask>();
             //ServiceProvider.GetRequiredService<IF_StatusBox>();

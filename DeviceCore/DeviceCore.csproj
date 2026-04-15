@@ -67,6 +67,8 @@
     <Compile Include="Motion\IF_MotionSetting.cs" />
     <Compile Include="Motion\IMotionCard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemperatureControl\IFunction_TemperatureControl.cs" />
+    <Compile Include="TemperatureControl\IF_TemperatureControl.cs" />
     <Compile Include="TemperatureControl\ITemperature.cs" />
   </ItemGroup>
   <ItemGroup>

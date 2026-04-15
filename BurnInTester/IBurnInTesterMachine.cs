@@ -11,5 +11,6 @@ namespace BurnInTester
     public interface IBurnInTesterMachine
     {
         IFunction_IO_Card DIOL { get; }
+        IFunction_TemperatureControl TC { get; }
     }
 }

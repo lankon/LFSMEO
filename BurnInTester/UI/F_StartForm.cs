@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ToolFunction;
 using BurnInTester.Base;
 using BurnInTester.Logic;
+using DeviceCore;
 
 namespace BurnInTester.UI
 {
@@ -149,10 +150,7 @@ namespace BurnInTester.UI
             f_Monitor.Show();
         }
 
-        private void Btn_Test_Click(object sender, EventArgs e)
-        {
-            //CreateDynamicElement();
-        }
+        
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
@@ -235,9 +233,22 @@ namespace BurnInTester.UI
         {
             TC_Test.Stop();
         }
+
         #endregion
 
 
+        TC_CommManage commManage;
+        private void Btn_Test_Click(object sender, EventArgs e)
+        {
+            commManage.UpdateTemperature(ETemperatureControlName.TC_1);
+        }
+
+        private void Btn_Test_TC_Click(object sender, EventArgs e)
+        {
+            var TC = ServiceProvider.GetRequiredService<IFunction_TemperatureControl>();
+
+            commManage = new TC_CommManage(TC);
+        }
     }
 
 

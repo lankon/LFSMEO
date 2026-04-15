@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Function_IO_Card.cs" />
     <Compile Include="Function_Camera.cs" />
+    <Compile Include="Function_TemperatureControl.cs" />
     <Compile Include="Function_LightControl.cs" />
     <Compile Include="Function_Spectrometer.cs" />
     <Compile Include="Function_Motion_Card.cs" />

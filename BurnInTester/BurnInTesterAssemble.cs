@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using DeviceCore;
 using RecipeManage.Base;
 using RecipeManage.Logic;
 using RecipeManage.UI;
@@ -25,7 +26,6 @@ namespace BurnInTester
             //[Device]
             //services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
             //services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
-            //services.AddSingleton<ILightEngineFunction, LightEngineFunction>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
@@ -44,7 +44,7 @@ namespace BurnInTester
 
             //[Form]
             //退出Form後即close掉,要用再new
-            //services.AddTransient<F_OEM_Setting>();
+            services.AddTransient<F_OEM_Setting>();
             //services.AddTransient<F_Equipment_Setting>();
             services.AddTransient<IF_Recipe, F_Recipe>();
             services.AddTransient<F_TestSetting>();

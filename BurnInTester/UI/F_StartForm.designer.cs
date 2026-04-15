@@ -56,6 +56,7 @@ namespace BurnInTester.UI
             this.label1 = new System.Windows.Forms.Label();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.Btn_Test_TC = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.Btn_Stop_TC = new System.Windows.Forms.Button();
@@ -121,7 +122,7 @@ namespace BurnInTester.UI
             // 
             // Btn_Test
             // 
-            this.Btn_Test.Location = new System.Drawing.Point(876, 74);
+            this.Btn_Test.Location = new System.Drawing.Point(648, 106);
             this.Btn_Test.Name = "Btn_Test";
             this.Btn_Test.Size = new System.Drawing.Size(138, 60);
             this.Btn_Test.TabIndex = 2;
@@ -392,6 +393,7 @@ namespace BurnInTester.UI
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.Btn_Test_TC);
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Controls.Add(this.Btn_Test);
             this.panel3.Controls.Add(this.Btn_GetStats);
@@ -399,6 +401,16 @@ namespace BurnInTester.UI
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1204, 473);
             this.panel3.TabIndex = 4;
+            // 
+            // Btn_Test_TC
+            // 
+            this.Btn_Test_TC.Location = new System.Drawing.Point(648, 217);
+            this.Btn_Test_TC.Name = "Btn_Test_TC";
+            this.Btn_Test_TC.Size = new System.Drawing.Size(138, 60);
+            this.Btn_Test_TC.TabIndex = 5;
+            this.Btn_Test_TC.Text = "Test TC";
+            this.Btn_Test_TC.UseVisualStyleBackColor = true;
+            this.Btn_Test_TC.Click += new System.EventHandler(this.Btn_Test_TC_Click);
             // 
             // panel4
             // 
@@ -650,6 +662,7 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox TxtBx_SendDelay;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button Btn_Test_TC;
         //private UC_CtrlBoxStatus CtrlBoxStatus1;
     }
 }

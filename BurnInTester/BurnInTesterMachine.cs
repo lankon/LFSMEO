@@ -13,10 +13,12 @@ namespace BurnInTester
     public class BurnInTesterMachine : IBurnInTesterMachine
     {
         public IFunction_IO_Card DIOL { get; }
+        public IFunction_TemperatureControl TC { get; }
 
-        public BurnInTesterMachine(IFunction_IO_Card iOCard)
+        public BurnInTesterMachine(IFunction_IO_Card iOCard, IFunction_TemperatureControl function_TemperatureControl)
         {
             DIOL = iOCard;
+            TC = function_TemperatureControl;
         }
     }
 }

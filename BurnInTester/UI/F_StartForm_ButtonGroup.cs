@@ -104,18 +104,18 @@ namespace BurnInTester.UI
 
         private void Btn_OEM_Setting_Click(object sender, EventArgs e)
         {
-            //var oem_set = ServiceProvider.GetRequiredService<F_OEM_Setting>();
+            var oem_set = ServiceProvider.GetRequiredService<F_OEM_Setting>();
 
-            //Tool.HideElementOnPanel(Scope.MainPanel);
-            //Tool.SetForm(Scope.MainPanel, oem_set);
-            //oem_set.Show();
+            Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.SetForm(Scope.MainPanel, oem_set);
+            oem_set.Show();
         }
 
         private void Btn_ParameterSetting_Click(object sender, EventArgs e)
         {
             //var para_set = ServiceProvider.GetRequiredService<IF_ParameterSetting>();
 
-            //if(para_set is Form form)
+            //if (para_set is Form form)
             //{
             //    Tool.HideElementOnPanel(Scope.MainPanel);
             //    Tool.SetForm(Scope.MainPanel, form);

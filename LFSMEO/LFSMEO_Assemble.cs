@@ -17,6 +17,7 @@ using DeviceUI.Motion;
 using DeviceUI.IO;
 using DeviceUI.LightControl;
 using DeviceUI.Camera;
+using DeviceUI.TemperatureControl;
 using DeviceUI.Spectrometer;
 using Device_MN200;
 using Device_PCIS_DASK;
@@ -29,6 +30,7 @@ using Device_VirtualLight;
 using Device_Hikvision;
 using Device_VirtualCamera;
 using Device_Spectrum_Virtual;
+using Device_TemeratureControl_Virtual;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -104,6 +106,7 @@ namespace LFSMEO
             services.AddSingleton<ICamera, Hikvision>();
             services.AddSingleton<ICamera, VirtualCamera>();
             services.AddSingleton<IChillerControl>(Klxz);
+            services.AddSingleton<ITemperatureControl, Virtual_TemperatureControl>();
 
             //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
@@ -115,6 +118,7 @@ namespace LFSMEO
             services.AddSingleton<IF_LightControl, F_LightControl>();
             services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
             services.AddSingleton<IF_Spectrometer, F_Spectrometer>();
+            services.AddTransient<IF_TemperatureControl, F_TemperatureControl>();
 
             //[Form Logic]
             services.AddSingleton<F_MotionSettingLogic>();
@@ -127,6 +131,7 @@ namespace LFSMEO
             services.AddSingleton<IFunction_Spectrometer, Function_Spectrometer>();
             services.AddSingleton<IFunction_LightControl, Function_LightControl>();
             services.AddSingleton<IFunction_Camera, Function_Camera>();
+            services.AddSingleton<IFunction_TemperatureControl, Function_TemperatureControl>();
 
             //[Machine]
             Icon AppIcon = null; string AppName = "";

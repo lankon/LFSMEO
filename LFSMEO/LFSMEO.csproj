@@ -261,6 +261,10 @@
       <Project>{88702617-9323-40cc-8208-07a378d9e823}</Project>
       <Name>Device_Spectrum_Virtual</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_TemeratureControl_Virtual\Device_TemeratureControl_Virtual.csproj">
+      <Project>{42080606-0d38-4021-a16a-d7d67353a24e}</Project>
+      <Name>Device_TemeratureControl_Virtual</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Device_VirtualCamera\Device_VirtualCamera.csproj">
       <Project>{4b021977-fa50-49a0-ac58-bfa3f34fcbd0}</Project>
       <Name>Device_VirtualCamera</Name>
@@ -272,6 +276,10 @@
     <ProjectReference Include="..\FTLight\Device_FTLight.csproj">
       <Project>{c63d227f-f747-49ed-8bc6-05286e333b02}</Project>
       <Name>Device_FTLight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Guishan\Device_Guishan.csproj">
+      <Project>{55ce2e35-b0cc-47cd-9135-e624bf94ec26}</Project>
+      <Name>Device_Guishan</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProbeTester\ProbeTester.csproj">
       <Project>{e38566f8-a449-4e97-af5e-d5b50a5ff910}</Project>

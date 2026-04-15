@@ -104,7 +104,6 @@ namespace BurnInTester.UI
             this.Btn_OEM_Setting.Size = new System.Drawing.Size(70, 70);
             this.Btn_OEM_Setting.TabIndex = 35;
             this.Btn_OEM_Setting.UseVisualStyleBackColor = true;
-            this.Btn_OEM_Setting.Visible = false;
             this.Btn_OEM_Setting.Click += new System.EventHandler(this.Btn_OEM_Setting_Click);
             // 
             // Btn_PreviousPnlPart1
@@ -133,7 +132,7 @@ namespace BurnInTester.UI
             // 
             this.Btn_ParameterSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_ParameterSetting.BackgroundImage")));
             this.Btn_ParameterSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_ParameterSetting.Location = new System.Drawing.Point(1512, 3);
+            this.Btn_ParameterSetting.Location = new System.Drawing.Point(1568, 3);
             this.Btn_ParameterSetting.Name = "Btn_ParameterSetting";
             this.Btn_ParameterSetting.Size = new System.Drawing.Size(70, 70);
             this.Btn_ParameterSetting.TabIndex = 31;

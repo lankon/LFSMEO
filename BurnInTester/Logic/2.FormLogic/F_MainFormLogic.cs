@@ -58,6 +58,14 @@ namespace BurnInTester.Logic
             //IF_CameraSetting f_CameraSetting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
             //f_CameraSetting.BindingDisplayEvent();
         }
+        private void Initial_Temperature_Function()
+        {
+            Tool.SaveLogToFile("Initial Temperature Control");
+            IF_TemperatureControl f_TemperatureControl = ServiceProvider.GetRequiredService<IF_TemperatureControl>();
+            f_TemperatureControl.Update_TC_List();
+            BurnInTesterMachine.TC.Initial_All_TemperatureControl();
+            Tool.SaveLogToFile("Load Temperature Control Config");
+        }
         #endregion
 
         public void Initial_All_Device()
@@ -66,6 +74,7 @@ namespace BurnInTester.Logic
             Initial_Motion_Function();
             Initial_Light_Function();
             Initial_Camera_Function();
+            Initial_Temperature_Function();
         }
 
         public void ReadAllSetting()

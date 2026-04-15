@@ -90,7 +90,8 @@
     <Compile Include="Base\Scope.cs" />
     <Compile Include="IBurnInTesterMachine.cs" />
     <Compile Include="Logic\0.Thread\MainTask.cs" />
-    <Compile Include="Logic\0.Thread\TemperatureThread.cs" />
+    <Compile Include="Logic\0.Thread\TC_CommManage.cs" />
+    <Compile Include="Logic\0.Thread\TC_Task.cs" />
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="BurnInTesterMachine.cs" />
@@ -117,6 +118,24 @@
     </Compile>
     <Compile Include="UI\F_TestSetting.designer.cs">
       <DependentUpon>F_TestSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OEM\F_OEM_Setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OEM\F_OEM_Setting.designer.cs">
+      <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OEM\F_TCtrlBox_Setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OEM\F_TCtrlBox_Setting.designer.cs">
+      <DependentUpon>F_TCtrlBox_Setting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UC_TCtrlBoxSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UC_TCtrlBoxSetting.Designer.cs">
+      <DependentUpon>UC_TCtrlBoxSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UC_CtrlBoxStatus.cs">
       <SubType>UserControl</SubType>
@@ -162,6 +181,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StateControl.resx">
       <DependentUpon>F_StateControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OEM\F_OEM_Setting.resx">
+      <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OEM\F_TCtrlBox_Setting.resx">
+      <DependentUpon>F_TCtrlBox_Setting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UC_TCtrlBoxSetting.resx">
+      <DependentUpon>UC_TCtrlBoxSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UC_CtrlBoxStatus.resx">
       <DependentUpon>UC_CtrlBoxStatus.cs</DependentUpon>
