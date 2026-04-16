@@ -310,6 +310,11 @@ namespace RGBTester.Logic
                             RGBfunc.FailReasonFlag.IsSlopeCalculateCurrentErr = true;
                         }
 
+                        string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
+                        string copy_path1 = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath1);
+                        string side = (Type == "Left") ? "L" : "R";
+                        ResultData.CheckSlopeData.OutputResult(SN, side, copy_path, copy_path1);
+
                         if (Scope.TaskRGBTest.IsSingleTest == true)
                         {
                             int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);

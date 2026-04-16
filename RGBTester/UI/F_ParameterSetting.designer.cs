@@ -78,6 +78,7 @@ namespace RGBTester.UI
             this.TxtBx_LCM_Check_DAC5 = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.label31 = new System.Windows.Forms.Label();
             this.LyPnl_HCM_CheckSlope = new System.Windows.Forms.TableLayoutPanel();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
@@ -91,10 +92,9 @@ namespace RGBTester.UI
             this.TxtBx_HCM_Check_DAC4 = new System.Windows.Forms.TextBox();
             this.TxtBx_HCM_Check_DAC5 = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.LabelTime = new System.Windows.Forms.Label();
             this.TxtBx_DeviationLimit = new System.Windows.Forms.TextBox();
+            this.LabelTime = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -529,7 +529,7 @@ namespace RGBTester.UI
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(88, 35);
             this.label23.TabIndex = 20;
-            this.label23.Text = "B Dev(mA)";
+            this.label23.Text = "B Dev(%)";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label22
@@ -540,7 +540,7 @@ namespace RGBTester.UI
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(90, 35);
             this.label22.TabIndex = 19;
-            this.label22.Text = "G Dev(mA)";
+            this.label22.Text = "G Dev(%)";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label20
@@ -562,7 +562,7 @@ namespace RGBTester.UI
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(90, 35);
             this.label19.TabIndex = 16;
-            this.label19.Text = "R Dev(mA)";
+            this.label19.Text = "R Dev(%)";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label15
@@ -657,6 +657,18 @@ namespace RGBTester.UI
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1302, 307);
             this.tableLayoutPanel6.TabIndex = 11;
             // 
+            // label31
+            // 
+            this.label31.BackColor = System.Drawing.Color.Silver;
+            this.tableLayoutPanel6.SetColumnSpan(this.label31, 2);
+            this.label31.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label31.Location = new System.Drawing.Point(6, 3);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(1290, 25);
+            this.label31.TabIndex = 20;
+            this.label31.Text = "Slope Check Setting";
+            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // LyPnl_HCM_CheckSlope
             // 
             this.LyPnl_HCM_CheckSlope.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
@@ -700,7 +712,7 @@ namespace RGBTester.UI
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(88, 35);
             this.label24.TabIndex = 20;
-            this.label24.Text = "B Dev(mA)";
+            this.label24.Text = "B Dev(%)";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label25
@@ -711,7 +723,7 @@ namespace RGBTester.UI
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(90, 35);
             this.label25.TabIndex = 19;
-            this.label25.Text = "G Dev(mA)";
+            this.label25.Text = "G Dev(%)";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label26
@@ -733,7 +745,7 @@ namespace RGBTester.UI
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(90, 35);
             this.label27.TabIndex = 16;
-            this.label27.Text = "R Dev(mA)";
+            this.label27.Text = "R Dev(%)";
             this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label28
@@ -809,32 +821,28 @@ namespace RGBTester.UI
             this.label30.Text = "B (mA)";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label31
-            // 
-            this.label31.BackColor = System.Drawing.Color.Silver;
-            this.tableLayoutPanel6.SetColumnSpan(this.label31, 2);
-            this.label31.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label31.Location = new System.Drawing.Point(6, 3);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(1290, 25);
-            this.label31.TabIndex = 20;
-            this.label31.Text = "Slope Check Setting";
-            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.70288F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.29712F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.05128F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.94872F));
             this.tableLayoutPanel2.Controls.Add(this.TxtBx_DeviationLimit, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.LabelTime, 0, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 37);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(313, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(310, 36);
             this.tableLayoutPanel2.TabIndex = 21;
+            // 
+            // TxtBx_DeviationLimit
+            // 
+            this.TxtBx_DeviationLimit.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_DeviationLimit.Location = new System.Drawing.Point(180, 4);
+            this.TxtBx_DeviationLimit.Name = "TxtBx_DeviationLimit";
+            this.TxtBx_DeviationLimit.Size = new System.Drawing.Size(126, 29);
+            this.TxtBx_DeviationLimit.TabIndex = 13;
             // 
             // LabelTime
             // 
@@ -842,18 +850,10 @@ namespace RGBTester.UI
             this.LabelTime.Location = new System.Drawing.Point(1, 1);
             this.LabelTime.Margin = new System.Windows.Forms.Padding(0);
             this.LabelTime.Name = "LabelTime";
-            this.LabelTime.Size = new System.Drawing.Size(188, 34);
+            this.LabelTime.Size = new System.Drawing.Size(175, 34);
             this.LabelTime.TabIndex = 12;
             this.LabelTime.Text = "Deviation Limit (%)";
             this.LabelTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_DeviationLimit
-            // 
-            this.TxtBx_DeviationLimit.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_DeviationLimit.Location = new System.Drawing.Point(193, 4);
-            this.TxtBx_DeviationLimit.Name = "TxtBx_DeviationLimit";
-            this.TxtBx_DeviationLimit.Size = new System.Drawing.Size(116, 29);
-            this.TxtBx_DeviationLimit.TabIndex = 13;
             // 
             // F_ParameterSetting
             // 
