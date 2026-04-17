@@ -98,9 +98,9 @@ namespace RGBTester.UI
                 ReadAllEnumSetting();
 
                 ////釋放記憶體資源
-                Tool.ReleaseButtonImages(this);
-                this.Close();
-                this.Dispose();
+                //Tool.ReleaseButtonImages(this);
+                //this.Close();
+                //this.Dispose();
             }
             else
             {
