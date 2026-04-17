@@ -245,9 +245,7 @@ namespace BurnInTester.UI
 
         private void Btn_Test_TC_Click(object sender, EventArgs e)
         {
-            var TC = ServiceProvider.GetRequiredService<IFunction_TemperatureControl>();
-
-            commManage = new TC_CommManage(TC);
+            var TC = ServiceProvider.GetRequiredService<TC_Task>();
         }
     }
 

@@ -13,6 +13,7 @@ using RecipeManage.UI;
 using BurnInTester.Base;
 using BurnInTester.UI;
 using BurnInTester.Logic;
+using BurnInTester.Device;
 
 namespace BurnInTester
 {
@@ -30,6 +31,7 @@ namespace BurnInTester
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
             //services.AddSingleton<IBaseMainTaskMulti, MainTaskMulti>();
+            services.AddSingleton<TC_Task>();
             services.AddSingleton<IBaseTaskDependence, BaseTaskDependence>();
 
             //[Form]
@@ -48,6 +50,7 @@ namespace BurnInTester
             //services.AddTransient<F_Equipment_Setting>();
             services.AddTransient<IF_Recipe, F_Recipe>();
             services.AddTransient<F_TestSetting>();
+            services.AddTransient<IF_TCtrlBoxSetting, F_TCtrlBoxSetting>();
             //services.AddTransient<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
@@ -61,6 +64,10 @@ namespace BurnInTester
             //services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<AgingInformation>();
             //services.AddSingleton<TestResultDataBase>();
+
+
+            services.AddSingleton<HW_ParamSetting>();
+            
 
             return services;
         }

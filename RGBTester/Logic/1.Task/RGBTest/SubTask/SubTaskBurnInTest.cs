@@ -1,16 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using RGBTester.Base;
-using RGBTester.Logic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 //using System.Windows.Forms;
 
 using ToolFunction;
+using RGBTester.Base;
+using RGBTester.Logic;
 
 namespace RGBTester.Logic
 {
@@ -24,7 +24,7 @@ namespace RGBTester.Logic
             State = WORK.INITIAL;
 
             TestType = set_state;
-
+            
             switch (set_state)
             {
                 default:

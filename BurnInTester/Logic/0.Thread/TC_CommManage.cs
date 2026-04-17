@@ -73,13 +73,13 @@ namespace BurnInTester.Logic
         #endregion
 
         #region public function
-        public async Task UpdateTemperature(ETemperatureControlName name)
+        public async Task UpdateTemperature(ETemperatureControlName name, string cmd = "")
         {
             try
             {
                 string result = await EnqueueAction(async() =>
                 {
-                    Func_TC.AskPV(name);
+                    Func_TC.AskPV(name, cmd);
 
                     // GetAnswer內部會等候回傳並解析，直到拿到結果才會繼續往下走，所以這裡不需要額外的等待邏輯
                     string ans = Func_TC.GetAnswer(name);

@@ -76,6 +76,16 @@ namespace BurnInTester.UI
         private void LeavePage()
         {
         }
+        private void ShowForm<T>() where T : class
+        {
+            var para_set = ServiceProvider.GetRequiredService<T>();
+            if (para_set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
+        }
         #endregion
 
         #region public function
@@ -105,14 +115,17 @@ namespace BurnInTester.UI
 
         private void Btn_TC_Setting_Click(object sender, EventArgs e)
         {
-            var para_set = ServiceProvider.GetRequiredService<IF_TemperatureControl>();
+            ShowForm<IF_TemperatureControl>();
+        }
 
-            if (para_set is Form form)
-            {
-                Tool.HideElementOnPanel(Scope.MainPanel);
-                Tool.SetForm(Scope.MainPanel, form);
-                form.Show();
-            }
+        private void Btn_TC_BoxSetting_Click(object sender, EventArgs e)
+        {
+            ShowForm<IF_TCtrlBoxSetting>();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            GC.Collect();
         }
     }
 }
