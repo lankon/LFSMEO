@@ -159,10 +159,11 @@ namespace DeviceFunction
                             break;
                         case WORK.GET_IMAGE:
                             {
-                                if (index > 3)  //測試用
+                                if (index > 1)  //測試用
                                     index = 0;
-                                
-                                if (GetImageDisplay(ccdIndex, $@"C:\Users\lankon\Desktop\tmep\picture{index}.png") == false)
+
+                                string path = AppDomain.CurrentDomain.BaseDirectory + $@"\Setting\Virtual\CCD_LIVE\CCD{ccdIndex}_picture{index}.png";
+                                if (GetImageDisplay(ccdIndex, path) == false)
                                 {
                                     Tool.SaveLogToFile($"CCD{ccdIndex} Live GET_IMAGE fail", level: "ERR");
                                     return;

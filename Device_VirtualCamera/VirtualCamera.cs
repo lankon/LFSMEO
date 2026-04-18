@@ -18,7 +18,6 @@ namespace Device_VirtualCamera
         #region parameter define
         private Bitmap _currentBmp;     // 必須作為類別成員，防止被 GC
         private BitmapData _bmpData;    // 用於紀錄鎖定的狀態
-        private Bitmap _bmpBuffer;
         private string VirtualImagePath = "";
         #endregion
 
