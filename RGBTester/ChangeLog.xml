@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
 
-	<Release version="1.26.3.2" date="2026-03-25">
-		<Item type="Fixed">Clamping條件用微分來判斷</Item>
+	<Release version="1.26.4.2" date="2026-04-13">
+		<Item type="Fixed">斜率計算電流誤差檢查</Item>
+		<Item type="Fixed">F_Recipe錯誤釋放記憶體</Item>
+	</Release>
+	<Release version="1.26.4.1" date="2026-04-01">
+		<Item type="Fixed">Clamping條件使用前後兩點差值來判斷</Item>
 	</Release>
 	<Release version="1.26.3.1" date="2026-03-16">
 		<Item type="Added">新增PartTest功能</Item>

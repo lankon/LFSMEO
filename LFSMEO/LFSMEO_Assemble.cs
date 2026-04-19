@@ -38,8 +38,7 @@ using UserPrivilege.Logic;
 //[Machine]
 using RGBTester;
 using ProbeTester;
-
-
+using BurnInTester;
 
 namespace LFSMEO
 {
@@ -55,6 +54,8 @@ namespace LFSMEO
                     return host.Services.GetRequiredService<ProbeTester.UI.F_MainForm>();
                 case EMachineType.RGBTester:
                     return host.Services.GetRequiredService<RGBTester.UI.F_MainForm>();
+                case EMachineType.BurnInTester:
+                    return host.Services.GetRequiredService<BurnInTester.UI.F_MainForm>();
                 default:
                     return host.Services.GetRequiredService<F_SelectMachine>();
             }
@@ -75,6 +76,11 @@ namespace LFSMEO
 
         private void ConfigureApplicationServices(IServiceCollection services)
         {
+            bool IsFullScreen = true;
+
+            if(Scope.MachineType == EMachineType.RGBTester)
+                IsFullScreen = false;
+
             //[Device]
             MN200 mn200 = new MN200();
             Pcis_dask pcis_9111DG = new Pcis_dask("PCI_9111DG");
@@ -134,6 +140,11 @@ namespace LFSMEO
                     AppIcon = Properties.Resources.RGBTester;
                     AppName = "RGBTester";
                     break;
+                case EMachineType.BurnInTester:
+                    services.AddBurnInTesterServices();
+                    AppIcon = Properties.Resources.BurnInTester1;
+                    AppName = "BurnInTester";
+                    break;
                 default:
                     services.AddSingleton<F_SelectMachine>();
                     break;
@@ -158,7 +169,7 @@ namespace LFSMEO
             Icon myIcon = AppIcon;
 
             // 設定存放路徑
-            string tempIconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "app_icon.ico");
+            string tempIconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{AppName}_app_icon.ico");
 
             // 使用 FileStream 將 Icon 直接儲存
             using (FileStream fs = new FileStream(tempIconPath, FileMode.Create))
@@ -170,8 +181,8 @@ namespace LFSMEO
             string psCommand = $"-Command \"$s = (New-Object -ComObject WScript.Shell).CreateShortcut('{desktopPath}'); " +
                                $"$s.WorkingDirectory = '{AppDomain.CurrentDomain.BaseDirectory}'; " +
                                $"$s.TargetPath = '{exePath}'; " +
-                               $"$s.IconLocation = \\\"{tempIconPath},0\\\"; " +
-                               "$s.Save()\"";
+                               $"$s.IconLocation = '{tempIconPath},0'; " +
+                               $"$s.Save();\"";
 
             // 執行指令 (隱藏視窗執行)
             ProcessStartInfo startInfo = new ProcessStartInfo

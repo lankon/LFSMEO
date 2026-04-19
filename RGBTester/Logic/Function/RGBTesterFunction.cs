@@ -133,12 +133,14 @@ namespace RGBTester.Logic
             public bool IsSlopeErr = false;
             public bool IsClampingErr = false;
             public bool IsTemperatureErr = false;
+            public bool IsSlopeCalculateCurrentErr = false;
 
             public void ResetAllFlag()
             {
                 IsSlopeErr = false;
                 IsClampingErr = false;
                 IsTemperatureErr = false;
+                IsSlopeCalculateCurrentErr = false;
             }
 
             public string GetFailDescription()
@@ -151,8 +153,11 @@ namespace RGBTester.Logic
                     error_message.Add("Clamping Fail");
                 if (IsTemperatureErr)
                     error_message.Add("Temperature Fail");
+                if(IsSlopeCalculateCurrentErr)
+                    error_message.Add("Slope Cal Current Fail");
 
-                if(IsSlopeErr == false && IsClampingErr == false && IsTemperatureErr == false)
+                if (IsSlopeErr == false && IsClampingErr == false && 
+                    IsTemperatureErr == false && IsSlopeCalculateCurrentErr==false)
                     error_message.Add("None");
 
                 string res = "";

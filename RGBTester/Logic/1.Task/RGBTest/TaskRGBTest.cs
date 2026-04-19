@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 
 using ToolFunction;
 using RGBTester.Base;
@@ -40,7 +40,8 @@ namespace RGBTester.Logic
         }
 
         #region parameter
-        private IF_BaseTask SubTask;                  //子流程
+        private string SN;                              //測試樣品SN
+        private IF_BaseTask SubTask;                    //子流程
         private IF_StateControl F_StateControl;
         private ePartTestItem part_test_mode;
         private bool OnlyLeftTest = false;
@@ -90,7 +91,7 @@ namespace RGBTester.Logic
                     Deps.File.CreateFile("Left_BurnIn");
                 }
 
-                string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
+                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                 Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
 
@@ -111,7 +112,7 @@ namespace RGBTester.Logic
                     Deps.File.CreateFile("Right_BurnIn");
                 }
 
-                string SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                 Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
         }
