@@ -273,7 +273,7 @@ namespace Device_Hikvision
             return (int)ERROR_CODE.ERROR_GETIMAGE;
         }
 
-        public void SetVirtualImagePath(string path)
+        public void SetVirtualImagePath(string id, string path)
         {
             
         }

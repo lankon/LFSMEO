@@ -189,5 +189,11 @@ namespace ProbeTester.UI
             setting.SwitchToCameraDisplay(1);
             
         }
+
+        private void Btn_SystemMonitor_Click(object sender, EventArgs e)
+        {
+            Tool.F_Monitor f_Monitor = new Tool.F_Monitor();
+            f_Monitor.Show();
+        }
     }
 }

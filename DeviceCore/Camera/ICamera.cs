@@ -28,6 +28,6 @@ namespace DeviceCore
         int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height, ref PixelFormat pixelFormat);
 
         //[Virtual Camera Function]
-        void SetVirtualImagePath(string path);
+        void SetVirtualImagePath(string id, string path);
     }
 }

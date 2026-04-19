@@ -331,7 +331,7 @@ namespace DeviceFunction
             int height = 0;
             PixelFormat pixelFormat = PixelFormat.Format32bppArgb;
 
-            CameraList[CCD_Info2List[ccd]].SetVirtualImagePath(image_path);
+            CameraList[CCD_Info2List[ccd]].SetVirtualImagePath(ip, image_path);
             int ret = CameraList[CCD_Info2List[ccd]].GetImage(ip, ref image, ref width, ref height, ref pixelFormat);
 
             if(ret == 0)
@@ -340,7 +340,7 @@ namespace DeviceFunction
                 {
                     ImageData = image,
                     Width = width,
-                    Height = height, 
+                    Height = height,
                     Format = pixelFormat,
                     CCD_Index = ccd
                 };
