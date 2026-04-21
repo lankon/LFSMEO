@@ -1,4 +1,8 @@
-﻿using System;
+﻿using BurnInTester.Base;
+using BurnInTester.Device;
+using BurnInTester.Logic;
+using BurnInTester.Logic.nTCtrlBoxSetting;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,12 +13,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using ToolFunction;
-using BurnInTester.Base;
-using BurnInTester.Device;
-using BurnInTester.Logic;
-using BurnInTester.Logic.nTCtrlBoxSetting;
+using static BurnInTester.Logic.AgingInformation;
 
 namespace BurnInTester.UI
 {
@@ -31,7 +31,7 @@ namespace BurnInTester.UI
 
         #region parameter define
         private HW_ParamSetting HW_ParamSetting;
-        private UC_TCtrlBoxSetting[] TCtrlBoxSettingArray = new UC_TCtrlBoxSetting[39];
+        private UC_TCtrlBoxSetting[] TCtrlBoxSettingArray;
         private F_TCtrlBoxSettingLogic TCtrlBoxSettingLogic;
         #endregion
 
@@ -42,10 +42,13 @@ namespace BurnInTester.UI
             UpdateEnumSettingToForm();
 
             TCtrlBoxSettingLogic = new F_TCtrlBoxSettingLogic(HW_ParamSetting);
+            TCtrlBoxSettingArray = new UC_TCtrlBoxSetting[HW_ParamSetting.TC_Box._CtrlBoxNum];
 
             ShowHint();
 
             CreateDynamicElement();
+            TCtrlBoxSettingLogic.LoadTCtrlBoxSetting();
+            UpdateSettingToForm();
 
             if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
@@ -85,39 +88,51 @@ namespace BurnInTester.UI
         private void CreateDynamicElement()
         {
             //ControlBox Left
-            for (int i = 0; i < 19; i++)
+            int start = 0;
+            for (int i = start; i < 20; i++)
             {
                 TCtrlBoxSettingArray[i] = new UC_TCtrlBoxSetting();
 
-                if (i / 4 == 0 && i % 4 != 3)
-                    LyPnl_CtrlBoxSetting.Controls.Add(TCtrlBoxSettingArray[i], i + 1, 0);
-                else if (i % 4 == 3)
-                    LyPnl_CtrlBoxSetting.Controls.Add(TCtrlBoxSettingArray[i], 0, i / 4 + 1);
-                else
-                    LyPnl_CtrlBoxSetting.Controls.Add(TCtrlBoxSettingArray[i], i % 4 + 1, i / 4);
+                //if (i / 4 == 0 && i % 4 != 3)
+                //    LyPnl_CtrlBoxSetting.Controls.Add(TCtrlBoxSettingArray[i], i + 1, 0);
+                //else if (i % 4 == 3)
+                //    LyPnl_CtrlBoxSetting.Controls.Add(TCtrlBoxSettingArray[i], 0, i / 4 + 1);
+                //else
+                //    LyPnl_CtrlBoxSetting.Controls.Add(TCtrlBoxSettingArray[i], i % 4 + 1, i / 4);
+
+                LyPnl_CtrlBoxSetting.Controls.Add(TCtrlBoxSettingArray[i], (i - start) % 4, (i - start) / 4);
 
                 TCtrlBoxSettingArray[i].Dock = System.Windows.Forms.DockStyle.Fill;
                 TCtrlBoxSettingArray[i].Location = new System.Drawing.Point(4, 4);
-                TCtrlBoxSettingArray[i].Name = $"TCtrlBoxSetting{i + 2}";
+                TCtrlBoxSettingArray[i].Name = $"TCtrlBoxSetting{i + 1}";
                 TCtrlBoxSettingArray[i].Size = new System.Drawing.Size(167, 87);
                 TCtrlBoxSettingArray[i].TabIndex = 1;
-                TCtrlBoxSettingArray[i].SetItemIndex($"TCtrlBoxSetting{i + 2}");
+                TCtrlBoxSettingArray[i].SetItemIndex($"TCtrlBoxSetting{i + 1}");
                 //TCtrlBoxSettingArray[i].Click += new System.EventHandler(this.TCtrlBoxSetting1_Click);
             }
 
             //ControlBox Right
-            int start = 19;
-            for (int i = start; i < 39; i++)
+            start = 20;
+            for (int i = start; i < 40; i++)
             {
                 TCtrlBoxSettingArray[i] = new UC_TCtrlBoxSetting();
                 LyPnl_CtrlBoxSetting1.Controls.Add(TCtrlBoxSettingArray[i], (i - start) % 4, (i - start) / 4);
                 TCtrlBoxSettingArray[i].Dock = System.Windows.Forms.DockStyle.Fill;
                 TCtrlBoxSettingArray[i].Location = new System.Drawing.Point(4, 4);
-                TCtrlBoxSettingArray[i].Name = $"TCtrlBoxSetting{i + 2}";
+                TCtrlBoxSettingArray[i].Name = $"TCtrlBoxSetting{i + 1}";
                 TCtrlBoxSettingArray[i].Size = new System.Drawing.Size(167, 87);
                 TCtrlBoxSettingArray[i].TabIndex = 1;
-                TCtrlBoxSettingArray[i].SetItemIndex($"TCtrlBoxSetting{i + 2}");
+                TCtrlBoxSettingArray[i].SetItemIndex($"TCtrlBoxSetting{i + 1}");
                 //TCtrlBoxSettingArray[i].Click += new System.EventHandler(this.TCtrlBoxSetting1_Click);
+            }
+        }
+        private void UpdateSettingToForm()
+        {
+            for(int i=0; i< HW_ParamSetting.TC_Box._CtrlBoxNum; i++)
+            {
+                TCtrlBoxSettingArray[i].UpdateSetting(HW_ParamSetting.TC_Box.BoxNum[i], 
+                                                      HW_ParamSetting.TC_Box.ChNum[i], 
+                                                      HW_ParamSetting.TC_Box.Use[i] ? "1" : "0");
             }
         }
         #endregion
@@ -126,6 +141,10 @@ namespace BurnInTester.UI
         public void ShowFormName(bool show)
         {
 
+        }
+        public bool LoadTCtrlBoxSetting()
+        {
+            return TCtrlBoxSettingLogic.LoadTCtrlBoxSetting();
         }
         #endregion
 
@@ -138,24 +157,10 @@ namespace BurnInTester.UI
 
                 LeavePage();
 
-                for (int i = LyPnl_CtrlBoxSetting.Controls.Count - 1; i >= 0; i--)
-                {
-                    Control ctrl = LyPnl_CtrlBoxSetting.Controls[i];
-
-                    // 關鍵：先解除父子關係，讓它變成孤兒，再處決它
-                    ctrl.Parent = null;
-                    LyPnl_CtrlBoxSetting.Controls.Remove(ctrl);
-
-                    if (ctrl != null && !ctrl.IsDisposed)
-                    {
-                        ctrl.Dispose();
-                    }
-                }
-
                 //釋放記憶體資源
-                Tool.ReleaseButtonImages(this);
-                this.Close();
-                this.Dispose();
+                //Tool.ReleaseButtonImages(this);
+                //this.Close();
+                //this.Dispose();
             }
             else
             {
@@ -183,16 +188,7 @@ namespace BurnInTester.UI
         private void Btn_SaveSetting_Click(object sender, EventArgs e)
         {
             Dictionary<string, TCtrlBoxSetting> DicSetting = new Dictionary<string, TCtrlBoxSetting>();
-
-            TCtrlBoxSetting setting0 = new TCtrlBoxSetting
-            {
-                TCtrlBoxID = 1,
-                Use = TCtrlBoxSetting1.GetUse(),
-                BoxNum = TCtrlBoxSetting1.GetBoxNum(),
-                ChNum = TCtrlBoxSetting1.GetChNum()
-            };
-            DicSetting.Add($"Box_{setting0.TCtrlBoxID}", setting0);
-
+            
             for (int i=0; i< TCtrlBoxSettingArray.Length; i++)
             {
                 TCtrlBoxSetting setting = new TCtrlBoxSetting
@@ -208,11 +204,42 @@ namespace BurnInTester.UI
             }
 
             TCtrlBoxSettingLogic.SaveTCtrlBoxSetting(DicSetting);
+
+            MessageBox.Show("Save Setting Success！", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
             TCtrlBoxSettingLogic.LoadTCtrlBoxSetting();
+
+            MessageBox.Show("Load Setting Success！", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void Btn_SetAllUse_Click(object sender, EventArgs e)
+        {
+            string message = "Confirm Setting？";
+            string caption = "";
+            
+            DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Button btn = sender as Button;
+
+                if (btn == null) return;
+
+                int res =  Tool.StringToInt(btn.Tag.ToString());
+                bool action = res == 1 ? true : false;
+                
+                for (int i = 0; i < TCtrlBoxSettingArray.Length; i++)
+                {
+                    TCtrlBoxSettingArray[i].SetTCtrlEnable(action);
+                }
+            }
+            else
+            {
+            }
+        }
+
     }
 }

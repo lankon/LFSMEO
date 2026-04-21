@@ -113,14 +113,14 @@ namespace BurnInTester.UI
 
         private void Btn_ParameterSetting_Click(object sender, EventArgs e)
         {
-            //var para_set = ServiceProvider.GetRequiredService<IF_ParameterSetting>();
+            var para_set = ServiceProvider.GetRequiredService<F_TCtrlBoxTemperature>();
 
-            //if (para_set is Form form)
-            //{
-            //    Tool.HideElementOnPanel(Scope.MainPanel);
-            //    Tool.SetForm(Scope.MainPanel, form);
-            //    form.Show();
-            //}
+            if (para_set is Form form)
+            {
+                Tool.HideElementOnPanel(Scope.MainPanel);
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
         }
 
         private void Btn_LogIn_Click(object sender, EventArgs e)

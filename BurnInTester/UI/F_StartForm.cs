@@ -236,13 +236,6 @@ namespace BurnInTester.UI
 
         #endregion
 
-
-        TC_CommManage commManage;
-        private void Btn_Test_Click(object sender, EventArgs e)
-        {
-            commManage.UpdateTemperature(ETemperatureControlName.TC_1);
-        }
-
         private void Btn_Test_TC_Click(object sender, EventArgs e)
         {
             var TC = ServiceProvider.GetRequiredService<TC_Task>();

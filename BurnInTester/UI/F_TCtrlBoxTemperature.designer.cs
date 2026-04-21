@@ -1,7 +1,7 @@
 ﻿
 namespace BurnInTester.UI
 {
-    partial class F_TCtrlBoxSetting
+    partial class F_TCtrlBoxTemperature
     {
         /// <summary>
         /// Required designer variable.
@@ -29,12 +29,10 @@ namespace BurnInTester.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.LyPnl_CtrlBoxSetting = new System.Windows.Forms.TableLayoutPanel();
             this.LyPnl_CtrlBoxSetting1 = new System.Windows.Forms.TableLayoutPanel();
-            this.Btn_SaveSetting = new System.Windows.Forms.Button();
-            this.Btn_Load = new System.Windows.Forms.Button();
-            this.Btn_SetAllUse = new System.Windows.Forms.Button();
-            this.Btn_SetAllDisUse = new System.Windows.Forms.Button();
+            this.Tm_UpdatePV = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // LyPnl_CtrlBoxSetting
@@ -45,7 +43,7 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.LyPnl_CtrlBoxSetting.Location = new System.Drawing.Point(44, 12);
+            this.LyPnl_CtrlBoxSetting.Location = new System.Drawing.Point(5, 12);
             this.LyPnl_CtrlBoxSetting.Name = "LyPnl_CtrlBoxSetting";
             this.LyPnl_CtrlBoxSetting.RowCount = 5;
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -53,7 +51,7 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.LyPnl_CtrlBoxSetting.Size = new System.Drawing.Size(823, 943);
+            this.LyPnl_CtrlBoxSetting.Size = new System.Drawing.Size(933, 943);
             this.LyPnl_CtrlBoxSetting.TabIndex = 1;
             // 
             // LyPnl_CtrlBoxSetting1
@@ -64,7 +62,7 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.LyPnl_CtrlBoxSetting1.Location = new System.Drawing.Point(873, 12);
+            this.LyPnl_CtrlBoxSetting1.Location = new System.Drawing.Point(948, 12);
             this.LyPnl_CtrlBoxSetting1.Name = "LyPnl_CtrlBoxSetting1";
             this.LyPnl_CtrlBoxSetting1.RowCount = 5;
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -72,70 +70,25 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.LyPnl_CtrlBoxSetting1.Size = new System.Drawing.Size(823, 943);
+            this.LyPnl_CtrlBoxSetting1.Size = new System.Drawing.Size(933, 943);
             this.LyPnl_CtrlBoxSetting1.TabIndex = 2;
             // 
-            // Btn_SaveSetting
+            // Tm_UpdatePV
             // 
-            this.Btn_SaveSetting.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_SaveSetting.Location = new System.Drawing.Point(1715, 12);
-            this.Btn_SaveSetting.Name = "Btn_SaveSetting";
-            this.Btn_SaveSetting.Size = new System.Drawing.Size(163, 65);
-            this.Btn_SaveSetting.TabIndex = 3;
-            this.Btn_SaveSetting.Text = "Save";
-            this.Btn_SaveSetting.UseVisualStyleBackColor = true;
-            this.Btn_SaveSetting.Click += new System.EventHandler(this.Btn_SaveSetting_Click);
+            this.Tm_UpdatePV.Enabled = true;
+            this.Tm_UpdatePV.Interval = 200;
+            this.Tm_UpdatePV.Tick += new System.EventHandler(this.Tm_UpdatePV_Tick);
             // 
-            // Btn_Load
-            // 
-            this.Btn_Load.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Load.Location = new System.Drawing.Point(1715, 83);
-            this.Btn_Load.Name = "Btn_Load";
-            this.Btn_Load.Size = new System.Drawing.Size(163, 65);
-            this.Btn_Load.TabIndex = 5;
-            this.Btn_Load.Text = "Load";
-            this.Btn_Load.UseVisualStyleBackColor = true;
-            this.Btn_Load.Click += new System.EventHandler(this.Btn_Load_Click);
-            // 
-            // Btn_SetAllUse
-            // 
-            this.Btn_SetAllUse.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_SetAllUse.Location = new System.Drawing.Point(1715, 154);
-            this.Btn_SetAllUse.Name = "Btn_SetAllUse";
-            this.Btn_SetAllUse.Size = new System.Drawing.Size(163, 65);
-            this.Btn_SetAllUse.TabIndex = 6;
-            this.Btn_SetAllUse.Tag = "1";
-            this.Btn_SetAllUse.Text = "Set All Use";
-            this.Btn_SetAllUse.UseVisualStyleBackColor = true;
-            this.Btn_SetAllUse.Click += new System.EventHandler(this.Btn_SetAllUse_Click);
-            // 
-            // Btn_SetAllDisUse
-            // 
-            this.Btn_SetAllDisUse.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_SetAllDisUse.Location = new System.Drawing.Point(1715, 225);
-            this.Btn_SetAllDisUse.Name = "Btn_SetAllDisUse";
-            this.Btn_SetAllDisUse.Size = new System.Drawing.Size(163, 65);
-            this.Btn_SetAllDisUse.TabIndex = 7;
-            this.Btn_SetAllDisUse.Tag = "0";
-            this.Btn_SetAllDisUse.Text = "Set All DisUse";
-            this.Btn_SetAllDisUse.UseVisualStyleBackColor = true;
-            this.Btn_SetAllDisUse.Click += new System.EventHandler(this.Btn_SetAllUse_Click);
-            // 
-            // F_TCtrlBoxSetting
+            // F_TCtrlBoxTemperature
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
-            this.Controls.Add(this.Btn_SetAllDisUse);
-            this.Controls.Add(this.Btn_SetAllUse);
-            this.Controls.Add(this.Btn_Load);
-            this.Controls.Add(this.Btn_SaveSetting);
             this.Controls.Add(this.LyPnl_CtrlBoxSetting1);
             this.Controls.Add(this.LyPnl_CtrlBoxSetting);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "F_TCtrlBoxSetting";
+            this.Name = "F_TCtrlBoxTemperature";
             this.Text = "F_Equipment_Setting";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.F_TCtrlBoxSetting_FormClosing);
             this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
             this.ResumeLayout(false);
 
@@ -145,9 +98,6 @@ namespace BurnInTester.UI
 
         private System.Windows.Forms.TableLayoutPanel LyPnl_CtrlBoxSetting;
         private System.Windows.Forms.TableLayoutPanel LyPnl_CtrlBoxSetting1;
-        private System.Windows.Forms.Button Btn_SaveSetting;
-        private System.Windows.Forms.Button Btn_Load;
-        private System.Windows.Forms.Button Btn_SetAllUse;
-        private System.Windows.Forms.Button Btn_SetAllDisUse;
+        private System.Windows.Forms.Timer Tm_UpdatePV;
     }
 }

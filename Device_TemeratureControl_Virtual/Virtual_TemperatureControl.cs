@@ -35,7 +35,7 @@ namespace Device_TemeratureControl_Virtual
         {
             return 0;
         }
-        public int Initialize()
+        public int Initialize(string cmd = "")
         {
             return 0;
         }
@@ -66,12 +66,12 @@ namespace Device_TemeratureControl_Virtual
         {
             return Comport;
         }
-        public int GetAnswer(out string answer, string cmd = "")
+        public int GetAnswer(out string[] answer, string cmd = "")
         {
             if (CMD == CMD_TYPE.AskPV)
-                answer = CurrentTemperature.ToString("F2");
+                answer = new string[] { CurrentTemperature.ToString("F2"), "0", "0", "0", "0" };
             else
-                answer = "";
+                answer = new string[] { "" };
 
             return 0;
         }

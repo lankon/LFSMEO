@@ -8,7 +8,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using ToolFunction;
+using BurnInTester.Base.nUC_TCtrlBoxSetting;
 
 namespace BurnInTester.UI
 {
@@ -34,18 +36,6 @@ namespace BurnInTester.UI
         #endregion
 
         #region public function
-        //public void SetInformation(string information)
-        //{
-        //    if(this.InvokeRequired)
-        //    {
-        //        this.Invoke(new Action<string>(SetInformation), information);
-        //        return;
-        //    }
-
-        //    Labl_Information.Text = information;
-        //}
-        
-
         public void SetItemIndex(string index)
         {
             ItemIndex = index;
@@ -60,24 +50,23 @@ namespace BurnInTester.UI
             indexNum--;
             Labl_BoxNum.Text = $"Box {indexNum / 4 + 1}-{indexNum % 4 + 1}";
         }
-        public int GetBoxNum()
+        public string GetBoxNum()
         {
             if (this.InvokeRequired)
             {
-                return (int)this.Invoke(new Func<int>(GetBoxNum));
+                return (string)this.Invoke(new Func<string>(GetBoxNum));
             }
 
-            int res = Tool.StringToInt(TxtBx_Box.Text.Trim());
-            return res;
+            return TxtBx_Box.Text.Trim();
         }
-        public int GetChNum()
+        public string GetChNum()
         {
             if (this.InvokeRequired)
             {
-                return (int)this.Invoke(new Func<int>(GetChNum));
+                return (string)this.Invoke(new Func<string>(GetChNum));
             }
-            int res = Tool.StringToInt(TxtBx_Channel.Text.Trim());
-            return res;
+
+            return TxtBx_Channel.Text.Trim();
         }
         public int GetBoxIndex()
         {
@@ -91,6 +80,27 @@ namespace BurnInTester.UI
             }
             int res = Cmbx_Use.SelectedIndex;
             return res;
+        }
+        public void UpdateSetting(string boxNum, string chNum, string use)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<string, string, string>(UpdateSetting), boxNum, chNum, use);
+                return;
+            }
+            TxtBx_Box.Text = boxNum.ToString();
+            TxtBx_Channel.Text = chNum.ToString();
+            Cmbx_Use.SelectedIndex = Tool.StringToInt(use);
+        }
+        public void SetTCtrlEnable(bool enable)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<bool>(SetTCtrlEnable), enable);
+                return;
+            }
+            
+            Cmbx_Use.SelectedIndex = enable ? (int)eUseItem.USE : (int)eUseItem.PASS;
         }
         #endregion
     }

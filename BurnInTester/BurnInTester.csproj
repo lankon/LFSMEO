@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\eElement_Form\eF_StartForm.cs" />
+    <Compile Include="Base\eElement_Form\eUC_TCtrlBoxSetting.cs" />
     <Compile Include="Base\eF_Equipment_Setting.cs" />
     <Compile Include="Base\IBaseMainTask.cs" />
     <Compile Include="Base\IBaseTask.cs" />
@@ -128,6 +129,12 @@
     <Compile Include="UI\F_StartForm_ButtonGroup.designer.cs">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_TCtrlBoxTemperature.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_TCtrlBoxTemperature.designer.cs">
+      <DependentUpon>F_TCtrlBoxTemperature.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_TestSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,10 +153,16 @@
     <Compile Include="UI\OEM\F_TCtrlBoxSetting.designer.cs">
       <DependentUpon>F_TCtrlBoxSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UC_TCtrlBoxSetting.cs">
+    <Compile Include="UI\OEM\UC_ShowTemperatureValue.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\UC_TCtrlBoxSetting.Designer.cs">
+    <Compile Include="UI\OEM\UC_ShowTemperatureValue.Designer.cs">
+      <DependentUpon>UC_ShowTemperatureValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OEM\UC_TCtrlBoxSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\OEM\UC_TCtrlBoxSetting.Designer.cs">
       <DependentUpon>UC_TCtrlBoxSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UC_CtrlBoxStatus.cs">
@@ -188,6 +201,9 @@
     <EmbeddedResource Include="UI\F_StartForm_ButtonGroup.resx">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_TCtrlBoxTemperature.resx">
+      <DependentUpon>F_TCtrlBoxTemperature.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_TestSetting.resx">
       <DependentUpon>F_TestSetting.cs</DependentUpon>
     </EmbeddedResource>
@@ -203,7 +219,10 @@
     <EmbeddedResource Include="UI\OEM\F_TCtrlBoxSetting.resx">
       <DependentUpon>F_TCtrlBoxSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\UC_TCtrlBoxSetting.resx">
+    <EmbeddedResource Include="UI\OEM\UC_ShowTemperatureValue.resx">
+      <DependentUpon>UC_ShowTemperatureValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OEM\UC_TCtrlBoxSetting.resx">
       <DependentUpon>UC_TCtrlBoxSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UC_CtrlBoxStatus.resx">

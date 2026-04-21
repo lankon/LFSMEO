@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
+using Microsoft.Extensions.DependencyInjection;
 using DeviceCore;
 using BurnInTester.Device;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BurnInTester.Logic
 {
@@ -24,6 +25,7 @@ namespace BurnInTester.Logic
         #region parameter define
         private TC_CommManage CommManage;
         private HW_ParamSetting HW_Param;
+        AgingInformation _AgingInformation;
         private int count = 0;
         private IServiceProvider ServiceProvider;
         private IFunction_TemperatureControl Func_TC;
@@ -49,7 +51,8 @@ namespace BurnInTester.Logic
                     case WORK.INITIAL:
                         {
                             HW_Param = ServiceProvider.GetRequiredService<HW_ParamSetting>();
-                            CommManage = new TC_CommManage(Func_TC);
+                            _AgingInformation = ServiceProvider.GetRequiredService<AgingInformation>();
+                            CommManage = new TC_CommManage(Func_TC, _AgingInformation);
                             State = WORK.IDLE;
                         }
                         break;
@@ -61,8 +64,12 @@ namespace BurnInTester.Logic
                         break;
                     case WORK.ASK_PV:
                         {
-                            string command = HW_Param.TC_Box.BoxNum[count % HW_Param.TC_Box._CtrlBoxNum] + "," + HW_Param.TC_Box.ChNum[count % HW_Param.TC_Box._CtrlBoxNum];
-                            CommManage.UpdateTemperature(ETemperatureControlName.TC_1, command);
+                            int box_num = count % HW_Param.TC_Box._CtrlBoxNum;
+                            string command = HW_Param.TC_Box.BoxNum[box_num] + "," + HW_Param.TC_Box.ChNum[box_num];
+                            
+                            if(HW_Param.TC_Box.Use[box_num] == true)
+                                CommManage.UpdateTemperature(ETemperatureControlName.TC_1, command, box_num);
+
                             count++;
 
                             if (count > 100000)
@@ -81,8 +88,5 @@ namespace BurnInTester.Logic
             }
         }
         #endregion
-
-
-
     }
 }

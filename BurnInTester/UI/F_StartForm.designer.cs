@@ -31,8 +31,8 @@ namespace BurnInTester.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.LyPnl_CtrlBoxStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.Btn_GetStats = new System.Windows.Forms.Button();
-            this.Btn_Test = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
@@ -72,7 +72,6 @@ namespace BurnInTester.UI
             this.TxtBx_RespDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Pnl_Info = new System.Windows.Forms.Panel();
-            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.LyPnl_CtrlBoxStatus.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -110,6 +109,14 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxStatus.Size = new System.Drawing.Size(653, 943);
             this.LyPnl_CtrlBoxStatus.TabIndex = 0;
             // 
+            // CtrlBoxStatus1
+            // 
+            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
+            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
+            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
+            this.CtrlBoxStatus1.TabIndex = 0;
+            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
+            // 
             // Btn_GetStats
             // 
             this.Btn_GetStats.Location = new System.Drawing.Point(876, 8);
@@ -119,16 +126,6 @@ namespace BurnInTester.UI
             this.Btn_GetStats.Text = "Btn_GetStats";
             this.Btn_GetStats.UseVisualStyleBackColor = true;
             this.Btn_GetStats.Click += new System.EventHandler(this.Btn_GetStats_Click);
-            // 
-            // Btn_Test
-            // 
-            this.Btn_Test.Location = new System.Drawing.Point(648, 106);
-            this.Btn_Test.Name = "Btn_Test";
-            this.Btn_Test.Size = new System.Drawing.Size(138, 60);
-            this.Btn_Test.TabIndex = 2;
-            this.Btn_Test.Text = "button1";
-            this.Btn_Test.UseVisualStyleBackColor = true;
-            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
             // panel1
             // 
@@ -395,7 +392,6 @@ namespace BurnInTester.UI
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.Btn_Test_TC);
             this.panel3.Controls.Add(this.panel4);
-            this.panel3.Controls.Add(this.Btn_Test);
             this.panel3.Controls.Add(this.Btn_GetStats);
             this.panel3.Location = new System.Drawing.Point(680, 482);
             this.panel3.Name = "panel3";
@@ -579,14 +575,6 @@ namespace BurnInTester.UI
             this.Pnl_Info.Size = new System.Drawing.Size(327, 468);
             this.Pnl_Info.TabIndex = 5;
             // 
-            // CtrlBoxStatus1
-            // 
-            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
-            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
-            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
-            this.CtrlBoxStatus1.TabIndex = 0;
-            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
-            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -622,7 +610,6 @@ namespace BurnInTester.UI
 
         private System.Windows.Forms.TableLayoutPanel LyPnl_CtrlBoxStatus;
         private System.Windows.Forms.Button Btn_GetStats;
-        private System.Windows.Forms.Button Btn_Test;
         private UC_CtrlBoxStatus CtrlBoxStatus1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;

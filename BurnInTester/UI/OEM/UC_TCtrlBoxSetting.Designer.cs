@@ -88,8 +88,8 @@ namespace BurnInTester.UI
             this.LyOutPnl_Main.Location = new System.Drawing.Point(0, 0);
             this.LyOutPnl_Main.Name = "LyOutPnl_Main";
             this.LyOutPnl_Main.RowCount = 2;
-            this.LyOutPnl_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.11111F));
-            this.LyOutPnl_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.88889F));
+            this.LyOutPnl_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.LyOutPnl_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.LyOutPnl_Main.Size = new System.Drawing.Size(198, 174);
             this.LyOutPnl_Main.TabIndex = 4;
             // 
@@ -101,7 +101,7 @@ namespace BurnInTester.UI
             this.Labl_BoxNum.Location = new System.Drawing.Point(1, 1);
             this.Labl_BoxNum.Margin = new System.Windows.Forms.Padding(0);
             this.Labl_BoxNum.Name = "Labl_BoxNum";
-            this.Labl_BoxNum.Size = new System.Drawing.Size(196, 27);
+            this.Labl_BoxNum.Size = new System.Drawing.Size(196, 25);
             this.Labl_BoxNum.TabIndex = 2;
             this.Labl_BoxNum.Text = "Box 1-1";
             this.Labl_BoxNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -118,7 +118,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 32);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 30);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 4;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -126,7 +126,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(190, 138);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(190, 140);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // TxtBx_Channel

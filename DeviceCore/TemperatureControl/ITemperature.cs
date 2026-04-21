@@ -12,6 +12,7 @@ namespace DeviceCore
         NONE,
         VIRTUAL,
         Guishan_3Ch_Independent_RTD,
+        Guishan_AMIDA_WIN,
     }
 
     public struct TC_INFO
@@ -31,10 +32,10 @@ namespace DeviceCore
         int Close();                    //關閉通訊阜
         string GetPortName();           //取得通訊阜名稱
         ETemperatureControlType Get_TC_Type();      //取得溫控器型號
-        int Initialize();                           //初始化溫控器
+        int Initialize(string cmd = "");            //初始化溫控器
         int AskPV(string cmd = "");                 //詢問目前溫度
         int Start(double sv, string cmd = "");      //開始控溫
         int Stop(string cmd = "");                  //停止控溫
-        int GetAnswer(out string answer, string cmd = "");       //取得回傳指令
+        int GetAnswer(out string[] answer, string cmd = "");        //取得回傳指令
     }
 }

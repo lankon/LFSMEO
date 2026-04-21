@@ -62,6 +62,8 @@ namespace BurnInTester.Logic
         {
             Tool.SaveLogToFile("Initial Temperature Control");
             IF_TemperatureControl f_TemperatureControl = ServiceProvider.GetRequiredService<IF_TemperatureControl>();
+            IF_TCtrlBoxSetting f_TCtrlBoxSetting = ServiceProvider.GetService<IF_TCtrlBoxSetting>();
+            f_TCtrlBoxSetting.LoadTCtrlBoxSetting();
             f_TemperatureControl.Update_TC_List();
             BurnInTesterMachine.TC.Initial_All_TemperatureControl();
             Tool.SaveLogToFile("Load Temperature Control Config");

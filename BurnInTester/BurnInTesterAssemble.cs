@@ -43,6 +43,7 @@ namespace BurnInTester
             //services.AddSingleton<IF_StatusBox, F_StatusBox>();
             //services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
             //services.AddSingleton<F_DAQ_Chart>();
+            services.AddSingleton<IF_TCtrlBoxSetting, F_TCtrlBoxSetting>();
 
             //[Form]
             //退出Form後即close掉,要用再new
@@ -50,7 +51,7 @@ namespace BurnInTester
             //services.AddTransient<F_Equipment_Setting>();
             services.AddTransient<IF_Recipe, F_Recipe>();
             services.AddTransient<F_TestSetting>();
-            services.AddTransient<IF_TCtrlBoxSetting, F_TCtrlBoxSetting>();
+            services.AddTransient<F_TCtrlBoxTemperature>();
             //services.AddTransient<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 

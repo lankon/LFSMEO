@@ -9,9 +9,9 @@ using DeviceCore;
 
 namespace Device_Guishan
 {
-    public class Fittech_3Ch_Independent_RTD: ITemperatureControl
+    public class Fittech_AMIDA_WIN : ITemperatureControl
     {
-        public Fittech_3Ch_Independent_RTD()
+        public Fittech_AMIDA_WIN()
         {
 
         }
@@ -127,18 +127,21 @@ namespace Device_Guishan
             return 0;
         }
 
+
         public ETemperatureControlType Get_TC_Type()
         {
-            return ETemperatureControlType.Guishan_3Ch_Independent_RTD;
+            return ETemperatureControlType.Guishan_AMIDA_WIN;
         }
         public string GetPortName()
         {
             return Comport.PortName;
         }
 
+
         public int Initialize(string cmd = "")
         {
-            string command = $"B{CtrlBox},INIT\r\n";
+            string[] sp = cmd.Split(',');
+            string command = $"B{sp[0]},INIT\r\n";
             SendCommand = command;
 
             try
@@ -155,7 +158,8 @@ namespace Device_Guishan
         }
         public int AskPV(string cmd = "")
         {
-            string command = $"B{CtrlBox},GTEMP,{Channel}\r\n";
+            string[] sp = cmd.Split(',');
+            string command = $"B{sp[0]},GTEMP,{sp[1]}\r\n";
             SendCommand = command;
 
             try
@@ -173,8 +177,9 @@ namespace Device_Guishan
         }
         public int Start(double sv, string cmd = "")
         {
+            string[] sp = cmd.Split(',');
             string SV_Value = sv.ToString("F2");
-            string command = $"B{CtrlBox},STEMP,1,{SV_Value},1,{Channel}\r\n";
+            string command = $"B{sp[0]},STEMP,1,{SV_Value},1,{sp[1]}\r\n";
             SendCommand = command;
 
             try
@@ -192,7 +197,8 @@ namespace Device_Guishan
         }
         public int Stop(string cmd = "")
         {
-            string command = $"B{CtrlBox},STEMP,0,25,1,{Channel}\r\n";
+            string[] sp = cmd.Split(',');
+            string command = $"B{sp[0]},STEMP,0,25,1,{sp[1]}\r\n";
             SendCommand = command;
 
             try
@@ -215,8 +221,7 @@ namespace Device_Guishan
             try
             {
                 Comport.ReadTimeout = 1000;
-                string res = "";
-                res = Comport.ReadLine();
+                string res = Comport.ReadLine();
 
                 if(CurCmdType == CMD_TYPE.AskPV)
                 {
@@ -230,7 +235,7 @@ namespace Device_Guishan
                     if (split_str[0] != $"B{CtrlBox}" || split_str[1] != "GTEMP")
                         return (int)ERROR_CODE.CMD_FAIL;
 
-                    answer = new string[] { split_str[2] };  //溫度值
+                    answer = new string[] { split_str[2], split_str[3], split_str[4], split_str[5], split_str[6] };  //溫度值
                 }
                 else
                 {

@@ -10,10 +10,20 @@ namespace BurnInTester.Device
     {
         public TemperatureControlBox TC_Box = new TemperatureControlBox();
 
+        
         public class TemperatureControlBox
         {
-            private const int CtrlBoxNum = 40;
+            public TemperatureControlBox()
+            {
+                for (int i = 0; i < CtrlBoxNum; i++)
+                {
+                    BoxNum[i] = "00";
+                    ChNum[i] = "0";
+                    Use[i] = false;
+                }
+            }
 
+            private const int CtrlBoxNum = 40;
             public int _CtrlBoxNum { get; set; } = CtrlBoxNum;                  //溫控箱數量
             public string[] BoxNum { get; set; } = new string[CtrlBoxNum];      //溫控箱編號
             public string[] ChNum { get; set; } = new string[CtrlBoxNum];       //溫控箱通道編號

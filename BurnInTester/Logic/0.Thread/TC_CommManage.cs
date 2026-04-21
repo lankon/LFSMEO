@@ -14,9 +14,11 @@ namespace BurnInTester.Logic
 {
     public class TC_CommManage
     {
-        public TC_CommManage(IFunction_TemperatureControl function_TemperatureControl)
+        public TC_CommManage(IFunction_TemperatureControl function_TemperatureControl, AgingInformation agingInformation)
         {
             Func_TC = function_TemperatureControl;
+
+            _AgingInformation = agingInformation;
 
             // 啟動背景處理迴圈
             Task.Run(() => ProcessLoop());
@@ -24,6 +26,7 @@ namespace BurnInTester.Logic
 
         #region parameter define
         IFunction_TemperatureControl Func_TC;
+        private AgingInformation _AgingInformation;
         // 存放待發送的任務。ConcurrentQueue為執行緒安全,Queue為非執行緒安全
         private ConcurrentQueue<ExecuteCommandTask> TaskQueue = new ConcurrentQueue<ExecuteCommandTask>();
         private class ExecuteCommandTask
@@ -73,18 +76,37 @@ namespace BurnInTester.Logic
         #endregion
 
         #region public function
-        public async Task UpdateTemperature(ETemperatureControlName name, string cmd = "")
+        public async Task UpdateTemperature(ETemperatureControlName name, string cmd = "", int index = 0)
         {
             try
             {
+                double[] temperature = new double[] { 0, 0, 0, 0 };
+                
                 string result = await EnqueueAction(async() =>
                 {
                     Func_TC.AskPV(name, cmd);
 
                     // GetAnswer內部會等候回傳並解析，直到拿到結果才會繼續往下走，所以這裡不需要額外的等待邏輯
-                    string ans = Func_TC.GetAnswer(name);
+                    string[] ans = Func_TC.GetAnswer(name, cmd);
+                    
+                    List<double> validValues = new List<double>();
+                    foreach (string s in ans)
+                    {
+                        double res = Tool.StringToDouble(s);
 
-                    return ans;
+                        if (Math.Abs(res + 999) < 0.001)
+                        {
+                            Tool.SaveLogToFile($"Task UpdateTemperature錯誤:{s}");
+                        }
+
+                        validValues.Add(res);
+                    }
+                    double[] d_ans = validValues.ToArray();
+                    temperature = d_ans;
+
+                    _AgingInformation.TemperatureInfos[index].UpdatePV(d_ans);
+
+                    return "";
                 });
             }
             catch (Exception ex)

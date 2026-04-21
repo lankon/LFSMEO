@@ -15,10 +15,10 @@ namespace BurnInTester.Logic.nTCtrlBoxSetting
 {
     public struct TCtrlBoxSetting
     {
-        public int TCtrlBoxID { get; set; } //溫控箱ID
-        public int Use { get; set; }        //是否使用
-        public int BoxNum { get; set; }     //溫控箱編號
-        public int ChNum { get; set; }      //溫控箱通道編號
+        public int TCtrlBoxID { get; set; }     //溫控箱ID
+        public int Use { get; set; }            //是否使用
+        public string BoxNum { get; set; }      //溫控箱編號
+        public string ChNum { get; set; }       //溫控箱通道編號
     }
 }
 
@@ -51,7 +51,7 @@ namespace BurnInTester.Logic
 
             if (!File.Exists(filePath))
             {
-                Tool.SaveLogToFile("TCtrlBoxSettings.json not found.");
+                Tool.SaveLogToFile("TCtrlBoxSettings.json not found.", level:"ERR");
                 return false;
             }
 
@@ -74,14 +74,14 @@ namespace BurnInTester.Logic
                         }
                         else
                         {
-                            Tool.SaveLogToFile($"Invalid TCtrlBoxID {boxID} in TCtrlBoxSettings.json.");
+                            Tool.SaveLogToFile($"Invalid TCtrlBoxID {boxID} in TCtrlBoxSettings.json.", level: "ERR");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Tool.SaveLogToFile($"Error loading TCtrlBoxSettings.json: {ex.Message}");
+                Tool.SaveLogToFile($"Error loading TCtrlBoxSettings.json: {ex.Message}", level: "ERR");
                 return false;
             }
 

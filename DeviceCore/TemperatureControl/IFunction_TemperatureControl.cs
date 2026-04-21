@@ -37,6 +37,6 @@ namespace DeviceCore
         bool AskPV(ETemperatureControlName name, string cmd = "");  //詢問目前溫度
         bool Start(ETemperatureControlName name, double sv, string cmd = "");   //開始控溫
         bool Stop(ETemperatureControlName name, string cmd = "");               //停止控溫
-        string GetAnswer(ETemperatureControlName name, string cmd = "");        //取得回覆訊息
+        string[] GetAnswer(ETemperatureControlName name, string cmd = "");      //取得回覆訊息
     }
 }

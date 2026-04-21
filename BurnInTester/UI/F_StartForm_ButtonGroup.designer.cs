@@ -137,7 +137,6 @@ namespace BurnInTester.UI
             this.Btn_ParameterSetting.Size = new System.Drawing.Size(70, 70);
             this.Btn_ParameterSetting.TabIndex = 31;
             this.Btn_ParameterSetting.UseVisualStyleBackColor = true;
-            this.Btn_ParameterSetting.Visible = false;
             this.Btn_ParameterSetting.Click += new System.EventHandler(this.Btn_ParameterSetting_Click);
             // 
             // Pnl_Part2

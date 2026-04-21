@@ -104,7 +104,8 @@ namespace BurnInTester.Logic
                     case WORK.GET_ANSWER:
                         {
                             Thread.Sleep(Resp_Delay);
-                            res = TC.GetAnswer(out answer);
+                            res = TC.GetAnswer(out string[] answerArray);
+                            answer = "";
                             if (res == 0)
                             {
                                 Tool.SaveLogToFile("Get answer: " + answer);

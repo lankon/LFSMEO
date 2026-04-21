@@ -1,33 +1,33 @@
-﻿using BurnInTester.Base;
-using DeviceCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
 using ToolFunction;
-using static BurnInTester.Logic.AgingInformation;
+using DeviceCore;
+using BurnInTester.Base;
+using BurnInTester.Device;
 
 namespace BurnInTester.Logic
 {
-    
-    
     public class AgingInformation
     {
-        public AgingInformation()
+        public AgingInformation(HW_ParamSetting hW_ParamSetting)
         {
-            
-            //初始化老化箱參數
-            for (int i = 0; i < BoxCount; i++)
-                PARAM_INFO.Add(new AGING_INFO());
+            _HW_ParamSetting = hW_ParamSetting;
+
+            InitialParameter();
         }
 
         #region parameter define
-        private int BoxCount = 40;       //老化箱數量
+        private int BoxCount = 0;       //老化箱數量
         private List<AGING_INFO> PARAM_INFO = new List<AGING_INFO>();
         public string AgingConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "AgingConfig.xml");
+        public TemperatureInfo[] TemperatureInfos;
+        private HW_ParamSetting _HW_ParamSetting;
 
         public struct  AGING_INFO
         {
@@ -41,10 +41,48 @@ namespace BurnInTester.Logic
             public string RunnningTime;        //已運行時間
             public string RemainingTime;       //剩餘時間
         }
+        public class TemperatureInfo
+        {
+            private double[] PV = new double[5];
+            private double[] SV = new double[5];
 
+            public void UpdatePV(double[] newPV)
+            {
+                int length = Math.Min(newPV.Length, PV.Length);
+
+                for (int i = 0; i < length; i++)
+                    PV[i] = newPV[i];
+            }
+            public void UpdateSV(double[] newSV)
+            {
+                int length = Math.Min(newSV.Length, SV.Length);
+                for (int i = 0; i < length; i++)
+                    SV[i] = newSV[i];
+            }
+            public double[] GetPV()
+            {
+                return PV;
+            }
+            public double[] GetSV()
+            {
+                return SV;
+            }
+        }
         #endregion
 
         #region private function
+        private void InitialParameter()
+        {
+            BoxCount = _HW_ParamSetting.TC_Box._CtrlBoxNum;
+
+            TemperatureInfos = new TemperatureInfo[BoxCount];
+            for (int i = 0; i < BoxCount; i++)
+                TemperatureInfos[i] = new TemperatureInfo();
+
+            //初始化老化箱參數
+            for (int i = 0; i < BoxCount; i++)
+                PARAM_INFO.Add(new AGING_INFO());
+        }
         private void LoadAgingBoxConfig(string path)
         {
             XDocument doc = XDocument.Load(path);

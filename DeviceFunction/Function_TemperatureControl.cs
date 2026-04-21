@@ -150,21 +150,21 @@ namespace DeviceFunction
 
             return res == 0;
         }
-        public string GetAnswer(ETemperatureControlName name, string cmd = "")
+        public string[] GetAnswer(ETemperatureControlName name, string cmd = "")
         {
             ITemperatureControl targetDevice = GetTargetDevice(name, out TemperatureControlData tc_data);
             
             if (targetDevice == null || tc_data == null)
             {
                 Tool.SaveLogToFile($"GetAnswer Fail: Cannot find hardware {tc_data?.Title_TC_Type} on {tc_data?.Title_Comport}", level: "ERR");
-                return "ERR";
+                return new string[] { "ERR" };
             }
 
-            int res = targetDevice.GetAnswer(out string answer, cmd);
+            int res = targetDevice.GetAnswer(out string[] answer, cmd);
             if (res != 0)
             {
                 Tool.SaveLogToFile($"GetAnswer Fail: Device {tc_data?.Title_TC_Type} on {tc_data?.Title_Comport} cannot answer", level: "ERR");
-                return "ERR";
+                return new string[] { "ERR" };
             }
             return answer;
         }
