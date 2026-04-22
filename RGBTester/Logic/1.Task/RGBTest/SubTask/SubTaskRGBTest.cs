@@ -39,6 +39,7 @@ namespace RGBTester.Logic
 
         #region parameter
         RGBTesterFunction RGBfunc;
+        ResultData ResultData;
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
@@ -57,6 +58,8 @@ namespace RGBTester.Logic
             WAIT_LED_R_TEST,
             WAIT_LED_G_TEST,
             WAIT_LED_B_TEST,
+
+            CHECK_SLOPE_OFFSET,
 
             BURN_IN_TEST,
             WAIT_BURN_IN_TEST,
@@ -136,13 +139,32 @@ namespace RGBTester.Logic
                     break;
             }
         }
+        private void SetCheckSlopeDAC()
+        {
+            ResultData.CheckSlopeData.ResetParameter();
+            ResultData.CheckSlopeData.SetDeviationLimit(ApplicationSetting.Get_Double_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_DeviationLimit));
+            ResultData.CheckSlopeData.SetCheck_LCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC1),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC2),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC3),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC4),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC5));
+
+            ResultData.CheckSlopeData.SetCheck_HCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC1),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC2),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC3),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC4),
+                                                        ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC5));
+        }
+
         private void Preset()
         {
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
 
             Scope.TestFail = false;
             RGBfunc.FailReasonFlag.ResetAllFlag();
+            SetCheckSlopeDAC();
 
             SN = RGBfunc.SerialNumber;
         }
@@ -257,21 +279,56 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
+                        CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
+
+                        
+                    }
+                    break;
+                #endregion
+
+                case WORK.CHECK_SLOPE_OFFSET:
+                    {
+                        bool res = ResultData.CheckSlopeData.CheckSlopeCorrect();
+                        var para_set = Deps.ServiceProvider.GetRequiredService<IF_ParameterSetting>();
+                        para_set.ShowSlopeCheckDataInvoke(ResultData.CheckSlopeData.LCM_R_Calculate, ResultData.CheckSlopeData.LCM_R_Dev,
+                                                            ResultData.CheckSlopeData.LCM_G_Calculate, ResultData.CheckSlopeData.LCM_G_Dev,
+                                                            ResultData.CheckSlopeData.LCM_B_Calculate, ResultData.CheckSlopeData.LCM_B_Dev,
+                                                            ResultData.CheckSlopeData.HCM_R_Calculate, ResultData.CheckSlopeData.HCM_R_Dev,
+                                                            ResultData.CheckSlopeData.HCM_G_Calculate, ResultData.CheckSlopeData.HCM_G_Dev,
+                                                            ResultData.CheckSlopeData.HCM_B_Calculate, ResultData.CheckSlopeData.HCM_B_Dev);
+
+                        if (!res)
+                        {
+                            Scope.TestFail = true;
+                            RGBfunc.FailReasonFlag.IsSlopeCalculateCurrentErr = true;
+                        }
+
+                        string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
+                        string copy_path1 = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath1);
+                        string side = (Type == "Left") ? "L" : "R";
+                        ResultData.CheckSlopeData.OutputResult(SN, side, copy_path, copy_path1);
+
                         if (Scope.TaskRGBTest.IsSingleTest == true)
                         {
                             int select = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
 
                             if (select == (int)ePartTestItem.IV_Test_LCM || select == (int)ePartTestItem.IV_Test ||
                                 select == (int)ePartTestItem.IV_Test_HCM)
-                                CheckResult(check, SUCCESS: WORK.SUCCESS);
+                                Transition(WORK.SUCCESS);
                             else if (select == (int)ePartTestItem.BurinIn)
-                                CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
+                                Transition(WORK.BURN_IN_TEST);
                         }
                         else
-                            CheckResult(check, SUCCESS: WORK.BURN_IN_TEST);
+                        {
+                            // 燒測時間設定為0時不進行燒測
+                            if (ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_BurnInTime) == 0)
+                                Transition(WORK.SUCCESS);
+                            else
+                                Transition(WORK.BURN_IN_TEST);
+                        }
                     }
                     break;
-                #endregion
+
                 #region BURN_IN
                 case WORK.BURN_IN_TEST:
                     {

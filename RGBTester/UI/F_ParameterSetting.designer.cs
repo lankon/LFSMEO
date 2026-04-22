@@ -64,10 +64,45 @@ namespace RGBTester.UI
             this.TxtBx_BurnInCurrent_R = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.LyPnl_LCM_CheckSlope = new System.Windows.Forms.TableLayoutPanel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.TxtBx_LCM_Check_DAC1 = new System.Windows.Forms.TextBox();
+            this.TxtBx_LCM_Check_DAC2 = new System.Windows.Forms.TextBox();
+            this.TxtBx_LCM_Check_DAC3 = new System.Windows.Forms.TextBox();
+            this.TxtBx_LCM_Check_DAC4 = new System.Windows.Forms.TextBox();
+            this.TxtBx_LCM_Check_DAC5 = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.label31 = new System.Windows.Forms.Label();
+            this.LyPnl_HCM_CheckSlope = new System.Windows.Forms.TableLayoutPanel();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.TxtBx_HCM_Check_DAC1 = new System.Windows.Forms.TextBox();
+            this.TxtBx_HCM_Check_DAC2 = new System.Windows.Forms.TextBox();
+            this.TxtBx_HCM_Check_DAC3 = new System.Windows.Forms.TextBox();
+            this.TxtBx_HCM_Check_DAC4 = new System.Windows.Forms.TextBox();
+            this.TxtBx_HCM_Check_DAC5 = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_DeviationLimit = new System.Windows.Forms.TextBox();
+            this.LabelTime = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.LyPnl_LCM_CheckSlope.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
+            this.LyPnl_HCM_CheckSlope.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -193,7 +228,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 1, 4);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(667, 12);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 8;
+            this.tableLayoutPanel3.RowCount = 7;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 78F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -201,8 +236,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(635, 338);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(635, 306);
             this.tableLayoutPanel3.TabIndex = 10;
             // 
             // TxtBx_BurnInRepeat
@@ -452,11 +486,381 @@ namespace RGBTester.UI
             this.label13.Text = "B:";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // LyPnl_LCM_CheckSlope
+            // 
+            this.LyPnl_LCM_CheckSlope.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.LyPnl_LCM_CheckSlope.ColumnCount = 7;
+            this.LyPnl_LCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_LCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_LCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_LCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_LCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_LCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_LCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.label23, 6, 0);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.label22, 4, 0);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.label20, 3, 0);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.label19, 2, 0);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.label15, 1, 0);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.label18, 0, 0);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.TxtBx_LCM_Check_DAC1, 0, 1);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.TxtBx_LCM_Check_DAC2, 0, 2);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.TxtBx_LCM_Check_DAC3, 0, 3);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.TxtBx_LCM_Check_DAC4, 0, 4);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.TxtBx_LCM_Check_DAC5, 0, 5);
+            this.LyPnl_LCM_CheckSlope.Controls.Add(this.label21, 5, 0);
+            this.LyPnl_LCM_CheckSlope.Location = new System.Drawing.Point(6, 82);
+            this.LyPnl_LCM_CheckSlope.Name = "LyPnl_LCM_CheckSlope";
+            this.LyPnl_LCM_CheckSlope.RowCount = 6;
+            this.LyPnl_LCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_LCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_LCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_LCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_LCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
+            this.LyPnl_LCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
+            this.LyPnl_LCM_CheckSlope.Size = new System.Drawing.Size(640, 218);
+            this.LyPnl_LCM_CheckSlope.TabIndex = 18;
+            // 
+            // label23
+            // 
+            this.label23.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label23.Location = new System.Drawing.Point(547, 1);
+            this.label23.Margin = new System.Windows.Forms.Padding(0);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(88, 35);
+            this.label23.TabIndex = 20;
+            this.label23.Text = "B Dev(%)";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label22
+            // 
+            this.label22.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label22.Location = new System.Drawing.Point(365, 1);
+            this.label22.Margin = new System.Windows.Forms.Padding(0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(90, 35);
+            this.label22.TabIndex = 19;
+            this.label22.Text = "G Dev(%)";
+            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label20
+            // 
+            this.label20.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label20.Location = new System.Drawing.Point(274, 1);
+            this.label20.Margin = new System.Windows.Forms.Padding(0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(88, 35);
+            this.label20.TabIndex = 17;
+            this.label20.Text = "G (mA)";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label19
+            // 
+            this.label19.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label19.Location = new System.Drawing.Point(183, 1);
+            this.label19.Margin = new System.Windows.Forms.Padding(0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(90, 35);
+            this.label19.TabIndex = 16;
+            this.label19.Text = "R Dev(%)";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label15.Location = new System.Drawing.Point(92, 1);
+            this.label15.Margin = new System.Windows.Forms.Padding(0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(90, 35);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "R (mA)";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label18
+            // 
+            this.label18.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label18.Location = new System.Drawing.Point(1, 1);
+            this.label18.Margin = new System.Windows.Forms.Padding(0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(90, 35);
+            this.label18.TabIndex = 9;
+            this.label18.Text = "LCM DAC";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_LCM_Check_DAC1
+            // 
+            this.TxtBx_LCM_Check_DAC1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_LCM_Check_DAC1.Location = new System.Drawing.Point(4, 40);
+            this.TxtBx_LCM_Check_DAC1.Name = "TxtBx_LCM_Check_DAC1";
+            this.TxtBx_LCM_Check_DAC1.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_LCM_Check_DAC1.TabIndex = 10;
+            // 
+            // TxtBx_LCM_Check_DAC2
+            // 
+            this.TxtBx_LCM_Check_DAC2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_LCM_Check_DAC2.Location = new System.Drawing.Point(4, 76);
+            this.TxtBx_LCM_Check_DAC2.Name = "TxtBx_LCM_Check_DAC2";
+            this.TxtBx_LCM_Check_DAC2.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_LCM_Check_DAC2.TabIndex = 11;
+            // 
+            // TxtBx_LCM_Check_DAC3
+            // 
+            this.TxtBx_LCM_Check_DAC3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_LCM_Check_DAC3.Location = new System.Drawing.Point(4, 112);
+            this.TxtBx_LCM_Check_DAC3.Name = "TxtBx_LCM_Check_DAC3";
+            this.TxtBx_LCM_Check_DAC3.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_LCM_Check_DAC3.TabIndex = 12;
+            // 
+            // TxtBx_LCM_Check_DAC4
+            // 
+            this.TxtBx_LCM_Check_DAC4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_LCM_Check_DAC4.Location = new System.Drawing.Point(4, 148);
+            this.TxtBx_LCM_Check_DAC4.Name = "TxtBx_LCM_Check_DAC4";
+            this.TxtBx_LCM_Check_DAC4.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_LCM_Check_DAC4.TabIndex = 13;
+            // 
+            // TxtBx_LCM_Check_DAC5
+            // 
+            this.TxtBx_LCM_Check_DAC5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_LCM_Check_DAC5.Location = new System.Drawing.Point(4, 186);
+            this.TxtBx_LCM_Check_DAC5.Name = "TxtBx_LCM_Check_DAC5";
+            this.TxtBx_LCM_Check_DAC5.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_LCM_Check_DAC5.TabIndex = 14;
+            // 
+            // label21
+            // 
+            this.label21.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label21.Location = new System.Drawing.Point(456, 1);
+            this.label21.Margin = new System.Windows.Forms.Padding(0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(88, 35);
+            this.label21.TabIndex = 18;
+            this.label21.Text = "B (mA)";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel6.ColumnCount = 2;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.label31, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.LyPnl_HCM_CheckSlope, 1, 2);
+            this.tableLayoutPanel6.Controls.Add(this.LyPnl_LCM_CheckSlope, 0, 2);
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(12, 342);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 3;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1302, 307);
+            this.tableLayoutPanel6.TabIndex = 11;
+            // 
+            // label31
+            // 
+            this.label31.BackColor = System.Drawing.Color.Silver;
+            this.tableLayoutPanel6.SetColumnSpan(this.label31, 2);
+            this.label31.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label31.Location = new System.Drawing.Point(6, 3);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(1290, 25);
+            this.label31.TabIndex = 20;
+            this.label31.Text = "Slope Check Setting";
+            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LyPnl_HCM_CheckSlope
+            // 
+            this.LyPnl_HCM_CheckSlope.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.LyPnl_HCM_CheckSlope.ColumnCount = 7;
+            this.LyPnl_HCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_HCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_HCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_HCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_HCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_HCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_HCM_CheckSlope.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.label24, 6, 0);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.label25, 4, 0);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.label26, 3, 0);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.label27, 2, 0);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.label28, 1, 0);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.label29, 0, 0);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.TxtBx_HCM_Check_DAC1, 0, 1);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.TxtBx_HCM_Check_DAC2, 0, 2);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.TxtBx_HCM_Check_DAC3, 0, 3);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.TxtBx_HCM_Check_DAC4, 0, 4);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.TxtBx_HCM_Check_DAC5, 0, 5);
+            this.LyPnl_HCM_CheckSlope.Controls.Add(this.label30, 5, 0);
+            this.LyPnl_HCM_CheckSlope.Location = new System.Drawing.Point(655, 82);
+            this.LyPnl_HCM_CheckSlope.Name = "LyPnl_HCM_CheckSlope";
+            this.LyPnl_HCM_CheckSlope.RowCount = 6;
+            this.LyPnl_HCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_HCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_HCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_HCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_HCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
+            this.LyPnl_HCM_CheckSlope.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
+            this.LyPnl_HCM_CheckSlope.Size = new System.Drawing.Size(640, 218);
+            this.LyPnl_HCM_CheckSlope.TabIndex = 19;
+            // 
+            // label24
+            // 
+            this.label24.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label24.Location = new System.Drawing.Point(547, 1);
+            this.label24.Margin = new System.Windows.Forms.Padding(0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(88, 35);
+            this.label24.TabIndex = 20;
+            this.label24.Text = "B Dev(%)";
+            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label25
+            // 
+            this.label25.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label25.Location = new System.Drawing.Point(365, 1);
+            this.label25.Margin = new System.Windows.Forms.Padding(0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(90, 35);
+            this.label25.TabIndex = 19;
+            this.label25.Text = "G Dev(%)";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label26
+            // 
+            this.label26.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label26.Location = new System.Drawing.Point(274, 1);
+            this.label26.Margin = new System.Windows.Forms.Padding(0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(88, 35);
+            this.label26.TabIndex = 17;
+            this.label26.Text = "G (mA)";
+            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label27
+            // 
+            this.label27.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label27.Location = new System.Drawing.Point(183, 1);
+            this.label27.Margin = new System.Windows.Forms.Padding(0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(90, 35);
+            this.label27.TabIndex = 16;
+            this.label27.Text = "R Dev(%)";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label28
+            // 
+            this.label28.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label28.Location = new System.Drawing.Point(92, 1);
+            this.label28.Margin = new System.Windows.Forms.Padding(0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(90, 35);
+            this.label28.TabIndex = 15;
+            this.label28.Text = "R (mA)";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label29
+            // 
+            this.label29.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label29.Location = new System.Drawing.Point(1, 1);
+            this.label29.Margin = new System.Windows.Forms.Padding(0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(90, 35);
+            this.label29.TabIndex = 9;
+            this.label29.Text = "HCM DAC";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_HCM_Check_DAC1
+            // 
+            this.TxtBx_HCM_Check_DAC1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_HCM_Check_DAC1.Location = new System.Drawing.Point(4, 40);
+            this.TxtBx_HCM_Check_DAC1.Name = "TxtBx_HCM_Check_DAC1";
+            this.TxtBx_HCM_Check_DAC1.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_HCM_Check_DAC1.TabIndex = 10;
+            // 
+            // TxtBx_HCM_Check_DAC2
+            // 
+            this.TxtBx_HCM_Check_DAC2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_HCM_Check_DAC2.Location = new System.Drawing.Point(4, 76);
+            this.TxtBx_HCM_Check_DAC2.Name = "TxtBx_HCM_Check_DAC2";
+            this.TxtBx_HCM_Check_DAC2.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_HCM_Check_DAC2.TabIndex = 11;
+            // 
+            // TxtBx_HCM_Check_DAC3
+            // 
+            this.TxtBx_HCM_Check_DAC3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_HCM_Check_DAC3.Location = new System.Drawing.Point(4, 112);
+            this.TxtBx_HCM_Check_DAC3.Name = "TxtBx_HCM_Check_DAC3";
+            this.TxtBx_HCM_Check_DAC3.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_HCM_Check_DAC3.TabIndex = 12;
+            // 
+            // TxtBx_HCM_Check_DAC4
+            // 
+            this.TxtBx_HCM_Check_DAC4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_HCM_Check_DAC4.Location = new System.Drawing.Point(4, 148);
+            this.TxtBx_HCM_Check_DAC4.Name = "TxtBx_HCM_Check_DAC4";
+            this.TxtBx_HCM_Check_DAC4.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_HCM_Check_DAC4.TabIndex = 13;
+            // 
+            // TxtBx_HCM_Check_DAC5
+            // 
+            this.TxtBx_HCM_Check_DAC5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_HCM_Check_DAC5.Location = new System.Drawing.Point(4, 186);
+            this.TxtBx_HCM_Check_DAC5.Name = "TxtBx_HCM_Check_DAC5";
+            this.TxtBx_HCM_Check_DAC5.Size = new System.Drawing.Size(84, 29);
+            this.TxtBx_HCM_Check_DAC5.TabIndex = 14;
+            // 
+            // label30
+            // 
+            this.label30.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label30.Location = new System.Drawing.Point(456, 1);
+            this.label30.Margin = new System.Windows.Forms.Padding(0);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(88, 35);
+            this.label30.TabIndex = 18;
+            this.label30.Text = "B (mA)";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.05128F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.94872F));
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_DeviationLimit, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.LabelTime, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 37);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(310, 36);
+            this.tableLayoutPanel2.TabIndex = 21;
+            // 
+            // TxtBx_DeviationLimit
+            // 
+            this.TxtBx_DeviationLimit.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_DeviationLimit.Location = new System.Drawing.Point(180, 4);
+            this.TxtBx_DeviationLimit.Name = "TxtBx_DeviationLimit";
+            this.TxtBx_DeviationLimit.Size = new System.Drawing.Size(126, 29);
+            this.TxtBx_DeviationLimit.TabIndex = 13;
+            // 
+            // LabelTime
+            // 
+            this.LabelTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.LabelTime.Location = new System.Drawing.Point(1, 1);
+            this.LabelTime.Margin = new System.Windows.Forms.Padding(0);
+            this.LabelTime.Name = "LabelTime";
+            this.LabelTime.Size = new System.Drawing.Size(175, 34);
+            this.LabelTime.TabIndex = 12;
+            this.LabelTime.Text = "Deviation Limit (%)";
+            this.LabelTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // F_ParameterSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.tableLayoutPanel6);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -471,6 +875,13 @@ namespace RGBTester.UI
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.LyPnl_LCM_CheckSlope.ResumeLayout(false);
+            this.LyPnl_LCM_CheckSlope.PerformLayout();
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.LyPnl_HCM_CheckSlope.ResumeLayout(false);
+            this.LyPnl_HCM_CheckSlope.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -511,5 +922,36 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TableLayoutPanel LyPnl_LCM_CheckSlope;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox TxtBx_LCM_Check_DAC1;
+        private System.Windows.Forms.TextBox TxtBx_LCM_Check_DAC2;
+        private System.Windows.Forms.TextBox TxtBx_LCM_Check_DAC3;
+        private System.Windows.Forms.TextBox TxtBx_LCM_Check_DAC4;
+        private System.Windows.Forms.TextBox TxtBx_LCM_Check_DAC5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TableLayoutPanel LyPnl_HCM_CheckSlope;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox TxtBx_HCM_Check_DAC1;
+        private System.Windows.Forms.TextBox TxtBx_HCM_Check_DAC2;
+        private System.Windows.Forms.TextBox TxtBx_HCM_Check_DAC3;
+        private System.Windows.Forms.TextBox TxtBx_HCM_Check_DAC4;
+        private System.Windows.Forms.TextBox TxtBx_HCM_Check_DAC5;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TextBox TxtBx_DeviationLimit;
+        private System.Windows.Forms.Label LabelTime;
     }
 }

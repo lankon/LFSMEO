@@ -74,59 +74,114 @@ namespace DeviceUI.Spectrometer
         }
 
 
+        //private void SetSpectrumPlot()
+        //{
+        //    string professionalFont = "Segoe UI"; // 或 "Arial"
+
+        //    // 統一 X 軸
+        //    var xLabel = Plot_Spectrom.Plot.Axes.Bottom.Label;
+        //    xLabel.Text = "Wavelength (nm)";
+        //    xLabel.FontName = professionalFont;
+        //    xLabel.FontSize = 16;
+        //    xLabel.Bold = true;
+
+        //    // 統一 Y 軸
+        //    var yLabel = Plot_Spectrom.Plot.Axes.Left.Label;
+        //    yLabel.Text = "Intensity (a.u.)";
+        //    yLabel.FontName = professionalFont;
+        //    yLabel.FontSize = 16;
+        //    yLabel.Bold = true;
+
+        //    // 統一標題
+        //    var title = Plot_Spectrom.Plot.Axes.Title.Label;
+        //    title.Text = "Spectrum";
+        //    title.FontName = professionalFont;
+        //    title.FontSize = 20;
+        //    title.Bold = true;
+
+        //    // 讓格線變淡 (Alpha 設低一點)
+        //    Plot_Spectrom.Plot.Grid.MajorLineColor = ScottPlot.Colors.Black.WithAlpha(0.05);
+
+        //    // 設定背景色為乾淨的白色
+        //    Plot_Spectrom.Plot.FigureBackground.Color = ScottPlot.Colors.White;
+        //    Plot_Spectrom.Plot.DataBackground.Color = ScottPlot.Colors.White;
+
+        //    // 隱藏不必要的右邊與上方座標軸線
+        //    Plot_Spectrom.Plot.Axes.Right.FrameLineStyle.Width = 0;
+        //    Plot_Spectrom.Plot.Axes.Top.FrameLineStyle.Width = 0;
+
+        //    Plot_Spectrom.Refresh();
+        //}
+        //private void DrawSpectrumData(double[] wavelength, double[] intensity)
+        //{
+        //    // 清除舊有的繪圖物件
+        //    Plot_Spectrom.Plot.Clear();
+
+        //    // 加入數據線條
+        //    var myPlot = Plot_Spectrom.Plot.AddScatter(wavelength, intensity);
+
+        //    // 設定線條樣式
+        //    myPlot.LineWidth = 2;
+        //    myPlot.Color = ScottPlot.Colors.Blue;
+        //    myPlot.MarkerSize = 0;
+
+        //    // 自動縮放並刷新
+        //    Plot_Spectrom.Plot.Axes.AutoScale();
+        //    Plot_Spectrom.Refresh();
+        //}
+
         private void SetSpectrumPlot()
         {
-            string professionalFont = "Segoe UI"; // 或 "Arial"
+            string professionalFont = "Segoe UI";
 
-            // 統一 X 軸
-            var xLabel = Plot_Spectrom.Plot.Axes.Bottom.Label;
-            xLabel.Text = "Wavelength (nm)";
-            xLabel.FontName = professionalFont;
-            xLabel.FontSize = 16;
-            xLabel.Bold = true;
+            //// --- X 軸設定 ---
+            //Plot_Spectrom.Plot.XLabel("Wavelength (nm)");
+            //// 4.1.74 必須直接存取 Font 屬性物件
+            //Plot_Spectrom.Plot.XAxis.TitleFontName = professionalFont;
+            //Plot_Spectrom.Plot.XAxis.TitleFontSize = 16;
+            //Plot_Spectrom.Plot.XAxis.TitleFontBold = true;
 
-            // 統一 Y 軸
-            var yLabel = Plot_Spectrom.Plot.Axes.Left.Label;
-            yLabel.Text = "Intensity (a.u.)";
-            yLabel.FontName = professionalFont;
-            yLabel.FontSize = 16;
-            yLabel.Bold = true;
+            //// --- Y 軸設定 ---
+            //Plot_Spectrom.Plot.YLabel("Intensity (a.u.)");
+            //Plot_Spectrom.Plot.YAxis.TitleFontName = professionalFont;
+            //Plot_Spectrom.Plot.YAxis.TitleFontSize = 16;
+            //Plot_Spectrom.Plot.YAxis.TitleFontBold = true;
 
-            // 統一標題
-            var title = Plot_Spectrom.Plot.Axes.Title.Label;
-            title.Text = "Spectrum";
-            title.FontName = professionalFont;
-            title.FontSize = 20;
-            title.Bold = true;
+            //// --- 標題設定 ---
+            //Plot_Spectrom.Plot.Title("Spectrum");
+            //// 注意：標題在 4.1 中通常對應的是 MainAxis (也就是 Top Axis)
+            //Plot_Spectrom.Plot.MainAxis.TitleFontName = professionalFont;
+            //Plot_Spectrom.Plot.MainAxis.TitleFontSize = 20;
+            //Plot_Spectrom.Plot.MainAxis.TitleFontBold = true;
 
-            // 讓格線變淡 (Alpha 設低一點)
-            Plot_Spectrom.Plot.Grid.MajorLineColor = ScottPlot.Colors.Black.WithAlpha(0.05);
+            // --- 格線與背景 ---
+            // 4.1.74 的 Grid 參數是 (bool enable, Color color)
+            Plot_Spectrom.Plot.Grid(color: Color.FromArgb(13, Color.Black));
 
-            // 設定背景色為乾淨的白色
-            Plot_Spectrom.Plot.FigureBackground.Color = ScottPlot.Colors.White;
-            Plot_Spectrom.Plot.DataBackground.Color = ScottPlot.Colors.White;
+            // 設定背景
+            Plot_Spectrom.Plot.Style(figureBackground: Color.White, dataBackground: Color.White);
 
-            // 隱藏不必要的右邊與上方座標軸線
-            Plot_Spectrom.Plot.Axes.Right.FrameLineStyle.Width = 0;
-            Plot_Spectrom.Plot.Axes.Top.FrameLineStyle.Width = 0;
+            // 隱藏右邊與上方框線
+            //Plot_Spectrom.Plot.Frame(right: false, top: false);
 
             Plot_Spectrom.Refresh();
         }
+
         private void DrawSpectrumData(double[] wavelength, double[] intensity)
         {
-            // 清除舊有的繪圖物件
+            // 清除舊有的繪圖物件 (4.1 的 Clear 會移除所有 Plottables)
             Plot_Spectrom.Plot.Clear();
 
-            // 加入數據線條
-            var myPlot = Plot_Spectrom.Plot.Add.Scatter(wavelength, intensity);
+            // 加入數據線條 (4.1 的 AddScatter 直接回傳 ScatterPlot 物件)
+            var myPlot = Plot_Spectrom.Plot.AddScatter(wavelength, intensity);
 
-            // 設定線條樣式
+            // 設定線條樣式 (4.1 使用屬性設定)
             myPlot.LineWidth = 2;
-            myPlot.Color = ScottPlot.Colors.Blue;
+            myPlot.Color = Color.Blue; // 使用 System.Drawing.Color
             myPlot.MarkerSize = 0;
 
-            // 自動縮放並刷新
-            Plot_Spectrom.Plot.Axes.AutoScale();
+            // 自動縮放並刷新 (4.1 預設就是 AutoAxis)
+            Plot_Spectrom.Plot.AxisAuto();
             Plot_Spectrom.Refresh();
         }
         private void Update_Spectrum_List(DataGridView DGV, List<SpectrumData> spectrum_list)

@@ -38,7 +38,7 @@ namespace RGBTester
             services.AddSingleton<IF_StatusBox, F_StatusBox>();
             services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
             services.AddSingleton<F_DAQ_Chart>();
-            
+            services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
 
             //[Form]
             //退出Form後即close掉,要用再new
@@ -63,6 +63,7 @@ namespace RGBTester
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<RGBTesterFunction>();
             services.AddSingleton<TestResultDataBase>();
+            services.AddSingleton<ResultData>();
 
             return services;
         }

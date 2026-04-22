@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
-	<Release version="X.XX.X.X" date="2026-02-13">
-		<Item type="Added">Motion</Item>
+	<Release version="X.XX.X.X" date="2026-04-11">
+		<Item type="Fixed">ScottPlot降版可兼容Window7</Item>
 	</Release>
 </Changelog>

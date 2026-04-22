@@ -77,7 +77,8 @@ namespace RGBTester.UI
             this.Cmbx_MachineType.Items.AddRange(new object[] {
             "NONE",
             "ProbeTester",
-            "RGBTester"});
+            "RGBTester",
+            "BurnInTester"});
             this.Cmbx_MachineType.Location = new System.Drawing.Point(304, 6);
             this.Cmbx_MachineType.Name = "Cmbx_MachineType";
             this.Cmbx_MachineType.Size = new System.Drawing.Size(130, 28);

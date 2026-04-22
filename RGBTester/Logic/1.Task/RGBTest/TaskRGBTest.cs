@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using RGBTester.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -41,7 +42,8 @@ namespace RGBTester.Logic
         }
 
         #region parameter
-        private IF_BaseTask SubTask;                  //子流程
+        private string SN;                              //測試樣品SN
+        private IF_BaseTask SubTask;                    //子流程
         private IF_StateControl F_StateControl;
         private ePartTestItem part_test_mode;
         private RGBTesterFunction RGBfunc;
@@ -179,7 +181,6 @@ namespace RGBTester.Logic
         private void Preset() 
         {
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
-
             CreateTestFile();
         }
         protected override void Transition(WORK target)

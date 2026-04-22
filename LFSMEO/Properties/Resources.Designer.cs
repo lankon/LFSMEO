@@ -63,6 +63,16 @@ namespace LFSMEO.Properties {
         /// <summary>
         ///   查詢類似 (圖示) 的類型 System.Drawing.Icon 當地語系化資源。
         /// </summary>
+        internal static System.Drawing.Icon BurnInTester1 {
+            get {
+                object obj = ResourceManager.GetObject("BurnInTester1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 (圖示) 的類型 System.Drawing.Icon 當地語系化資源。
+        /// </summary>
         internal static System.Drawing.Icon RGBTester {
             get {
                 object obj = ResourceManager.GetObject("RGBTester", resourceCulture);

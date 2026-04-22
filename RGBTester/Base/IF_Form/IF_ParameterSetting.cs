@@ -20,5 +20,8 @@ namespace RGBTester.Base
 
     public interface IF_ParameterSetting
     {
+        void ShowSlopeCheckDataInvoke(double[] r_current_LCM, double[] r_dev_LCM, double[] g_current_LCM, double[] g_dev_LCM,
+                                           double[] b_current_LCM, double[] b_dev_LCM, double[] r_current_HCM, double[] r_dev_HCM,
+                                           double[] g_current_HCM, double[] g_dev_HCM, double[] b_current_HCM, double[] b_dev_HCM);
     }
 }

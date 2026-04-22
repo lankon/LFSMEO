@@ -107,6 +107,7 @@ namespace RGBTester.Logic
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
         RGBTesterFunction RGBfunc;
+        private ResultData ResultData;
 
         public enum WORK
         {
@@ -141,6 +142,7 @@ namespace RGBTester.Logic
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
 
             Period_DAQ_Count = RGBfunc.HardwareParam.Period_DAQ_Count * 3;   //抓三個週期的資料
 
@@ -419,38 +421,72 @@ namespace RGBTester.Logic
             //        Scope.TestFail= true;
             //}
         }
-        private void CheckClamping(double Vled, List<int> DAC, List<double> ILed)
+        private void CheckClamping(double Vled, List<int> DAC, List<double> ILed, string CM)
         {
-            if (ILed.Count < 50)     //測試點數不足無法判斷,直接回傳沒有Clamping
+            if (ILed.Count < 50 || IsClamping)
             {
-                IsClamping = false;
+                if (ILed.Count < 50) 
+                    IsClamping = false;
+                
                 return;
             }
 
-            if (IsClamping)   //已經發生Clamping狀態,不再判斷
-                return;
-            int ClampShift = 10;
-            double[] TempILed = ILed.Skip(ILed.Count - ClampShift).Select(x => x * 1000).ToArray();
-            int[] TempDAC = DAC.Skip(DAC.Count - ClampShift).ToArray();
-            var fitting = new LinearCurveFitting(TempDAC, TempILed);
-
-            //判斷Clamping條件:Vled過低,Iled對DAC斜率過低
-            if (Vled < 3 && fitting.Slope < 0.01 && IsClamping == false)
+            for(int i=1; i< ILed.Count; i++)
             {
-                int StartClampingDAC = DAC[DAC.Count - 1];
-                int fail_dac_condition = ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_ClampingFailDAC);
-
-                if(StartClampingDAC < fail_dac_condition)
+                if((ILed[i] - ILed[i-1])*1000 < -100)
                 {
-                    Scope.TestFail = true;
-                    RGBfunc.FailReasonFlag.IsClampingErr = true;
-                }
+                    int startIdx = i;
+                    int startClampingDAC = DAC[startIdx];
+                    int failLimit = ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_ClampingFailDAC);
 
-                StartClampingCount = DAC.Count - ClampShift + 5;
-                IsClamping = true;
-                Tool.SaveLogToFile($"Clamping Detected! Start DAC:{StartClampingDAC}", level: "WRN");
-                return;
+                    if (startClampingDAC < failLimit)
+                    {
+                        Scope.TestFail = true;
+                        RGBfunc.FailReasonFlag.IsClampingErr = true;
+                    }
+
+                    StartClampingCount = startIdx;
+                    IsClamping = true;
+                    Tool.SaveLogToFile($"Clamping Detected! Start DAC:{startClampingDAC}", level: "WRN");
+                }
             }
+
+            //[移動平均+微分]
+            //double CalculateDerivative(int backShift, int takeCount = 10)
+            //{
+            //    var segmentILed = ILed.Skip(ILed.Count - backShift).Take(takeCount).Select(x => x * 1000).ToArray();
+            //    var segmentDAC = DAC.Skip(DAC.Count - backShift).Take(takeCount).ToArray();
+
+            //    double sum_Iled = segmentILed.Sum();
+            //    double sum_DAC = segmentDAC.Sum();
+
+            //    return sum_Iled / sum_DAC;
+            //}
+
+            //double f1 = CalculateDerivative(10);
+            //double slope_low = CM == "HCM" ? ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_HCM_Slope_LL) : 
+            //                                 ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_LCM_Slope_LL);
+            //double slope_up = CM == "HCM" ? ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_HCM_Slope_UL) :
+            //                                ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_LCM_Slope_UL);
+            //double slope_limit = (slope_up + slope_low) / 2;
+            //bool isSlopeFlat = f1 < slope_limit/2;  //斜率過小代表有可能發生Clamping
+
+            //if (Vled < 3 && isSlopeFlat)
+            //{
+            //    int startIdx = DAC.Count - 7;   //因為有移動平均會Shift
+            //    int startClampingDAC = DAC[startIdx];
+            //    int failLimit = ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_ClampingFailDAC);
+
+            //    if (startClampingDAC < failLimit)
+            //    {
+            //        Scope.TestFail = true;
+            //        RGBfunc.FailReasonFlag.IsClampingErr = true;
+            //    }
+
+            //    StartClampingCount = startIdx;
+            //    IsClamping = true;
+            //    Tool.SaveLogToFile($"Clamping Detected! Start DAC:{startClampingDAC}", level: "WRN");
+            //}
         }
         private void CheckTestTemperature(double temperature)
         {
@@ -609,6 +645,8 @@ namespace RGBTester.Logic
                     {
                         if (qDAC_L.Count == 0)
                         {
+                            CheckClamping(TesterData_L.Vled.Last(), TesterData_L.DACpoint, TesterData_L.Iled, "LCM");
+
                             for (int i = 0; i < TesterData_L.Vin.Count; i++)
                             {
                                 TesterData_L.Pin.Add(TesterData_L.Vin[i] * TesterData_L.Iin[i]);
@@ -622,8 +660,9 @@ namespace RGBTester.Logic
 
                             if(IsClamping == true)
                             {
-                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Take(StartClampingCount).ToArray(),
-                                                                              TesterData_L.Iled.Take(StartClampingCount).Select(x => x * 1000).ToArray());
+                                //因為Clamping的關係會有幾筆異常資料，所以斷點前面再往前移動5筆，確保線性擬合的資料都是正常的
+                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Take(StartClampingCount-5).ToArray(),
+                                                                              TesterData_L.Iled.Take(StartClampingCount-5).Select(x => x * 1000).ToArray());
                             }
                             else
                             {
@@ -641,6 +680,23 @@ namespace RGBTester.Logic
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
                             CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
 
+                            double[] current = new double[ResultData.CheckSlopeData.Check_LCM_DAC.Length];
+                            for (int i=0; i< ResultData.CheckSlopeData.Check_LCM_DAC.Length; i++)
+                            {
+                                int index = TesterData_L.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_LCM_DAC[i]);
+
+                                if (index == -1)
+                                {
+                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_LCM_DAC[i]} Not Found!", level: "WRN");
+                                    current[i] = 0;
+                                }
+                                else
+                                {
+                                    current[i] = TesterData_L.Iled[index] * 1000;
+                                }
+                            }
+                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "LCM", current, LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
+
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
@@ -652,7 +708,7 @@ namespace RGBTester.Logic
                         }
                         else
                         {
-                            CheckClamping(TesterData_L.Vled.Last(), TesterData_L.DACpoint, TesterData_L.Iled);
+                            //CheckClamping(TesterData_L.Vled.Last(), TesterData_L.DACpoint, TesterData_L.Iled, "LCM");
 
                             //Transition(WORK.SET_DAC_LOW);
                             State = WORK.SET_DAC_LOW;
@@ -744,6 +800,8 @@ namespace RGBTester.Logic
                     {
                         if (qDAC_H.Count == 0)
                         {
+                            CheckClamping(TesterData_H.Vled.Last(), TesterData_H.DACpoint, TesterData_H.Iled, "HCM");
+
                             for (int i = 0; i < TesterData_H.Vin.Count; i++)
                             {
                                 TesterData_H.Pin.Add(TesterData_H.Vin[i] * TesterData_H.Iin[i]);
@@ -757,8 +815,9 @@ namespace RGBTester.Logic
 
                             if (IsClamping == true)
                             {
-                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount).ToArray(),
-                                                                              TesterData_H.Iled.Take(StartClampingCount).Select(x => x * 1000).ToArray());
+                                //因為Clamping的關係會有幾筆異常資料，所以斷點前面再往前移動5筆，確保線性擬合的資料都是正常的
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount-5).ToArray(),
+                                                                              TesterData_H.Iled.Take(StartClampingCount-5).Select(x => x * 1000).ToArray());
                             }
                             else
                             {
@@ -776,7 +835,25 @@ namespace RGBTester.Logic
                             Deps.File.SetCalibrationData(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
                             CheckTestResult(LinearCurveFitting_H.Slope, "HCM");
 
-                            if(!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
+                            double[] current = new double[TesterData_H.DACpoint.Count];
+                            for (int i = 0; i < ResultData.CheckSlopeData.Check_HCM_DAC.Length; i++)
+                            {
+                                int index = TesterData_H.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_HCM_DAC[i]);
+
+                                if (index == -1)
+                                {
+                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_HCM_DAC[i]} Not Found!", level: "WRN");
+                                    current[i] = 0;
+                                }
+                                else
+                                {
+                                    current[i] = TesterData_H.Iled[index] * 1000;
+                                }
+                            }
+                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "HCM", current, LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
+
+
+                            if (!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
                                 StatusBox.ShowMessage("HCM Set DAC 0 Fail");
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_HIGH.ToString());
@@ -785,7 +862,7 @@ namespace RGBTester.Logic
                         }
                         else
                         {
-                            CheckClamping(TesterData_H.Vled.Last(), TesterData_H.DACpoint, TesterData_H.Iled);
+                            //CheckClamping(TesterData_H.Vled.Last(), TesterData_H.DACpoint, TesterData_H.Iled, "HCM");
 
                             State = WORK.SET_DAC_HIGH;
                             goto case WORK.SET_DAC_HIGH;

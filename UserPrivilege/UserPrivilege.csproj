@@ -75,6 +75,12 @@
     <Compile Include="Base\IF_UserPrivilege.cs" />
     <Compile Include="Base\IF_UserPrivilegeLogic.cs" />
     <Compile Include="Logic\F_UserPrivilegeLogic.cs" />
+    <Compile Include="UI\F_UserPrivilegeFull.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_UserPrivilegeFull.designer.cs">
+      <DependentUpon>F_UserPrivilegeFull.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_UserPrivilege.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UI\F_UserPrivilegeFull.resx">
+      <DependentUpon>F_UserPrivilegeFull.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_UserPrivilege.resx">
       <DependentUpon>F_UserPrivilege.cs</DependentUpon>
     </EmbeddedResource>
