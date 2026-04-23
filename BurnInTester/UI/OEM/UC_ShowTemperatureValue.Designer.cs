@@ -98,11 +98,11 @@ namespace BurnInTester.UI
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 4;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 91F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(226, 181);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 99F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(226, 196);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // Labl_BoxNum
@@ -113,7 +113,7 @@ namespace BurnInTester.UI
             this.Labl_BoxNum.Location = new System.Drawing.Point(1, 1);
             this.Labl_BoxNum.Margin = new System.Windows.Forms.Padding(0);
             this.Labl_BoxNum.Name = "Labl_BoxNum";
-            this.Labl_BoxNum.Size = new System.Drawing.Size(224, 25);
+            this.Labl_BoxNum.Size = new System.Drawing.Size(224, 27);
             this.Labl_BoxNum.TabIndex = 0;
             this.Labl_BoxNum.Text = "Box 1-1";
             this.Labl_BoxNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -121,9 +121,9 @@ namespace BurnInTester.UI
             // Labl_SV
             // 
             this.Labl_SV.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Labl_SV.Location = new System.Drawing.Point(116, 27);
+            this.Labl_SV.Location = new System.Drawing.Point(116, 29);
             this.Labl_SV.Name = "Labl_SV";
-            this.Labl_SV.Size = new System.Drawing.Size(106, 25);
+            this.Labl_SV.Size = new System.Drawing.Size(106, 27);
             this.Labl_SV.TabIndex = 3;
             this.Labl_SV.Text = "000.00";
             this.Labl_SV.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -131,9 +131,9 @@ namespace BurnInTester.UI
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(4, 27);
+            this.label5.Location = new System.Drawing.Point(4, 29);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(101, 25);
+            this.label5.Size = new System.Drawing.Size(101, 27);
             this.label5.TabIndex = 2;
             this.label5.Text = "SV";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -142,9 +142,9 @@ namespace BurnInTester.UI
             // 
             this.tableLayoutPanel2.SetColumnSpan(this.label6, 2);
             this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(4, 53);
+            this.label6.Location = new System.Drawing.Point(4, 57);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(218, 25);
+            this.label6.Size = new System.Drawing.Size(218, 27);
             this.label6.TabIndex = 1;
             this.label6.Text = "PV";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -166,22 +166,22 @@ namespace BurnInTester.UI
             this.tableLayoutPanel3.Controls.Add(this.Labl_PV2, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.Labl_PV1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.Labl_PV5, 1, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 79);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(1, 85);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(224, 100);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(224, 108);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // Labl_PV9
             // 
             this.Labl_PV9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Labl_PV9.Location = new System.Drawing.Point(152, 67);
+            this.Labl_PV9.Location = new System.Drawing.Point(152, 71);
             this.Labl_PV9.Name = "Labl_PV9";
-            this.Labl_PV9.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV9.Size = new System.Drawing.Size(67, 35);
             this.Labl_PV9.TabIndex = 12;
             this.Labl_PV9.Text = "-.-";
             this.Labl_PV9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -189,9 +189,9 @@ namespace BurnInTester.UI
             // Labl_PV8
             // 
             this.Labl_PV8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Labl_PV8.Location = new System.Drawing.Point(78, 67);
+            this.Labl_PV8.Location = new System.Drawing.Point(78, 71);
             this.Labl_PV8.Name = "Labl_PV8";
-            this.Labl_PV8.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV8.Size = new System.Drawing.Size(67, 35);
             this.Labl_PV8.TabIndex = 11;
             this.Labl_PV8.Text = "-.-";
             this.Labl_PV8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -199,9 +199,9 @@ namespace BurnInTester.UI
             // Labl_PV7
             // 
             this.Labl_PV7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Labl_PV7.Location = new System.Drawing.Point(4, 67);
+            this.Labl_PV7.Location = new System.Drawing.Point(4, 71);
             this.Labl_PV7.Name = "Labl_PV7";
-            this.Labl_PV7.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV7.Size = new System.Drawing.Size(67, 35);
             this.Labl_PV7.TabIndex = 10;
             this.Labl_PV7.Text = "-.-";
             this.Labl_PV7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -209,9 +209,9 @@ namespace BurnInTester.UI
             // Labl_PV6
             // 
             this.Labl_PV6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Labl_PV6.Location = new System.Drawing.Point(152, 34);
+            this.Labl_PV6.Location = new System.Drawing.Point(152, 36);
             this.Labl_PV6.Name = "Labl_PV6";
-            this.Labl_PV6.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV6.Size = new System.Drawing.Size(67, 34);
             this.Labl_PV6.TabIndex = 9;
             this.Labl_PV6.Text = "-.-";
             this.Labl_PV6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -219,9 +219,9 @@ namespace BurnInTester.UI
             // Labl_PV4
             // 
             this.Labl_PV4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Labl_PV4.Location = new System.Drawing.Point(4, 34);
+            this.Labl_PV4.Location = new System.Drawing.Point(4, 36);
             this.Labl_PV4.Name = "Labl_PV4";
-            this.Labl_PV4.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV4.Size = new System.Drawing.Size(67, 34);
             this.Labl_PV4.TabIndex = 8;
             this.Labl_PV4.Text = "-.-";
             this.Labl_PV4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -231,7 +231,7 @@ namespace BurnInTester.UI
             this.Labl_PV3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Labl_PV3.Location = new System.Drawing.Point(152, 1);
             this.Labl_PV3.Name = "Labl_PV3";
-            this.Labl_PV3.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV3.Size = new System.Drawing.Size(67, 34);
             this.Labl_PV3.TabIndex = 7;
             this.Labl_PV3.Text = "-.-";
             this.Labl_PV3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -241,7 +241,7 @@ namespace BurnInTester.UI
             this.Labl_PV2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Labl_PV2.Location = new System.Drawing.Point(78, 1);
             this.Labl_PV2.Name = "Labl_PV2";
-            this.Labl_PV2.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV2.Size = new System.Drawing.Size(67, 34);
             this.Labl_PV2.TabIndex = 6;
             this.Labl_PV2.Text = "-.-";
             this.Labl_PV2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -251,7 +251,7 @@ namespace BurnInTester.UI
             this.Labl_PV1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Labl_PV1.Location = new System.Drawing.Point(4, 1);
             this.Labl_PV1.Name = "Labl_PV1";
-            this.Labl_PV1.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV1.Size = new System.Drawing.Size(67, 34);
             this.Labl_PV1.TabIndex = 5;
             this.Labl_PV1.Text = "-.-";
             this.Labl_PV1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -259,20 +259,20 @@ namespace BurnInTester.UI
             // Labl_PV5
             // 
             this.Labl_PV5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Labl_PV5.Location = new System.Drawing.Point(78, 34);
+            this.Labl_PV5.Location = new System.Drawing.Point(78, 36);
             this.Labl_PV5.Name = "Labl_PV5";
-            this.Labl_PV5.Size = new System.Drawing.Size(67, 32);
+            this.Labl_PV5.Size = new System.Drawing.Size(67, 34);
             this.Labl_PV5.TabIndex = 4;
             this.Labl_PV5.Text = "-.-";
             this.Labl_PV5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // UC_ShowTemperatureValue
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "UC_ShowTemperatureValue";
-            this.Size = new System.Drawing.Size(228, 183);
+            this.Size = new System.Drawing.Size(228, 201);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);

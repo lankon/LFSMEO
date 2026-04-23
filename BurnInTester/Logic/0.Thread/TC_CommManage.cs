@@ -29,6 +29,7 @@ namespace BurnInTester.Logic
         private AgingInformation _AgingInformation;
         // 存放待發送的任務。ConcurrentQueue為執行緒安全,Queue為非執行緒安全
         private ConcurrentQueue<ExecuteCommandTask> TaskQueue = new ConcurrentQueue<ExecuteCommandTask>();
+        private ConcurrentQueue<ExecuteCommandTask> MainTaskQueue = new ConcurrentQueue<ExecuteCommandTask>();
         private class ExecuteCommandTask
         {
             public Func<Task<string>> ExecutionFunc { get; set; }
@@ -66,6 +67,19 @@ namespace BurnInTester.Logic
 
             // 直接打包任務丟進隊列
             TaskQueue.Enqueue(new ExecuteCommandTask
+            {
+                ExecutionFunc = action,
+                CompletionSource = tcs
+            });
+
+            return tcs.Task;
+        }
+        private Task<string> EnqueueMainAction(Func<Task<string>> action)
+        {
+            var tcs = new TaskCompletionSource<string>();
+
+            // 直接打包任務丟進隊列
+            MainTaskQueue.Enqueue(new ExecuteCommandTask
             {
                 ExecutionFunc = action,
                 CompletionSource = tcs
@@ -114,6 +128,28 @@ namespace BurnInTester.Logic
                 Tool.SaveLogToFile($"通訊失敗: {ex.Message}");
             }
         }
+        public async Task Start(ETemperatureControlName name, double sv, string cmd = "", int index = 0)
+        {
+            try
+            {
+                double[] temperature = new double[] { 0, 0, 0, 0 };
+                //!!!!!要處理MainAction
+                string result = await EnqueueMainAction(async () =>
+                {
+                    Func_TC.Start(name, sv, cmd);
+
+                    // GetAnswer內部會等候回傳並解析，直到拿到結果才會繼續往下走，所以這裡不需要額外的等待邏輯
+                    string[] ans = Func_TC.GetAnswer(name, cmd);
+
+                    return "";
+                });
+            }
+            catch (Exception ex)
+            {
+                Tool.SaveLogToFile($"通訊失敗: {ex.Message}");
+            }
+        }
+
         #endregion
     }
 

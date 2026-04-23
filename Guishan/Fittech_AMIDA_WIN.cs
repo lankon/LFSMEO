@@ -86,7 +86,7 @@ namespace Device_Guishan
             Comport.DataBits = int.Parse(data_bits);
             Comport.StopBits = (StopBits)Enum.Parse(typeof(StopBits), stop_bits);
             Comport.Parity = (Parity)Enum.Parse(typeof(Parity), parity);
-            Comport.ReadTimeout = 2000;
+            Comport.ReadTimeout = 1000;
 
             if (Comport.PortName == "None")
                 return -1;
@@ -159,6 +159,7 @@ namespace Device_Guishan
         public int AskPV(string cmd = "")
         {
             string[] sp = cmd.Split(',');
+            CtrlBox = sp[0];
             string command = $"B{sp[0]},GTEMP,{sp[1]}\r\n";
             SendCommand = command;
 
@@ -220,26 +221,26 @@ namespace Device_Guishan
 
             try
             {
-                Comport.ReadTimeout = 1000;
+                //Comport.ReadTimeout = 100;
                 string res = Comport.ReadLine();
 
                 if(CurCmdType == CMD_TYPE.AskPV)
                 {
                     string[] split_str = res.Split(',');
-                    if (split_str.Length != 4)
+                    if (split_str.Length != 8)
                         return (int)ERROR_CODE.CMD_FAIL;
 
-                    if(split_str[3] == "1") //保險絲斷路
-                        return (int)ERROR_CODE.Fuse_Broken;
+                    //if(split_str[3] == "1") //保險絲斷路
+                    //    return (int)ERROR_CODE.Fuse_Broken;
 
                     if (split_str[0] != $"B{CtrlBox}" || split_str[1] != "GTEMP")
                         return (int)ERROR_CODE.CMD_FAIL;
 
-                    answer = new string[] { split_str[2], split_str[3], split_str[4], split_str[5], split_str[6] };  //溫度值
+                    answer = new string[] { split_str[3], split_str[4], split_str[5], split_str[6], split_str[7].Replace(@"\r", "") };  //溫度值
                 }
                 else
                 {
-                    if(res != SendCommand.Replace("\r\n", ""))
+                    if(res != SendCommand.Replace(@"\r\n", ""))
                         return (int)ERROR_CODE.CMD_FAIL;
                 }
 

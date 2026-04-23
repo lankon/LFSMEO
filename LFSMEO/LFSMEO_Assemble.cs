@@ -31,6 +31,7 @@ using Device_Hikvision;
 using Device_VirtualCamera;
 using Device_Spectrum_Virtual;
 using Device_TemeratureControl_Virtual;
+using Device_Guishan;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -107,6 +108,7 @@ namespace LFSMEO
             services.AddSingleton<ICamera, VirtualCamera>();
             services.AddSingleton<IChillerControl>(Klxz);
             services.AddSingleton<ITemperatureControl, Virtual_TemperatureControl>();
+            services.AddSingleton<ITemperatureControl, Fittech_AMIDA_WIN>();
 
             //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();

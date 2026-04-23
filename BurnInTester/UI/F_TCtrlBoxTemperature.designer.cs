@@ -43,7 +43,7 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.LyPnl_CtrlBoxSetting.Location = new System.Drawing.Point(5, 12);
+            this.LyPnl_CtrlBoxSetting.Location = new System.Drawing.Point(5, 4);
             this.LyPnl_CtrlBoxSetting.Name = "LyPnl_CtrlBoxSetting";
             this.LyPnl_CtrlBoxSetting.RowCount = 5;
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -51,7 +51,7 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.LyPnl_CtrlBoxSetting.Size = new System.Drawing.Size(933, 943);
+            this.LyPnl_CtrlBoxSetting.Size = new System.Drawing.Size(933, 960);
             this.LyPnl_CtrlBoxSetting.TabIndex = 1;
             // 
             // LyPnl_CtrlBoxSetting1
@@ -62,7 +62,7 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.LyPnl_CtrlBoxSetting1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.LyPnl_CtrlBoxSetting1.Location = new System.Drawing.Point(948, 12);
+            this.LyPnl_CtrlBoxSetting1.Location = new System.Drawing.Point(948, 4);
             this.LyPnl_CtrlBoxSetting1.Name = "LyPnl_CtrlBoxSetting1";
             this.LyPnl_CtrlBoxSetting1.RowCount = 5;
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -70,13 +70,12 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxSetting1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.LyPnl_CtrlBoxSetting1.Size = new System.Drawing.Size(933, 943);
+            this.LyPnl_CtrlBoxSetting1.Size = new System.Drawing.Size(933, 960);
             this.LyPnl_CtrlBoxSetting1.TabIndex = 2;
             // 
             // Tm_UpdatePV
             // 
             this.Tm_UpdatePV.Enabled = true;
-            this.Tm_UpdatePV.Interval = 200;
             this.Tm_UpdatePV.Tick += new System.EventHandler(this.Tm_UpdatePV_Tick);
             // 
             // F_TCtrlBoxTemperature

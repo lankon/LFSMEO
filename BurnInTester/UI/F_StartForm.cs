@@ -214,20 +214,20 @@ namespace BurnInTester.UI
         }
         private void Btn_Start_TC_Click(object sender, EventArgs e)
         {
-            try
-            {
-                SaveAllEnumSetting();
-                double sv = double.Parse(TxtBx_SetValue.Text);
-                int resp_delay = int.Parse(TxtBx_RespDelay.Text);
-                int send_delay = int.Parse(TxtBx_SendDelay.Text);
+            //try
+            //{
+            //    SaveAllEnumSetting();
+            //    double sv = double.Parse(TxtBx_SetValue.Text);
+            //    int resp_delay = int.Parse(TxtBx_RespDelay.Text);
+            //    int send_delay = int.Parse(TxtBx_SendDelay.Text);
 
-                TC_Test.Start(sv, resp_delay, send_delay);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("請輸入正確的數值格式");
-                return;
-            }
+            //    TC_Test.Start(sv, resp_delay, send_delay);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("請輸入正確的數值格式");
+            //    return;
+            //}
         }
         private void Btn_Stop_TC_Click(object sender, EventArgs e)
         {
