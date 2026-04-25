@@ -14,7 +14,6 @@ namespace Device_VirtualCamera
 {
     public class VirtualCamera : ICamera
     {
-
         #region parameter define
         private Dictionary<string, CameraInfo> DeviceId = new Dictionary<string, CameraInfo>();
 
@@ -23,25 +22,26 @@ namespace Device_VirtualCamera
             public Bitmap _currentBmp;             // 必須作為類別成員，防止被 GC
             public BitmapData _bmpData;            // 用於紀錄鎖定的狀態
             public string VirtualImagePath = "";
+            public bool IsLocked = false;           // 追蹤狀態
+
+            public void Dispose()
+            {
+                UnlockCurrent();
+                _currentBmp?.Dispose();
+            }
+
+            public void UnlockCurrent()
+            {
+                if (IsLocked && _currentBmp != null && _bmpData != null)
+                {
+                    _currentBmp.UnlockBits(_bmpData);
+                    IsLocked = false;
+                }
+            }
         }
         #endregion
 
         #region private function
-        private void Cleanup(string id)
-        {
-            DeviceId.TryGetValue(id, out CameraInfo cameraInfo);
-
-            if (cameraInfo == null)
-                return;
-
-            if (cameraInfo._currentBmp != null && cameraInfo._bmpData != null)
-            {
-                cameraInfo._currentBmp.UnlockBits(cameraInfo._bmpData);
-                cameraInfo._currentBmp.Dispose();
-                cameraInfo._currentBmp = null;
-                cameraInfo._bmpData = null;
-            }
-        }
         #endregion
 
         #region public function
@@ -57,21 +57,15 @@ namespace Device_VirtualCamera
 
         public int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height, ref PixelFormat pixelFormat)
         {
-            DeviceId.TryGetValue(id, out CameraInfo cameraInfo);
+            if (!DeviceId.TryGetValue(id, out CameraInfo cameraInfo)) return -1;
+            if (!File.Exists(cameraInfo.VirtualImagePath)) return -1;
 
-            if (cameraInfo == null)
-                return -1;
-
-            if (!File.Exists(cameraInfo.VirtualImagePath))
-                return -1;
-            
             try
             {
-                // 釋放舊資源並讀取新圖
-                Cleanup(id);
+                // 1. 先解鎖上一次的狀態 (避免 InvalidOperationException)
+                cameraInfo.UnlockCurrent();
 
-                // 使用 FileStream 讀取，確保讀完就能關閉檔案
-                using (FileStream fs = new FileStream(cameraInfo.VirtualImagePath, FileMode.Open, FileAccess.Read))
+                using (FileStream fs = new FileStream(cameraInfo.VirtualImagePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     using (Bitmap temp = (Bitmap)Image.FromStream(fs))
                     {
@@ -79,18 +73,25 @@ namespace Device_VirtualCamera
                         image_height = temp.Height;
                         pixelFormat = temp.PixelFormat;
 
-                        // 建立一個全新的、位於記憶體的 Bitmap (與檔案完全脫離)
-                        cameraInfo._currentBmp = new Bitmap(image_width, image_height, pixelFormat);
-
-                        // 如果是灰階圖，必須手動複製調色盤 (Palette)
-                        if (pixelFormat == PixelFormat.Format8bppIndexed)
+                        // 2. 只有在尺寸或格式變動時，才重新 new Bitmap (關鍵優化！)
+                        if (cameraInfo._currentBmp == null ||
+                            cameraInfo._currentBmp.Width != image_width ||
+                            cameraInfo._currentBmp.Height != image_height ||
+                            cameraInfo._currentBmp.PixelFormat != pixelFormat)
                         {
-                            ColorPalette pal = cameraInfo._currentBmp.Palette;
-                            for (int i = 0; i < 256; i++) pal.Entries[i] = Color.FromArgb(i, i, i);
-                            cameraInfo._currentBmp.Palette = pal;
+                            cameraInfo._currentBmp?.Dispose();
+                            cameraInfo._currentBmp = new Bitmap(image_width, image_height, pixelFormat);
+
+                            // 如果是灰階，初始化一次 Palette 即可
+                            if (pixelFormat == PixelFormat.Format8bppIndexed)
+                            {
+                                ColorPalette pal = cameraInfo._currentBmp.Palette;
+                                for (int i = 0; i < 256; i++) pal.Entries[i] = Color.FromArgb(i, i, i);
+                                cameraInfo._currentBmp.Palette = pal;
+                            }
                         }
 
-                        // 使用 LockBits 同時鎖定「來源」與「目標」進行高速拷貝
+                        // 3. 高速記憶體拷貝 (不產生新物件)
                         BitmapData srcData = temp.LockBits(new Rectangle(0, 0, image_width, image_height), ImageLockMode.ReadOnly, pixelFormat);
                         BitmapData dstData = cameraInfo._currentBmp.LockBits(new Rectangle(0, 0, image_width, image_height), ImageLockMode.WriteOnly, pixelFormat);
 
@@ -98,13 +99,8 @@ namespace Device_VirtualCamera
                         {
                             unsafe
                             {
-                                long bytesToCopy = (long)srcData.Stride * image_height;
-
-                                System.Buffer.MemoryCopy(
-                                    (void*)srcData.Scan0,
-                                    (void*)dstData.Scan0,
-                                    bytesToCopy,
-                                    bytesToCopy);
+                                Buffer.MemoryCopy((void*)srcData.Scan0, (void*)dstData.Scan0,
+                                                  (long)srcData.Stride * image_height, (long)srcData.Stride * image_height);
                             }
                         }
                         finally
@@ -113,32 +109,19 @@ namespace Device_VirtualCamera
                             cameraInfo._currentBmp.UnlockBits(dstData);
                         }
                     }
-                } 
+                }
 
-                image_width = cameraInfo._currentBmp.Width;
-                image_height = cameraInfo._currentBmp.Height;
-                pixelFormat = cameraInfo._currentBmp.PixelFormat;
-
-                //定義要鎖定的區域（整張圖）
+                // 4. 最後鎖定一次以回傳 IntPtr 給外部使用 (例如給 C++ 或 UI 顯示)
                 Rectangle rect = new Rectangle(0, 0, image_width, image_height);
+                cameraInfo._bmpData = cameraInfo._currentBmp.LockBits(rect, ImageLockMode.ReadOnly, pixelFormat);
+                cameraInfo.IsLocked = true;
 
-                if (pixelFormat == PixelFormat.Format8bppIndexed)
-                {
-                    cameraInfo._bmpData = cameraInfo._currentBmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
-                }
-                else
-                {
-                    cameraInfo._bmpData = cameraInfo._currentBmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-                }
-
-                // Scan0 就是指向像素資料首位址的 IntPtr
                 image = cameraInfo._bmpData.Scan0;
-
-                return 0; // Success
+                return 0;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Read Error: {ex.Message}");
+                Console.WriteLine($"GetImage Error: {ex.Message}");
                 return -1;
             }
         }

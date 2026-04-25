@@ -334,7 +334,7 @@ namespace DeviceFunction
             CameraList[CCD_Info2List[ccd]].SetVirtualImagePath(ip, image_path);
             int ret = CameraList[CCD_Info2List[ccd]].GetImage(ip, ref image, ref width, ref height, ref pixelFormat);
 
-            if(ret == 0)
+            if (ret == 0)
             {
                 ImageReadyEventArgs e = new ImageReadyEventArgs
                 {
