@@ -87,6 +87,8 @@ namespace DeviceFunction
                 info.CCD_NAME = value;
             else if (item == eF_CameraSetting.Cmbx_AxisUse.ToString())
                 info.CCD_USE = Tool.StringToInt(value);
+            if (item == eF_CameraSetting.TxtBx_FPS.ToString())
+                info.FPS = Tool.StringToInt(value);
 
             CCD_INFO[camera] = info;
         }
@@ -140,7 +142,7 @@ namespace DeviceFunction
                                 if (StartGrab(ccdIndex) == false)
                                 {
                                     Tool.SaveLogToFile("CCD Live START_GRAB fail", level:"ERR");
-                                    return;
+                                    return;   //有可能是已經StartGrab了,先繼續執行
                                 }
 
                                 state = WORK.TRIGGER;
@@ -181,9 +183,9 @@ namespace DeviceFunction
                             }
                             break;
                     }
-                    
-                    // 適度休眠，避免單一相機吃光 CPU 核心
-                    Thread.Sleep(20);
+
+                    int fps = CCD_INFO[ccdIndex].FPS < 0 ? 10 : CCD_INFO[ccdIndex].FPS;
+                    Thread.Sleep(1000/fps);
                 }
             }
             catch (Exception ex) { /* 錯誤處理 */ }
@@ -303,12 +305,18 @@ namespace DeviceFunction
 
             return true;
         }
-        public bool StopLive(int ccdIndex)
+        public bool StopLive(int ccd)
         {
-            if (_activeLiveTasks.TryGetValue(ccdIndex, out var cts))
+            if (!CheckCameraEnable(ccd))
+                return false;
+
+            string ip = CCD_INFO[ccd].IP_ID;
+            int ret = CameraList[CCD_Info2List[ccd]].StopGrabbing(ip);
+
+            if (_activeLiveTasks.TryGetValue(ccd, out var cts))
             {
                 cts.Cancel(); // 停止迴圈
-                _activeLiveTasks.Remove(ccdIndex);
+                _activeLiveTasks.Remove(ccd);
                 return true;
             }
 

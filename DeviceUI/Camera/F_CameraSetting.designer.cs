@@ -34,6 +34,7 @@ namespace DeviceUI.Camera
             this.LyPnl_DockCameraDisplay = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.Btn_FunctionTest1 = new System.Windows.Forms.Button();
             this.Btn_FunctionTest = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -46,12 +47,21 @@ namespace DeviceUI.Camera
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_CCD_Name = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.Btn_FunctionTest1 = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_FPS = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TxtBx_ExposureTime = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.TxtBx_Gain = new System.Windows.Forms.TextBox();
             this.Pnl_DockCameraDisplay.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Pnl_CameraButton
@@ -109,6 +119,16 @@ namespace DeviceUI.Camera
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Connect";
             // 
+            // Btn_FunctionTest1
+            // 
+            this.Btn_FunctionTest1.Location = new System.Drawing.Point(12, 667);
+            this.Btn_FunctionTest1.Name = "Btn_FunctionTest1";
+            this.Btn_FunctionTest1.Size = new System.Drawing.Size(154, 51);
+            this.Btn_FunctionTest1.TabIndex = 2;
+            this.Btn_FunctionTest1.Text = "Function Test 1";
+            this.Btn_FunctionTest1.UseVisualStyleBackColor = true;
+            this.Btn_FunctionTest1.Click += new System.EventHandler(this.Btn_FunctionTest1_Click);
+            // 
             // Btn_FunctionTest
             // 
             this.Btn_FunctionTest.Location = new System.Drawing.Point(12, 724);
@@ -123,7 +143,7 @@ namespace DeviceUI.Camera
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.groupBox1.Location = new System.Drawing.Point(9, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(370, 356);
@@ -236,22 +256,95 @@ namespace DeviceUI.Camera
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tabControl1.Location = new System.Drawing.Point(930, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(962, 827);
             this.tabControl1.TabIndex = 4;
             // 
-            // Btn_FunctionTest1
+            // tabPage2
             // 
-            this.Btn_FunctionTest1.Location = new System.Drawing.Point(12, 667);
-            this.Btn_FunctionTest1.Name = "Btn_FunctionTest1";
-            this.Btn_FunctionTest1.Size = new System.Drawing.Size(154, 51);
-            this.Btn_FunctionTest1.TabIndex = 2;
-            this.Btn_FunctionTest1.Text = "Function Test 1";
-            this.Btn_FunctionTest1.UseVisualStyleBackColor = true;
-            this.Btn_FunctionTest1.Click += new System.EventHandler(this.Btn_FunctionTest1_Click);
+            this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.tabPage2.Controls.Add(this.tableLayoutPanel1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(954, 794);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "CCD Setting";
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(6, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(209, 35);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Frames Per Second (FPS)";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.59783F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.40217F));
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_FPS, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_ExposureTime, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Gain, 1, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 6);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(364, 195);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // TxtBx_FPS
+            // 
+            this.TxtBx_FPS.Location = new System.Drawing.Point(224, 6);
+            this.TxtBx_FPS.Name = "TxtBx_FPS";
+            this.TxtBx_FPS.Size = new System.Drawing.Size(134, 29);
+            this.TxtBx_FPS.TabIndex = 13;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(6, 79);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(209, 35);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "ExposureTime (ms)";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_ExposureTime
+            // 
+            this.TxtBx_ExposureTime.Location = new System.Drawing.Point(224, 82);
+            this.TxtBx_ExposureTime.Name = "TxtBx_ExposureTime";
+            this.TxtBx_ExposureTime.Size = new System.Drawing.Size(134, 29);
+            this.TxtBx_ExposureTime.TabIndex = 15;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(6, 41);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(209, 35);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "Gain";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_Gain
+            // 
+            this.TxtBx_Gain.Location = new System.Drawing.Point(224, 44);
+            this.TxtBx_Gain.Name = "TxtBx_Gain";
+            this.TxtBx_Gain.Size = new System.Drawing.Size(134, 29);
+            this.TxtBx_Gain.TabIndex = 17;
             // 
             // F_CameraSetting
             // 
@@ -272,6 +365,9 @@ namespace DeviceUI.Camera
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -295,5 +391,13 @@ namespace DeviceUI.Camera
         private System.Windows.Forms.TableLayoutPanel LyPnl_DockCameraDisplay;
         private System.Windows.Forms.Button Btn_FunctionTest;
         private System.Windows.Forms.Button Btn_FunctionTest1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox TxtBx_FPS;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox TxtBx_ExposureTime;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox TxtBx_Gain;
     }
 }

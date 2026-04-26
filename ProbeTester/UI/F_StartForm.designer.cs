@@ -63,6 +63,7 @@ namespace ProbeTester.UI
             this.panel6 = new System.Windows.Forms.Panel();
             this.Btn_Test = new System.Windows.Forms.Button();
             this.Btn_SystemMonitor = new System.Windows.Forms.Button();
+            this.TxtBx_Value = new System.Windows.Forms.TextBox();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -99,7 +100,7 @@ namespace ProbeTester.UI
             // 
             this.Btn_PTPA.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_PTPA.BackgroundImage")));
             this.Btn_PTPA.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_PTPA.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_PTPA.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Btn_PTPA.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Btn_PTPA.Location = new System.Drawing.Point(95, 3);
             this.Btn_PTPA.Name = "Btn_PTPA";
@@ -112,7 +113,7 @@ namespace ProbeTester.UI
             // 
             this.Btn_Start.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Start.BackgroundImage")));
             this.Btn_Start.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_Start.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Start.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Btn_Start.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Btn_Start.Location = new System.Drawing.Point(4, 3);
             this.Btn_Start.Name = "Btn_Start";
@@ -161,7 +162,7 @@ namespace ProbeTester.UI
             // textBox4
             // 
             this.textBox4.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox4.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBox4.Location = new System.Drawing.Point(390, 4);
             this.textBox4.Name = "textBox4";
             this.textBox4.ReadOnly = true;
@@ -173,7 +174,7 @@ namespace ProbeTester.UI
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(3, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 20);
@@ -184,7 +185,7 @@ namespace ProbeTester.UI
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(348, 7);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(36, 20);
@@ -194,7 +195,7 @@ namespace ProbeTester.UI
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBox1.Location = new System.Drawing.Point(44, 4);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -205,7 +206,7 @@ namespace ProbeTester.UI
             // textBox3
             // 
             this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBox3.Location = new System.Drawing.Point(274, 4);
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
@@ -217,7 +218,7 @@ namespace ProbeTester.UI
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label2.Location = new System.Drawing.Point(118, 7);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 20);
@@ -228,7 +229,7 @@ namespace ProbeTester.UI
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label3.Location = new System.Drawing.Point(233, 7);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 20);
@@ -238,7 +239,7 @@ namespace ProbeTester.UI
             // textBox2
             // 
             this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.textBox2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.textBox2.Location = new System.Drawing.Point(159, 4);
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
@@ -450,11 +451,19 @@ namespace ProbeTester.UI
             this.Btn_SystemMonitor.UseVisualStyleBackColor = true;
             this.Btn_SystemMonitor.Click += new System.EventHandler(this.Btn_SystemMonitor_Click);
             // 
+            // TxtBx_Value
+            // 
+            this.TxtBx_Value.Location = new System.Drawing.Point(984, 648);
+            this.TxtBx_Value.Name = "TxtBx_Value";
+            this.TxtBx_Value.Size = new System.Drawing.Size(100, 20);
+            this.TxtBx_Value.TabIndex = 10;
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.TxtBx_Value);
             this.Controls.Add(this.Btn_SystemMonitor);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel6);
@@ -478,6 +487,7 @@ namespace ProbeTester.UI
             this.panel5.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -516,5 +526,6 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Button Btn_SystemMonitor;
+        private System.Windows.Forms.TextBox TxtBx_Value;
     }
 }

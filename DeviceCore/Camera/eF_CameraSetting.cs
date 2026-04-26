@@ -16,5 +16,11 @@ namespace DeviceCore
         TxtBx_ID_IP,
         TxtBx_CCD_Name,
         #endregion
+
+        #region CCD Setting
+        TxtBx_FPS,
+        TxtBx_Gain,
+        TxtBx_ExposureTime,
+        #endregion
     }
 }

@@ -73,10 +73,12 @@ namespace ProbeTester.UI
         {
             IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
             IF_CameraButton btn = ServiceProvider.GetRequiredService<IF_CameraButton>();
+            IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
 
             setting.DockDisplayToPanel(Pnl_CCD);
             setting.SwitchToCameraDisplay(btn.GetCurrentBtnNum());
             setting.FitWindow(btn.GetCurrentBtnNum());
+            function_Camera.StartLive(btn.GetCurrentBtnNum());
         }
         private void LeavePage()
         {
@@ -147,10 +149,6 @@ namespace ProbeTester.UI
 
         private void button9_Click(object sender, EventArgs e)
         {
-            IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
-
-            function_Camera.StartGrab(0);
-            function_Camera.SoftTrigger(0);
         }
 
         private void Btn_PTPA_Click(object sender, EventArgs e)
@@ -182,12 +180,11 @@ namespace ProbeTester.UI
 
         private void Btn_Test_Click(object sender, EventArgs e)
         {
-            IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
-            IF_CameraButton btn = ServiceProvider.GetRequiredService<IF_CameraButton>();
+            IFunction_LightControl light = ServiceProvider.GetRequiredService<IFunction_LightControl>();
 
-            setting.DockDisplayToPanel(Pnl_CCD);
-            setting.SwitchToCameraDisplay(1);
-            
+            int value = Tool.StringToInt(TxtBx_Value.Text);
+            light.SetLightValue(ELightName.LIGHT_1, value);
+
         }
 
         private void Btn_SystemMonitor_Click(object sender, EventArgs e)

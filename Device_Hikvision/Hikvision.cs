@@ -34,6 +34,8 @@ namespace Device_Hikvision
             ERROR_NONE_CONNECT = -5,
             ERROR_TRIGGER = -6,
             ERROR_GETIMAGE = -7,
+            ERROR_SET_GAIN = -8,
+            ERROR_SET_EXPOSURE_TIME = -9,
         }
         #endregion
 
@@ -156,6 +158,48 @@ namespace Device_Hikvision
                 nRet = (int)ERROR_CODE.ERROR_CONNECT_FAIL;
 
             return nRet;
+        }
+
+        public int SetHardwareGain(string id ,double gain)
+        {
+            m_KeyIndex.TryGetValue(id, out int index);
+
+            if (index == -1)
+                return (int)ERROR_CODE.ERROR_NONE_ID;
+
+            if (m_pOperator[index].IsConnected == false)
+                return (int)ERROR_CODE.ERROR_NONE_CONNECT;
+
+            int ret = 0;
+            ret = m_pOperator[index].SetFloatValue("Gain", (float)gain);
+
+            if (ret != (int)ERROR_CODE.STATUS_OK)
+            {
+                return (int)ERROR_CODE.ERROR_SET_GAIN;
+            }
+            else
+                return (int)ERROR_CODE.STATUS_OK;
+        }
+
+        public int SetExposureTime(string id, double time)
+        {
+            m_KeyIndex.TryGetValue(id, out int index);
+
+            if (index == -1)
+                return (int)ERROR_CODE.ERROR_NONE_ID;
+
+            if (m_pOperator[index].IsConnected == false)
+                return (int)ERROR_CODE.ERROR_NONE_CONNECT;
+
+            int ret = 0;
+            ret = m_pOperator[index].SetFloatValue("ExposureTime", (float)time);
+
+            if (ret != (int)ERROR_CODE.STATUS_OK)
+            {
+                return (int)ERROR_CODE.ERROR_SET_EXPOSURE_TIME;
+            }
+            else
+                return (int)ERROR_CODE.STATUS_OK;
         }
 
         public int StartGrabbing(string id)

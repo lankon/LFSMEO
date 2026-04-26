@@ -55,6 +55,16 @@ namespace Device_VirtualCamera
             return CCD_TYPE.Virtual;
         }
 
+        public int SetHardwareGain(string id, double gain)
+        {
+            return 0;
+        }
+
+        public int SetExposureTime(string id, double time)
+        {
+            return 0;
+        }
+
         public int GetImage(string id, ref IntPtr image, ref int image_width, ref int image_height, ref PixelFormat pixelFormat)
         {
             if (!DeviceId.TryGetValue(id, out CameraInfo cameraInfo)) return -1;
@@ -160,6 +170,8 @@ namespace Device_VirtualCamera
 
             cameraInfo.VirtualImagePath = path;
         }
+
+        
         #endregion
     }
 }
