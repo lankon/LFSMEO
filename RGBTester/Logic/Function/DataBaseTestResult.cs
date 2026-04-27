@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RGBTester.Logic
 {
-    public class TestResultDataBase
+    public class DataBaseTestResult
     {
-        public TestResultDataBase()
+        public DataBaseTestResult()
         {
             Manager.InitDatabase();
         }
@@ -26,8 +26,8 @@ namespace RGBTester.Logic
             public string ProductType { get; set; }         //產品種類
             public string SN { get; set; }                  //SN
             public DateTime TestTime { get; set; }          //測試時間
-            public int? IsPass { get; set; }                 //測試結果 (Pass/Fail)
-            public int? Exclude { get; set; }                //是否排除在統計之外
+            public int? IsPass { get; set; }                //測試結果 (Pass/Fail)
+            public int? Exclude { get; set; }               //是否排除在統計之外
             public string Description { get; set; }         //測試描述或備註
         }
         

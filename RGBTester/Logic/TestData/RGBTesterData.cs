@@ -22,6 +22,8 @@ namespace RGBTester.Logic
         public List<double> Iled = new List<double>();
         public List<double> Pled = new List<double>();
         public List<double> Eff = new List<double>();
+        public List<double> DISP_6V0 = new List<double>();
+        public List<double> DISP_1V2 = new List<double>();
 
         // [Record]
         public List<double> CycleTime = new List<double>();

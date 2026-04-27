@@ -12,7 +12,7 @@ using RGBTester.Base;
 
 namespace RGBTester.Device
 {
-    public class LightEngineFunction:ILightEngineFunction
+    public class LightEngineFunction:IFunction_LightEngine
     {
         public LightEngineFunction(IEnumerable<ILightEngineCommand> lea)
         {

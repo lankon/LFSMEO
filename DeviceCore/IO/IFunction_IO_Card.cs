@@ -19,9 +19,7 @@ namespace DeviceCore
 
     public enum EIOName
     {
-        #region Input
-
-        #region RGBTester DAQ Point
+        #region Analog Input
         Left_Vin,
         Left_Iin_HCM,
         Left_Iin_LCM,
@@ -39,8 +37,28 @@ namespace DeviceCore
         Right_VLED_G,
         Right_VLED_B,
         Right_ILED,
+
+        Left_6V,
+        Left_1V2,
+        Left_V_R,
+        Left_V_G,
+        Left_V_B1,
+        Left_V_B2,
+        Left_V_FB1,
+        Left_V_FB2,
+
+        Right_6V,
+        Right_1V2,
+        Right_V_R,
+        Right_V_G,
+        Right_V_B1,
+        Right_V_B2,
+        Right_V_FB1,
+        Right_V_FB2,
+
         #endregion
 
+        #region Input
         SphereUpSensor,
         SphereDownSensor,
         SphereLeftSensor,

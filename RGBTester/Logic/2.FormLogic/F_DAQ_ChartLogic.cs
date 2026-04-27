@@ -36,7 +36,7 @@ namespace RGBTester.Logic
         #endregion
         public void SetLedCondition(byte test_side, byte color, int value, string test_mode)
         {
-            ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             IF_StatusBox status_box = ServiceProvider.GetRequiredService<IF_StatusBox>();
             RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
 

@@ -22,7 +22,7 @@ namespace RGBTester
             //[Device]
             services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
             services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
-            services.AddSingleton<ILightEngineFunction, LightEngineFunction>();
+            services.AddSingleton<IFunction_LightEngine, LightEngineFunction>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
@@ -62,7 +62,7 @@ namespace RGBTester
             //[Logic]
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<RGBTesterFunction>();
-            services.AddSingleton<TestResultDataBase>();
+            services.AddSingleton<DataBaseTestResult>();
             services.AddSingleton<ResultData>();
 
             return services;

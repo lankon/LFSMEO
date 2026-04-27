@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ToolFunction;
-using static RGBTester.Logic.TestResultDataBase;
+using static RGBTester.Logic.DataBaseTestResult;
 
 namespace RGBTester.Logic
 {
@@ -30,7 +30,7 @@ namespace RGBTester.Logic
         #region public function
         public void OutPutYieldReport()
         {
-            TestResultDataBase data_base = ServiceProvider.GetRequiredService<TestResultDataBase>();
+            DataBaseTestResult data_base = ServiceProvider.GetRequiredService<DataBaseTestResult>();
 
             List<ProductionLog> pass_data = new List<ProductionLog>();
             List<ProductionLog> fail_data = new List<ProductionLog>();

@@ -22,7 +22,7 @@ namespace RGBTester.UI
     public partial class F_StartForm : Form, IF_StartForm
     {
         public F_StartForm(F_StartFormLogic f_StartFormLogic, IRGBTesterMachine rGBTesterMachine,
-                            ILightEngineFunction lea, IF_UserPrivilegeLogic f_UserPrivilegeLogic)
+                            IFunction_LightEngine lea, IF_UserPrivilegeLogic f_UserPrivilegeLogic)
         {
             InitializeComponent();
 
@@ -36,7 +36,7 @@ namespace RGBTester.UI
         #region parameter define
         F_StartFormLogic StartFormLogic;
         IRGBTesterMachine RGBTesterMachine;
-        ILightEngineFunction LEA;   
+        IFunction_LightEngine LEA;   
         IF_UserPrivilegeLogic UserLevel;
         private static readonly Dictionary<(string Side, string Color, string Mode), TextBox> _slopeTextBoxes = new Dictionary<(string, string, string), TextBox>();
         #endregion

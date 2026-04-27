@@ -19,7 +19,7 @@ namespace RGBTester.UI
     public partial class F_FunctionTester : Form
     {
         public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic,
-                                ILightEngineFunction lea)
+                                IFunction_LightEngine lea)
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace RGBTester.UI
 
         #region parameter define
         IServiceProvider ServiceProvider;
-        ILightEngineFunction LEA;
+        IFunction_LightEngine LEA;
         F_FunctionTesterLogic FunctionTesterLogic;
         #endregion
 

@@ -29,39 +29,21 @@ namespace RGBTester.Logic
         #endregion
 
         #region public function
-        public void OpenChillerComm()
-        {
-            //Machine.Chiller.Open("COM8",9600, Parity.None, 8, StopBits.One);
-            Machine.Chiller.SetTemperature(25);
-        }
-
-        public void GetChillerStatus()
-        {
-            Thread.Sleep(100);
-            
-            while(true)
-            {
-                Machine.Chiller.GetStatus();
-
-                Thread.Sleep(100);
-            }
-        }
-
         public string GetTemperature()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            var lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             return lea.GetTemperature();
         }
 
         public int[] Get_DAC_Value()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            var lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             return lea.Get_DAC();
         }
 
         public void Set_DAC_Test(int red, int green, int blue)
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            var lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
 
             //因為Z23A沒有分左右邊，所以這邊只設定左邊
             if (red != 0)
@@ -83,7 +65,7 @@ namespace RGBTester.Logic
 
         public int StartTaskAction(string method = "")
         {
-            ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             lea.Open();
 
             int res = CheckTestCondition();

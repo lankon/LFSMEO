@@ -13,7 +13,7 @@ namespace RGBTester.Base
         GL18,
     }
     
-    public interface ILightEngineFunction
+    public interface IFunction_LightEngine
     {
         byte LED_R { get; }
         byte LED_G { get; }

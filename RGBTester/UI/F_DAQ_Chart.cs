@@ -313,7 +313,7 @@ namespace RGBTester.UI
         {
             SetupChart();
 
-            ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             string current_mode = Select_HL_Mode.Text;
             Int32.TryParse(DAC_Value.Text, out int vaule); 
             byte lea_side, lea_color;

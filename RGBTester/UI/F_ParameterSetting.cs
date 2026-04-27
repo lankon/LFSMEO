@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToolFunction;
-using static RGBTester.Logic.TestResultDataBase;
+using static RGBTester.Logic.DataBaseTestResult;
 
 namespace RGBTester.UI
 {

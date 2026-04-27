@@ -134,7 +134,7 @@
     <Compile Include="Base\IF_Form\IF_ProgressBar.cs" />
     <Compile Include="Base\IF_Form\IF_StatusBox.cs" />
     <Compile Include="Base\IF_Form\IF_StateControl.cs" />
-    <Compile Include="Base\ILightEngineFunction.cs" />
+    <Compile Include="Base\IFunction_LightEngine.cs" />
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
@@ -144,13 +144,17 @@
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskMoveToElectrical.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskBurnInTest.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskMoveToOptical.cs" />
+    <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskRGB_H_L_Test_FunctionTester.cs" />
     <Compile Include="Logic\1.Task\UnLoad\SubTask\SubTaskUnLoad.cs" />
     <Compile Include="Logic\1.Task\UnLoad\TaskUnLoad.cs" />
     <Compile Include="Logic\2.FormLogic\F_FunctionTesterLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_YieldReportLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_ParameterSettingLogic.cs" />
     <Compile Include="Logic\Function\LuminousFlux.cs" />
-    <Compile Include="Logic\Function\TestResultDataBase.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_DAQPoint.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_Data.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_HardwareSetting.cs" />
+    <Compile Include="Logic\Function\DataBaseTestResult.cs" />
     <Compile Include="Logic\TestData\ResultData.cs" />
     <Compile Include="UI\F_ParameterSetting.cs">
       <SubType>Form</SubType>
@@ -173,7 +177,7 @@
     <Compile Include="Base\IBaseTask.cs" />
     <Compile Include="Device\LightEngine\Command\Virtual_LEA_Command.cs" />
     <Compile Include="Device\LightEngine\Command\GL18Command.cs" />
-    <Compile Include="Logic\Function\RGBTesterFunction.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction.cs" />
     <Compile Include="Logic\TestData\RGBTesterDataFile.cs" />
     <Compile Include="Logic\TestData\RGBTesterData.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskRGB_H_L_Test.cs" />

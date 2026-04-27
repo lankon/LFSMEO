@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 
 using ToolFunction;
-using static RGBTester.Logic.TestResultDataBase;
+using static RGBTester.Logic.DataBaseTestResult;
 
 namespace RGBTester.UI
 {
@@ -109,7 +109,7 @@ namespace RGBTester.UI
             Tool.SaveLogToFile("查詢測試資料庫並計算良率");
 
             //取得篩選條件
-            TestResultDataBase.ProductionLog pickip_condition = new TestResultDataBase.ProductionLog()
+            DataBaseTestResult.ProductionLog pickip_condition = new DataBaseTestResult.ProductionLog()
             {
                 ProductType = TxtBx_ProductType.Text,
                 SN = TxtBx_SN.Text,
@@ -121,10 +121,10 @@ namespace RGBTester.UI
             DateTime end_time = Tool.StringToDateTime(TxtBx_EndTime.Text);
 
             // 從資料庫取得符合條件的測試結果
-            TestResultDataBase data_base = ServiceProvider.GetRequiredService<TestResultDataBase>();
+            DataBaseTestResult data_base = ServiceProvider.GetRequiredService<DataBaseTestResult>();
             var result = data_base.Manager.GetResult(pickip_condition, start_time, end_time);
             //DGV_ProductRawData.DataSource = null; // 先清空
-            DGV_ProductRawData.DataSource = new BindingList<TestResultDataBase.ProductionLog>(result);
+            DGV_ProductRawData.DataSource = new BindingList<DataBaseTestResult.ProductionLog>(result);
 
             // 顯示統計數據
             List<ProductionLog> pass_data = new List<ProductionLog>();
@@ -174,7 +174,7 @@ namespace RGBTester.UI
             // 排除標題列與初始化的干擾
             if (e.RowIndex < 0) return;
 
-            TestResultDataBase data_base = ServiceProvider.GetRequiredService<TestResultDataBase>();
+            DataBaseTestResult data_base = ServiceProvider.GetRequiredService<DataBaseTestResult>();
 
             var dgv = sender as DataGridView;
             var row = dgv.Rows[e.RowIndex];
