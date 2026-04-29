@@ -253,6 +253,12 @@ namespace DeviceFunction
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
 
+            if (iOData == null)
+            {
+                Tool.SaveLogToFile($"未設定AnalogInput:{name}", level: "WRN");
+                return 0;
+            }
+
             byte cardNo = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
             byte devNo = (byte)iOData.Title_DevNum;
@@ -264,7 +270,7 @@ namespace DeviceFunction
                     continue;
 
                 if (IO[j] is IIOCardVirtual card_virtual)
-                    card_virtual.Add_AI_VirtualData(port, value);
+                    card_virtual.Add_AI_VirtualData(devNo, port, value);
             }
 
             return 0;

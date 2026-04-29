@@ -29,8 +29,34 @@ namespace RGBTester.Base
         void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
                                     double vfb, double i_led, double p_led, double eff, double temperature,
                                     double x, double y, double m, double c, string color);
+        void WriteTestResult(RGBTesterData test_data, int index, string type);
         void WriteCalibrationResult(string sn, string describe = "");
         void ResetCalibrationData();
         void SetCalibrationData(string color, string current_mode, double slope, double offset);
+    }
+
+    public class RGBTesterData
+    {
+        // [TestCondition]
+        public List<int> DACpoint = new List<int>();
+
+        // [DAQ Point]
+        public List<double> Vled = new List<double>();
+
+        // [TestItem]
+        public List<double> Vin = new List<double>();
+        public List<double> Iin = new List<double>();
+        public List<double> Pin = new List<double>();
+        public List<double> Vf = new List<double>();
+        public List<double> Iled = new List<double>();
+        public List<double> Pled = new List<double>();
+        public List<double> Eff = new List<double>();
+        public List<double> DISP_6V0 = new List<double>();
+        public List<double> DISP_1V2 = new List<double>();
+
+        // [Record]
+        public List<double> CycleTime = new List<double>();
+        public List<double> Temperature = new List<double>();
+        public double DAC_Avg, Current_Avg, Slope, Offset;
     }
 }

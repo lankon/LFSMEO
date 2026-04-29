@@ -63,28 +63,36 @@ namespace RGBTester.Logic
         private int Left_R_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_DAC_Start);
         private int Left_G_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_DAC_Start);
         private int Left_B_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_DAC_Start);
+        private int Left_B2_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B2_DAC_Start);
         private int Left_R_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_DAC_Step);
         private int Left_G_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_DAC_Step);
         private int Left_B_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_DAC_Step);
+        private int Left_B2_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B2_DAC_Step);
         private int Left_R_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_HCM_DAC_End);
         private int Left_G_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_HCM_DAC_End);
         private int Left_B_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_HCM_DAC_End);
+        private int Left_B2_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B2_HCM_DAC_End);
         private int Left_R_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_R_LCM_DAC_End);
         private int Left_G_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_G_LCM_DAC_End);
         private int Left_B_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B_LCM_DAC_End);
+        private int Left_B2_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_B2_LCM_DAC_End);
         //[Right DAC Setting]
         private int Right_R_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_DAC_Start);
         private int Right_G_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_DAC_Start);
         private int Right_B_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_DAC_Start);
+        private int Right_B2_DAC_Start = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B2_DAC_Start);
         private int Right_R_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_DAC_Step);
         private int Right_G_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_DAC_Step);
         private int Right_B_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_DAC_Step);
+        private int Right_B2_DAC_Step = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B2_DAC_Step);
         private int Right_R_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_HCM_DAC_End);
         private int Right_G_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_HCM_DAC_End);
         private int Right_B_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_HCM_DAC_End);
+        private int Right_B2_HCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B2_HCM_DAC_End);
         private int Right_R_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_R_LCM_DAC_End);
         private int Right_G_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_G_LCM_DAC_End);
         private int Right_B_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B_LCM_DAC_End);
+        private int Right_B2_LCM_DAC_End = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_B2_LCM_DAC_End);
         private int LeftRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Left_AvgCount);
         private int RightRepeatTime = ApplicationSetting.Get_Int_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Right_AvgCount);
         private int RepeatTime = 1;                     //取樣平均次數
@@ -185,6 +193,17 @@ namespace RGBTester.Logic
                 DAC_End_HCM = isLeft ? Left_B_HCM_DAC_End : Right_B_HCM_DAC_End;
                 DAC_End_LCM = isLeft ? Left_B_LCM_DAC_End : Right_B_LCM_DAC_End;
             }
+            else if (TestColor == "B2")
+            {
+                //要修改 燈的顏色以及Duty
+                Color = Deps.LightEngine.LED_B;
+                LED_Duty = RGBfunc.HardwareParam.LED_B2_Duty;    
+
+                DAC_Start = isLeft ? Left_B2_DAC_Start : Right_B2_DAC_Start;
+                DAC_Step = isLeft ? Left_B2_DAC_Step : Right_B2_DAC_Step;
+                DAC_End_HCM = isLeft ? Left_B2_HCM_DAC_End : Right_B2_HCM_DAC_End;
+                DAC_End_LCM = isLeft ? Left_B2_LCM_DAC_End : Right_B2_LCM_DAC_End;
+            }
 
             for (int i = DAC_Start; i <= DAC_End_HCM; i += DAC_Step)
                 qDAC_H.Enqueue(i);
@@ -211,33 +230,34 @@ namespace RGBTester.Logic
             double[] DISP_6V0 = new double[Period_DAQ_Count];
             double[] DISP_1V2 = new double[Period_DAQ_Count];
             
-            for (int i = 0; i < Period_DAQ_Count; i++)
+            for (int i = 0; i < Period_DAQ_Count; i++)  //要修改 計算一個週期多少點數
             {
                 //一次取5個通道有增加或減少的話會影響Period_DAQ_Count
                 Vin[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_Vin);
 
-                //要判斷LED顏色
-                Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_R) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_R);
-                Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_G) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_G);
-                Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_B) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_B1);
-                Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_B) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_B2);
+                //[Vf測試項]
+                if(TestColor == "R")
+                    Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_R) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_R);
+                else if(TestColor == "G")
+                    Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_G) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_G);
+                else if(TestColor == "B")
+                    Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_B) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_B1);
+                else if(TestColor == "B2")
+                    Vf[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_VLED_B) - Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_B2);
 
-                //要判斷LED顏色
-                Iled[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_FB1) - RGBfunc.HardwareParam.CurrentMeasureBias;
-                Iled[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_FB2) - RGBfunc.HardwareParam.CurrentMeasureBias;
-
-                DISP_6V0[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_6V0);
-                DISP_1V2[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_1V2);
+                //[ILed]
+                if(TestColor == "B2")
+                    Iled[i] = (Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_FB2) - RGBfunc.HardwareParam.CurrentMeasureBias);
+                else
+                    Iled[i] = (Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_FB1) - RGBfunc.HardwareParam.CurrentMeasureBias);
             }
 
-            //double threshold = 0.95;
-            //DataFilter dataFilter = new DataFilter();
+            double threshold = 0.95;
+            DataFilter dataFilter = new DataFilter();
             RGBTesterFunction.AvgData_FuncTester avgData = new RGBTesterFunction.AvgData_FuncTester();
-            //avgData.Avg_Vin = Vin.Average();//dataFilter.GetPreciseHighLevel(Vin.ToList(), threshold, 0.005);
-            //avgData.Avg_Iin = Iin.Average();//dataFilter.GetPreciseHighLevel(Iin.ToList(), threshold,0.005);
-            //avgData.Avg_Vled = 0.0;//目前用不到 dataFilter.GetPreciseHighLevel(Vled.ToList(), threshold);
-            //avgData.Avg_Vf = dataFilter.GetPreciseHighLevel(Vf.ToList(), threshold,0.005);
-            //avgData.Avg_Iled = dataFilter.GetPreciseHighLevel(Iled.ToList(), threshold,0.005);
+            avgData.Avg_Vin = dataFilter.GetPreciseHighLevel(Vin.ToList(), threshold, 0.005);
+            avgData.Avg_Vf = dataFilter.GetPreciseHighLevel(Vf.ToList(), threshold,0.005);
+            avgData.Avg_Iled = dataFilter.GetPreciseHighLevel(Iled.ToList(), threshold,0.005);
 
             return avgData;
         }
@@ -318,11 +338,13 @@ namespace RGBTester.Logic
 
             double Vfb = TesterData_L.Iled[index] * RGBfunc.HardwareParam.Rfb_LCM * RGBfunc.HardwareParam.LED_SigMag;
 
-            Deps.File.WriteTestResult(TesterData_L.DACpoint[index], TesterData_L.Vin[index], TesterData_L.Iin[index] * milli,
-                                    TesterData_L.Pin[index] * milli, TesterData_L.Vf[index], Vfb, TesterData_L.Iled[index] * milli,
-                                    TesterData_L.Pled[index] * milli, TesterData_L.Eff[index] * 100, TesterData_L.Temperature[index],
-                                    LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-                                    LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
+            //Deps.File.WriteTestResult(TesterData_L.DACpoint[index], TesterData_L.Vin[index], TesterData_L.Iin[index] * milli,
+            //                        TesterData_L.Pin[index] * milli, TesterData_L.Vf[index], Vfb, TesterData_L.Iled[index] * milli,
+            //                        TesterData_L.Pled[index] * milli, TesterData_L.Eff[index] * 100, TesterData_L.Temperature[index],
+            //                        LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
+            //                        LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
+
+            Deps.File.WriteTestResult(TesterData_L, index, Type);
         }
         private void Write_NonData_Result()
         {
@@ -338,11 +360,13 @@ namespace RGBTester.Logic
 
             double Vfb = TesterData_H.Iled[index] * RGBfunc.HardwareParam.Rfb_HCM * RGBfunc.HardwareParam.LED_SigMag;
 
-            Deps.File.WriteTestResult(TesterData_H.DACpoint[index], TesterData_H.Vin[index], TesterData_H.Iin[index] * milli,
-                                                            TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], Vfb, TesterData_H.Iled[index] * milli,
-                                                            TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
-                                                            LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
-                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
+            //Deps.File.WriteTestResult(TesterData_H.DACpoint[index], TesterData_H.Vin[index], TesterData_H.Iin[index] * milli,
+            //                                                TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], Vfb, TesterData_H.Iled[index] * milli,
+            //                                                TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
+            //                                                LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
+            //                                                LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
+
+            Deps.File.WriteTestResult(TesterData_H, index, Type);
         }
         //[檢查測試結果,判斷PASS/FIAL]
         private bool CheckContact(double measure_current)
@@ -536,7 +560,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.GET_ADC_LOW:
                     {
-                        double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0, sum_DISP_6V0 = 0, sum_DISP_1V2 = 0;
+                        double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0;
 
                         //取得溫度
                         double temperature = double.Parse(Deps.LightEngine.GetTemperature());
@@ -553,17 +577,13 @@ namespace RGBTester.Logic
                             sum_Vin += LowAvgData.Avg_Vin;
                             sum_Vf += LowAvgData.Avg_Vf;
                             sum_Iled += LowAvgData.Avg_Iled;
-                            sum_DISP_6V0 += LowAvgData.Avg_DISP_6V0;
-                            sum_DISP_1V2 += LowAvgData.Avg_DISP_1V2;
                         }
 
                         TesterData_L.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_L.Vin.Add(sum_Vin / RepeatTime);
                         TesterData_L.Vf.Add(sum_Vf / RepeatTime);
-                        TesterData_L.Iled.Add(sum_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_LCM);
-                        TesterData_L.DISP_6V0.Add(sum_DISP_6V0 / RepeatTime);
-                        TesterData_L.DISP_1V2.Add(sum_DISP_1V2 / RepeatTime);
+                        TesterData_L.Iled.Add(sum_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_LCM / RGBfunc.HardwareParam.LED_SigMag);
 
                         int count = TesterData_L.Iled.Count;
                         if (!CheckContact(TesterData_L.Iled[count - 1] - TesterData_L.Iled[0]))
@@ -694,30 +714,28 @@ namespace RGBTester.Logic
                     break;
                 case WORK.GET_ADC_HIGH:
                     {
-                        double sum_Vin = 0, sum_Iin = 0, sum_Vled = 0, sum_Vrgb = 0, sum_Iled = 0;
+                        double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0;
 
                         //取得溫度
                         double temperature = double.Parse(Deps.LightEngine.GetTemperature());
                         CheckTestTemperature(temperature);
                         TesterData_H.Temperature.Add(temperature);
 
-                        RGBTesterFunction.AvgData HighAvgData = new RGBTesterFunction.AvgData();
+                        RGBTesterFunction.AvgData_FuncTester HighAvgData = new RGBTesterFunction.AvgData_FuncTester();
                         //取得AI訊號
                         for (int i = 0; i < RepeatTime; i++)
                         {
-                            //HighAvgData = PeriodAvgValueCalculate("HCM");
+                            HighAvgData = PeriodAvgValueCalculate("HCM");
 
                             sum_Vin += HighAvgData.Avg_Vin;
-                            sum_Iin += HighAvgData.Avg_Iin;
-                            sum_Vled += HighAvgData.Avg_Vled;
-                            sum_Vrgb += HighAvgData.Avg_Vf;
+                            sum_Vf += HighAvgData.Avg_Vf;
                             sum_Iled += HighAvgData.Avg_Iled;
                         }
 
                         TesterData_H.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
 
                         TesterData_H.Vin.Add(sum_Vin / RepeatTime);
-                        TesterData_H.Vf.Add(sum_Vrgb / RepeatTime);
+                        TesterData_H.Vf.Add(sum_Vf / RepeatTime);
                         TesterData_H.Iled.Add(sum_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_HCM / RGBfunc.HardwareParam.LED_SigMag);
 
                         //Transition(WORK.CALCULATE_HIGH);
@@ -729,17 +747,11 @@ namespace RGBTester.Logic
                     {
                         if (qDAC_H.Count == 0)
                         {
-                            //CheckClamping(TesterData_H.Vled.Last(), TesterData_H.DACpoint, TesterData_H.Iled, "HCM");
+                            CheckClamping(TesterData_H.DACpoint, TesterData_H.Iled, "HCM");
 
                             for (int i = 0; i < TesterData_H.Vin.Count; i++)
                             {
-                                TesterData_H.Pin.Add(TesterData_H.Vin[i] * TesterData_H.Iin[i]);
                                 TesterData_H.Pled.Add(TesterData_H.Vf[i] * TesterData_H.Iled[i] * LED_Duty);
-
-                                if (TesterData_H.Pin[i] == 0)
-                                    TesterData_H.Eff.Add(-99);
-                                else
-                                    TesterData_H.Eff.Add(TesterData_H.Pled[i] / TesterData_H.Pin[i]);
                             }
 
                             if (IsClamping == true)

@@ -2,6 +2,7 @@
 using RGBTester.Base;
 using RGBTester.Device;
 using RGBTester.UI;
+using SampleCode.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,13 +52,18 @@ namespace RGBTester.Logic
             INITIAL,
             IDLE,
 
+            DISP_TEST,
+            WAIT_DISP_TEST,
+
             LED_R_TEST,
             LED_G_TEST,
             LED_B_TEST,
+            LED_B2_TEST,
 
             WAIT_LED_R_TEST,
             WAIT_LED_G_TEST,
             WAIT_LED_B_TEST,
+            WAIT_LED_B2_TEST,
 
             CHECK_SLOPE_OFFSET,
 
@@ -229,16 +235,41 @@ namespace RGBTester.Logic
                                 Transition(WORK.LED_R_TEST);
                         }
                         else
-                            Transition(WORK.LED_R_TEST);
-
+                        {
+                            if(RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                                Transition(WORK.LED_R_TEST);
+                            else if(RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                                Transition(WORK.DISP_TEST);
+                        }
                     }
                     break;
 
+                #region PP_DISP
+                case WORK.DISP_TEST:
+                    {
+                        Tool.SaveLogToFile("PP DISP Test", level: "INF");
+                        SubTask = new SubTask_DISP_Test(Deps, F_StateControl, Type);
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_DISP_TEST);
+                    }
+                    break;
+                case WORK.WAIT_DISP_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.LED_R_TEST);
+                    }
+                    break;
+                #endregion
                 #region RED
                 case WORK.LED_R_TEST:
                     {
                         Tool.SaveLogToFile("LED_R_Test", level: "INF");
-                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type+"_R");
+                        
+                        if(RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_R");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_R");
+
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_R_TEST);
                     }
@@ -254,7 +285,12 @@ namespace RGBTester.Logic
                 case WORK.LED_G_TEST:
                     {
                         Tool.SaveLogToFile("LED_G_TEST", level: "INF");
-                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
+
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_G");
+
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_G_TEST);
                     }
@@ -270,7 +306,12 @@ namespace RGBTester.Logic
                 case WORK.LED_B_TEST:
                     {
                         Tool.SaveLogToFile("LED_B_TEST", level: "INF");
-                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
+
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_B");
+
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_B_TEST);
                     }
@@ -279,9 +320,31 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
+                        else
+                            CheckResult(check, SUCCESS: WORK.LED_B2_TEST);
+                    }
+                    break;
+                #endregion
+                #region BLUE2
+                case WORK.LED_B2_TEST:
+                    {
+                        Tool.SaveLogToFile("LED_B2_TEST", level: "INF");
 
-                        
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B2");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_B2");
+
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_B_TEST);
+                    }
+                    break;
+                case WORK.WAIT_LED_B2_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
                     }
                     break;
                 #endregion

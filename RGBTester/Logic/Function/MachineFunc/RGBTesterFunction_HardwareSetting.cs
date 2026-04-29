@@ -51,6 +51,7 @@ namespace RGBTester.Logic
             public double LED_R_Duty { get { return 0.4; } }            //Red LED Duty(硬體)
             public double LED_G_Duty { get { return 0.18; } }           //Green LED Duty(硬體)
             public double LED_B_Duty { get { return 0.12; } }           //Blue LED Duty(硬體)
+            public double LED_B2_Duty { get { return 0.12; } }          //Blue2 LED Duty(硬體)
             public double HCM_MaxCurrent { get { return _parent.MaxCurrent_HCM; } }     //HCM理論最大電流
             public double LCM_MaxCurrent { get { return _parent.MaxCurrent_LCM; } }     //LCM理論最大電流
         }
