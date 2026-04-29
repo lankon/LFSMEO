@@ -83,6 +83,8 @@ namespace RGBTester.Logic
             string SN = RGBfunc.SerialNumber;
             Tool.SaveLogToFile("測試樣品SN:" + SN);
 
+            Deps.File.SetModuleAndCustomer(RGBfunc.GetModuleType());
+
             if (!OnlyRightTest)
             {
                 if (Scope.TaskRGBTest.IsSingleTest == false || 

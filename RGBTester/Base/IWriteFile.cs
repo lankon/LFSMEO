@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RGBTester.Logic;
 
 namespace RGBTester.Base
 {
@@ -21,18 +22,24 @@ namespace RGBTester.Base
         double G_Slope_LCM { get;}
         double B_Slope_LCM { get;}
 
+        void SetModuleAndCustomer(eModuleType eModule);
         void CreateFile(string describe = "");
+        
+        // [Test Data]
         void WriteFile(string context = "", string describe = "", bool NewLine = true);
+        void WriteTestResult(RGBTesterData test_data, int index, string type);
+
+        // [Close File]
         void CloseFile(string describe = "");
         void CloseAndDeleteFile(string describe = "");
         void CopyAndCloseTestFile(string describe);
-        void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
-                                    double vfb, double i_led, double p_led, double eff, double temperature,
-                                    double x, double y, double m, double c, string color);
-        void WriteTestResult(RGBTesterData test_data, int index, string type);
-        void WriteCalibrationResult(string sn, string describe = "");
+        
+        // [Calibration File]
         void ResetCalibrationData();
         void SetCalibrationData(string color, string current_mode, double slope, double offset);
+        void WriteCalibrationResult(string sn, string describe = "");
+
+        RGBTesterData SetNonData(RGBTesterData data);
     }
 
     public class RGBTesterData
@@ -58,5 +65,19 @@ namespace RGBTester.Base
         public List<double> CycleTime = new List<double>();
         public List<double> Temperature = new List<double>();
         public double DAC_Avg, Current_Avg, Slope, Offset;
+        public string CurrentMode = "";
+    }
+
+    public class RGBTesterDataFile_FileType
+    {
+        public virtual string GetTitleStr(string describe)
+        {
+            return "";
+        }
+
+        public virtual string GetTestReultStr(RGBTesterData test_data, int index)
+        {
+            return "";
+        }
     }
 }

@@ -11,11 +11,7 @@ using ToolFunction;
 
 namespace RGBTester.Logic
 {
-    public enum eModuleType
-    {
-        IV_Calibration,
-        Function_Test,
-    }
+    
     
     public partial class RGBTesterFunction
     {

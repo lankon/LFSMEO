@@ -41,6 +41,10 @@ namespace RGBTester.Device
         }
         #endregion
 
+
+        #region private function
+        #endregion
+
         #region public function
         public void Set_LEA_Type()
         {
@@ -157,9 +161,5 @@ namespace RGBTester.Device
         
         #endregion
 
-        #region private function
-
-
-        #endregion
     }
 }

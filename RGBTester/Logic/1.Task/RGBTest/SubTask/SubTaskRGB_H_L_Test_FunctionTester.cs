@@ -334,38 +334,16 @@ namespace RGBTester.Logic
         //[寫測試結果]
         private void Write_LCM_Result(int index)
         {
-            double milli = 1000;
-
-            double Vfb = TesterData_L.Iled[index] * RGBfunc.HardwareParam.Rfb_LCM * RGBfunc.HardwareParam.LED_SigMag;
-
-            //Deps.File.WriteTestResult(TesterData_L.DACpoint[index], TesterData_L.Vin[index], TesterData_L.Iin[index] * milli,
-            //                        TesterData_L.Pin[index] * milli, TesterData_L.Vf[index], Vfb, TesterData_L.Iled[index] * milli,
-            //                        TesterData_L.Pled[index] * milli, TesterData_L.Eff[index] * 100, TesterData_L.Temperature[index],
-            //                        LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-            //                        LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
-
             Deps.File.WriteTestResult(TesterData_L, index, Type);
         }
         private void Write_NonData_Result()
         {
-            Deps.File.WriteTestResult(-99, -99, -99,
-                                        -99, -99, -99,
-                                        -99, -99, -99,
-                                        -99, -99, -99,
-                                        -99, -99, Type);
+            RGBTesterData non_data = new RGBTesterData();
+            non_data = Deps.File.SetNonData(non_data);
+            Deps.File.WriteTestResult(non_data, 0, Type);
         }
         private void Write_HCM_Result(int index)
         {
-            double milli = 1000;
-
-            double Vfb = TesterData_H.Iled[index] * RGBfunc.HardwareParam.Rfb_HCM * RGBfunc.HardwareParam.LED_SigMag;
-
-            //Deps.File.WriteTestResult(TesterData_H.DACpoint[index], TesterData_H.Vin[index], TesterData_H.Iin[index] * milli,
-            //                                                TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], Vfb, TesterData_H.Iled[index] * milli,
-            //                                                TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
-            //                                                LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
-            //                                                LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
-
             Deps.File.WriteTestResult(TesterData_H, index, Type);
         }
         //[檢查測試結果,判斷PASS/FIAL]

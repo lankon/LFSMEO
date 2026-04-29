@@ -128,6 +128,7 @@
     <Compile Include="Base\eElement_Form\eF_Recipe.cs" />
     <Compile Include="Base\eElement_Form\eF_StartForm.cs" />
     <Compile Include="Base\eElement_Form\eF_Equipment_Setting.cs" />
+    <Compile Include="Base\eModileType.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
     <Compile Include="Base\IF_Form\IF_ParameterSetting.cs" />
     <Compile Include="Base\IF_Form\IF_StartForm.cs" />
@@ -158,6 +159,8 @@
     <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_HardwareSetting.cs" />
     <Compile Include="Logic\Function\DataBaseTestResult.cs" />
     <Compile Include="Logic\TestData\ResultData.cs" />
+    <Compile Include="Logic\TestData\RGBTesterDataFile_FunctionTester.cs" />
+    <Compile Include="Logic\TestData\RGBTesterDataFile_IVCalibration.cs" />
     <Compile Include="UI\F_ParameterSetting.cs">
       <SubType>Form</SubType>
     </Compile>
