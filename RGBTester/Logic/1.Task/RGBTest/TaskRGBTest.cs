@@ -93,6 +93,9 @@ namespace RGBTester.Logic
                     Deps.File.CreateFile("Left_R");
                     Deps.File.CreateFile("Left_G");
                     Deps.File.CreateFile("Left_B");
+                    if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                        Deps.File.CreateFile("Left_B2");
+
                     Deps.File.CreateFile("Left_Calibration");
                 }
 
@@ -111,6 +114,10 @@ namespace RGBTester.Logic
                     Deps.File.CreateFile("Right_R");
                     Deps.File.CreateFile("Right_G");
                     Deps.File.CreateFile("Right_B");
+
+                    if(RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                        Deps.File.CreateFile("Right_B2");
+
                     Deps.File.CreateFile("Right_Calibration");
                 }
 
@@ -121,65 +128,27 @@ namespace RGBTester.Logic
                 }
             }
         }
-        private void CloseTestFile()
+        
+        private readonly string[] TestKeys = { "R", "G", "B", "Calibration", "BurnIn" };
+        private void ExecuteFileAction(Action<string> fileAction)
         {
+            // 處理 Left
             if (!OnlyRightTest)
             {
-                Deps.File.CloseFile("Left_R");
-                Deps.File.CloseFile("Left_G");
-                Deps.File.CloseFile("Left_B");
-                Deps.File.CloseFile("Left_Calibration");
-                Deps.File.CloseFile("Left_BurnIn");
+                foreach (var key in TestKeys) fileAction($"Left_{key}");
             }
 
+            // 處理 Right
             if (!OnlyLeftTest)
             {
-                Deps.File.CloseFile("Right_R");
-                Deps.File.CloseFile("Right_G");
-                Deps.File.CloseFile("Right_B");
-                Deps.File.CloseFile("Right_Calibration");
-                Deps.File.CloseFile("Right_BurnIn");
+                foreach (var key in TestKeys) fileAction($"Right_{key}");
             }
         }
-        private void CopyAndCloseTestFile()
-        {
-            if (!OnlyRightTest)
-            {
-                Deps.File.CopyAndCloseTestFile("Left_R");
-                Deps.File.CopyAndCloseTestFile("Left_G");
-                Deps.File.CopyAndCloseTestFile("Left_B");
-                Deps.File.CopyAndCloseTestFile("Left_Calibration");
-                Deps.File.CopyAndCloseTestFile("Left_BurnIn");
-            }
+        private void CloseTestFile() => ExecuteFileAction(k => Deps.File.CloseFile(k));
+        private void CopyAndCloseTestFile() => ExecuteFileAction(k => Deps.File.CopyAndCloseTestFile(k));
+        private void CloseAndDeleteTestFile() => ExecuteFileAction(k => Deps.File.CloseAndDeleteFile(k));
 
-            if (!OnlyLeftTest)
-            {
-                Deps.File.CopyAndCloseTestFile("Right_R");
-                Deps.File.CopyAndCloseTestFile("Right_G");
-                Deps.File.CopyAndCloseTestFile("Right_B");
-                Deps.File.CopyAndCloseTestFile("Right_Calibration");
-                Deps.File.CopyAndCloseTestFile("Right_BurnIn");
-            }
-        }
-        private void CloseAndDeleteTestFile()
-        {
-            if (!OnlyRightTest)
-            {
-                Deps.File.CloseAndDeleteFile("Left_R");
-                Deps.File.CloseAndDeleteFile("Left_G");
-                Deps.File.CloseAndDeleteFile("Left_B");
-                Deps.File.CloseAndDeleteFile("Left_Calibration");
-                Deps.File.CloseAndDeleteFile("Left_BurnIn");
-            }
-            if (!OnlyLeftTest)
-            {
-                Deps.File.CloseAndDeleteFile("Right_R");
-                Deps.File.CloseAndDeleteFile("Right_G");
-                Deps.File.CloseAndDeleteFile("Right_B");
-                Deps.File.CloseAndDeleteFile("Right_Calibration");
-                Deps.File.CloseAndDeleteFile("Right_BurnIn");
-            }
-        }
+
         private void Preset() 
         {
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();

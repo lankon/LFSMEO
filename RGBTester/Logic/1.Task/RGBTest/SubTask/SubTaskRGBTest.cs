@@ -338,7 +338,7 @@ namespace RGBTester.Logic
                             SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_B2");
 
                         SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_B_TEST);
+                        Transition(WORK.WAIT_LED_B2_TEST);
                     }
                     break;
                 case WORK.WAIT_LED_B2_TEST:

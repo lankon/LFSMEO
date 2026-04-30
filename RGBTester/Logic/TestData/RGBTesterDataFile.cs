@@ -28,15 +28,19 @@ namespace RGBTester.Logic
         public double R_Offset_HCM { get; private set; }
         public double G_Offset_HCM { get; private set; }
         public double B_Offset_HCM { get; private set; }
+        public double B2_Offset_HCM { get; private set; }
         public double R_Offset_LCM { get; private set; }
         public double G_Offset_LCM { get; private set; }
         public double B_Offset_LCM { get; private set; }
+        public double B2_Offset_LCM { get; private set; }
         public double R_Slope_HCM { get; private set; }
         public double G_Slope_HCM { get; private set; }
         public double B_Slope_HCM { get; private set; }
+        public double B2_Slope_HCM { get; private set; }
         public double R_Slope_LCM { get; private set; }
         public double G_Slope_LCM { get; private set; }
         public double B_Slope_LCM { get; private set; }
+        public double B2_Slope_LCM { get; private set; }
         #endregion
 
         #region private function
