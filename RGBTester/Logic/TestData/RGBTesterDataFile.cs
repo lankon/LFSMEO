@@ -85,6 +85,9 @@ namespace RGBTester.Logic
         {
             string title = FileType.GetTitleStr(type);
 
+            if (title == "")
+                return;
+
             TestFiles.TryGetValue(type, out StreamWriter file);
             Tool.WriteFile(file, title);
         }

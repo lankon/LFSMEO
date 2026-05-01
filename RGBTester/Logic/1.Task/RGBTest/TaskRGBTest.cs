@@ -129,7 +129,7 @@ namespace RGBTester.Logic
             }
         }
         
-        private readonly string[] TestKeys = { "R", "G", "B", "Calibration", "BurnIn" };
+        private readonly string[] TestKeys = { "R", "G", "B", "Calibration", "BurnIn", "B2" };
         private void ExecuteFileAction(Action<string> fileAction)
         {
             // 處理 Left

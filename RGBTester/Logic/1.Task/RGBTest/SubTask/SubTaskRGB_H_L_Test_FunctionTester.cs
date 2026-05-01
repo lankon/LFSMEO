@@ -17,8 +17,8 @@ namespace RGBTester.Logic
     public class SubTaskRGB_H_L_Test_FunctionTester : IBaseTask<SubTaskRGB_H_L_Test_FunctionTester.WORK>
     {
         public SubTaskRGB_H_L_Test_FunctionTester(IBaseTaskDependence dependencies, 
-                          IF_StateControl f_StateControl,  
-                          string set_state = "Default") : base(dependencies)
+                          IF_StateControl f_StateControl,
+                          RGBTesterData LCM, RGBTesterData HCM, string set_state = "Default") : base(dependencies)
         {
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
@@ -47,6 +47,8 @@ namespace RGBTester.Logic
             F_StateControl = f_StateControl;
 
             Type = set_state;
+            TesterData_H = HCM;
+            TesterData_L = LCM;
         }
 
         #region parameter
@@ -108,8 +110,8 @@ namespace RGBTester.Logic
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
         private IF_ProgressBar ProgressBar;
-        private RGBTesterData TesterData_H = new RGBTesterData();
-        private RGBTesterData TesterData_L = new RGBTesterData();
+        private RGBTesterData TesterData_H;// = new RGBTesterData();
+        private RGBTesterData TesterData_L;// = new RGBTesterData();
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
         private RGBTesterFunction RGBfunc;

@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToolFunction;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace RGBTester.Logic
 {
@@ -41,6 +40,8 @@ namespace RGBTester.Logic
         #region parameter
         RGBTesterFunction RGBfunc;
         ResultData ResultData;
+        private RGBTesterData TesterData_H = new RGBTesterData();
+        private RGBTesterData TesterData_L = new RGBTesterData();
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
@@ -236,9 +237,9 @@ namespace RGBTester.Logic
                         }
                         else
                         {
-                            if(RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
                                 Transition(WORK.LED_R_TEST);
-                            else if(RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                            else if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
                                 Transition(WORK.DISP_TEST);
                         }
                     }
@@ -248,7 +249,7 @@ namespace RGBTester.Logic
                 case WORK.DISP_TEST:
                     {
                         Tool.SaveLogToFile("PP DISP Test", level: "INF");
-                        SubTask = new SubTask_DISP_Test(Deps, F_StateControl, Type);
+                        SubTask = new SubTask_DISP_Test(Deps, F_StateControl, TesterData_L, TesterData_H,  Type);
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_DISP_TEST);
                     }
@@ -268,7 +269,7 @@ namespace RGBTester.Logic
                         if(RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
                             SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_R");
                         else
-                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_R");
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_R");
 
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_R_TEST);
@@ -289,7 +290,7 @@ namespace RGBTester.Logic
                         if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
                             SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
                         else
-                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_G");
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_G");
 
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_G_TEST);
@@ -310,7 +311,7 @@ namespace RGBTester.Logic
                         if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
                             SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
                         else
-                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_B");
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_B");
 
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_B_TEST);
@@ -335,7 +336,7 @@ namespace RGBTester.Logic
                         if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
                             SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B2");
                         else
-                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, Type + "_B2");
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_B2");
 
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_B2_TEST);

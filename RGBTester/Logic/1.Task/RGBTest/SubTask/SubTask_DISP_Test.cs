@@ -17,8 +17,8 @@ namespace SampleCode.Logic
     public class SubTask_DISP_Test : IBaseTask<SubTask_DISP_Test.WORK>
     {
         public SubTask_DISP_Test(IBaseTaskDependence dependencies, 
-                          IF_StateControl f_StateControl,  
-                          string set_state = "Default") : base(dependencies)
+                          IF_StateControl f_StateControl,
+                          RGBTesterData LCM, RGBTesterData HCM, string set_state = "Default") : base(dependencies)
         {
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
@@ -34,6 +34,8 @@ namespace SampleCode.Logic
             F_StateControl = f_StateControl;
 
             Type = set_state;
+            TestData_LCM = LCM;
+            TestData_HCM = HCM;
         }
 
         #region parameter
@@ -42,6 +44,8 @@ namespace SampleCode.Logic
         private byte Side;                          //LED Board通訊指令(硬體)_Side
         private RGBTesterFunction.DAQ_Point_FunctionTester DAQPoint;
         private RGBTesterFunction RGBfunc;
+        private RGBTesterData TestData_LCM;
+        private RGBTesterData TestData_HCM;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         //private F_StateControl TaskForm;
@@ -238,6 +242,11 @@ namespace SampleCode.Logic
 
                         sum_DISP_6V0 = sum_DISP_6V0 / repeat;
                         sum_DISP_1V2 = sum_DISP_1V2 / repeat;
+
+                        TestData_HCM.DISP_6V0.Add(sum_DISP_6V0);
+                        TestData_HCM.DISP_1V2.Add(sum_DISP_1V2);
+                        TestData_LCM.DISP_6V0.Add(sum_DISP_6V0);
+                        TestData_LCM.DISP_1V2.Add(sum_DISP_1V2);
 
                         Transition(WORK.SUCCESS);
                     }
