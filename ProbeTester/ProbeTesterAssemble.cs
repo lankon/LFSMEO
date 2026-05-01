@@ -33,6 +33,7 @@ namespace ProbeTester
             services.AddSingleton<F_MainForm>();
             services.AddSingleton<F_StartForm>();
             services.AddSingleton<F_StartForm_ButtonGroup>();
+            services.AddSingleton<F_DataCalculate>();
             //services.AddSingleton<F_Recipe>();
             //services.AddSingleton<F_DAQ_SamplingTest>();
             //services.AddSingleton<IF_StatusBox, F_StatusBox>();
