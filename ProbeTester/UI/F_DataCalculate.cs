@@ -40,11 +40,7 @@ namespace ProbeTester.UI
 
             ShowHint();
 
-            selectionSpan = Plot_DataShow.Plot.AddHorizontalSpan(7473, 54524);
-
-            // 設定樣式：半透明藍色，並允許滑鼠拖曳兩側邊界
-            selectionSpan.Color = Color.FromArgb(50, Color.Blue);
-            selectionSpan.DragEnabled = true;
+            
 
 
             //if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
@@ -98,7 +94,7 @@ namespace ProbeTester.UI
 
             var marker = Plot_DataShow.Plot.AddMarker(position + SelectStart, max);
             marker.YAxisIndex = 1;                  //依照副軸
-            marker.Color = Color.Yellow;            // 點的顏色
+            marker.Color = Color.Orange;            // 點的顏色
             marker.MarkerSize = 15;                 // 點的大小 (像素)
 
             TxtBx_MaxCurrent.Text = max.ToString();
@@ -120,7 +116,7 @@ namespace ProbeTester.UI
             {
                 //在ScottPlot上畫出這段範圍
                 var span = Plot_DataShow.Plot.AddHorizontalSpan(startIndex + SelectStart, endIndex + SelectStart);
-                span.Color = Color.FromArgb(100, Color.MediumPurple); // 使用淺紫色
+                span.Color = Color.FromArgb(100, Color.Yellow); // 使用淺紫色
                 double time = ApplicationSetting.Get_Double_Recipe<eF_DataCalculate>((int)eF_DataCalculate.TxtBx_TimePerPoint);
                 TxtBx_SystemStableTime.Text = ((endIndex - startIndex) * time / 1000).ToString();
                 Plot_DataShow.Refresh();
@@ -224,6 +220,10 @@ namespace ProbeTester.UI
                 }
             }
 
+            Plot_DataShow.Plot.Clear();
+            selectionSpan = Plot_DataShow.Plot.AddHorizontalSpan(7473, 54524);
+            selectionSpan.Color = Color.FromArgb(50, Color.Blue);
+            selectionSpan.DragEnabled = true;
             double[] dataY = PositionError.ToArray();
             double[] dataY1 = Current.ToArray();
             double[] dataX = ScottPlot.DataGen.Consecutive(dataY.Length);
