@@ -118,6 +118,7 @@
     <Compile Include="Logic\1.Task\PTPA\SubTask\SubTaskGoToUpCCDFocusPos.cs" />
     <Compile Include="Logic\1.Task\PTPA\Task_PTPA.cs" />
     <Compile Include="Logic\1.Task\TaskInitial.cs" />
+    <Compile Include="Logic\2.FormLogic\F_DataCalculateLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\Function\DataFilter.cs" />

@@ -17,19 +17,18 @@ namespace ProbeTester.UI
 {
     public partial class F_DataCalculate : Form
     {
-        public F_DataCalculate()
+        public F_DataCalculate(F_DataCalculateLogic f_DataCalculateLogic)
         {
             InitializeComponent();
+
+            DataCalculateLogic = f_DataCalculateLogic;
 
             InitialForm();
         }
 
         #region parameter define
-        ScottPlot.Plottable.HSpan selectionSpan;
-        List<double> PositionError = new List<double>();
-        List<double> Current = new List<double>();
-        DataFilter Filter = new DataFilter();
-        int SelectStart = 0;
+        private F_DataCalculateLogic DataCalculateLogic;
+        private ScottPlot.Plottable.HSpan SelectionSpan;    //滑鼠選擇範圍
         #endregion
 
         #region private function
@@ -39,9 +38,6 @@ namespace ProbeTester.UI
             UpdateEnumSettingToForm();
 
             ShowHint();
-
-            
-
 
             //if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
@@ -78,84 +74,34 @@ namespace ProbeTester.UI
         private void LeavePage()
         {
         }
-
-        //[計算靜摩擦力電流]
-        private void FindStaticFrictionCur(int start, int end, List<double> current)
+        private void InitialPlot()
         {
-            double max = 0; int position = 0; ;
-            for (int i = end - 1500; i < end + 1500; i++)
-            {
-                if (current[i] > max)
-                {
-                    max = current[i];
-                    position = i;
-                }
-            }
-
-            var marker = Plot_DataShow.Plot.AddMarker(position + SelectStart, max);
-            marker.YAxisIndex = 1;                  //依照副軸
-            marker.Color = Color.Orange;            // 點的顏色
-            marker.MarkerSize = 15;                 // 點的大小 (像素)
-
-            TxtBx_MaxCurrent.Text = max.ToString();
+            Plot_DataShow.Plot.Clear();
+            SelectionSpan = Plot_DataShow.Plot.AddHorizontalSpan(7473, 54524);
+            SelectionSpan.Color = Color.FromArgb(50, Color.Blue);
+            SelectionSpan.DragEnabled = true;
         }
-        
-        //[計算爬升段電流]
-        private void FindRising(List<double> data, List<double> current)
+        private void DrawPlot()
         {
-            double startValue = 1;      // 稍微高於零點平台，代表開始上升
-            double endValue = Filter.GetPreciseHighLevel(data, 0.9);
+            double[] dataY = DataCalculateLogic.GetPositionErrorData().ToArray();
+            double[] dataY1 = DataCalculateLogic.GetCurrentData().ToArray();
+            double[] dataX = ScottPlot.DataGen.Consecutive(dataY.Length);
 
-            int startIndex = data.FindIndex(x => x >= startValue);
-            int endIndex = data.FindIndex(startIndex, x => x >= endValue);
+            //資料1
+            //var scatter1 = Plot_DataShow.Plot.AddScatter(dataX, dataY);
+            var scatter1 = Plot_DataShow.Plot.AddSignal(dataY);
+            scatter1.Color = Color.Blue;
 
-            //找出靜摩擦力電流峰值
-            FindStaticFrictionCur(startIndex, endIndex, current);
+            //資料2
+            //var scatter2 = Plot_DataShow.Plot.AddSignal(dataX, dataY1);
+            var scatter2 = Plot_DataShow.Plot.AddSignal(dataY1);
+            scatter2.Color = Color.Red;                         // 設定顏色
+            scatter2.YAxisIndex = 1;                            //指定使用右側Y軸
+            Plot_DataShow.Plot.YAxis2.Label("Amp");
+            Plot_DataShow.Plot.YAxis2.Ticks(true);              //開啟右側刻度顯示
+            Plot_DataShow.Plot.YAxis2.Color(scatter2.Color);    // 讓右軸顏色跟第二條線一致
 
-            if (startIndex != -1 && endIndex != -1)
-            {
-                //在ScottPlot上畫出這段範圍
-                var span = Plot_DataShow.Plot.AddHorizontalSpan(startIndex + SelectStart, endIndex + SelectStart);
-                span.Color = Color.FromArgb(100, Color.Yellow); // 使用淺紫色
-                double time = ApplicationSetting.Get_Double_Recipe<eF_DataCalculate>((int)eF_DataCalculate.TxtBx_TimePerPoint);
-                TxtBx_SystemStableTime.Text = ((endIndex - startIndex) * time / 1000).ToString();
-                Plot_DataShow.Refresh();
-            }
-
-            int fallStartIndex = data.FindIndex(endIndex, x => x <= endValue*0.99);
-
-            if (fallStartIndex != -1)
-            {
-                CalculateStableRMS(endIndex, fallStartIndex, current);
-            }
-        }
-
-        //[計算平穩段RMS]
-        private void CalculateStableRMS(int start, int end, List<double> data)
-        {
-            if (data == null || data.Count == 0) 
-                return ;
-
-            end = end - 1000;
-            start = start + 1000;
-
-            int count = (end) - (start) + 1;
-
-            //平方和
-            double sumOfSquares = data.Skip(start)
-                                      .Take(count)
-                                      .Select(x => x * x)
-                                      .Sum();
-
-            //rms
-            double rms = Math.Sqrt(sumOfSquares / count);
-
-            var span = Plot_DataShow.Plot.AddHorizontalSpan(start + SelectStart, end + SelectStart);
-            span.Color = Color.FromArgb(100, Color.Green); // 使用淺紫色
             Plot_DataShow.Refresh();
-            TxtBx_RMS.Text = rms.ToString();
-
-            return;
         }
         #endregion
 
@@ -194,72 +140,56 @@ namespace ProbeTester.UI
             {
                 string filePath = openFileDialog.FileName;
                 TxtBx_PathName.Text = filePath;
-                string[] lines = File.ReadAllLines(filePath);
-                bool start_read = false;
-
-                foreach (string line in lines)
-                {
-                    if(start_read == true)
-                    {
-                        string[] parts = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-
-                        if (double.TryParse(parts[1], out double value))
-                        {
-                            PositionError.Add(value);
-                        }
-                        if(double.TryParse(parts[2], out double value1))
-                        {
-                            Current.Add(value1);
-                        }
-                    }
-                    
-                    if (line.Contains("                                CH1                                CH2"))
-                    {
-                        start_read = true;
-                    }
-                }
+                DataCalculateLogic.ReadFile(filePath);
             }
+            else
+                return;
 
-            Plot_DataShow.Plot.Clear();
-            selectionSpan = Plot_DataShow.Plot.AddHorizontalSpan(7473, 54524);
-            selectionSpan.Color = Color.FromArgb(50, Color.Blue);
-            selectionSpan.DragEnabled = true;
-            double[] dataY = PositionError.ToArray();
-            double[] dataY1 = Current.ToArray();
-            double[] dataX = ScottPlot.DataGen.Consecutive(dataY.Length);
+            InitialPlot();
+            DrawPlot();
 
-            double time = ApplicationSetting.Get_Double_Recipe<eF_DataCalculate>((int)eF_DataCalculate.TxtBx_TimePerPoint);
-            double[] scaledX = dataX.Select(x => x * time).ToArray();
-            var scatter1 = Plot_DataShow.Plot.AddScatter(dataX, dataY);
-            scatter1.Color = Color.Blue; // 設定顏色
-
-            var scatter2 = Plot_DataShow.Plot.AddScatter(dataX, dataY1);
-            scatter2.Color = Color.Red; // 設定顏色
-            scatter2.YAxisIndex = 1; // 指定使用右側 Y 軸
-            Plot_DataShow.Plot.YAxis2.Label("Amp");
-            Plot_DataShow.Plot.YAxis2.Ticks(true); // 重要！預設右軸刻度是隱藏的，必須開啟
-            Plot_DataShow.Plot.YAxis2.Color(scatter2.Color); // 讓右軸顏色跟第二條線一致
-
-            Plot_DataShow.Refresh();
+            Btn_Calculate.Enabled = true;
         }
 
         private void Btn_Calculate_Click(object sender, EventArgs e)
         {
-            // 1. 取得目前框選的 X 軸範圍 (Index)
-            double minX = selectionSpan.X1;
-            double maxX = selectionSpan.X2;
+            SaveAllEnumSetting();
+            ReadAllEnumSetting();
 
-            // 確保 min 小於 max (防止使用者反向拖拉)
-            SelectStart = (int)Math.Max(0, Math.Min(minX, maxX));
-            int endIndex = (int)Math.Min(PositionError.Count - 1, Math.Max(minX, maxX));
+            double SelectStart = SelectionSpan.X1;
+            DataCalculateLogic.SelectRange(SelectionSpan.X1, SelectionSpan.X2);
+            DataCalculateLogic.Calculate();
 
-            // 2. 篩選出該範圍內的數據
-            var rangeData = PositionError.Skip(SelectStart).Take(endIndex - SelectStart + 1).ToList();
-            var cur_rangeDate = Current.Skip(SelectStart).Take(endIndex - SelectStart + 1).ToList();
-            if (rangeData.Count > 0)
+            //畫出爬升計算區間
+            int start = DataCalculateLogic.CalculateDataResult.RisingStart;
+            int end = DataCalculateLogic.CalculateDataResult.RisingEnd;
+            if (start != -1 && end != -1)
             {
-                FindRising(rangeData, cur_rangeDate);
+                var span = Plot_DataShow.Plot.AddHorizontalSpan(start + SelectStart, end + SelectStart);
+                span.Color = Color.FromArgb(100, Color.Yellow);
+                double time = ApplicationSetting.Get_Double_Recipe<eF_DataCalculate>((int)eF_DataCalculate.TxtBx_TimePerPoint);
+                TxtBx_SystemStableTime.Text = ((end - start) * time / 1000).ToString();
             }
+
+            //畫出穩定運動區間
+            int stable_start = DataCalculateLogic.CalculateDataResult.StableStart;
+            int stable_end = DataCalculateLogic.CalculateDataResult.StableEnd;
+            var span_stable = Plot_DataShow.Plot.AddHorizontalSpan(stable_start + SelectStart, stable_end + SelectStart);
+            span_stable.Color = Color.FromArgb(100, Color.Green);
+            TxtBx_RMS.Text = DataCalculateLogic.CalculateDataResult.RMS.ToString();
+
+            //畫出靜摩擦力位置
+            var marker = Plot_DataShow.Plot.AddMarker(DataCalculateLogic.CalculateDataResult.Fs_pos + SelectStart, 
+                                                        DataCalculateLogic.CalculateDataResult.Fs);
+            marker.YAxisIndex = 1;                  //依照副軸
+            marker.Color = Color.Orange;            // 點的顏色
+            marker.MarkerSize = 15;                 // 點的大小 (像素)
+            TxtBx_MaxCurrent.Text = DataCalculateLogic.CalculateDataResult.Fs.ToString();
+
+            //更新畫面
+            Plot_DataShow.Refresh();
+
+            Btn_Calculate.Enabled = false;
         }
     }
 }
