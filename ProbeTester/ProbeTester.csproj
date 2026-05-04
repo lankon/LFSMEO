@@ -51,6 +51,12 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.9.0.10\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="ScottPlot, Version=4.1.74.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.4.1.74\lib\net48\ScottPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="ScottPlot.WinForms, Version=4.1.74.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.WinForms.4.1.74\lib\net48\ScottPlot.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="Serilog, Version=4.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.4.3.0\lib\net471\Serilog.dll</HintPath>
     </Reference>
@@ -69,6 +75,9 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.7.2\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -97,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\eF_DataCalculate.cs" />
     <Compile Include="Base\eF_Equipment_Setting.cs" />
     <Compile Include="Base\IBaseMainTask.cs" />
     <Compile Include="Base\IBaseTask.cs" />
@@ -108,8 +118,10 @@
     <Compile Include="Logic\1.Task\PTPA\SubTask\SubTaskGoToUpCCDFocusPos.cs" />
     <Compile Include="Logic\1.Task\PTPA\Task_PTPA.cs" />
     <Compile Include="Logic\1.Task\TaskInitial.cs" />
+    <Compile Include="Logic\2.FormLogic\F_DataCalculateLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
+    <Compile Include="Logic\Function\DataFilter.cs" />
     <Compile Include="Logic\Function\ProbeTesterFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProbeTesterAssemble.cs" />
@@ -130,6 +142,12 @@
     </Compile>
     <Compile Include="UI\F_OEM_Setting.designer.cs">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_DataCalculate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_DataCalculate.designer.cs">
+      <DependentUpon>F_DataCalculate.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\F_StartForm.cs">
       <SubType>Form</SubType>
@@ -160,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_OEM_Setting.resx">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_DataCalculate.resx">
+      <DependentUpon>F_DataCalculate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_StartForm.resx">
       <DependentUpon>F_StartForm.cs</DependentUpon>
