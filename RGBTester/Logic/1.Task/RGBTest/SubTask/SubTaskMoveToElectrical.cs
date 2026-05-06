@@ -205,33 +205,19 @@ namespace RGBTester.Logic
                     }
                     break;
 
-                //case WORK.SPHERE_UP:
-                //    {
-                //        Deps.DIOL.SetOutputStatus(EIOName.SphereUp, true);
-                //        Deps.DIOL.SetOutputStatus(EIOName.SphereDown, false);
-                //        Transition(WORK.CHUCK_DOWN);
-                //    }
-                //    break;
-
                 case WORK.CHUCK_DOWN:
-                    //if (Deps.DIOL.GetInputStatus(EIOName.SphereUpSensor))
                     {
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, true);
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, false);
                         ResetTimeCount(out task_delay);
                         Transition(WORK.CHUCK_RIGHT);
                     }
-                    //else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
-                    //{
-                    //    Transition(WORK.ABORT);
-                    //}
                     break;
 
                 case WORK.CHUCK_RIGHT:
                     if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
                     {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, false);
+                        Deps.DIOL.SetOutputStatus(EIOName.Chuck_LR, false);
                         ResetTimeCount(out task_delay);
                         Transition(WORK.CHUCK_UP);
                     }

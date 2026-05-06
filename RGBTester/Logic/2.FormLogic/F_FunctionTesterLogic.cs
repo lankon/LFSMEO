@@ -36,11 +36,8 @@ namespace RGBTester.Logic
             RGBTesterMachine.DIOL.AddIORule(EIOName.SphereDown, true, (EIOName.SphereDownSensor, true));
             RGBTesterMachine.DIOL.AddIORule(EIOName.SphereDown, false, (EIOName.SphereDownSensor, false));
 
-            RGBTesterMachine.DIOL.AddIORule(EIOName.SphereLeft, true, (EIOName.SphereLeftSensor, true));
-            RGBTesterMachine.DIOL.AddIORule(EIOName.SphereLeft, false, (EIOName.SphereLeftSensor, false));
-
-            RGBTesterMachine.DIOL.AddIORule(EIOName.SphereRight, true, (EIOName.SphereRightSensor, true));
-            RGBTesterMachine.DIOL.AddIORule(EIOName.SphereRight, false, (EIOName.SphereRightSensor, false));
+            RGBTesterMachine.DIOL.AddIORule(EIOName.Sphere_LR, true, (EIOName.SphereLeftSensor, true), (EIOName.SphereRightSensor, false));
+            RGBTesterMachine.DIOL.AddIORule(EIOName.Sphere_LR, false, (EIOName.SphereLeftSensor, false), (EIOName.SphereRightSensor, true));
 
             RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckUp, true, (EIOName.ChuckUpSensor, true));
             RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckUp, false, (EIOName.ChuckUpSensor, false));
@@ -48,12 +45,8 @@ namespace RGBTester.Logic
             RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckDown, true, (EIOName.ChuckDownSensor, true));
             RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckDown, false, (EIOName.ChuckDownSensor, false));
 
-            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckLeft, true, (EIOName.ChuckLeftSensor, true));
-            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckLeft, false, (EIOName.ChuckLeftSensor, false));
-
-            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckRight, true, (EIOName.ChuckRightSensor, true));
-            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckRight, false, (EIOName.ChuckRightSensor, false));
-        
+            RGBTesterMachine.DIOL.AddIORule(EIOName.Chuck_LR, true, (EIOName.ChuckLeftSensor, true), (EIOName.ChuckRightSensor, false));
+            RGBTesterMachine.DIOL.AddIORule(EIOName.Chuck_LR, false, (EIOName.ChuckLeftSensor, false), (EIOName.ChuckRightSensor, true));
         }
         public int StartFunctionTest()
         {

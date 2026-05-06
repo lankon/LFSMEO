@@ -230,8 +230,7 @@ namespace RGBTester.Logic
                 case WORK.CHUCK_LEFT:
                     if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
                     {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, false);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, true);
+                        Deps.DIOL.SetOutputStatus(EIOName.Chuck_LR, true);
                         ResetTimeCount(out task_delay);
                         Transition(WORK.CHECK_ACTION_FINISH);
                     }

@@ -80,13 +80,10 @@ namespace DeviceCore
         #region Output
         SphereUp,
         SphereDown,
-        SphereLeft,
-        SphereRight,
+        Sphere_LR,
         ChuckUp,
         ChuckDown,
-        ChuckLeft,
-        ChuckRight,
-        
+        Chuck_LR,
 
         Vacuum_Pump,
         CCD_FiducialMaskWork,

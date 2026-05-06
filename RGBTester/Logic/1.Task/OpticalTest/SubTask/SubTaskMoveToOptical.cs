@@ -37,8 +37,6 @@ namespace RGBTester.Logic
         private int task_delay = 0;
         private int delay_time = 1;
         private int TestSide = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
-        private EIOName SphereWork_Output;
-        private EIOName SphereIdle_Output;
         private EIOName SphereWork_Input;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
@@ -147,17 +145,9 @@ namespace RGBTester.Logic
         private void Preset()
         {
             if(TestSide == (int)eTestMode.LEFT)
-            {
-                SphereWork_Output = EIOName.SphereLeft;
-                SphereIdle_Output = EIOName.SphereRight;
                 SphereWork_Input = EIOName.SphereLeftSensor;
-            }
             else
-            {
-                SphereWork_Output = EIOName.SphereRight;
-                SphereIdle_Output = EIOName.SphereLeft;
                 SphereWork_Input = EIOName.SphereRightSensor;
-            }
         }
         #endregion
 
@@ -237,8 +227,7 @@ namespace RGBTester.Logic
                 case WORK.CHUCK_LEFT:
                     if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
                     {
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckLeft, true);
-                        Deps.DIOL.SetOutputStatus(EIOName.ChuckRight, false);
+                        Deps.DIOL.SetOutputStatus(EIOName.Chuck_LR, true);
                         ResetTimeCount(out task_delay);
                         Transition(WORK.SPHERE_LR_SIDE);
                     }
@@ -250,8 +239,11 @@ namespace RGBTester.Logic
                 case WORK.SPHERE_LR_SIDE:
                     if (Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor))
                     {
-                        Deps.DIOL.SetOutputStatus(SphereWork_Output, true);
-                        Deps.DIOL.SetOutputStatus(SphereIdle_Output, false);
+                        if (TestSide == (int)eTestMode.LEFT)
+                            Deps.DIOL.SetOutputStatus(EIOName.Sphere_LR, true);
+                        else
+                            Deps.DIOL.SetOutputStatus(EIOName.Sphere_LR, false);
+
                         ResetTimeCount(out task_delay);
                         Transition(WORK.CHUCK_UP);
                     }
