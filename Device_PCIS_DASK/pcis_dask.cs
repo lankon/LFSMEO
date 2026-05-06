@@ -55,14 +55,15 @@ namespace Device_PCIS_DASK
         {
             try
             {
-                card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 0); // 假設 CardType
+                card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 0);
+                card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 1);
             }
             catch
             {
                 return false;
             }
 
-            if (card < 0 || card > 65530)
+            if (card < 0 || card > 65500)
             {
                 Console.WriteLine("Register_IO_Card failed.");
                 return false;
