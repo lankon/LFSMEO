@@ -1,8 +1,4 @@
-﻿using DeviceCore;
-using Microsoft.Extensions.DependencyInjection;
-using RGBTester.Base;
-using RGBTester.Logic;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,14 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using ToolFunction;
-using static RGBTester.Logic.DataBaseTestResult;
+using RGBTester.Base;
+using RGBTester.Logic;
 
 namespace RGBTester.UI
 {
-    public partial class F_ParameterSetting : Form, IF_ParameterSetting
+    public partial class F_ElectricalSetting : Form, IF_ElectricalSetting
     {
-        public F_ParameterSetting(IServiceProvider serviceProvider, F_ParameterSettingLogic f_ParameterSettingLogic)
+        public F_ElectricalSetting(IServiceProvider serviceProvider, F_ParameterSettingLogic f_ParameterSettingLogic)
         {
             InitializeComponent();
 

@@ -7,33 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using RGBTester.Base;
-using RGBTester.Device;
-using RGBTester.Logic;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.UI
 {
-    public partial class F_FunctionTester : Form
+    public partial class F_EngineerSetting : Form
     {
-        public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic,
-                                IFunction_LightEngine lea)
+        public F_EngineerSetting(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
-            FunctionTesterLogic = f_FunctionTesterLogic;
-            LEA = lea;
 
             InitialForm();
         }
 
         #region parameter define
         IServiceProvider ServiceProvider;
-        IFunction_LightEngine LEA;
-        F_FunctionTesterLogic FunctionTesterLogic;
         #endregion
 
         #region private function
@@ -42,12 +35,7 @@ namespace RGBTester.UI
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
 
-            FunctionTesterLogic.SetVirtual_IO_Rule();
-
             ShowHint();
-
-            LEA.Set_LEA_Type();
-            LEA.Open();
 
             if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
@@ -58,7 +46,7 @@ namespace RGBTester.UI
         }
         private void ReadAllEnumSetting()
         {
-            ApplicationSetting.ReadAllRecipe<eF_FunctionTester>();
+            //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
             //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 
             //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
@@ -66,12 +54,12 @@ namespace RGBTester.UI
         }
         private void UpdateEnumSettingToForm()
         {
-            ApplicationSetting.UpdataRecipeToForm<eF_FunctionTester>(this);
+            //ApplicationSetting.UpdataRecipeToForm<eF_StartForm>(this);
             //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
         }
         private void SaveAllEnumSetting()
         {
-            ApplicationSetting.SaveRecipeFromForm<eF_FunctionTester>(this);
+            //ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
 
             //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
             //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
@@ -86,8 +74,9 @@ namespace RGBTester.UI
         }
         private void ShowForm<T>() where T : class
         {
-            var startForm = ServiceProvider.GetRequiredService<T>();
-            if (startForm is Form form)
+            var eng_set = ServiceProvider.GetRequiredService<T>();
+
+            if (eng_set is Form form)
             {
                 Tool.HideElementOnPanel(Scope.MainPanel);
                 Tool.SetForm(Scope.MainPanel, form);
@@ -97,10 +86,6 @@ namespace RGBTester.UI
         #endregion
 
         #region public function
-        public void ShowFormName(bool show)
-        {
-
-        }
         #endregion
 
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
@@ -122,45 +107,9 @@ namespace RGBTester.UI
             }
         }
 
-        private void Btn_ElectricalFrom_Click(object sender, EventArgs e)
+        private void Btn_ElectricalSetting_Click(object sender, EventArgs e)
         {
-            ShowForm<IF_StartForm>();
-        }
-
-        private void Btn_OpticalForm_Click(object sender, EventArgs e)
-        {
-            ShowForm<F_OpticalTest>();
-        }
-
-        private void Btn_UnLoad_Click(object sender, EventArgs e)
-        {
-            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-            MainTask.SetTask<TaskUnLoad>();
-            MainTask.Run();
-        }
-
-        private void Btn_StartTest_Click(object sender, EventArgs e)
-        {
-            if (Control.ModifierKeys == Keys.Control)
-            {
-                SaveAllEnumSetting();
-                ReadAllEnumSetting();
-
-                FunctionTesterLogic.StartFunctionTest();
-            }
-            else
-            {
-                MessageBox.Show("Please press Ctrl + Click to start the test.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-        }
-
-        private void Btn_Test_Click(object sender, EventArgs e)
-        {
-            QuantaAPI api = new QuantaAPI();
-            string res;
-
-            api.CheckRoutingSMT(out res, "efhuef;efefef;ef;");
+            ShowForm<IF_ElectricalSetting>();
         }
     }
 }

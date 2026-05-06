@@ -1,7 +1,7 @@
 ﻿
 namespace RGBTester.UI
 {
-    partial class F_ParameterSetting
+    partial class F_ElectricalSetting
     {
         /// <summary>
         /// Required designer variable.
@@ -855,7 +855,7 @@ namespace RGBTester.UI
             this.LabelTime.Text = "Deviation Limit (%)";
             this.LabelTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // F_ParameterSetting
+            // F_ElectricalSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
@@ -864,7 +864,7 @@ namespace RGBTester.UI
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "F_ParameterSetting";
+            this.Name = "F_ElectricalSetting";
             this.Text = "F_Equipment_Setting";
             this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
             this.tableLayoutPanel1.ResumeLayout(false);

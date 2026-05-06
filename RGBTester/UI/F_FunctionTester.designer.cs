@@ -43,6 +43,7 @@ namespace RGBTester.UI
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Btn_UnLoad = new System.Windows.Forms.Button();
+            this.Btn_Test = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.Pnl_Setting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -201,11 +202,22 @@ namespace RGBTester.UI
             this.Btn_UnLoad.UseVisualStyleBackColor = true;
             this.Btn_UnLoad.Click += new System.EventHandler(this.Btn_UnLoad_Click);
             // 
+            // Btn_Test
+            // 
+            this.Btn_Test.Location = new System.Drawing.Point(50, 368);
+            this.Btn_Test.Name = "Btn_Test";
+            this.Btn_Test.Size = new System.Drawing.Size(121, 48);
+            this.Btn_Test.TabIndex = 13;
+            this.Btn_Test.Text = "Test";
+            this.Btn_Test.UseVisualStyleBackColor = true;
+            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
+            // 
             // F_FunctionTester
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Pnl_Setting);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -236,5 +248,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_OpticalForm;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button Btn_UnLoad;
+        private System.Windows.Forms.Button Btn_Test;
     }
 }

@@ -353,7 +353,7 @@ namespace RGBTester.Logic
                 case WORK.CHECK_SLOPE_OFFSET:
                     {
                         bool res = ResultData.CheckSlopeData.CheckSlopeCorrect();
-                        var para_set = Deps.ServiceProvider.GetRequiredService<IF_ParameterSetting>();
+                        var para_set = Deps.ServiceProvider.GetRequiredService<IF_ElectricalSetting>();
                         para_set.ShowSlopeCheckDataInvoke(ResultData.CheckSlopeData.LCM_R_Calculate, ResultData.CheckSlopeData.LCM_R_Dev,
                                                             ResultData.CheckSlopeData.LCM_G_Calculate, ResultData.CheckSlopeData.LCM_G_Dev,
                                                             ResultData.CheckSlopeData.LCM_B_Calculate, ResultData.CheckSlopeData.LCM_B_Dev,

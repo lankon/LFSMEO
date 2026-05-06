@@ -114,9 +114,9 @@ namespace RGBTester.UI
 
         private void Btn_ParameterSetting_Click(object sender, EventArgs e)
         {
-            var para_set = ServiceProvider.GetRequiredService<IF_ParameterSetting>();
+            var eng_set = ServiceProvider.GetRequiredService<F_EngineerSetting>();
 
-            if(para_set is Form form)
+            if(eng_set is Form form)
             {
                 Tool.HideElementOnPanel(Scope.MainPanel);
                 Tool.SetForm(Scope.MainPanel, form);

@@ -140,6 +140,7 @@
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Device\QuantaLogAPI\Command\QuantaAPI.cs" />
     <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskTestOptical.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\TaskOpticalTest.cs" />
@@ -161,11 +162,11 @@
     <Compile Include="Logic\TestData\ResultData.cs" />
     <Compile Include="Logic\TestData\RGBTesterDataFile_FunctionTester.cs" />
     <Compile Include="Logic\TestData\RGBTesterDataFile_IVCalibration.cs" />
-    <Compile Include="UI\F_ParameterSetting.cs">
+    <Compile Include="UI\Engineer\F_ElectricalSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_ParameterSetting.designer.cs">
-      <DependentUpon>F_ParameterSetting.cs</DependentUpon>
+    <Compile Include="UI\Engineer\F_ElectricalSetting.designer.cs">
+      <DependentUpon>F_ElectricalSetting.cs</DependentUpon>
     </Compile>
     <Content Include="ChangeLog.xml" />
     <Compile Include="Device\LightEngine\Command\Z23ACommand.cs" />
@@ -216,6 +217,12 @@
     <Compile Include="UI\F_OpticalTest.designer.cs">
       <DependentUpon>F_OpticalTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Engineer\F_EngineerSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Engineer\F_EngineerSetting.designer.cs">
+      <DependentUpon>F_EngineerSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_YieldReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,10 +247,10 @@
     <Compile Include="UI\OEM\F_OEM_Setting.designer.cs">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_Recipe.cs">
+    <Compile Include="UI\Standard\F_Recipe.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_Recipe.designer.cs">
+    <Compile Include="UI\Standard\F_Recipe.designer.cs">
       <DependentUpon>F_Recipe.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\OEM\F_DAQ_SamplingTest.cs">
@@ -264,22 +271,22 @@
     <Compile Include="UI\F_StartForm_ButtonGroup.designer.cs">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_ProgressBar.cs">
+    <Compile Include="UI\Standard\F_ProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_ProgressBar.designer.cs">
+    <Compile Include="UI\Standard\F_ProgressBar.designer.cs">
       <DependentUpon>F_ProgressBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_StatusBox.cs">
+    <Compile Include="UI\Standard\F_StatusBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_StatusBox.designer.cs">
+    <Compile Include="UI\Standard\F_StatusBox.designer.cs">
       <DependentUpon>F_StatusBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_StateControl.cs">
+    <Compile Include="UI\Standard\F_StateControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_StateControl.designer.cs">
+    <Compile Include="UI\Standard\F_StateControl.designer.cs">
       <DependentUpon>F_StateControl.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -300,6 +307,9 @@
     <EmbeddedResource Include="UI\F_OpticalTest.resx">
       <DependentUpon>F_OpticalTest.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Engineer\F_EngineerSetting.resx">
+      <DependentUpon>F_EngineerSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_YieldReport.resx">
       <DependentUpon>F_YieldReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -312,7 +322,7 @@
     <EmbeddedResource Include="UI\OEM\F_OEM_Setting.resx">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_Recipe.resx">
+    <EmbeddedResource Include="UI\Standard\F_Recipe.resx">
       <DependentUpon>F_Recipe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OEM\F_DAQ_SamplingTest.resx">
@@ -324,17 +334,17 @@
     <EmbeddedResource Include="UI\F_StartForm_ButtonGroup.resx">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_ProgressBar.resx">
+    <EmbeddedResource Include="UI\Standard\F_ProgressBar.resx">
       <DependentUpon>F_ProgressBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_StatusBox.resx">
+    <EmbeddedResource Include="UI\Standard\F_StatusBox.resx">
       <DependentUpon>F_StatusBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_StateControl.resx">
+    <EmbeddedResource Include="UI\Standard\F_StateControl.resx">
       <DependentUpon>F_StateControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_ParameterSetting.resx">
-      <DependentUpon>F_ParameterSetting.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Engineer\F_ElectricalSetting.resx">
+      <DependentUpon>F_ElectricalSetting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
