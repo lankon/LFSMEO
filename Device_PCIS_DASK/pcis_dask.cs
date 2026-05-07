@@ -74,7 +74,7 @@ namespace Device_PCIS_DASK
 
         public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
-            if (cardNo < 0 || cardNo > 65000)
+            if (devNo < 0 || devNo > 255)
                 return -1;
 
             ushort rawValue = 0;
@@ -86,8 +86,8 @@ namespace Device_PCIS_DASK
             else if (range == "+10V")
                 u_range = DASK64.AD_B_10_V;
 
-            DASK64.AI_ReadChannel((ushort)cardNo, port, u_range, out rawValue);
-            DASK64.AI_VoltScale((ushort)cardNo, u_range, (short)rawValue, out voltage);
+            DASK64.AI_ReadChannel((ushort)devNo, port, u_range, out rawValue);
+            DASK64.AI_VoltScale((ushort)devNo, u_range, (short)rawValue, out voltage);
 
             return voltage;
         }
@@ -96,7 +96,7 @@ namespace Device_PCIS_DASK
         public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
             //port:點位
-            DASK64.DI_ReadLine(lineNo, DASK64.P9111_CHANNEL_DI, port, out ushort state);
+            DASK64.DI_ReadLine(devNo, DASK64.P9111_CHANNEL_DI, port, out ushort state);
 
             if (state == 1)
                 pCI_Parm.Input_Status[lineNo, devNo, port] = true;
@@ -130,7 +130,7 @@ namespace Device_PCIS_DASK
                 if (lineNo < 0 || lineNo >= lineMaxCount)
                     return;
 
-                short err = DASK64.DO_ReadPort(cardNo, DASK64.P9111_CHANNEL_DO, out uint res);
+                short err = DASK64.DO_ReadPort(devNo, DASK64.P9111_CHANNEL_DO, out uint res);
 
                 if (err != DASK64.NoError)
                     return;
@@ -171,7 +171,7 @@ namespace Device_PCIS_DASK
                 if (lineNo < 0 || lineNo >= lineMaxCount)
                     return false;
 
-                if (DASK64.DO_WriteLine(cardNo, DASK64.P9111_CHANNEL_DO, port, intput) == DASK64.NoError)
+                if (DASK64.DO_WriteLine(devNo, DASK64.P9111_CHANNEL_DO, port, intput) == DASK64.NoError)
                     return true;
                 else
                     return false;
