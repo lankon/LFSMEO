@@ -53,21 +53,27 @@ namespace Device_PCIS_DASK
 
         public bool Open()
         {
+            bool initial_success = false;
+
             try
             {
-                card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 0);
-                card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 1);
+                for (ushort i =0; i<16; i++)
+                {
+                    card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, i);
+
+                    short res = DASK64.GetCardType(i, out ushort _card);
+
+                    if(_card == pCI_Parm.CardType && (card >= 0 && card < 65000))
+                        initial_success = true;
+                }
             }
             catch
             {
                 return false;
             }
 
-            if (card < 0 || card > 65500)
-            {
-                Console.WriteLine("Register_IO_Card failed.");
+            if (!initial_success)
                 return false;
-            }
 
             return true;
         }
