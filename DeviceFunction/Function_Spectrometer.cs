@@ -90,7 +90,7 @@ namespace DeviceFunction
 
                 if (SpectrometerList[i].GetSpectrometerType() != ESpectrometerType.VIRTUAL)
                 {
-                    Tool.SaveLogToFile("實體光譜儀 Initial Success");
+                    Tool.SaveLogToFile("實體分光卡 Initial Success");
                     return 0;
                 }
             }

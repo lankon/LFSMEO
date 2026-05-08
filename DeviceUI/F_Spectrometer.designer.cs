@@ -43,7 +43,12 @@ namespace DeviceUI.Spectrometer
             this.Btn_Add = new System.Windows.Forms.Button();
             this.Btn_FunctionTest = new System.Windows.Forms.Button();
             this.Plot_Spectrom = new ScottPlot.FormsPlot();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TxtBx_IntgralTime = new System.Windows.Forms.TextBox();
+            this.Btn_Capture = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Spectrum)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // DGV_Spectrum
@@ -168,9 +173,9 @@ namespace DeviceUI.Spectrometer
             // 
             // Btn_FunctionTest
             // 
-            this.Btn_FunctionTest.Location = new System.Drawing.Point(1026, 375);
+            this.Btn_FunctionTest.Location = new System.Drawing.Point(1159, 142);
             this.Btn_FunctionTest.Name = "Btn_FunctionTest";
-            this.Btn_FunctionTest.Size = new System.Drawing.Size(145, 48);
+            this.Btn_FunctionTest.Size = new System.Drawing.Size(123, 48);
             this.Btn_FunctionTest.TabIndex = 31;
             this.Btn_FunctionTest.Text = "FunctionTest";
             this.Btn_FunctionTest.UseVisualStyleBackColor = true;
@@ -182,14 +187,61 @@ namespace DeviceUI.Spectrometer
             this.Plot_Spectrom.Location = new System.Drawing.Point(5, 216);
             this.Plot_Spectrom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Plot_Spectrom.Name = "Plot_Spectrom";
-            this.Plot_Spectrom.Size = new System.Drawing.Size(967, 376);
+            this.Plot_Spectrom.Size = new System.Drawing.Size(967, 435);
             this.Plot_Spectrom.TabIndex = 32;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.68224F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.31776F));
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_IntgralTime, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_Capture, 0, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(978, 572);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 43.03798F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 56.96202F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(231, 79);
+            this.tableLayoutPanel1.TabIndex = 33;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(136, 34);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "IntgTime(ms)";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_IntgralTime
+            // 
+            this.TxtBx_IntgralTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_IntgralTime.Location = new System.Drawing.Point(145, 3);
+            this.TxtBx_IntgralTime.Name = "TxtBx_IntgralTime";
+            this.TxtBx_IntgralTime.Size = new System.Drawing.Size(83, 29);
+            this.TxtBx_IntgralTime.TabIndex = 1;
+            // 
+            // Btn_Capture
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.Btn_Capture, 2);
+            this.Btn_Capture.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Capture.Location = new System.Drawing.Point(3, 37);
+            this.Btn_Capture.Name = "Btn_Capture";
+            this.Btn_Capture.Size = new System.Drawing.Size(225, 39);
+            this.Btn_Capture.TabIndex = 32;
+            this.Btn_Capture.Text = "Capture";
+            this.Btn_Capture.UseVisualStyleBackColor = true;
+            this.Btn_Capture.Click += new System.EventHandler(this.Btn_Capture_Click);
             // 
             // F_Spectrometer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Plot_Spectrom);
             this.Controls.Add(this.Btn_FunctionTest);
             this.Controls.Add(this.Btn_Load);
@@ -202,6 +254,8 @@ namespace DeviceUI.Spectrometer
             this.Text = "F_Equipment_Setting";
             this.VisibleChanged += new System.EventHandler(this.F_Spectrometer_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_Spectrum)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -220,5 +274,9 @@ namespace DeviceUI.Spectrometer
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_IntegralTime;
         private System.Windows.Forms.DataGridViewButtonColumn Title_GetSpectrum;
         private ScottPlot.FormsPlot Plot_Spectrom;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox TxtBx_IntgralTime;
+        private System.Windows.Forms.Button Btn_Capture;
     }
 }

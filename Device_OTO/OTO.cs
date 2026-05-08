@@ -151,20 +151,31 @@ namespace Device_OTO
         private UInt32[] GetAvailableVidPidList()
         {
             uint bufferSize = 0;
-            UInt32[] vidPid;
-            unsafe
+            UInt32[] vidPid = null;
+
+            try
             {
-                Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, null);
-                if (bufferSize == 0) return null;
-
-                vidPid = new UInt32[bufferSize * 2];
-
-                fixed (UInt32* p = vidPid)
+                unsafe
                 {
-                    Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, p);
+                    Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, null);
+                    if (bufferSize == 0) return null;
+
+                    vidPid = new UInt32[bufferSize * 2];
+
+                    fixed (UInt32* p = vidPid)
+                    {
+                        Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, p);
+                    }
                 }
             }
+            catch ( Exception ex)
+            {
+                int a = 0;
+            }
+
             return vidPid;
+
+
         }
         private int InitializeDeviceSettings(int index)
         {

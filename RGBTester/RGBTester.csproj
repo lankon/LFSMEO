@@ -142,6 +142,7 @@
     <Compile Include="Base\Scope_TaskFlag.cs" />
     <Compile Include="Device\QuantaLogAPI\Command\QuantaAPI.cs" />
     <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskLEDTestOptical.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskTestOptical.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\TaskOpticalTest.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTask_DISP_Test.cs" />

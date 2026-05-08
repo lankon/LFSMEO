@@ -216,7 +216,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.CALCULATE_LUMEN:
                     {
-                        if (CheckTimeOverMilSec(delay_time, 100))
+                        if (CheckTimeOverMilSec(delay_time, 1))
                         {
                             float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
                             double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
