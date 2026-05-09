@@ -28,6 +28,7 @@ namespace RGBTester.Base
         // [Test Data]
         void WriteFile(string context = "", string describe = "", bool NewLine = true);
         void WriteTestResult(RGBTesterData test_data, int index, string type);
+        void WriteExtendTestResult(RGBTesterData test_data, int index, string type);
 
         // [Close File]
         void CloseFile(string describe = "");
@@ -76,6 +77,11 @@ namespace RGBTester.Base
         }
 
         public virtual string GetTestReultStr(RGBTesterData test_data, int index)
+        {
+            return "";
+        }
+
+        public virtual string GetExtendTestResultStr(RGBTesterData test_data, int index)
         {
             return "";
         }

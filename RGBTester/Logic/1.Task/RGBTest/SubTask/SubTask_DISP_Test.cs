@@ -234,7 +234,7 @@ namespace SampleCode.Logic
                         RGBTesterFunction.AvgData_FuncTester AvgData = new RGBTesterFunction.AvgData_FuncTester();
                         for (int i = 0; i < repeat; i++)
                         {
-                            AvgData = PeriodAvgValueCalculate("LCM");
+                            AvgData = PeriodAvgValueCalculate("");
 
                             sum_DISP_6V0 += AvgData.Avg_DISP_6V0;
                             sum_DISP_1V2 += AvgData.Avg_DISP_1V2;
@@ -243,6 +243,7 @@ namespace SampleCode.Logic
                         sum_DISP_6V0 = sum_DISP_6V0 / repeat;
                         sum_DISP_1V2 = sum_DISP_1V2 / repeat;
 
+                        //HCM,LCM沒有差異,兩個都加
                         TestData_HCM.DISP_6V0.Add(sum_DISP_6V0);
                         TestData_HCM.DISP_1V2.Add(sum_DISP_1V2);
                         TestData_LCM.DISP_6V0.Add(sum_DISP_6V0);

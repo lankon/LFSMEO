@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-//using System.Windows.Forms;
 
+using Microsoft.Extensions.DependencyInjection;
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
@@ -38,6 +38,7 @@ namespace RGBTester.Logic
         private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private IF_StatusBox StatusBox;
         //private F_StateControl TaskForm;
         public enum WORK
         {
@@ -138,6 +139,10 @@ namespace RGBTester.Logic
 
             return res;
         }
+        private void Preset()
+        {
+            StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+        }
         #endregion
 
         #region public function
@@ -187,6 +192,7 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
+                        Preset();
                         Transition(WORK.CHECK_POSITION_READY);
                     }
                     break;
@@ -215,7 +221,7 @@ namespace RGBTester.Logic
                     break;
 
                 case WORK.CHUCK_RIGHT:
-                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
+                   if (Deps.DIOL.GetInputStatus(EIOName.ChuckDownSensor))
                     {
                         Deps.DIOL.SetOutputStatus(EIOName.Chuck_LR, false);
                         ResetTimeCount(out task_delay);
@@ -262,6 +268,8 @@ namespace RGBTester.Logic
                     break;
                 case WORK.ABORT:
                     {
+                        StatusBox.ShowMessage("Chcuk Pos Error");
+
                         SetStatus(TASK_STATUS.ABORT);
                     }
                     break;

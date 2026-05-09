@@ -142,8 +142,8 @@
     <Compile Include="Base\Scope_TaskFlag.cs" />
     <Compile Include="Device\QuantaLogAPI\Command\QuantaAPI.cs" />
     <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
-    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskLEDTestOptical.cs" />
-    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskTestOptical.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTestRGB.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTest.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\TaskOpticalTest.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTask_DISP_Test.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskMoveToElectrical.cs" />
@@ -153,6 +153,7 @@
     <Compile Include="Logic\1.Task\UnLoad\SubTask\SubTaskUnLoad.cs" />
     <Compile Include="Logic\1.Task\UnLoad\TaskUnLoad.cs" />
     <Compile Include="Logic\2.FormLogic\F_FunctionTesterLogic.cs" />
+    <Compile Include="Logic\2.FormLogic\F_OpticalTestLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_YieldReportLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_ParameterSettingLogic.cs" />
     <Compile Include="Logic\Function\LuminousFlux.cs" />

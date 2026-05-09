@@ -48,15 +48,20 @@ namespace RGBTester.Logic._RGBTesterDataFile
         public override string GetTestReultStr(RGBTesterData test_data, int index)
         {
             double unit_milli = 1000;
-            string context = $"{test_data.DISP_6V0[0]:F2}," +       //只測一次
-                            $"{test_data.DISP_1V2[0]:F2}," +        //只測一次
-                            $"{test_data.DACpoint[index]:F2}," +
+            string context =$"{test_data.DACpoint[index]:F2}," +
                             $"{test_data.Vin[index]:F2}," +
                             $"{test_data.Vf[index]:F2}," +
                             $"{test_data.Iled[index] * unit_milli:F2}," +
                             $"{test_data.Pled[index] * unit_milli:F2}," +
                             $"{test_data.Temperature[index]:F2}," +
                             $"{test_data.DAC_Avg:F2},{test_data.Current_Avg:F2},{test_data.Slope:F3},{test_data.Offset:F2}";
+
+            return context;
+        }
+        public override string GetExtendTestResultStr(RGBTesterData test_data, int index)
+        {
+            string context = $"{test_data.DISP_6V0[0]:F2}," +       //只測一次
+                             $"{test_data.DISP_1V2[0]:F2},";        //只測一次
 
             return context;
         }

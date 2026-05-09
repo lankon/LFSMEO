@@ -37,6 +37,7 @@ namespace RGBTester.Logic
         }
 
         #region parameter
+        private string TestSide;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         public enum WORK
@@ -138,6 +139,17 @@ namespace RGBTester.Logic
 
             return res;
         }
+        private void Preset()
+        {
+            
+            int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
+            if (method == (int)eTestMode.LEFT)
+                TestSide = "Left";
+            else if (method == (int)eTestMode.RIGHT)
+                TestSide = "Right";
+            else
+                TestSide = "Both";
+        }
         #endregion
 
         #region public function
@@ -187,23 +199,17 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
+                        Preset();
                         Transition(WORK.ELECTRIC_TEST);
                     }
                     break;
                 
                 case WORK.ELECTRIC_TEST:
                     {
-                        string test_side;
-                        int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
-                        if(method == (int)eTestMode.LEFT)
-                            test_side = "Left";
-                        else if(method == (int)eTestMode.RIGHT)
-                            test_side = "Right";
-                        else
-                            test_side = "Both";
+                        
 
                         //建立SubTask
-                        SubTask = new TaskRGBTest(Deps, F_StateControl, test_side);
+                        SubTask = new TaskRGBTest(Deps, F_StateControl, TestSide);
                         //委派必要Function
                         //SubTask.SetForm(TaskForm);
                         //設定是否有SubTask執行
@@ -222,7 +228,7 @@ namespace RGBTester.Logic
                 case WORK.OPTICAL_TEST:
                     {
                         //建立SubTask
-                        SubTask = new TaskOpticalTest(Deps, F_StateControl);
+                        SubTask = new TaskOpticalTest(Deps, F_StateControl, TestSide);
                         //委派必要Function
                         //SubTask.SetForm(TaskForm);
                         //設定是否有SubTask執行

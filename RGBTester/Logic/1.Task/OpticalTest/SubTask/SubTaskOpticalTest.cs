@@ -11,9 +11,9 @@ using RGBTester.Base;
 
 namespace RGBTester.Logic
 {
-    public class SubTaskTestOptical : IBaseTask<SubTaskTestOptical.WORK>
+    public class SubTaskOpticalTest : IBaseTask<SubTaskOpticalTest.WORK>
     {
-        public SubTaskTestOptical(IBaseTaskDependence dependencies, 
+        public SubTaskOpticalTest(IBaseTaskDependence dependencies, 
                           IF_StateControl f_StateControl,  
                           string set_state = "Default") : base(dependencies)
         {
@@ -29,16 +29,31 @@ namespace RGBTester.Logic
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
+
+            Type = set_state;
         }
 
         #region parameter
         private int delay_time = 1;
+        private int I_Start = 500, I_Step = 10, I_End = 600;
+        private int TotalStep = 0;
         private LuminousFlux LF = new LuminousFlux();
+        private string Type;
+        private string TestSide;
+        private string TestColor;
         private float[] fSpectrumRawData;
         private double[] SpectrumRawData;
+        private Queue<int> qCurrent = new Queue<int>();
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
-        //private F_StateControl TaskForm;
+        private Dictionary<string, Dictionary<string, CurrentCondition>> CurrentConfig; //雙層字典：[Side (Left/Right)][Color (R/G/B/B1)]
+        
+        public class CurrentCondition
+        {
+            public int Start { get; set; }
+            public int Step { get; set; }
+            public int End { get; set; }
+        }
         public enum WORK
         {
             NONE,
@@ -136,6 +151,73 @@ namespace RGBTester.Logic
 
             return res;
         }
+        private void Preset()
+        {
+            string[] res = Type.Split('_');
+
+            TestSide = res[0];
+            TestColor = res[1];
+
+            InitialCurrentConfig();
+            SetCurrentCondition();
+        }
+        private void InitialCurrentConfig()
+        {
+            CurrentConfig = new Dictionary<string, Dictionary<string, CurrentCondition>>();
+            string[] sides = { "Left", "Right" };
+            string[] colors = { "R", "G", "B", "B1" };
+
+            foreach (var side in sides)
+            {
+                CurrentConfig[side] = new Dictionary<string, CurrentCondition>();
+                foreach (var color in colors)
+                {
+                    CurrentConfig[side][color] = new CurrentCondition
+                    {
+                        Start = GetCurrentRecipe(side, color, "Start"),
+                        Step = GetCurrentRecipe(side, color, "Step"),
+                        End = GetCurrentRecipe(side, color, "End")
+                    };
+                }
+            }
+        }
+        private int GetCurrentRecipe(string side, string color, string type)
+        {
+            //"TxtBx_Left_R_I_Start"
+            string enumName = $"TxtBx_{side}_{color}_I_{type}";
+
+            //將字串轉換為 Enum 型別
+            if (Enum.TryParse<eF_OpticalTestRecipe>(enumName, out eF_OpticalTestRecipe result))
+            {
+                return ApplicationSetting.Get_Int_Recipe<eF_OpticalTestRecipe>((int)result);
+            }
+
+            Tool.SaveLogToFile($"Recipe Enum not found: {enumName}", level: "ERR");
+            return 0;
+        }
+        private void SetCurrentCondition()
+        {
+            //透過Dictionary(TestSide, TestColor) 獲取物件
+            if (CurrentConfig.ContainsKey(TestSide) && CurrentConfig[TestSide].ContainsKey(TestColor))
+            {
+                var set = CurrentConfig[TestSide][TestColor];
+
+                I_Start = set.Start;
+                I_Step = set.Step;
+                I_End = set.End;
+
+                Tool.SaveLogToFile($"Condition Set: {TestSide}_{TestColor} [Start:{I_Start}/Step:{I_Step}/End:{I_End}]");
+
+                for (int i = I_Start; i <= I_End; i += I_Step)
+                    qCurrent.Enqueue(i);
+
+                TotalStep = qCurrent.Count;
+            }
+            else
+            {
+                Tool.SaveLogToFile($"Condition Missing: {TestSide}_{TestColor}", level: "ERR");
+            }
+        }
         #endregion
 
         #region public function
@@ -185,6 +267,7 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
+                        Preset();
                         Transition(WORK.SET_LED_DAC);
                     }
                     break;
@@ -216,14 +299,11 @@ namespace RGBTester.Logic
                     break;
                 case WORK.CALCULATE_LUMEN:
                     {
-                        if (CheckTimeOverMilSec(delay_time, 1))
-                        {
-                            float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
-                            double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
+                        float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
+                        double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
 
-                            double lm = LF.CalculateTotalLumens(wavelength, SpectrumRawData);
-                            Transition(WORK.SUCCESS);
-                        }
+                        double lm = LF.CalculateTotalLumens(wavelength, SpectrumRawData);
+                        Transition(WORK.SUCCESS);
                     }
                     break;
 

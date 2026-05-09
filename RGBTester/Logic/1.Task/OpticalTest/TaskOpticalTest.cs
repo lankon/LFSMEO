@@ -22,6 +22,11 @@ namespace RGBTester.Logic
             TaskName = this.GetType().Name;
             State = WORK.INITIAL;
 
+            if (set_state == "Left")
+                OnlyLeftTest = true;
+            else if (set_state == "Right")
+                OnlyRightTest = true;
+
             switch (set_state)
             {
                 default:
@@ -31,12 +36,13 @@ namespace RGBTester.Logic
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private bool OnlyLeftTest = false;
+        private bool OnlyRightTest = false;
         public enum WORK
         {
             NONE,
@@ -46,8 +52,11 @@ namespace RGBTester.Logic
             GOTO_OPTICAL_TEST_POSITION,
             WAIT_GOTO_OPTICAL_TEST_POSITION,
 
-            TEST_OPTICAL,
-            WAIT_TEST_OPTICAL,
+            LEFT_GLASSES_TEST,
+            WAIT_LEFT_GLASSES_TEST,
+
+            RIGHT_GLASSES_TEST,
+            WAIT_RIGHT_GLASSES_TEST,
 
             END,
 
@@ -194,8 +203,6 @@ namespace RGBTester.Logic
                     {
                         //建立SubTask
                         SubTask = new SubTaskMoveToOptical(Deps, F_StateControl);
-                        //委派必要Function
-                        //SubTask.SetForm(TaskForm);
                         //設定是否有SubTask執行
                         SetSubTaskProcessing(true);
 
@@ -205,26 +212,49 @@ namespace RGBTester.Logic
                 case WORK.WAIT_GOTO_OPTICAL_TEST_POSITION:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.TEST_OPTICAL);
+
+                        if (OnlyRightTest)
+                            CheckResult(check, SUCCESS: WORK.RIGHT_GLASSES_TEST);
+                        else
+                            CheckResult(check, SUCCESS: WORK.LEFT_GLASSES_TEST);
                     }
                     break;
                 #endregion
-                #region Test Optical
-                case WORK.TEST_OPTICAL:
+
+                #region Left
+                case WORK.LEFT_GLASSES_TEST:
                     {
-                        //建立SubTask
-                        SubTask = new SubTaskTestOptical(Deps, F_StateControl);
-                        //委派必要Function
-                        //SubTask.SetForm(TaskForm);
-                        //設定是否有SubTask執行
+                        Tool.SaveLogToFile("LEFT_GLASSES_TEST", level: "INF");
+                        SubTask = new SubTaskOpticalTestRGB(Deps, F_StateControl, "Left");
                         SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_TEST_OPTICAL);
+
+                        Transition(WORK.WAIT_LEFT_GLASSES_TEST);
                     }
                     break;
-                case WORK.WAIT_TEST_OPTICAL:
+                case WORK.WAIT_LEFT_GLASSES_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check);
+
+                        if (OnlyLeftTest)
+                            CheckResult(check, SUCCESS: WORK.SUCCESS);
+                        else
+                            CheckResult(check, SUCCESS: WORK.RIGHT_GLASSES_TEST);
+                    }
+                    break;
+                #endregion
+                #region Right
+                case WORK.RIGHT_GLASSES_TEST:
+                    {
+                        Tool.SaveLogToFile("RIGHT_GLASSES_TEST", level: "INF");
+                        SubTask = new SubTaskOpticalTestRGB(Deps, F_StateControl, "Right");
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_RIGHT_GLASSES_TEST);
+                    }
+                    break;
+                case WORK.WAIT_RIGHT_GLASSES_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }
                     break;
                 #endregion

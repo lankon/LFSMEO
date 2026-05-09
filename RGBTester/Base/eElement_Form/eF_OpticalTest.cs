@@ -8,7 +8,7 @@ namespace RGBTester.Base
 {
     public enum eF_OpticalTest
     {
-        
+        Cmbx_TestMode,
     }
 
     public enum eF_OpticalTestRecipe
@@ -16,53 +16,66 @@ namespace RGBTester.Base
         //[Left]
         TxtBx_Left_R_I_Start,
         TxtBx_Left_R_I_Step,
-        TxtBx_Left_R_HCM_I_End,
-        TxtBx_Left_R_LCM_I_End,
+        TxtBx_Left_R_I_End,
+        //TxtBx_Left_R_HCM_I_End,
+        //TxtBx_Left_R_LCM_I_End,
 
         TxtBx_Left_G_I_Start,
         TxtBx_Left_G_I_Step,
-        TxtBx_Left_G_HCM_I_End,
-        TxtBx_Left_G_LCM_I_End,
+        TxtBx_Left_G_I_End,
+        //TxtBx_Left_G_HCM_I_End,
+        //TxtBx_Left_G_LCM_I_End,
 
         TxtBx_Left_B_I_Start,
         TxtBx_Left_B_I_Step,
-        TxtBx_Left_B_HCM_I_End,
-        TxtBx_Left_B_LCM_I_End,
+        TxtBx_Left_B_I_End,
+        //TxtBx_Left_B_HCM_I_End,
+        //TxtBx_Left_B_LCM_I_End,
 
-        TxtBx_Left_B2_I_Start,
-        TxtBx_Left_B2_I_Step,
-        TxtBx_Left_B2_HCM_I_End,
-        TxtBx_Left_B2_LCM_I_End,
+        TxtBx_Left_B1_I_Start,
+        TxtBx_Left_B1_I_Step,
+        TxtBx_Left_B1_I_End,
+        //TxtBx_Left_B1_HCM_I_End,
+        //TxtBx_Left_B1_LCM_I_End,
 
         TxtBx_Left_AvgCount,
 
         //[Right]
         TxtBx_Right_R_I_Start,
         TxtBx_Right_R_I_Step,
-        TxtBx_Right_R_HCM_I_End,
-        TxtBx_Right_R_LCM_I_End,
+        TxtBx_Right_R_I_End,
+        //TxtBx_Right_R_HCM_I_End,
+        //TxtBx_Right_R_LCM_I_End,
 
         TxtBx_Right_G_I_Start,
         TxtBx_Right_G_I_Step,
-        TxtBx_Right_G_HCM_I_End,
-        TxtBx_Right_G_LCM_I_End,
+        TxtBx_Right_G_I_End,
+        //TxtBx_Right_G_HCM_I_End,
+        //TxtBx_Right_G_LCM_I_End,
 
         TxtBx_Right_B_I_Start,
         TxtBx_Right_B_I_Step,
-        TxtBx_Right_B_HCM_I_End,
-        TxtBx_Right_B_LCM_I_End,
+        TxtBx_Right_B_I_End,
+        //TxtBx_Right_B_HCM_I_End,
+        //TxtBx_Right_B_LCM_I_End,
 
-        TxtBx_Right_B2_I_Start,
-        TxtBx_Right_B2_I_Step,
-        TxtBx_Right_B2_HCM_I_End,
-        TxtBx_Right_B2_LCM_I_End,
+        TxtBx_Right_B1_I_Start,
+        TxtBx_Right_B1_I_Step,
+        TxtBx_Right_B1_I_End,
+        //TxtBx_Right_B1_HCM_I_End,
+        //TxtBx_Right_B1_LCM_I_End,
 
         TxtBx_Right_AvgCount,
     }
 }
 
 //Form中的選項
-namespace RGBTester.Base.F_StartForm
+namespace RGBTester.Base.F_OpticalTest
 {
-    
+    enum eTestMode
+    {
+        LEFT,
+        RIGHT,
+        BOTH,
+    }
 }

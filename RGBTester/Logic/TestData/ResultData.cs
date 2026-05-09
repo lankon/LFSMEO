@@ -23,45 +23,31 @@ namespace RGBTester.Logic
         private bool PASS = false;
         private const int CheckCount = 5;
         private double Limit_Dev = 15;
-
-        // [LCM Slope & Offset]
-        private double R_LCM_Slope;
-        private double R_LCM_Offset;
-        private double G_LCM_Slope;
-        private double G_LCM_Offset;
-        private double B_LCM_Slope;
-        private double B_LCM_Offset;
-
-        // [HCM Slope & Offset]
-        private double R_HCM_Slope;
-        private double R_HCM_Offset;
-        private double G_HCM_Slope;
-        private double G_HCM_Offset;
-        private double B_HCM_Slope;
-        private double B_HCM_Offset;
+        private Dictionary<string, TestReultItem> dicTestResult = new Dictionary<string, TestReultItem>();
 
         // [Check DAC]
         public int[] Check_LCM_DAC = new int[CheckCount];
         public int[] Check_HCM_DAC = new int[CheckCount];
 
-        public double[] LCM_R = new double[CheckCount];
         public double[] LCM_R_Calculate = new double[CheckCount];
         public double[] LCM_R_Dev = new double[CheckCount];
-        public double[] LCM_G = new double[CheckCount];
         public double[] LCM_G_Calculate = new double[CheckCount];
         public double[] LCM_G_Dev = new double[CheckCount];
-        public double[] LCM_B = new double[CheckCount];
         public double[] LCM_B_Calculate = new double[CheckCount];
         public double[] LCM_B_Dev = new double[CheckCount];
-        public double[] HCM_R = new double[CheckCount];
         public double[] HCM_R_Calculate = new double[CheckCount];
         public double[] HCM_R_Dev = new double[CheckCount];
-        public double[] HCM_G = new double[CheckCount];
         public double[] HCM_G_Calculate = new double[CheckCount];
         public double[] HCM_G_Dev = new double[CheckCount];
-        public double[] HCM_B = new double[CheckCount];
         public double[] HCM_B_Calculate = new double[CheckCount];
         public double[] HCM_B_Dev = new double[CheckCount];
+
+        private class TestReultItem
+        {
+            public double Slope;    //斜率
+            public double Offset;   //位移量
+            public double[] Current;//量測電流值
+        }
         #endregion
 
         #region private function
@@ -92,33 +78,18 @@ namespace RGBTester.Logic
         public void ResetParameter()
         {
             PASS = false;
-            R_LCM_Slope = 0;
-            R_LCM_Offset = 0;
-            G_LCM_Slope = 0;
-            G_LCM_Offset = 0;
-            B_LCM_Slope = 0;
-            B_LCM_Offset = 0;
-            R_HCM_Slope = 0;
-            R_HCM_Offset = 0;
-            G_HCM_Slope = 0;
-            G_HCM_Offset = 0;
-            B_HCM_Slope = 0;
-            B_HCM_Offset = 0;
+
+            dicTestResult.Clear();
+
             for (int i=0; i< Check_LCM_DAC.Length; i++)
             {
                 Check_LCM_DAC[i] = 0;
                 Check_HCM_DAC[i] = 0;
-                LCM_R[i] = 0;
                 LCM_R_Dev[i] = 0;
-                LCM_G[i] = 0;
                 LCM_G_Dev[i] = 0;
-                LCM_B[i] = 0;
                 LCM_B_Dev[i] = 0;
-                HCM_R[i] = 0;
                 HCM_R_Dev[i] = 0;
-                HCM_G[i] = 0;
                 HCM_G_Dev[i] = 0;
-                HCM_B[i] = 0;
                 HCM_B_Dev[i] = 0;
             }
         }
@@ -136,42 +107,14 @@ namespace RGBTester.Logic
         }
         public void SetCurrentData(string color, string mode, double[] current, double slope, double offset)
         {
-            if(color == "R" && mode == "LCM")
-            {
-                LCM_R = current;
-                R_LCM_Slope = slope;
-                R_LCM_Offset = offset;
-            }
-            else if (color == "G" && mode == "LCM")
-            {
-                LCM_G = current;
-                G_LCM_Slope = slope;
-                G_LCM_Offset = offset;
-            }
-            else if (color == "B" && mode == "LCM")
-            {
-                LCM_B = current;
-                B_LCM_Slope = slope;
-                B_LCM_Offset = offset;
-            }
-            else if (color == "R" && mode == "HCM")
-            {
-                HCM_R = current;
-                R_HCM_Slope = slope;
-                R_HCM_Offset = offset;
-            }
-            else if (color == "G" && mode == "HCM")
-            {
-                HCM_G = current;
-                G_HCM_Slope = slope;
-                G_HCM_Offset = offset;
-            }
-            else if (color == "B" && mode == "HCM")
-            {
-                HCM_B = current;
-                B_HCM_Slope = slope;
-                B_HCM_Offset = offset;
-            }
+            string key = $"{color}_{mode}";
+
+            TestReultItem item = new TestReultItem();
+            item.Slope = slope;
+            item.Offset = offset;
+            item.Current = current.ToArray();   //複製陣列
+
+            dicTestResult[key] = item;
         }
         public bool CheckSlopeCorrect()
         {
@@ -179,17 +122,17 @@ namespace RGBTester.Logic
 
             for (int i = 0; i < Check_LCM_DAC.Length; i++)
             {
-                if (CheckOutOfLimit(Check_LCM_DAC[i], R_LCM_Slope, R_LCM_Offset, LCM_R[i], ref LCM_R_Dev[i], ref LCM_R_Calculate[i], "LCM_R") == false)
+                if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["R_LCM"].Slope, dicTestResult["R_LCM"].Offset, dicTestResult["R_LCM"].Current[i], ref LCM_R_Dev[i], ref LCM_R_Calculate[i], "LCM_R") == false)
                     res = false;
-                if (CheckOutOfLimit(Check_LCM_DAC[i], G_LCM_Slope, G_LCM_Offset, LCM_G[i], ref LCM_G_Dev[i], ref LCM_G_Calculate[i], "LCM_G") == false)
+                if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["G_LCM"].Slope, dicTestResult["G_LCM"].Offset, dicTestResult["G_LCM"].Current[i], ref LCM_G_Dev[i], ref LCM_G_Calculate[i], "LCM_G") == false)
                     res = false;
-                if (CheckOutOfLimit(Check_LCM_DAC[i], B_LCM_Slope, B_LCM_Offset, LCM_B[i], ref LCM_B_Dev[i], ref LCM_B_Calculate[i], "LCM_B") == false)
+                if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["B_LCM"].Slope, dicTestResult["B_LCM"].Offset, dicTestResult["B_LCM"].Current[i], ref LCM_B_Dev[i], ref LCM_B_Calculate[i], "LCM_B") == false)
                     res = false;
-                if (CheckOutOfLimit(Check_HCM_DAC[i], R_HCM_Slope, R_HCM_Offset, HCM_R[i], ref HCM_R_Dev[i], ref HCM_R_Calculate[i], "HCM_R") == false)
+                if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["R_HCM"].Slope, dicTestResult["R_HCM"].Offset, dicTestResult["R_HCM"].Current[i], ref HCM_R_Dev[i], ref HCM_R_Calculate[i], "HCM_R") == false)
                     res = false;
-                if (CheckOutOfLimit(Check_HCM_DAC[i], G_HCM_Slope, G_HCM_Offset, HCM_G[i], ref HCM_G_Dev[i], ref HCM_G_Calculate[i], "HCM_G") == false)
+                if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["G_HCM"].Slope, dicTestResult["G_HCM"].Offset, dicTestResult["G_HCM"].Current[i], ref HCM_G_Dev[i], ref HCM_G_Calculate[i], "HCM_G") == false)
                     res = false;
-                if (CheckOutOfLimit(Check_HCM_DAC[i], B_HCM_Slope, B_HCM_Offset, HCM_B[i], ref HCM_B_Dev[i], ref HCM_B_Calculate[i], "HCM_B") == false)
+                if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["B_HCM"].Slope, dicTestResult["B_HCM"].Offset, dicTestResult["B_HCM"].Current[i], ref HCM_B_Dev[i], ref HCM_B_Calculate[i], "HCM_B") == false)
                     res = false;
             }
 

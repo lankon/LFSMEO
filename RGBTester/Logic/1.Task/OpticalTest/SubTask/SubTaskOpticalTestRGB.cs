@@ -14,9 +14,9 @@ using ToolFunction;
 
 namespace RGBTester.Logic
 {
-    public class SubTaskLEDTestOptical : IBaseTask<SubTaskLEDTestOptical.WORK>
+    public class SubTaskOpticalTestRGB : IBaseTask<SubTaskOpticalTestRGB.WORK>
     {
-        public SubTaskLEDTestOptical(IBaseTaskDependence dependencies,
+        public SubTaskOpticalTestRGB(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -40,6 +40,7 @@ namespace RGBTester.Logic
         #region parameter
         RGBTesterFunction RGBfunc;
         ResultData ResultData;
+        private Queue<string> TestQueue = new Queue<string>(new[] { "R", "G", "B" ,"B1"});
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
@@ -51,17 +52,8 @@ namespace RGBTester.Logic
             INITIAL,
             IDLE,
 
-            LED_R_TEST,
-            WAIT_LED_R_TEST,
-
-            LED_G_TEST,
-            WAIT_LED_G_TEST,
-
-            LED_B_TEST,
-            WAIT_LED_B_TEST,
-
-            LED_B2_TEST,
-            WAIT_LED_B2_TEST,
+            TEST_COLOR,
+            WAIT_TEST_COLOR,
 
             END,
 
@@ -217,110 +209,39 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.LED_R_TEST);
+                        Transition(WORK.TEST_COLOR);
                     }
                     break;
 
-                #region RED
-                case WORK.LED_R_TEST:
+                #region TEST_COLOR
+                case WORK.TEST_COLOR:
                     {
-                        Tool.SaveLogToFile("LED_R_Test", level: "INF");
-                        
-                        SubTask = new SubTaskTestOptical(Deps, F_StateControl);
-
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_R_TEST);
-                    }
-                    break;
-                case WORK.WAIT_LED_R_TEST:
-                    {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.LED_G_TEST);
-                    }
-                    break;
-                #endregion
-                #region GREEN
-                case WORK.LED_G_TEST:
-                    {
-                        //Tool.SaveLogToFile("LED_G_TEST", level: "INF");
-
-                        //if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
-                        //    SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
-                        //else
-                        //    SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_G");
-
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_G_TEST);
-                    }
-                    break;
-                case WORK.WAIT_LED_G_TEST:
-                    {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.LED_B_TEST);
-                    }
-                    break;
-                #endregion
-                #region BLUE
-                case WORK.LED_B_TEST:
-                    {
-                        //Tool.SaveLogToFile("LED_B_TEST", level: "INF");
-
-                        //if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
-                        //    SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
-                        //else
-                        //    SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_B");
-
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_B_TEST);
-                    }
-                    break;
-                case WORK.WAIT_LED_B_TEST:
-                    {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
-
-                        //if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
-                        //    CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
-                        //else
-                        //    CheckResult(check, SUCCESS: WORK.LED_B2_TEST);
-                    }
-                    break;
-                #endregion
-                #region BLUE2
-                case WORK.LED_B2_TEST:
-                    {
-                        Tool.SaveLogToFile("LED_B2_TEST", level: "INF");
-
-                        //if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
-                        //    SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B2");
-                        //else
-                        //    SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_B2");
-
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_LED_B2_TEST);
-                    }
-                    break;
-                case WORK.WAIT_LED_B2_TEST:
-                    {
-                        //TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        //CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
-                    }
-                    break;
-                #endregion
-
-
-                case WORK.SUCCESS:
-                    {
-                        if(Scope.TestFail == true)
+                        if(TestQueue.Count > 0)
                         {
-                            string description = RGBfunc.FailReasonFlag.GetFailDescription();
-                            StatusBox.ShowMessage(description);
-                            RGBfunc.YieldStatistics(false, SN, description);
+                            string color = TestQueue.Dequeue();
+                            Tool.SaveLogToFile($"LED_{color}_Test", level: "INF");
+
+                            SubTask = new SubTaskOpticalTest(Deps, F_StateControl, Type + $"_{color}");
+                            SetSubTaskProcessing(true);
+
+                            Transition(WORK.WAIT_TEST_COLOR);
                         }
                         else
                         {
-                            RGBfunc.YieldStatistics(true, SN);
+                            Transition(WORK.SUCCESS);
                         }
+                    }
+                    break;
+                case WORK.WAIT_TEST_COLOR:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.TEST_COLOR);
+                    }
+                    break;
+                #endregion
 
+                case WORK.SUCCESS:
+                    {
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }

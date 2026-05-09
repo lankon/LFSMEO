@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-//using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
-using DeviceCore;
 using ToolFunction;
 using RGBTester.Base;
-using System.Runtime.CompilerServices;
 
 namespace RGBTester.Logic
 {
@@ -153,6 +150,7 @@ namespace RGBTester.Logic
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
             ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
 
+            RGBfunc.SetTestChannel(4);
             Period_DAQ_Count = RGBfunc.HardwareParam.Period_DAQ_Count * 3;   //抓三個週期的資料
 
             string[] res = Type.Split('_');
@@ -197,7 +195,7 @@ namespace RGBTester.Logic
             }
             else if (TestColor == "B2")
             {
-                //要修改 燈的顏色以及Duty
+                //要修改 燈的顏色
                 Color = Deps.LightEngine.LED_B;
                 LED_Duty = RGBfunc.HardwareParam.LED_B2_Duty;    
 
@@ -223,6 +221,9 @@ namespace RGBTester.Logic
             RGBfunc.Set_LED_Rigester();
             RGBfunc.SetRfb(R_LCM, R_HCM);
             RGBfunc.SetMaxCurrent(MaxI_LCM, MaxI_HCM);
+
+            ClearListData(TesterData_L);
+            ClearListData(TesterData_H);
         }
         private RGBTesterFunction.AvgData_FuncTester PeriodAvgValueCalculate(string current_mode)
         {
@@ -232,7 +233,7 @@ namespace RGBTester.Logic
             double[] DISP_6V0 = new double[Period_DAQ_Count];
             double[] DISP_1V2 = new double[Period_DAQ_Count];
             
-            for (int i = 0; i < Period_DAQ_Count; i++)  //要修改 計算一個週期多少點數
+            for (int i = 0; i < Period_DAQ_Count; i++)
             {
                 //一次取5個通道有增加或減少的話會影響Period_DAQ_Count
                 Vin[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_Vin);
@@ -439,6 +440,47 @@ namespace RGBTester.Logic
                 Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高", level: "WRN");
             }
         }
+        private bool MeasureAndAppendData(string mode, RGBTesterData testerData)
+        {
+            double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0;
+
+            double temperature = double.Parse(Deps.LightEngine.GetTemperature());
+            CheckTestTemperature(temperature);
+            testerData.Temperature.Add(temperature);
+
+            for (int i = 0; i < RepeatTime; i++)
+            {
+                var avgData = PeriodAvgValueCalculate(mode);
+                sum_Vin += avgData.Avg_Vin;
+                sum_Vf += avgData.Avg_Vf;
+                sum_Iled += avgData.Avg_Iled;
+            }
+
+            testerData.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
+            testerData.Vin.Add(sum_Vin / RepeatTime);
+            testerData.Vf.Add(sum_Vf / RepeatTime);
+
+            double rfb = 0;
+            if (mode == "LCM")
+                rfb = RGBfunc.HardwareParam.Rfb_LCM;
+            else
+                rfb = RGBfunc.HardwareParam.Rfb_HCM;
+
+            testerData.Iled.Add(sum_Iled / RepeatTime / rfb / RGBfunc.HardwareParam.LED_SigMag);
+
+            return true;
+        }
+        private void ClearListData(RGBTesterData data)
+        {
+            data.DACpoint.Clear();
+            data.CycleTime.Clear();
+            data.Temperature.Clear();
+
+            data.Vin.Clear();
+            data.Vf.Clear();
+            data.Iled.Clear();
+            data.Pled.Clear();
+        }
         #endregion
 
         #region public function
@@ -540,30 +582,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.GET_ADC_LOW:
                     {
-                        double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0;
-
-                        //取得溫度
-                        double temperature = double.Parse(Deps.LightEngine.GetTemperature());
-                        CheckTestTemperature(temperature);
-                        TesterData_L.Temperature.Add(temperature);
-
-                        RGBTesterFunction.AvgData_FuncTester LowAvgData = new RGBTesterFunction.AvgData_FuncTester();
-
-                        //取得AI訊號
-                        for (int i=0; i<RepeatTime; i++)
-                        {
-                            LowAvgData = PeriodAvgValueCalculate("LCM");
-
-                            sum_Vin += LowAvgData.Avg_Vin;
-                            sum_Vf += LowAvgData.Avg_Vf;
-                            sum_Iled += LowAvgData.Avg_Iled;
-                        }
-
-                        TesterData_L.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
-
-                        TesterData_L.Vin.Add(sum_Vin / RepeatTime);
-                        TesterData_L.Vf.Add(sum_Vf / RepeatTime);
-                        TesterData_L.Iled.Add(sum_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_LCM / RGBfunc.HardwareParam.LED_SigMag);
+                        MeasureAndAppendData("LCM", TesterData_L);
 
                         int count = TesterData_L.Iled.Count;
                         if (!CheckContact(TesterData_L.Iled[count - 1] - TesterData_L.Iled[0]))
@@ -573,7 +592,6 @@ namespace RGBTester.Logic
                             break;
                         }
 
-                        //Transition(WORK.CALCULATE_LOW);
                         State = WORK.CALCULATE_LOW;
                         goto case WORK.CALCULATE_LOW;
                     }
@@ -601,13 +619,22 @@ namespace RGBTester.Logic
                                                                               TesterData_L.Iled.Select(x => x * 1000).ToArray());
                             }
 
+                            TesterData_L.Slope = LinearCurveFitting_L.Slope;
+                            TesterData_L.Offset = LinearCurveFitting_L.Offset;
+                            TesterData_L.DAC_Avg = LinearCurveFitting_L.mDAC;
+                            TesterData_L.Current_Avg = LinearCurveFitting_L.mCurrent;
+
+                            //顯示Slope以及Offset結果至UI
                             var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
                             if(IsClamping == false)
                                 IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, false);
                             else
                                 IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, true);
+                            
+                            //紀錄各種顏色光的Slope,Offset結果
                             RGBfunc.SlopeOffsetResult.SetResult(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
 
+                            //紀錄各種顏色光的Slope,Offset結果
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
                             CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
 
@@ -618,7 +645,7 @@ namespace RGBTester.Logic
 
                                 if (index == -1)
                                 {
-                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_LCM_DAC[i]} Not Found!", level: "WRN");
+                                    Tool.SaveLogToFile($"Chec k DAC {ResultData.CheckSlopeData.Check_LCM_DAC[i]} Not Found!", level: "WRN");
                                     current[i] = 0;
                                 }
                                 else
@@ -694,31 +721,8 @@ namespace RGBTester.Logic
                     break;
                 case WORK.GET_ADC_HIGH:
                     {
-                        double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0;
+                        MeasureAndAppendData("HCM", TesterData_H);
 
-                        //取得溫度
-                        double temperature = double.Parse(Deps.LightEngine.GetTemperature());
-                        CheckTestTemperature(temperature);
-                        TesterData_H.Temperature.Add(temperature);
-
-                        RGBTesterFunction.AvgData_FuncTester HighAvgData = new RGBTesterFunction.AvgData_FuncTester();
-                        //取得AI訊號
-                        for (int i = 0; i < RepeatTime; i++)
-                        {
-                            HighAvgData = PeriodAvgValueCalculate("HCM");
-
-                            sum_Vin += HighAvgData.Avg_Vin;
-                            sum_Vf += HighAvgData.Avg_Vf;
-                            sum_Iled += HighAvgData.Avg_Iled;
-                        }
-
-                        TesterData_H.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
-
-                        TesterData_H.Vin.Add(sum_Vin / RepeatTime);
-                        TesterData_H.Vf.Add(sum_Vf / RepeatTime);
-                        TesterData_H.Iled.Add(sum_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_HCM / RGBfunc.HardwareParam.LED_SigMag);
-
-                        //Transition(WORK.CALCULATE_HIGH);
                         State = WORK.CALCULATE_HIGH;
                         goto case WORK.CALCULATE_HIGH;
                     }
@@ -744,7 +748,12 @@ namespace RGBTester.Logic
                             {
                                 LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(),
                                                                               TesterData_H.Iled.Select(x => x * 1000).ToArray());
-                            } 
+                            }
+
+                            TesterData_H.Slope = LinearCurveFitting_H.Slope;
+                            TesterData_H.Offset = LinearCurveFitting_H.Offset;
+                            TesterData_H.DAC_Avg = LinearCurveFitting_H.mDAC;
+                            TesterData_H.Current_Avg = LinearCurveFitting_H.mCurrent;
 
                             var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
                             if (IsClamping == false)
@@ -823,6 +832,7 @@ namespace RGBTester.Logic
                             if(i < TesterData_L.Vin.Count && i < TesterData_H.Vin.Count)
                             {
                                 Deps.File.WriteFile($",{TesterData_L.CycleTime[i] + TesterData_H.CycleTime[i]},8888,{log_name},", Type, false);
+                                Deps.File.WriteFile($"{TesterData_H.DISP_6V0[0]},{TesterData_H.DISP_1V2[0]},", Type, false);
                                 Write_HCM_Result(i);
                                 Deps.File.WriteFile(",", Type, false);
                                 Write_LCM_Result(i);
@@ -830,6 +840,7 @@ namespace RGBTester.Logic
                             else if (i < TesterData_H.Vin.Count)
                             {
                                 Deps.File.WriteFile($",{TesterData_H.CycleTime[i]},8888,{log_name},", Type, false);
+                                Deps.File.WriteFile($"{TesterData_H.DISP_6V0[0]},{TesterData_H.DISP_1V2[0]},", Type, false);
                                 Write_HCM_Result(i);
                                 Deps.File.WriteFile(",", Type, false);
                                 Write_NonData_Result();
@@ -837,6 +848,7 @@ namespace RGBTester.Logic
                             else if (i < TesterData_L.Vin.Count)
                             {
                                 Deps.File.WriteFile($",{TesterData_L.CycleTime[i]},8888,{log_name},", Type, false);
+                                Deps.File.WriteFile($"{TesterData_H.DISP_6V0[0]},{TesterData_H.DISP_1V2[0]},", Type, false);
                                 Write_NonData_Result();
                                 Deps.File.WriteFile(",", Type, false);
                                 Write_LCM_Result(i);

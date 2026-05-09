@@ -8,6 +8,7 @@ using System.Threading;
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -37,6 +38,7 @@ namespace RGBTester.Logic
         private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private IF_StatusBox StatusBox;
         //private F_StateControl TaskForm;
         public enum WORK
         {
@@ -137,6 +139,10 @@ namespace RGBTester.Logic
 
             return res;
         }
+        private void Preset()
+        {
+            StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+        }
         #endregion
 
         #region public function
@@ -186,6 +192,7 @@ namespace RGBTester.Logic
             {
                 case WORK.INITIAL:
                     {
+                        Preset();
                         Transition(WORK.CHECK_POSITION_READY);
                     }
                     break;
@@ -223,6 +230,7 @@ namespace RGBTester.Logic
                     }
                     else if (CheckTimeOverSec(task_delay, 5)) // Position Fail
                     {
+                        StatusBox.ShowMessage("Sphere Pos Error");
                         Transition(WORK.ABORT);
                     }
                     break;
@@ -236,6 +244,7 @@ namespace RGBTester.Logic
                     }
                     else if (CheckTimeOverSec(task_delay, 5))
                     {
+                        
                         Transition(WORK.ABORT);
                     }
                     break;
@@ -244,7 +253,11 @@ namespace RGBTester.Logic
                     if (Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor))
                         Transition(WORK.SUCCESS);
                     else if (CheckTimeOverSec(task_delay, 5))
+                    {
+                        StatusBox.ShowMessage("Chcuk Pos Error");
                         Transition(WORK.ABORT);
+                    }
+                        
                     break;
 
                 case WORK.SUCCESS:

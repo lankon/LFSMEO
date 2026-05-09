@@ -12,6 +12,7 @@ namespace RGBTester.Logic
         private double MaxCurrent_HCM = 300;
         private double Rfb_LCM = 1;
         private double Rfb_HCM = 1;
+        private int TestChannel = 5;
 
         public void SetRfb(double R_LCM, double R_HCM)
         {
@@ -25,6 +26,10 @@ namespace RGBTester.Logic
             else
                 Rfb_HCM = 1;
         }
+        public void SetTestChannel(int ch_count)
+        {
+            TestChannel = ch_count;
+        }
 
         public class TestHardwareParam
         {
@@ -37,7 +42,7 @@ namespace RGBTester.Logic
             //[Phase1 Setting]
             public int DAQ_SampleRate { get { return 40; } }            //單位us, DAQ取樣頻率25KHz(硬體)
             public int DisplayFrequency { get { return 11; } }          //單位ms, 頻率90Hz(硬體)
-            public int OneTimeTestChannel { get { return 5; } }         //一次DAQ取樣通道數(硬體)
+            public int OneTimeTestChannel { get { return _parent.TestChannel; } }   //一次DAQ取樣通道數(硬體)
             public int Period_DAQ_Count { get { return DisplayFrequency * 1000 / DAQ_SampleRate / OneTimeTestChannel; } }//一個週期內DAQ取樣次數(硬體)  11ms(90Hz) / 40us(DAQ SP Rate) / 5(通道數)
             
 

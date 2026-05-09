@@ -58,6 +58,7 @@ namespace RGBTester
             services.AddSingleton<F_ParameterSettingLogic>();
             services.AddSingleton<F_YieldReportLogic>();
             services.AddSingleton<F_FunctionTesterLogic>();
+            services.AddSingleton<F_OpticalTestLogic>();
 
             //[Logic]
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();

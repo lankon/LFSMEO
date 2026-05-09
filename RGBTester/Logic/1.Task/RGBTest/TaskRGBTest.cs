@@ -38,7 +38,6 @@ namespace RGBTester.Logic
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
@@ -302,6 +301,10 @@ namespace RGBTester.Logic
                                 Transition(WORK.RIGHT_GLASSES_TEST);
                             else
                                 Transition(WORK.LEFT_GLASSES_TEST);
+                        }
+                        else
+                        {
+                            CheckResult(check);
                         }
                     }
                     break;

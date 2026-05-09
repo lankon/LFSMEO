@@ -122,6 +122,12 @@ namespace RGBTester.Logic
 
             WriteFile(context, type, false);
         }
+        public void WriteExtendTestResult(RGBTesterData test_data, int index, string type)
+        {
+            string context = FileType.GetExtendTestResultStr(test_data, index);
+
+            WriteFile(context, type, false);
+        }
         public void WriteFile(string context = "", string describe = "", bool NewLine = true)
         {
             TestFiles.TryGetValue(describe, out StreamWriter file);

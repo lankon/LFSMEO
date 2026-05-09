@@ -17,17 +17,17 @@ namespace RGBTester.UI
 {
     public partial class F_OpticalTest : Form
     {
-        public F_OpticalTest(IServiceProvider serviceProvider)
+        public F_OpticalTest(F_OpticalTestLogic f_OpticalTestLogic)
         {
             InitializeComponent();
 
-            ServiceProvider = serviceProvider;
+            OpticalTestLogic = f_OpticalTestLogic;
 
             InitialForm();
         }
 
         #region parameter define
-        IServiceProvider ServiceProvider;
+        F_OpticalTestLogic OpticalTestLogic;
         #endregion
 
         #region private function
@@ -38,8 +38,8 @@ namespace RGBTester.UI
 
             ShowHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
-            //    Tool.ShowFormName(this);
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                Tool.ShowFormName(this);
         }
         void ShowHint()
         {
@@ -47,23 +47,23 @@ namespace RGBTester.UI
         }
         private void ReadAllEnumSetting()
         {
-            //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_OpticalTest>();
             //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(recipe_name);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            ApplicationSetting.ReadAllRecipe<eF_OpticalTestRecipe>(recipe_name);
         }
         private void UpdateEnumSettingToForm()
         {
-            //ApplicationSetting.UpdataRecipeToForm<eF_StartForm>(this);
-            //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_OpticalTest>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_OpticalTestRecipe>(this);
         }
         private void SaveAllEnumSetting()
         {
-            //ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
+            ApplicationSetting.SaveRecipeFromForm<eF_OpticalTest>(this);
 
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            ApplicationSetting.SaveRecipeFromForm<eF_OpticalTestRecipe>(this, recipe_name);
         }
         private void UpdatePage()
         {
@@ -103,9 +103,7 @@ namespace RGBTester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-            MainTask.SetTask<TaskOpticalTest>();
-            MainTask.Run();
+            OpticalTestLogic.StartOpticalTest();
         }
     }
 }
