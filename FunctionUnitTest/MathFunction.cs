@@ -1,5 +1,6 @@
 ﻿using RGBTester.Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RGBTester.Logic.Function;
 
 namespace FunctionUnitTest
 {
@@ -38,6 +39,63 @@ namespace FunctionUnitTest
             double preciseHighLevel = dataFilter.GetPreciseHighLevel(testData, 0.7);
             // Assert
             Assert.AreEqual(5.0, preciseHighLevel, 1e-6);
+        }
+
+        [TestMethod]
+        public void Calculate_WLD_Test()
+        {
+            Wavelength WL = new Wavelength();
+            double res = 0;
+            double[] Wavelength = new double[4096];
+            double[] Intensity = new double[4096];
+
+            for (int i = 0; i < Wavelength.Length; i++)
+            {
+                Wavelength[i] = Wavelength.Length;
+                Intensity[i] = 0;
+            }
+
+            string path = @"D:\Virtual_Spectrum_Data.csv";
+
+            if (!File.Exists(path))
+            {
+                Assert.AreEqual(5.0, res, 1e-6);
+                return;
+            }
+
+            string[] lines = File.ReadAllLines(path);
+            int index = 0;
+
+            IEnumerable<string> dataLines = lines.Skip(1);
+            foreach (string line in dataLines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                string[] values = line.Split(',');
+
+                if (values.Length < 2) continue; //確保有波長以及強度值
+
+                if (float.TryParse(values[0], out float nm_value))
+                    Wavelength[index] = nm_value;
+
+                if (float.TryParse(values[1], out float intensity_value))
+                    Intensity[index] = intensity_value;
+
+                index++;
+                if (index >= Wavelength.Length)
+                    break;
+            }
+
+            for (int i = index; i < Wavelength.Length; i++)
+            {
+                Wavelength[i] = Wavelength[index - 1] + 1;
+                Intensity[i] = 0;
+            }
+
+            //Act
+            res = WL.Calculate_WLD(Wavelength, Intensity);
+            //Assert
+            Assert.AreEqual(565, res, 1e-6);
         }
     }
 

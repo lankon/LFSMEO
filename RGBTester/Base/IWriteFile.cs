@@ -47,6 +47,7 @@ namespace RGBTester.Base
     {
         // [TestCondition]
         public List<int> DACpoint = new List<int>();
+        public List<int> Currentpoint = new List<int>();
 
         // [DAQ Point]
         public List<double> Vled = new List<double>();
@@ -61,6 +62,8 @@ namespace RGBTester.Base
         public List<double> Eff = new List<double>();
         public List<double> DISP_6V0 = new List<double>();
         public List<double> DISP_1V2 = new List<double>();
+        public List<double> WLD = new List<double>();
+        public List<double> Lumens = new List<double>();
 
         // [Record]
         public List<double> CycleTime = new List<double>();

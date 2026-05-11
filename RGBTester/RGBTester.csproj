@@ -130,6 +130,7 @@
     <Compile Include="Base\eElement_Form\eF_Equipment_Setting.cs" />
     <Compile Include="Base\eModileType.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
+    <Compile Include="Base\IF_Form\IF_OpticalTest.cs" />
     <Compile Include="Base\IF_Form\IF_ParameterSetting.cs" />
     <Compile Include="Base\IF_Form\IF_StartForm.cs" />
     <Compile Include="Base\IF_Form\IF_MainForm.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_Data.cs" />
     <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_HardwareSetting.cs" />
     <Compile Include="Logic\Function\DataBaseTestResult.cs" />
+    <Compile Include="Logic\Function\Wavelength.cs" />
     <Compile Include="Logic\TestData\ResultData.cs" />
     <Compile Include="Logic\TestData\RGBTesterDataFile_FunctionTester.cs" />
     <Compile Include="Logic\TestData\RGBTesterDataFile_IVCalibration.cs" />

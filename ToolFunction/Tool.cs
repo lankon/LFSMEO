@@ -521,6 +521,16 @@ namespace ToolFunction
                 return DateTime.MinValue;
             }
         }
+
+        public static T GetControlByName<T>(Control container, string name) where T : Control
+        {
+            Control[] matches = container.Controls.Find(name, true);
+            if (matches.Length > 0 && matches[0] is T)
+            {
+                return (T)matches[0];
+            }
+            return null;
+        }
     }
 
     /// <summary>

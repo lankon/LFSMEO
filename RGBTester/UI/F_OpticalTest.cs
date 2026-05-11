@@ -15,7 +15,7 @@ using RGBTester.Logic;
 
 namespace RGBTester.UI
 {
-    public partial class F_OpticalTest : Form
+    public partial class F_OpticalTest : Form, IF_OpticalTest
     {
         public F_OpticalTest(F_OpticalTestLogic f_OpticalTestLogic)
         {
@@ -73,12 +73,35 @@ namespace RGBTester.UI
         private void LeavePage()
         {
         }
+        
+        private void UpdateWlLumen(string side, string color, double wl, double lum)
+        {
+            string element = $"TxtBx_{side}{color}LumFlux";
+            var ctrl_lum =  Tool.GetControlByName<TextBox>(this, element);
+
+            element = $"TxtBx_{side}{color}Wavelength";
+            var ctrl_wl = Tool.GetControlByName<TextBox>(this, element);
+
+            ctrl_lum.Text = lum.ToString();
+            ctrl_wl.Text = wl.ToString();
+        }
         #endregion
 
         #region public function
         public void ShowFormName(bool show)
         {
 
+        }
+        public void ShowWlLumenResult(string side, string color, double wl, double lum)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateWlLumen(side, color, wl, lum)));
+            }
+            else
+            {
+                UpdateWlLumen(side, color, wl, lum);
+            }
         }
         #endregion
 

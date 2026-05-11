@@ -8,6 +8,9 @@ using System.Threading;
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
+using RGBTester.Logic.Function;
+using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.InteropServices;
 
 namespace RGBTester.Logic
 {
@@ -37,22 +40,29 @@ namespace RGBTester.Logic
         private int delay_time = 1;
         private int I_Start = 500, I_Step = 10, I_End = 600;
         private int TotalStep = 0;
-        private LuminousFlux LF = new LuminousFlux();
+        private byte Side;
+        private byte Color;
         private string Type;
         private string TestSide;
         private string TestColor;
+        private string CurrentModeStatus = "";
         private float[] fSpectrumRawData;
         private double[] SpectrumRawData;
-        private Queue<int> qCurrent = new Queue<int>();
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private IF_ProgressBar ProgressBar;
         private Dictionary<string, Dictionary<string, CurrentCondition>> CurrentConfig; //雙層字典：[Side (Left/Right)][Color (R/G/B/B1)]
-        
+        private LuminousFlux LF = new LuminousFlux();
+        private Queue<int> qCurrent = new Queue<int>();
+        private RGBTesterData TesterData = new RGBTesterData();
+        private Wavelength WL = new Wavelength();
+
         public class CurrentCondition
         {
             public int Start { get; set; }
             public int Step { get; set; }
             public int End { get; set; }
+            public int IntegralTime { get; set; }
         }
         public enum WORK
         {
@@ -63,6 +73,7 @@ namespace RGBTester.Logic
             SET_LED_DAC,
             GET_SPECTRUM,
             CALCULATE_LUMEN,
+            CALCULATE_WAVELENGTH,
 
             END,
 
@@ -153,10 +164,21 @@ namespace RGBTester.Logic
         }
         private void Preset()
         {
+            ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
+
             string[] res = Type.Split('_');
 
             TestSide = res[0];
             TestColor = res[1];
+
+            bool isLeft = (TestSide == "Left");
+            Side = isLeft ? Deps.LightEngine.LED_LeftSide : Deps.LightEngine.LED_RightSide;
+            if (TestColor == "R")
+                Color = Deps.LightEngine.LED_R;
+            else if(TestColor == "G")
+                Color = Deps.LightEngine.LED_G;
+            else if(TestColor == "B")
+                Color = Deps.LightEngine.LED_B;
 
             InitialCurrentConfig();
             SetCurrentCondition();
@@ -176,15 +198,20 @@ namespace RGBTester.Logic
                     {
                         Start = GetCurrentRecipe(side, color, "Start"),
                         Step = GetCurrentRecipe(side, color, "Step"),
-                        End = GetCurrentRecipe(side, color, "End")
+                        End = GetCurrentRecipe(side, color, "End"),
+                        IntegralTime = GetCurrentRecipe(side, color, "Integral"),
                     };
                 }
             }
         }
         private int GetCurrentRecipe(string side, string color, string type)
         {
-            //"TxtBx_Left_R_I_Start"
-            string enumName = $"TxtBx_{side}_{color}_I_{type}";
+            string enumName = "";
+
+            if (type == "Integral")
+                enumName = $"TxtBx_{side}_{color}_IntgTime";
+            else
+                enumName = $"TxtBx_{side}_{color}_I_{type}";    //"TxtBx_Left_R_I_Start"
 
             //將字串轉換為 Enum 型別
             if (Enum.TryParse<eF_OpticalTestRecipe>(enumName, out eF_OpticalTestRecipe result))
@@ -217,6 +244,53 @@ namespace RGBTester.Logic
             {
                 Tool.SaveLogToFile($"Condition Missing: {TestSide}_{TestColor}", level: "ERR");
             }
+        }
+        private int CalculateDACfromCurrent(int current)
+        {
+            double offset = 0;
+            double slope = 0;
+
+            double LCM_I = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_MaxCurrent);
+
+            if(current > LCM_I)
+            {
+                slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_HCM_TestSlope);
+                offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_HCM_TestOffset);
+                SetLedCurrentMode("HCM");
+            }
+            else
+            {
+                slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_TestSlope);
+                offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_TestOffset);
+                SetLedCurrentMode("LCM");
+            }
+
+            if (slope < 0.0001)
+            {
+                Tool.SaveLogToFile("斜率異常,電流推算DAC失敗", level: "WRN");
+                return 0;
+            }
+
+            int dac = (int)((current - offset) / slope);
+
+            if (dac > 1022)
+                dac = 1022;
+
+            return dac;
+        }
+        private void UpdateProgressBar(Queue<int> state, int total_state)
+        {
+            if (state.Count % 10 == 0)   //每幾步更新一次UI
+            {
+                double res = (double)state.Count / (double)total_state * 100;
+                int progress = 100 - (int)res;
+                ProgressBar.UpateProgress(progress);
+            }
+        }
+        private void SetLedCurrentMode(string mode)
+        {
+            if(mode != CurrentModeStatus)
+                Deps.LightEngine.SetLed_CurrentMode("LCM");
         }
         #endregion
 
@@ -268,21 +342,35 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
+
+                        Deps.LightEngine.SetLed_CurrentMode("LCM"); //先轉成LCM避免Clamping
+                        CurrentModeStatus = "LCM";
+
                         Transition(WORK.SET_LED_DAC);
                     }
                     break;
                 case WORK.SET_LED_DAC:
                     {
-                        Deps.LightEngine.SetLed_AllColorDAC(Deps.LightEngine.LED_LeftSide, 50, 50, 50);
+                        UpdateProgressBar(qCurrent, TotalStep);
+
+                        int cur = qCurrent.Dequeue();
+                        TesterData.Currentpoint.Add(cur);
+                        
+                        int dac = CalculateDACfromCurrent(cur);
+                        Deps.LightEngine.SetLed_DAC(Color, Side, dac);
+
                         ResetTimeCount(out delay_time);
-                        Transition(WORK.GET_SPECTRUM);
+
+                        State = WORK.GET_SPECTRUM;
+                        goto case WORK.GET_SPECTRUM;
                     }
                     break;
                 case WORK.GET_SPECTRUM:
                     {
-                        if(CheckTimeOverMilSec(delay_time, 100))
+                        if(CheckTimeOverMilSec(delay_time, 10))
                         {
-                            fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, 100);
+                            uint integral = (uint)CurrentConfig[TestSide][TestColor].IntegralTime;
+                            fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, integral);
 
                             if(fSpectrumRawData == null)
                             {
@@ -293,7 +381,8 @@ namespace RGBTester.Logic
 
                             SpectrumRawData = fSpectrumRawData.Select(x => (double)x).ToArray();
 
-                            Transition(WORK.CALCULATE_LUMEN);
+                            State = WORK.CALCULATE_LUMEN;
+                            goto case WORK.CALCULATE_LUMEN;
                         }
                     }
                     break;
@@ -302,14 +391,34 @@ namespace RGBTester.Logic
                         float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
                         double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
 
-                        double lm = LF.CalculateTotalLumens(wavelength, SpectrumRawData);
-                        Transition(WORK.SUCCESS);
+                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, SpectrumRawData));
+
+                        State = WORK.CALCULATE_WAVELENGTH;
+                        goto case WORK.CALCULATE_WAVELENGTH;
+                    }
+                    //break;
+                case WORK.CALCULATE_WAVELENGTH:
+                    {
+                        float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
+                        double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
+
+                        TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData));
+
+                        if(qCurrent.Count == 0)
+                        {
+                            Transition(WORK.SUCCESS);
+                        }
+                        else
+                        {
+                            State = WORK.SET_LED_DAC;
+                            goto case WORK.SET_LED_DAC;
+                        }
                     }
                     break;
 
-
                 case WORK.SUCCESS:
                     {
+                        ProgressBar.HideForm();
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level: "INF");
                     }
@@ -326,6 +435,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.ABORT:
                     {
+                        ProgressBar.HideForm();
                         SetStatus(TASK_STATUS.ABORT);
                     }
                     break;

@@ -50,7 +50,7 @@ namespace Device_Spectrum_Virtual
                 Intensity[i] = 0;
             }
 
-            string path = AppDomain.CurrentDomain.BaseDirectory + @"\Setting\Virtual_Spectrum_Data.csv";
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"\Setting\VirtualData\Virtual_Spectrum_Data.csv";
 
             if (!File.Exists(path))
                 return 0;
