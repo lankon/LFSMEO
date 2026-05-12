@@ -15,6 +15,7 @@ namespace Device_Spectrum_Virtual
         #region parameter define
         float[] Wavelength = new float[4096];
         float[] Intensity = new float[4096];
+        Queue<double> IntensityPercent = new Queue<double>();
         #endregion
 
         public void BindingDeviceIndex(string serialNumber)
@@ -85,6 +86,19 @@ namespace Device_Spectrum_Virtual
             }
 
             return 0;    
+        }
+
+        public double GetIntensityPercent(string sn)
+        {
+            if(IntensityPercent.Count == 0)
+            {
+                IntensityPercent.Enqueue(40);
+                IntensityPercent.Enqueue(50);
+                IntensityPercent.Enqueue(55);
+                IntensityPercent.Enqueue(75);
+            }
+            
+            return IntensityPercent.Dequeue();
         }
     }
 }

@@ -39,5 +39,6 @@ namespace DeviceCore
         float[] GetWavelengthSpan(ESpectrumName name);
         float[] GetSpectrumOneShot(ESpectrumName name, uint integral_time, uint avg_time = 1);
         float[] GetSpectrum(ESpectrumName name, uint integral_time, uint avg_time = 1);
+        double GetIntensityPercent(ESpectrumName name);
     }
 }

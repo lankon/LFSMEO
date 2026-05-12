@@ -154,6 +154,21 @@ namespace DeviceFunction
 
             return spectrum;
         }
+
+        public double GetIntensityPercent(ESpectrumName name)
+        {
+            SpectrumListDict.TryGetValue(name.ToString(), out SpectrumData spectrum_data);
+
+            if (spectrum_data == null)
+                return 0.0;
+
+            if (IsInitial == false)
+                return 0.0;
+
+            double percent = SpectrometerList[DeviceIndex].GetIntensityPercent(spectrum_data.Title_ID);
+        
+            return percent;
+        }
         #endregion
 
     }

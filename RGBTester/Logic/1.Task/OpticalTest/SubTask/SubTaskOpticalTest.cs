@@ -40,6 +40,7 @@ namespace RGBTester.Logic
         private int delay_time = 1;
         private int I_Start = 500, I_Step = 10, I_End = 600;
         private int TotalStep = 0;
+        private int IntgTimeSetting = 0;
         private byte Side;
         private byte Color;
         private string Type;
@@ -62,7 +63,9 @@ namespace RGBTester.Logic
             public int Start { get; set; }
             public int Step { get; set; }
             public int End { get; set; }
-            public int IntegralTime { get; set; }
+            public int IntegralTimeStart { get; set; }
+            public int IntegralTimeStep { get; set; }
+            public int IntegralTimeEnd { get; set; }
         }
         public enum WORK
         {
@@ -71,6 +74,10 @@ namespace RGBTester.Logic
             IDLE,
 
             SET_LED_DAC,
+
+            AUTO_INTEGRAL,
+            SET_DEFAULT_VALUE,
+
             GET_SPECTRUM,
             CALCULATE_LUMEN,
             CALCULATE_WAVELENGTH,
@@ -186,7 +193,7 @@ namespace RGBTester.Logic
         private void InitialCurrentConfig()
         {
             CurrentConfig = new Dictionary<string, Dictionary<string, CurrentCondition>>();
-            string[] sides = { "Left", "Right" };
+            string[] sides = { "Left"/*, "Right" */};
             string[] colors = { "R", "G", "B", "B1" };
 
             foreach (var side in sides)
@@ -199,7 +206,9 @@ namespace RGBTester.Logic
                         Start = GetCurrentRecipe(side, color, "Start"),
                         Step = GetCurrentRecipe(side, color, "Step"),
                         End = GetCurrentRecipe(side, color, "End"),
-                        IntegralTime = GetCurrentRecipe(side, color, "Integral"),
+                        IntegralTimeStart = GetCurrentRecipe(side, color, "IntgTimeStart"),
+                        IntegralTimeStep = GetCurrentRecipe(side, color, "IntgTimeStep"),
+                        IntegralTimeEnd = GetCurrentRecipe(side, color, "IntgTimeEnd"),
                     };
                 }
             }
@@ -207,9 +216,8 @@ namespace RGBTester.Logic
         private int GetCurrentRecipe(string side, string color, string type)
         {
             string enumName = "";
-
-            if (type == "Integral")
-                enumName = $"TxtBx_{side}_{color}_IntgTime";
+            if (type.Contains("IntgTime"))
+                enumName = $"TxtBx_{side}_{color}_{type}";
             else
                 enumName = $"TxtBx_{side}_{color}_I_{type}";    //"TxtBx_Left_R_I_Start"
 
@@ -233,7 +241,7 @@ namespace RGBTester.Logic
                 I_Step = set.Step;
                 I_End = set.End;
 
-                Tool.SaveLogToFile($"Condition Set: {TestSide}_{TestColor} [Start:{I_Start}/Step:{I_Step}/End:{I_End}]");
+                Tool.SaveLogToFile($"Current Condition Set:{TestSide}_{TestColor} [Start:{I_Start}/Step:{I_Step}/End:{I_End}]");
 
                 for (int i = I_Start; i <= I_End; i += I_Step)
                     qCurrent.Enqueue(i);
@@ -290,7 +298,10 @@ namespace RGBTester.Logic
         private void SetLedCurrentMode(string mode)
         {
             if(mode != CurrentModeStatus)
-                Deps.LightEngine.SetLed_CurrentMode("LCM");
+            {
+                Deps.LightEngine.SetLed_CurrentMode(mode);
+                CurrentModeStatus = mode;
+            }
         }
         #endregion
 
@@ -346,6 +357,8 @@ namespace RGBTester.Logic
                         Deps.LightEngine.SetLed_CurrentMode("LCM"); //先轉成LCM避免Clamping
                         CurrentModeStatus = "LCM";
 
+                        IntgTimeSetting = CurrentConfig[TestSide][TestColor].IntegralTimeStart;
+
                         Transition(WORK.SET_LED_DAC);
                     }
                     break;
@@ -355,21 +368,68 @@ namespace RGBTester.Logic
 
                         int cur = qCurrent.Dequeue();
                         TesterData.Currentpoint.Add(cur);
-                        
                         int dac = CalculateDACfromCurrent(cur);
                         Deps.LightEngine.SetLed_DAC(Color, Side, dac);
 
                         ResetTimeCount(out delay_time);
 
-                        State = WORK.GET_SPECTRUM;
-                        goto case WORK.GET_SPECTRUM;
+                        State = WORK.AUTO_INTEGRAL;
+                        goto case WORK.AUTO_INTEGRAL;
+                    }
+                    break;
+                case WORK.AUTO_INTEGRAL:
+                    {
+                        fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)IntgTimeSetting);
+                        double percent = Deps.Spectrometer.GetIntensityPercent(ESpectrumName.SPECTRUM_1);
+
+                        if(percent > 60 && percent < 80)
+                        {
+                            Tool.SaveLogToFile($"測試積分時間:{IntgTimeSetting}ms");
+                            State = WORK.GET_SPECTRUM;
+                            goto case WORK.GET_SPECTRUM;
+                        }
+                        else if(IntgTimeSetting > CurrentConfig[TestSide][TestColor].IntegralTimeStart + 20 && percent < 60)
+                        {
+                            Tool.SaveLogToFile("光強不足");
+                            Transition(WORK.SET_DEFAULT_VALUE);
+                        }
+                        else if(IntgTimeSetting < CurrentConfig[TestSide][TestColor].IntegralTimeEnd && percent > 80)
+                        {
+                            Tool.SaveLogToFile("分光卡過曝請調整積分時間");
+                            Transition(WORK.ABORT);
+                        }
+
+                        if (percent < 60)
+                        {
+                            IntgTimeSetting += Math.Abs(CurrentConfig[TestSide][TestColor].IntegralTimeStep); //積分時間越來越長
+                        }
+                        else if (percent > 80)
+                        {
+                            IntgTimeSetting -= Math.Abs(CurrentConfig[TestSide][TestColor].IntegralTimeStep); //積分時間越來越短
+                        }
+                    }
+                    break;
+                case WORK.SET_DEFAULT_VALUE:
+                    {
+                        TesterData.Lumens.Add(0);
+                        TesterData.WLD.Add(0);
+
+                        if (qCurrent.Count == 0)
+                        {
+                            Transition(WORK.SUCCESS);
+                        }
+                        else
+                        {
+                            State = WORK.SET_LED_DAC;
+                            goto case WORK.SET_LED_DAC;
+                        }
                     }
                     break;
                 case WORK.GET_SPECTRUM:
                     {
-                        if(CheckTimeOverMilSec(delay_time, 10))
+                        if(CheckTimeOverMilSec(delay_time, 10)) //硬體轉換時間,需依實際狀況調整
                         {
-                            uint integral = (uint)CurrentConfig[TestSide][TestColor].IntegralTime;
+                            uint integral = 0;//(uint)CurrentConfig[TestSide][TestColor].IntegralTime;
                             fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, integral);
 
                             if(fSpectrumRawData == null)
