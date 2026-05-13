@@ -390,12 +390,12 @@ namespace RGBTester.Logic
                         }
                         else if(IntgTimeSetting > CurrentConfig[TestSide][TestColor].IntegralTimeStart + 20 && percent < 60)
                         {
-                            Tool.SaveLogToFile("光強不足");
+                            Tool.SaveLogToFile("光強不足", level:"WRN");
                             Transition(WORK.SET_DEFAULT_VALUE);
                         }
                         else if(IntgTimeSetting < CurrentConfig[TestSide][TestColor].IntegralTimeEnd && percent > 80)
                         {
-                            Tool.SaveLogToFile("分光卡過曝請調整積分時間");
+                            Tool.SaveLogToFile("分光卡過曝請調整積分時間", level:"ERR");
                             Transition(WORK.ABORT);
                         }
 

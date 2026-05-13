@@ -93,9 +93,9 @@ namespace Device_Spectrum_Virtual
             if(IntensityPercent.Count == 0)
             {
                 IntensityPercent.Enqueue(40);
-                IntensityPercent.Enqueue(50);
-                IntensityPercent.Enqueue(55);
-                IntensityPercent.Enqueue(75);
+                //IntensityPercent.Enqueue(40);
+                //IntensityPercent.Enqueue(40);
+                //IntensityPercent.Enqueue(40);
             }
             
             return IntensityPercent.Dequeue();
