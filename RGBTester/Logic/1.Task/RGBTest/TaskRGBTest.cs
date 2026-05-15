@@ -316,9 +316,12 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
-                            Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN), "Left_Calibration");
-
+                        if (check == TASK_STATUS.SUCCESS)
+                        { 
+                            if(part_test_mode != ePartTestItem.BurinIn || Scope.TaskRGBTest.IsSingleTest == false)
+                                Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN), "Left_Calibration");
+                        }
+                            
                         if(OnlyLeftTest) 
                             CheckResult(check, SUCCESS: WORK.SUCCESS);
                         else
@@ -339,8 +342,11 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
-                            Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN), "Right_Calibration");
+                        if (check == TASK_STATUS.SUCCESS)
+                        {
+                            if (part_test_mode != ePartTestItem.BurinIn || Scope.TaskRGBTest.IsSingleTest == false)
+                                Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN), "Right_Calibration");
+                        }
 
                         CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }
