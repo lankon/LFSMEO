@@ -167,7 +167,20 @@ namespace ToolFunction
                 default: log.Debug(Msg); break;
             }
         }
+        public static void SaveExceptionToFile(Exception ex, string msg = "")
+        {
+            string context =
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [ERR] {msg}\r\n" +
+                $"{ex}\r\n";
 
+            string folder = Path.Combine(Directory.GetCurrentDirectory(), "History");
+            Directory.CreateDirectory(folder);
+
+            string path = Path.Combine(folder, $"Exception_{DateTime.Now:yyyyMMdd}.log");
+            File.AppendAllText(path, context, Encoding.UTF8);
+
+            //SaveLogToFile($"{msg} {ex}", level: "ERR");
+        }
         public static void CloseLog()
         {
             Log.CloseAndFlush();

@@ -196,7 +196,7 @@ namespace RGBTester.Logic
             else if (TestColor == "B2")
             {
                 //要修改 燈的顏色
-                Color = Deps.LightEngine.LED_B;
+                Color = Deps.LightEngine.LED_B2;
                 LED_Duty = RGBfunc.HardwareParam.LED_B2_Duty;    
 
                 DAC_Start = isLeft ? Left_B2_DAC_Start : Right_B2_DAC_Start;
@@ -458,7 +458,9 @@ namespace RGBTester.Logic
 
             testerData.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
             testerData.Vin.Add(sum_Vin / RepeatTime);
-            testerData.Vf.Add(sum_Vf / RepeatTime);
+
+            double vf = sum_Vf / RepeatTime;
+            testerData.Vf.Add(vf);
 
             double rfb = 0;
             if (mode == "LCM")
@@ -466,7 +468,8 @@ namespace RGBTester.Logic
             else
                 rfb = RGBfunc.HardwareParam.Rfb_HCM;
 
-            testerData.Iled.Add(sum_Iled / RepeatTime / rfb / RGBfunc.HardwareParam.LED_SigMag);
+            double iLed = sum_Iled / RepeatTime / rfb / RGBfunc.HardwareParam.LED_SigMag;
+            testerData.Iled.Add(iLed);
 
             return true;
         }

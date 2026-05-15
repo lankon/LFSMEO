@@ -88,5 +88,10 @@ namespace RGBTester.Base
         {
             return "";
         }
+
+        public virtual List<string> GetCalibrationStr()
+        {
+            return new List<string>();
+        }
     }
 }

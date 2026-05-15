@@ -80,11 +80,15 @@ namespace RGBTester.Logic
             ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             ApplicationSetting.ReadAllRecipe<eF_Recipe>();
             ApplicationSetting.ReadAllRecipe<eF_ParameterSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_OpticalTest>();
 
             Tool.SaveLogToFile("Load Recipe File");
             var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
             string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             recipe.ReadRecipe(cur_recipe_name);
+
+            //[Read Recipe]
+            ApplicationSetting.ReadAllRecipe<eF_OpticalTestRecipe>(cur_recipe_name);
         }
 
         public void ShowStartForm()

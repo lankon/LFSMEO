@@ -42,12 +42,12 @@ namespace RGBTester.Base
         TxtBx_Left_B_IntgTimeStep,
         TxtBx_Left_B_IntgTimeEnd,
 
-        TxtBx_Left_B1_I_Start,
-        TxtBx_Left_B1_I_Step,
-        TxtBx_Left_B1_I_End,
-        TxtBx_Left_B1_IntgTimeStart,
-        TxtBx_Left_B1_IntgTimeStep,
-        TxtBx_Left_B1_IntgTimeEnd,
+        TxtBx_Left_B2_I_Start,
+        TxtBx_Left_B2_I_Step,
+        TxtBx_Left_B2_I_End,
+        TxtBx_Left_B2_IntgTimeStart,
+        TxtBx_Left_B2_IntgTimeStep,
+        TxtBx_Left_B2_IntgTimeEnd,
 
         TxtBx_Left_AvgCount,
 
@@ -67,12 +67,71 @@ namespace RGBTester.Base
         TxtBx_Right_B_I_End,
         TxtBx_Right_B_IntgTime,
 
-        TxtBx_Right_B1_I_Start,
-        TxtBx_Right_B1_I_Step,
-        TxtBx_Right_B1_I_End,
-        TxtBx_Right_B1_IntgTime,
+        TxtBx_Right_B2_I_Start,
+        TxtBx_Right_B2_I_Step,
+        TxtBx_Right_B2_I_End,
+        TxtBx_Right_B2_IntgTime,
 
         TxtBx_Right_AvgCount,
+
+
+        //[Left WPC]
+        TxtBx_Left_R_I_Start_WPC,
+        TxtBx_Left_R_I_Step_WPC,
+        TxtBx_Left_R_I_End_WPC,
+        TxtBx_Left_R_IntgTimeStart_WPC,
+        TxtBx_Left_R_IntgTimeStep_WPC,
+        TxtBx_Left_R_IntgTimeEnd_WPC,
+
+        TxtBx_Left_G_I_Start_WPC,
+        TxtBx_Left_G_I_Step_WPC,
+        TxtBx_Left_G_I_End_WPC,
+        TxtBx_Left_G_IntgTimeStart_WPC,
+        TxtBx_Left_G_IntgTimeStep_WPC,
+        TxtBx_Left_G_IntgTimeEnd_WPC,
+
+        TxtBx_Left_B_I_Start_WPC,
+        TxtBx_Left_B_I_Step_WPC,
+        TxtBx_Left_B_I_End_WPC,
+        TxtBx_Left_B_IntgTimeStart_WPC,
+        TxtBx_Left_B_IntgTimeStep_WPC,
+        TxtBx_Left_B_IntgTimeEnd_WPC,
+
+        TxtBx_Left_B2_I_Start_WPC,
+        TxtBx_Left_B2_I_Step_WPC,
+        TxtBx_Left_B2_I_End_WPC,
+        TxtBx_Left_B2_IntgTimeStart_WPC,
+        TxtBx_Left_B2_IntgTimeStep_WPC,
+        TxtBx_Left_B2_IntgTimeEnd_WPC,
+
+        TxtBx_Left_IntgTimeStart_WPC,
+        TxtBx_Left_IntgTimeStep_WPC,
+        TxtBx_Left_IntgTimeEnd_WPC,
+
+        //[Right WPC]
+        TxtBx_Right_R_I_Start_WPC,
+        TxtBx_Right_R_I_Step_WPC,
+        TxtBx_Right_R_I_End_WPC,
+        TxtBx_Right_R_IntgTime_WPC,
+
+        TxtBx_Right_G_I_Start_WPC,
+        TxtBx_Right_G_I_Step_WPC,
+        TxtBx_Right_G_I_End_WPC,
+        TxtBx_Right_G_IntgTime_WPC,
+
+        TxtBx_Right_B_I_Start_WPC,
+        TxtBx_Right_B_I_Step_WPC,
+        TxtBx_Right_B_I_End_WPC,
+        TxtBx_Right_B_IntgTime_WPC,
+
+        TxtBx_Right_B2_I_Start_WPC,
+        TxtBx_Right_B2_I_Step_WPC,
+        TxtBx_Right_B2_I_End_WPC,
+        TxtBx_Right_B2_IntgTime_WPC,
+
+        TxtBx_Right_IntgTimeStart_WPC,
+        TxtBx_Right_IntgTimeStep_WPC,
+        TxtBx_Right_IntgTimeEnd_WPC,
     }
 }
 

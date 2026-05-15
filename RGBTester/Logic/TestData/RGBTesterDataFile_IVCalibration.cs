@@ -11,13 +11,15 @@ namespace RGBTester.Logic._RGBTesterDataFile
 {
     public class RGBTesterDataFile_IVCalibration: RGBTesterDataFile_FileType
     {
-        public RGBTesterDataFile_IVCalibration(RGBTesterFunction rGBTesterFunction)
+        public RGBTesterDataFile_IVCalibration(RGBTesterFunction rGBTesterFunction, RGBTesterDataFile dataFile)
         {
             RGBfunc = rGBTesterFunction;
+            RGBDataFile = dataFile;
         }
 
         #region parameter define
         RGBTesterFunction RGBfunc;
+        RGBTesterDataFile RGBDataFile;
         #endregion
 
         #region private function
@@ -89,6 +91,27 @@ namespace RGBTester.Logic._RGBTesterDataFile
                             $"{test_data.DAC_Avg:F2},{test_data.Current_Avg:F2},{test_data.Slope:F3},{test_data.Offset:F2}";
 
             return context;
+        }
+        public override List<string> GetCalibrationStr()
+        {
+            List<string> str = new List<string>();
+
+            //[High Current Mode]
+            str.Add($"0x0400,led1_offset_mA_h,LED1 offset for high res,mA,{RGBDataFile.R_Offset_HCM:F4}");
+            str.Add($"0x0404,led1_slope_mA_cnt_h,LED1 slope for high res,mA/DACstep,{RGBDataFile.R_Slope_HCM:F4}");
+            str.Add($"0x0408,led2_offset_mA_h,LED2 offset for high res,mA,{RGBDataFile.G_Offset_HCM:F4}");
+            str.Add($"0x040C,led2_slope_mA_cnt_h,LED2 slope for high res,mA/DACstep,{RGBDataFile.G_Slope_HCM:F4}");
+            str.Add($"0x0410,led3_offset_mA_h,LED3 offset for high res,mA,{RGBDataFile.B_Offset_HCM:F4}");
+            str.Add($"0x0414,led3_slope_mA_cnt_h,LED3 slope for high res,mA/DACstep,{RGBDataFile.B_Slope_HCM:F4}");
+            //[Low Current Mode]
+            str.Add($"0x0420,led1_offset_mA_l,LED1 offset for low res,mA,{RGBDataFile.R_Offset_LCM:F4}");
+            str.Add($"0x0424,led1_slope_mA_cnt_l,LED1 slope for low res,mA/DACstep,{RGBDataFile.R_Slope_LCM:F4}");
+            str.Add($"0x0428,led2_offset_mA_l,LED2 offset for low res,mA,{RGBDataFile.G_Offset_LCM:F4}");
+            str.Add($"0x042C,led2_slope_mA_cnt_l,LED2 slope for low res,mA/DACstep,{RGBDataFile.G_Slope_LCM:F4}");
+            str.Add($"0x0430,led3_offset_mA_l,LED3 offset for low res,mA,{RGBDataFile.B_Offset_LCM:F4}");
+            str.Add($"0x0434,led3_slope_mA_cnt_l,LED3 slope for low res,mA/DACstep,{RGBDataFile.B_Slope_LCM:F4}");
+
+            return str;
         }
     }
 }

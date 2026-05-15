@@ -233,7 +233,12 @@ namespace RGBTester.Logic
                             if (select == (int)ePartTestItem.BurinIn)
                                 Transition(WORK.BURN_IN_TEST);
                             else
-                                Transition(WORK.LED_R_TEST);
+                            {
+                                if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                                    Transition(WORK.LED_R_TEST);
+                                else if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                                    Transition(WORK.DISP_TEST);
+                            }
                         }
                         else
                         {

@@ -122,18 +122,28 @@ namespace RGBTester.Logic
 
             for (int i = 0; i < Check_LCM_DAC.Length; i++)
             {
-                if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["R_LCM"].Slope, dicTestResult["R_LCM"].Offset, dicTestResult["R_LCM"].Current[i], ref LCM_R_Dev[i], ref LCM_R_Calculate[i], "LCM_R") == false)
-                    res = false;
-                if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["G_LCM"].Slope, dicTestResult["G_LCM"].Offset, dicTestResult["G_LCM"].Current[i], ref LCM_G_Dev[i], ref LCM_G_Calculate[i], "LCM_G") == false)
-                    res = false;
-                if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["B_LCM"].Slope, dicTestResult["B_LCM"].Offset, dicTestResult["B_LCM"].Current[i], ref LCM_B_Dev[i], ref LCM_B_Calculate[i], "LCM_B") == false)
-                    res = false;
-                if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["R_HCM"].Slope, dicTestResult["R_HCM"].Offset, dicTestResult["R_HCM"].Current[i], ref HCM_R_Dev[i], ref HCM_R_Calculate[i], "HCM_R") == false)
-                    res = false;
-                if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["G_HCM"].Slope, dicTestResult["G_HCM"].Offset, dicTestResult["G_HCM"].Current[i], ref HCM_G_Dev[i], ref HCM_G_Calculate[i], "HCM_G") == false)
-                    res = false;
-                if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["B_HCM"].Slope, dicTestResult["B_HCM"].Offset, dicTestResult["B_HCM"].Current[i], ref HCM_B_Dev[i], ref HCM_B_Calculate[i], "HCM_B") == false)
-                    res = false;
+                bool is_LCM = dicTestResult.TryGetValue("R_LCM", out var data);
+                bool is_HCM = dicTestResult.TryGetValue("R_HCM", out var data1);
+
+                if (is_LCM)
+                {
+                    if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["R_LCM"].Slope, dicTestResult["R_LCM"].Offset, dicTestResult["R_LCM"].Current[i], ref LCM_R_Dev[i], ref LCM_R_Calculate[i], "LCM_R") == false)
+                        res = false;
+                    if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["G_LCM"].Slope, dicTestResult["G_LCM"].Offset, dicTestResult["G_LCM"].Current[i], ref LCM_G_Dev[i], ref LCM_G_Calculate[i], "LCM_G") == false)
+                        res = false;
+                    if (CheckOutOfLimit(Check_LCM_DAC[i], dicTestResult["B_LCM"].Slope, dicTestResult["B_LCM"].Offset, dicTestResult["B_LCM"].Current[i], ref LCM_B_Dev[i], ref LCM_B_Calculate[i], "LCM_B") == false)
+                        res = false;
+                }
+
+                if(is_HCM)
+                {
+                    if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["R_HCM"].Slope, dicTestResult["R_HCM"].Offset, dicTestResult["R_HCM"].Current[i], ref HCM_R_Dev[i], ref HCM_R_Calculate[i], "HCM_R") == false)
+                        res = false;
+                    if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["G_HCM"].Slope, dicTestResult["G_HCM"].Offset, dicTestResult["G_HCM"].Current[i], ref HCM_G_Dev[i], ref HCM_G_Calculate[i], "HCM_G") == false)
+                        res = false;
+                    if (CheckOutOfLimit(Check_HCM_DAC[i], dicTestResult["B_HCM"].Slope, dicTestResult["B_HCM"].Offset, dicTestResult["B_HCM"].Current[i], ref HCM_B_Dev[i], ref HCM_B_Calculate[i], "HCM_B") == false)
+                        res = false;
+                }
             }
 
             PASS = res;

@@ -18,13 +18,15 @@ namespace RGBTester.Base
         byte LED_R { get; }
         byte LED_G { get; }
         byte LED_B { get; }
+        byte LED_B2 { get; }
         byte LED_RightSide { get; }
         byte LED_LeftSide { get; }
 
         void Set_LEA_Type();
         bool Open();
         bool SetLed_DAC(byte rgb, byte side, int value);
-        bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b);
+        bool SetLed_AllColorDAC(byte side, params int[] colors);
+
         bool SetLed_CurrentMode(string mode);
         bool Set_RegisterValue(byte adr, byte len, byte[] value);
         string GetTemperature();

@@ -102,9 +102,9 @@ namespace RGBTester.Logic
                 return;
 
             if (ModuleType == eModuleType.IV_Calibration)
-                FileType = new RGBTesterDataFile_IVCalibration(RGBfunc);
+                FileType = new RGBTesterDataFile_IVCalibration(RGBfunc, this);
             else if (ModuleType == eModuleType.Function_Test)
-                FileType = new RGBTesterDataFile_FunctionTester();
+                FileType = new RGBTesterDataFile_FunctionTester(this);
         }
         public void CreateFile(string describe = "")
         {
@@ -219,21 +219,13 @@ namespace RGBTester.Logic
         }
         public void WriteCalibrationResult(string sn, string describe = "")
         {
-            //[High Current Mode]
-            WriteFile($"0x0400,led1_offset_mA_h,LED1 offset for high res,mA,{R_Offset_HCM:F4}", describe);
-            WriteFile($"0x0404,led1_slope_mA_cnt_h,LED1 slope for high res,mA/DACstep,{R_Slope_HCM:F4}", describe);
-            WriteFile($"0x0408,led2_offset_mA_h,LED2 offset for high res,mA,{G_Offset_HCM:F4}", describe);
-            WriteFile($"0x040C,led2_slope_mA_cnt_h,LED2 slope for high res,mA/DACstep,{G_Slope_HCM:F4}", describe);
-            WriteFile($"0x0410,led3_offset_mA_h,LED3 offset for high res,mA,{B_Offset_HCM:F4}", describe);
-            WriteFile($"0x0414,led3_slope_mA_cnt_h,LED3 slope for high res,mA/DACstep,{B_Slope_HCM:F4}", describe);
-            //[Low Current Mode]
-            WriteFile($"0x0420,led1_offset_mA_l,LED1 offset for low res,mA,{R_Offset_LCM:F4}", describe);
-            WriteFile($"0x0424,led1_slope_mA_cnt_l,LED1 slope for low res,mA/DACstep,{R_Slope_LCM:F4}", describe);
-            WriteFile($"0x0428,led2_offset_mA_l,LED2 offset for low res,mA,{G_Offset_LCM:F4}", describe);
-            WriteFile($"0x042C,led2_slope_mA_cnt_l,LED2 slope for low res,mA/DACstep,{G_Slope_LCM:F4}", describe);
-            WriteFile($"0x0430,led3_offset_mA_l,LED3 offset for low res,mA,{B_Offset_LCM:F4}", describe);
-            WriteFile($"0x0434,led3_slope_mA_cnt_l,LED3 slope for low res,mA/DACstep,{B_Slope_LCM:F4}", describe);
-            //[SN]
+            List<string> calibration = FileType.GetCalibrationStr();
+
+            for (int i = 0; i < calibration.Count; i++)
+            {
+                WriteFile(calibration[i], describe);
+            }
+
             WriteFile($"0x0440,,Serial Number,,{sn}", describe);
         }
 

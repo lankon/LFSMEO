@@ -28,6 +28,7 @@ namespace RGBTester.Device
         public byte LED_R { get; private set; } = 0x00;
         public byte LED_G { get; private set; } = 0x00;
         public byte LED_B { get; private set; } = 0x00;
+        public byte LED_B2 { get; private set; } = 0x00;
         private ManualResetEventSlim responseEvent = new ManualResetEventSlim(false);
         private int lastResponse = -1;
         private int SelectType = -1;
@@ -66,6 +67,7 @@ namespace RGBTester.Device
                     LED_R = lea.LED_R_LSB;
                     LED_G = lea.LED_G_LSB;
                     LED_B = lea.LED_B_LSB;
+                    LED_B2 = lea.LED_B2_LSB;
                     LED_RightSide = lea.LED_RightSide;
                     LED_LeftSide = lea.LED_LeftSide;
                 }
@@ -100,6 +102,8 @@ namespace RGBTester.Device
                 color = "Green";
             else if (rgb == LED_B)
                 color = "Blue";
+            else if (rgb == LED_B2)
+                color = "Blue2";
 
             if (side == LED_LeftSide)
                 s_side = "Left";
@@ -113,7 +117,7 @@ namespace RGBTester.Device
             else
                 return false;
         }
-        public bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b)
+        public bool SetLed_AllColorDAC(byte side, params int[] colors)
         {
             string s_side = "";
 
@@ -122,11 +126,19 @@ namespace RGBTester.Device
             else
                 s_side = "Right";
 
-            Tool.SaveLogToFile($"Set {s_side} All Color DAC = R:{value_r} G:{value_g} B:{value_b}");
-            if (LEA.SetLed_AllColorDAC(side, value_r, value_g, value_b))
+            if (LEA.SetLed_AllColorDAC(side, colors))
+            {
+                if(colors.Length == 4)
+                    Tool.SaveLogToFile($"Set {s_side} All Color DAC = R:{colors[0]} G:{colors[1]} B:{colors[2]} B2:{colors[3]}");
+                else
+                    Tool.SaveLogToFile($"Set {s_side} All Color DAC = R:{colors[0]} G:{colors[1]} B:{colors[2]}");
                 return true;
+            }
             else
+            {
+                Tool.SaveLogToFile($"Set {s_side} All Color DAC fail");
                 return false;
+            }
         }
         public bool SetLed_CurrentMode(string mode)
         {

@@ -32,12 +32,16 @@ namespace RGBTester.Logic
             public double G_Slope_LCM;
             public double B_Slope_HCM;
             public double B_Slope_LCM;
+            public double B2_Slope_HCM;
+            public double B2_Slope_LCM;
             public double R_Offset_HCM;
             public double R_Offset_LCM;
             public double G_Offset_HCM;
             public double G_Offset_LCM;
             public double B_Offset_HCM;
             public double B_Offset_LCM;
+            public double B2_Offset_HCM;
+            public double B2_Offset_LCM;
 
             public void SetResult(string color, string mode, double slope, double offset)
             {
@@ -57,6 +61,11 @@ namespace RGBTester.Logic
                     B_Slope_HCM = slope;
                     B_Offset_HCM = offset;
                 }
+                else if(color == "B" && mode == "HCM")
+                {
+                    B2_Slope_HCM = slope;
+                    B2_Offset_HCM = offset;
+                }
                 //[RGB/Low]
                 else if (color == "R" && mode == "LCM")
                 {
@@ -72,6 +81,11 @@ namespace RGBTester.Logic
                 {
                     B_Slope_LCM = slope;
                     B_Offset_LCM = offset;
+                }
+                else if (color == "B2" && mode == "LCM")
+                {
+                    B2_Slope_LCM = slope;
+                    B2_Offset_LCM = offset;
                 }
             }
         }

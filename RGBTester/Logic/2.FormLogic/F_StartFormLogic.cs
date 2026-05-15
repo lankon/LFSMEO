@@ -136,7 +136,7 @@ namespace RGBTester.Logic
 
                 if (values.Length < 2) continue; // 確保至少有 DAC 索引和一個通道值
 
-                for(int i=1; i<values.Length-1; i++)
+                for(int i=1; i<values.Length; i++)
                 {
                     if(double.TryParse(values[i], out double d_value))
                         Machine.DIOL.Add_AI_VirtualData(eIONames[i-1], d_value);

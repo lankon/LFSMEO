@@ -203,11 +203,9 @@ namespace RGBTester.Logic
                         Transition(WORK.ELECTRIC_TEST);
                     }
                     break;
-                
+
                 case WORK.ELECTRIC_TEST:
                     {
-                        
-
                         //建立SubTask
                         SubTask = new TaskRGBTest(Deps, F_StateControl, TestSide);
                         //委派必要Function
@@ -221,7 +219,7 @@ namespace RGBTester.Logic
                 case WORK.WAIT_ELECTRIC_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS:WORK.OPTICAL_TEST);
+                        CheckResult(check, SUCCESS: WORK.OPTICAL_TEST);
                     }
                     break;
 
@@ -239,9 +237,11 @@ namespace RGBTester.Logic
                 case WORK.WAIT_OPTICAL_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check);
+                        CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }
                     break;
+
+                
 
                 case WORK.SUCCESS:
                     {

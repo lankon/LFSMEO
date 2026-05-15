@@ -38,7 +38,6 @@ namespace RGBTester.Logic
 
         #region parameter
         private int delay_time = 1;
-        private int I_Start = 500, I_Step = 10, I_End = 600;
         private int TotalStep = 0;
         private int IntgTimeSetting = 0;
         private byte Side;
@@ -46,15 +45,18 @@ namespace RGBTester.Logic
         private string Type;
         private string TestSide;
         private string TestColor;
+        private string[] TestColors = { "R", "G", "B", "B2"};
         private string CurrentModeStatus = "";
         private float[] fSpectrumRawData;
         private double[] SpectrumRawData;
+        
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         private IF_ProgressBar ProgressBar;
-        private Dictionary<string, Dictionary<string, CurrentCondition>> CurrentConfig; //雙層字典：[Side (Left/Right)][Color (R/G/B/B1)]
+        private Dictionary<string, Dictionary<string, CurrentCondition>> CurrentConfig; //雙層字典：[Side (Left/Right)][Color (R/G/B/B2)]
         private LuminousFlux LF = new LuminousFlux();
         private Queue<int> qCurrent = new Queue<int>();
+        private Queue<int>[] qWPC_Current;
         private RGBTesterData TesterData = new RGBTesterData();
         private Wavelength WL = new Wavelength();
 
@@ -186,20 +188,27 @@ namespace RGBTester.Logic
                 Color = Deps.LightEngine.LED_G;
             else if(TestColor == "B")
                 Color = Deps.LightEngine.LED_B;
+            else if(TestColor == "B2")
+                Color = Deps.LightEngine.LED_B2;
+            else if (TestColor == "WPC")
+            {
+
+            }
 
             InitialCurrentConfig();
             SetCurrentCondition();
         }
         private void InitialCurrentConfig()
         {
-            CurrentConfig = new Dictionary<string, Dictionary<string, CurrentCondition>>();
             string[] sides = { "Left"/*, "Right" */};
-            string[] colors = { "R", "G", "B", "B1" };
+
+            qWPC_Current = new Queue<int>[TestColors.Length];
+            CurrentConfig = new Dictionary<string, Dictionary<string, CurrentCondition>>();
 
             foreach (var side in sides)
             {
                 CurrentConfig[side] = new Dictionary<string, CurrentCondition>();
-                foreach (var color in colors)
+                foreach (var color in TestColors)
                 {
                     CurrentConfig[side][color] = new CurrentCondition
                     {
@@ -216,10 +225,15 @@ namespace RGBTester.Logic
         private int GetCurrentRecipe(string side, string color, string type)
         {
             string enumName = "";
+            string wpc_mode = "_WPC";
+
+            if (TestColor != "WPC")
+                wpc_mode = "";
+
             if (type.Contains("IntgTime"))
-                enumName = $"TxtBx_{side}_{color}_{type}";
+                enumName = $"TxtBx_{side}_{color}_{type}" + wpc_mode;
             else
-                enumName = $"TxtBx_{side}_{color}_I_{type}";    //"TxtBx_Left_R_I_Start"
+                enumName = $"TxtBx_{side}_{color}_I_{type}" + wpc_mode;    //"TxtBx_Left_R_I_Start"
 
             //將字串轉換為 Enum 型別
             if (Enum.TryParse<eF_OpticalTestRecipe>(enumName, out eF_OpticalTestRecipe result))
@@ -232,26 +246,41 @@ namespace RGBTester.Logic
         }
         private void SetCurrentCondition()
         {
-            //透過Dictionary(TestSide, TestColor) 獲取物件
-            if (CurrentConfig.ContainsKey(TestSide) && CurrentConfig[TestSide].ContainsKey(TestColor))
+            if(TestColor == "WPC")
             {
-                var set = CurrentConfig[TestSide][TestColor];
+                string test_color = "";
 
-                I_Start = set.Start;
-                I_Step = set.Step;
-                I_End = set.End;
+                for (int i = 0; i < qWPC_Current.Count(); i++)
+                {
+                    test_color = TestColors[i];
+                    qWPC_Current[i] = new Queue<int>();
 
-                Tool.SaveLogToFile($"Current Condition Set:{TestSide}_{TestColor} [Start:{I_Start}/Step:{I_Step}/End:{I_End}]");
-
-                for (int i = I_Start; i <= I_End; i += I_Step)
-                    qCurrent.Enqueue(i);
-
-                TotalStep = qCurrent.Count;
+                    PopulateQueue(TestSide, TestColors[i], qWPC_Current[i]);
+                    TotalStep = qWPC_Current[i].Count;
+                }
             }
             else
             {
-                Tool.SaveLogToFile($"Condition Missing: {TestSide}_{TestColor}", level: "ERR");
+                PopulateQueue(TestSide, TestColor, qCurrent);
+                TotalStep = qCurrent.Count;
             }
+        }
+        private void PopulateQueue(string side, string color, Queue<int> targetQueue)
+        {
+            if (CurrentConfig.TryGetValue(side, out var sideDict) && sideDict.TryGetValue(color, out var set))
+            {
+                Tool.SaveLogToFile($"Current Condition Set:{side}_{color} [Start:{set.Start}/Step:{set.Step}/End:{set.End}]");
+
+                for (int j = set.Start; j <= set.End; j += set.Step)
+                {
+                    targetQueue.Enqueue(j);
+                }
+
+                return;
+            }
+
+            // 找不到設定時紀錄錯誤
+            Tool.SaveLogToFile($"Condition Missing: {side}_{color}", level: "ERR");
         }
         private int CalculateDACfromCurrent(int current)
         {
@@ -357,19 +386,36 @@ namespace RGBTester.Logic
                         Deps.LightEngine.SetLed_CurrentMode("LCM"); //先轉成LCM避免Clamping
                         CurrentModeStatus = "LCM";
 
-                        IntgTimeSetting = CurrentConfig[TestSide][TestColor].IntegralTimeStart;
+                        if (TestColor == "WPC")
+                            IntgTimeSetting = ApplicationSetting.Get_Int_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_Left_IntgTimeStart_WPC);
+                        else
+                            IntgTimeSetting = CurrentConfig[TestSide][TestColor].IntegralTimeStart;
 
                         Transition(WORK.SET_LED_DAC);
                     }
                     break;
                 case WORK.SET_LED_DAC:
                     {
-                        UpdateProgressBar(qCurrent, TotalStep);
+                        if (TestColor == "WPC")
+                        {
+                            UpdateProgressBar(qWPC_Current[0], TotalStep);
 
-                        int cur = qCurrent.Dequeue();
-                        TesterData.Currentpoint.Add(cur);
-                        int dac = CalculateDACfromCurrent(cur);
-                        Deps.LightEngine.SetLed_DAC(Color, Side, dac);
+                            int dac_r = CalculateDACfromCurrent(qWPC_Current[0].Dequeue());
+                            int dac_g = CalculateDACfromCurrent(qWPC_Current[1].Dequeue());
+                            int dac_b = CalculateDACfromCurrent(qWPC_Current[2].Dequeue());
+                            int dac_b2 = CalculateDACfromCurrent(qWPC_Current[3].Dequeue());
+
+                            Deps.LightEngine.SetLed_AllColorDAC(Side, dac_r, dac_g, dac_b, dac_b2);
+                        }
+                        else
+                        {
+                            UpdateProgressBar(qCurrent, TotalStep);
+
+                            int cur = qCurrent.Dequeue();
+                            TesterData.Currentpoint.Add(cur);
+                            int dac = CalculateDACfromCurrent(cur);
+                            Deps.LightEngine.SetLed_DAC(Color, Side, dac);
+                        }
 
                         ResetTimeCount(out delay_time);
 
@@ -414,7 +460,7 @@ namespace RGBTester.Logic
                         TesterData.Lumens.Add(0);
                         TesterData.WLD.Add(0);
 
-                        if (qCurrent.Count == 0)
+                        if ((qCurrent.Count == 0 && TestSide != "WPC") || (qWPC_Current[0].Count == 0 && TestSide == "WPC"))
                         {
                             Transition(WORK.SUCCESS);
                         }
@@ -464,14 +510,25 @@ namespace RGBTester.Logic
 
                         TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData));
 
-                        if(qCurrent.Count == 0)
+                        if(TestColor == "WPC")
                         {
-                            Transition(WORK.SUCCESS);
+                            if (qWPC_Current[0].Count == 0)
+                                Transition(WORK.SUCCESS);
+                            else
+                            {
+                                State = WORK.SET_LED_DAC;
+                                goto case WORK.SET_LED_DAC;
+                            }
                         }
                         else
                         {
-                            State = WORK.SET_LED_DAC;
-                            goto case WORK.SET_LED_DAC;
+                            if (qCurrent.Count == 0)
+                                Transition(WORK.SUCCESS);
+                            else
+                            {
+                                State = WORK.SET_LED_DAC;
+                                goto case WORK.SET_LED_DAC;
+                            }
                         }
                     }
                     break;

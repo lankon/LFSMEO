@@ -40,7 +40,7 @@ namespace RGBTester.Logic
         #region parameter
         RGBTesterFunction RGBfunc;
         ResultData ResultData;
-        private Queue<string> TestQueue = new Queue<string>(new[] { "R", "G", "B" ,"B1"});
+        private Queue<string> TestQueue = new Queue<string>(new[] { "R", "G", "B" ,"B2"});
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
@@ -54,6 +54,9 @@ namespace RGBTester.Logic
 
             TEST_COLOR,
             WAIT_TEST_COLOR,
+
+            WPC_TEST,
+            WAIT_WPC_TEST,
 
             END,
 
@@ -228,7 +231,7 @@ namespace RGBTester.Logic
                         }
                         else
                         {
-                            Transition(WORK.SUCCESS);
+                            Transition(WORK.WPC_TEST);
                         }
                     }
                     break;
@@ -236,6 +239,22 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
                         CheckResult(check, SUCCESS: WORK.TEST_COLOR);
+                    }
+                    break;
+                #endregion
+                #region WPC Test
+                case WORK.WPC_TEST:
+                    {
+                        SubTask = new SubTaskOpticalTest(Deps, F_StateControl, Type + "_WPC");
+                        SetSubTaskProcessing(true);
+
+                        Transition(WORK.WAIT_WPC_TEST);
+                    }
+                    break;
+                case WORK.WAIT_WPC_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }
                     break;
                 #endregion
