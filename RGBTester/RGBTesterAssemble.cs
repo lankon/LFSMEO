@@ -48,6 +48,7 @@ namespace RGBTester
             services.AddTransient<F_OpticalTest>();
             services.AddTransient<F_FunctionTester>();
             services.AddTransient<F_EngineerSetting>();
+            services.AddTransient<F_DAQ_ChartSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
             //[Form Logic]

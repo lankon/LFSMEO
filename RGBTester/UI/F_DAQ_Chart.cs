@@ -44,6 +44,7 @@ namespace RGBTester.UI
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
 
+            Pnl_ShowSetting.Parent = chart1;    //設定父元件
             ShowHint();
 
             if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
@@ -144,7 +145,7 @@ namespace RGBTester.UI
             Color[] colors = { Color.Red, Color.Blue, Color.Green, Color.Orange, Color.Purple };
             for (int i = 0; i < 5; i++)
             {
-                string[] seriesNames = { "Vin", "Iin", "VLed", "Vf", "ILed" };
+                string[] seriesNames = { "CH1", "CH2", "CH3", "CH4", "CH5" };
                 Series series = new Series(seriesNames[i]);
 
                 series.ChartType = SeriesChartType.Line;
@@ -158,11 +159,11 @@ namespace RGBTester.UI
         {
             SetupChart();
 
-            ProcessChannel(0, result.Vin);
-            ProcessChannel(1, result.Iin);
-            ProcessChannel(2, result.Vled);
-            ProcessChannel(3, result.Vf);
-            ProcessChannel(4, result.Iled);
+            ProcessChannel(0, result.CH1);
+            ProcessChannel(1, result.CH2);
+            ProcessChannel(2, result.CH3);
+            ProcessChannel(3, result.CH4);
+            ProcessChannel(4, result.CH5);
 
             UpdateAvgResult(result);
         }
@@ -327,8 +328,10 @@ namespace RGBTester.UI
                 lea_color = lea.LED_R;
             else if (TestColor.SelectedIndex == 1)
                 lea_color = lea.LED_G;
-            else
+            else if(TestColor.SelectedIndex == 2)
                 lea_color = lea.LED_B;
+            else
+                lea_color = lea.LED_B2;
 
             DAQ_ChartLogic.SetLedCondition(lea_side, lea_color, vaule, current_mode);
             F_DAQ_ChartLogic.DAQDataResult data = DAQ_ChartLogic.Get_DAQ_Data(lea_side, lea_color, current_mode);
@@ -353,6 +356,12 @@ namespace RGBTester.UI
                     chart1.SaveImage(dlg.FileName, ChartImageFormat.Png);
                 }
             }
+        }
+
+        private void Pnl_ShowSetting_Click(object sender, EventArgs e)
+        {
+            F_DAQ_ChartSetting f_DAQ_ChartSetting = ServiceProvider.GetRequiredService<F_DAQ_ChartSetting>();
+            f_DAQ_ChartSetting.ShowSetting("");
         }
     }
 }

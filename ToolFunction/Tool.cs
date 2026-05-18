@@ -544,6 +544,25 @@ namespace ToolFunction
             }
             return null;
         }
+
+        public static T StringToEnum<T>(string input) where T : struct, Enum
+        {
+            //如果是空字串，直接回傳預設值
+            if (string.IsNullOrEmpty(input))
+                return default(T);
+
+            //進行轉換
+            if (Enum.TryParse<T>(input, out T result))
+            {
+                return result;
+            }
+            else
+            {
+                //轉換失敗，輸出Log並回傳預設值
+                Tool.SaveLogToFile($"無法辨識的狀態字串:{input}，自動轉為預設值", level:"WRN");
+                return default(T);
+            }
+        }
     }
 
     /// <summary>

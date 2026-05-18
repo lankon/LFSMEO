@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Base\eElement_Form\eF_FunctionTester.cs" />
     <Compile Include="Base\eElement_Form\eF_OpticalTest.cs" />
+    <Compile Include="Base\eElement_Form\eF_DAQ_ChartSetting.cs" />
     <Compile Include="Base\eElement_Form\eF_YieldReport.cs" />
     <Compile Include="Base\eElement_Form\eF_ParameterSetting.cs" />
     <Compile Include="Base\eElement_Form\eF_Recipe.cs" />
@@ -227,6 +228,12 @@
     <Compile Include="UI\Engineer\F_EngineerSetting.designer.cs">
       <DependentUpon>F_EngineerSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\F_DAQ_ChartSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_DAQ_ChartSetting.designer.cs">
+      <DependentUpon>F_DAQ_ChartSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_YieldReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -313,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Engineer\F_EngineerSetting.resx">
       <DependentUpon>F_EngineerSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_DAQ_ChartSetting.resx">
+      <DependentUpon>F_DAQ_ChartSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_YieldReport.resx">
       <DependentUpon>F_YieldReport.cs</DependentUpon>

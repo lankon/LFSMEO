@@ -27,11 +27,11 @@ namespace RGBTester.Logic
 
         public class DAQDataResult
         {
-            public double[] Vin { get; set; }
-            public double[] Iin { get; set; }
-            public double[] Vled { get; set; }
-            public double[] Vf { get; set; }
-            public double[] Iled { get; set; }
+            public double[] CH1 { get; set; }
+            public double[] CH2 { get; set; }
+            public double[] CH3 { get; set; }
+            public double[] CH4 { get; set; }
+            public double[] CH5 { get; set; }
         }
         #endregion
         public void SetLedCondition(byte test_side, byte color, int value, string test_mode)
@@ -65,39 +65,51 @@ namespace RGBTester.Logic
 
         public DAQDataResult Get_DAQ_Data(byte test_side, byte color, string test_mode)
         {
-            RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
-            RGBTesterFunction.DAQ_IO_Point daq_io = func.Get_DAQ_IO_Point(test_side, color);
-            int test_count = func.HardwareParam.Period_DAQ_Count * 3;
+            ApplicationSetting.ReadAllRecipe<eF_DAQ_ChartSetting>();
 
-            double[] Vin = new double[test_count];
-            double[] Iin = new double[test_count];
-            double[] Vled = new double[test_count];
-            double[] Vf = new double[test_count];
-            double[] Iled = new double[test_count];
+            DAQDataResult result = new DAQDataResult();
+            int test_count = ApplicationSetting.Get_Int_Recipe<eF_DAQ_ChartSetting>((int)eF_DAQ_ChartSetting.TxtBx_ReadCount);
+
+            if (test_count == -1)
+                return result;
+
+            int channel = 0;
+            for(int i=0; i<5; i++)
+            {
+                if (ApplicationSetting.Get_Int_Recipe<eF_DAQ_ChartSetting>((int)eF_DAQ_ChartSetting.Cmbx_UseCH1+i) == 1)
+                    channel++;
+            }
+
+            double[] CH1 = new double[test_count];
+            double[] CH2 = new double[test_count];
+            double[] CH3 = new double[test_count];
+            double[] CH4 = new double[test_count];
+            double[] CH5 = new double[test_count];
 
             for (int i = 0; i < test_count; i++)
             {
-                //一次取5個通道有增加或減少的話會影響Period_DAQ_Count
-                Vin[i] = RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Vin);
-
-                if(test_mode == "HCM")
-                    Iin[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Iin_HCM));
-                else if(test_mode == "LCM")
-                    Iin[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Iin_LCM));
+                double[] data = new double[5];
                 
-                Vled[i] = RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_VLED);
-                Vf[i] = Vled[i] - RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_Vf);
-                Iled[i] = (RGBTesterMachine.DIOL.GetAInputStatus(daq_io.DAQ_ILED));
+                for(int j=0; j< channel; j++)
+                {
+                    string io_name = ApplicationSetting.Get_String_Recipe<eF_DAQ_ChartSetting>((int)eF_DAQ_ChartSetting.TxtBx_CH1+j);
+                    EIOName daq = Tool.StringToEnum<EIOName>(io_name);
+
+                    data[j] = RGBTesterMachine.DIOL.GetAInputStatus(daq);
+                }
+
+                CH1[i] = data[0];
+                CH2[i] = data[1];
+                CH3[i] = data[2];
+                CH4[i] = data[3];
+                CH5[i] = data[4];
             }
 
-            DAQDataResult result = new DAQDataResult
-            {
-                Vin = Vin,
-                Iin = Iin,
-                Vled = Vled,
-                Vf = Vf,
-                Iled = Iled
-            };
+            result.CH1 = CH1;
+            result.CH2 = CH2;
+            result.CH3 = CH3;
+            result.CH4 = CH4;
+            result.CH5 = CH5;
 
             Save_DAQ_Data(result, $"{AppDomain.CurrentDomain.BaseDirectory}\\Result\\DAQData_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
             return result;
@@ -106,10 +118,10 @@ namespace RGBTester.Logic
         public void Save_DAQ_Data(DAQDataResult data, string file_path)
         {
             List<string> lines = new List<string>();
-            lines.Add("Index,Vin,Iin,Vled,Vf,Iled");
-            for (int i = 0; i < data.Vin.Length; i++)
+            lines.Add("Index,CH1,CH2,CH3,CH4,CH5");
+            for (int i = 0; i < data.CH1.Length; i++)
             {
-                string line = $"{i},{data.Vin[i]},{data.Iin[i]},{data.Vled[i]},{data.Vf[i]},{data.Iled[i]}";
+                string line = $"{i},{data.CH1[i]},{data.CH2[i]},{data.CH3[i]},{data.CH4[i]},{data.CH5[i]}";
                 lines.Add(line);
             }
             File.WriteAllLines(file_path, lines);
@@ -123,11 +135,11 @@ namespace RGBTester.Logic
         {
             DataFilter dataFilter = new DataFilter();
 
-            double Vin_value = dataFilter.GetPreciseHighLevel(data.Vin.ToList(), 0.95, 0.002);
-            double Iin_value = dataFilter.GetPreciseHighLevel(data.Iin.ToList(), 0.95, 0.002);
-            double Vled_value = dataFilter.GetPreciseHighLevel(data.Vled.ToList(), 0.95, 0.002);
-            double Vf_value = dataFilter.GetPreciseHighLevel(data.Vf.ToList(), 0.95, 0.002);
-            double Iled_value = dataFilter.GetPreciseHighLevel(data.Iled.ToList(), 0.95, 0.002);
+            double Vin_value = dataFilter.GetPreciseHighLevel(data.CH1.ToList(), 0.95, 0.002);
+            double Iin_value = dataFilter.GetPreciseHighLevel(data.CH2.ToList(), 0.95, 0.002);
+            double Vled_value = dataFilter.GetPreciseHighLevel(data.CH3.ToList(), 0.95, 0.002);
+            double Vf_value = dataFilter.GetPreciseHighLevel(data.CH4.ToList(), 0.95, 0.002);
+            double Iled_value = dataFilter.GetPreciseHighLevel(data.CH5.ToList(), 0.95, 0.002);
 
             RGBTesterFunction.AvgData avgData = new RGBTesterFunction.AvgData
             {
