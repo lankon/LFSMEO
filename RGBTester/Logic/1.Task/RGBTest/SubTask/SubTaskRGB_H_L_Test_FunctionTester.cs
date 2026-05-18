@@ -107,13 +107,13 @@ namespace RGBTester.Logic
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
         private IF_ProgressBar ProgressBar;
+        private IWriteFile ResultData;
         private RGBTesterData TesterData_H;// = new RGBTesterData();
         private RGBTesterData TesterData_L;// = new RGBTesterData();
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
         private RGBTesterFunction RGBfunc;
         private RGBTesterFunction.DAQ_Point_FunctionTester DAQPoint;
-        private ResultData ResultData;
 
         public enum WORK
         {
@@ -148,7 +148,7 @@ namespace RGBTester.Logic
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
-            ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
+            ResultData = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
             RGBfunc.SetTestChannel(4);
             Period_DAQ_Count = RGBfunc.HardwareParam.Period_DAQ_Count * 3;   //抓三個週期的資料
@@ -641,14 +641,14 @@ namespace RGBTester.Logic
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
                             CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
 
-                            double[] current = new double[ResultData.CheckSlopeData.Check_LCM_DAC.Length];
-                            for (int i=0; i< ResultData.CheckSlopeData.Check_LCM_DAC.Length; i++)
+                            double[] current = new double[ResultData.CheckSlope.Check_LCM_DAC.Length];
+                            for (int i=0; i< ResultData.CheckSlope.Check_LCM_DAC.Length; i++)
                             {
-                                int index = TesterData_L.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_LCM_DAC[i]);
+                                int index = TesterData_L.DACpoint.IndexOf(ResultData.CheckSlope.Check_LCM_DAC[i]);
 
                                 if (index == -1)
                                 {
-                                    Tool.SaveLogToFile($"Chec k DAC {ResultData.CheckSlopeData.Check_LCM_DAC[i]} Not Found!", level: "WRN");
+                                    Tool.SaveLogToFile($"Chec k DAC {ResultData.CheckSlope.Check_LCM_DAC[i]} Not Found!", level: "WRN");
                                     current[i] = 0;
                                 }
                                 else
@@ -656,7 +656,7 @@ namespace RGBTester.Logic
                                     current[i] = TesterData_L.Iled[index] * 1000;
                                 }
                             }
-                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "LCM", current, LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
+                            ResultData.CheckSlope.SetCurrentData(TestColor, "LCM", current, LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
@@ -769,13 +769,13 @@ namespace RGBTester.Logic
                             CheckTestResult(LinearCurveFitting_H.Slope, "HCM");
 
                             double[] current = new double[TesterData_H.DACpoint.Count];
-                            for (int i = 0; i < ResultData.CheckSlopeData.Check_HCM_DAC.Length; i++)
+                            for (int i = 0; i < ResultData.CheckSlope.Check_HCM_DAC.Length; i++)
                             {
-                                int index = TesterData_H.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_HCM_DAC[i]);
+                                int index = TesterData_H.DACpoint.IndexOf(ResultData.CheckSlope.Check_HCM_DAC[i]);
 
                                 if (index == -1)
                                 {
-                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_HCM_DAC[i]} Not Found!", level: "WRN");
+                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlope.Check_HCM_DAC[i]} Not Found!", level: "WRN");
                                     current[i] = 0;
                                 }
                                 else
@@ -783,7 +783,7 @@ namespace RGBTester.Logic
                                     current[i] = TesterData_H.Iled[index] * 1000;
                                 }
                             }
-                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "HCM", current, LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
+                            ResultData.CheckSlope.SetCurrentData(TestColor, "HCM", current, LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
 
 
                             if (!Deps.LightEngine.SetLed_DAC(Color, Side, 0))

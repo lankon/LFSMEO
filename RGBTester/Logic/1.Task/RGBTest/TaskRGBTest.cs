@@ -147,7 +147,6 @@ namespace RGBTester.Logic
         private void CopyAndCloseTestFile() => ExecuteFileAction(k => Deps.File.CopyAndCloseTestFile(k));
         private void CloseAndDeleteTestFile() => ExecuteFileAction(k => Deps.File.CloseAndDeleteFile(k));
 
-
         private void Preset() 
         {
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
@@ -326,9 +325,12 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
-                            Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Left_Calibration");
-
+                        if (check == TASK_STATUS.SUCCESS)
+                        {
+                            if(Scope.TaskRGBTest.IsSingleTest == false || part_test_mode != ePartTestItem.BurinIn)
+                                Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Left_Calibration");
+                        }
+                            
                         if(OnlyLeftTest) 
                             CheckResult(check, SUCCESS: WORK.SUCCESS);
                         else
@@ -350,8 +352,11 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        if (check == TASK_STATUS.SUCCESS && part_test_mode != ePartTestItem.BurinIn)
-                            Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Right_Calibration");
+                        if (check == TASK_STATUS.SUCCESS)
+                        {
+                            if (Scope.TaskRGBTest.IsSingleTest == false || part_test_mode != ePartTestItem.BurinIn)
+                                Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Right_Calibration");
+                        }
 
                         CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }

@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RGBTester.Base;
-using RGBTester.Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +12,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 using ToolFunction;
+using RGBTester.Base;
+using RGBTester.Logic;
 using static RGBTester.Logic.F_DAQ_ChartLogic;
 
 namespace RGBTester.UI

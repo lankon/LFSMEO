@@ -33,7 +33,10 @@ namespace RGBTester.Logic._RGBTesterDataFile
             //    return "FAIL";
         }
         #endregion
-
+        public override eModuleType GetModuleType()
+        {
+            return RGBfunc.GetModuleType();
+        }
         public override string GetTitleStr(string describe)
         {
             string title = "";

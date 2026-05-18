@@ -64,7 +64,7 @@ namespace RGBTester
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<RGBTesterFunction>();
             services.AddSingleton<DataBaseTestResult>();
-            services.AddSingleton<ResultData>();
+            //services.AddSingleton<ResultData>();
 
             return services;
         }

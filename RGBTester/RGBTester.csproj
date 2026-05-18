@@ -163,9 +163,9 @@
     <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_HardwareSetting.cs" />
     <Compile Include="Logic\Function\DataBaseTestResult.cs" />
     <Compile Include="Logic\Function\Wavelength.cs" />
-    <Compile Include="Logic\TestData\ResultData.cs" />
-    <Compile Include="Logic\TestData\RGBTesterDataFile_FunctionTester.cs" />
-    <Compile Include="Logic\TestData\RGBTesterDataFile_IVCalibration.cs" />
+    <Compile Include="Logic\TestData\RGBTesterDataFile_CheckSlopeData.cs" />
+    <Compile Include="Logic\TestData\Module\RGBTesterDataFile_FunctionTester.cs" />
+    <Compile Include="Logic\TestData\Module\RGBTesterDataFile_IVCalibration.cs" />
     <Compile Include="UI\Engineer\F_ElectricalSetting.cs">
       <SubType>Form</SubType>
     </Compile>

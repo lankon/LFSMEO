@@ -22,6 +22,8 @@ namespace RGBTester.Base
         double G_Slope_LCM { get;}
         double B_Slope_LCM { get;}
 
+        CheckSlopeData CheckSlope { get; }
+
         void SetModuleAndCustomer(eModuleType eModule);
         void CreateFile(string describe = "");
         
@@ -74,6 +76,11 @@ namespace RGBTester.Base
 
     public class RGBTesterDataFile_FileType
     {
+        public virtual eModuleType GetModuleType()
+        {
+            return eModuleType.IV_Calibration;
+        }
+
         public virtual string GetTitleStr(string describe)
         {
             return "";
@@ -92,6 +99,11 @@ namespace RGBTester.Base
         public virtual List<string> GetCalibrationStr()
         {
             return new List<string>();
+        }
+
+        public virtual string GetCheckSlopeStr(int index)
+        {
+            return "";
         }
     }
 }

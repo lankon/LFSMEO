@@ -141,7 +141,6 @@ namespace RGBTester.Logic
         }
         private void Preset()
         {
-            
             int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
             if (method == (int)eTestMode.LEFT)
                 TestSide = "Left";

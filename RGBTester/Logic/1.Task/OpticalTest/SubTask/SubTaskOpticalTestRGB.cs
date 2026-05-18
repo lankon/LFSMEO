@@ -39,7 +39,7 @@ namespace RGBTester.Logic
 
         #region parameter
         RGBTesterFunction RGBfunc;
-        ResultData ResultData;
+        IWriteFile ResultData;
         private Queue<string> TestQueue = new Queue<string>(new[] { "R", "G", "B" ,"B2"});
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
@@ -135,15 +135,15 @@ namespace RGBTester.Logic
         }
         private void SetCheckSlopeDAC()
         {
-            ResultData.CheckSlopeData.ResetParameter();
-            ResultData.CheckSlopeData.SetDeviationLimit(ApplicationSetting.Get_Double_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_DeviationLimit));
-            ResultData.CheckSlopeData.SetCheck_LCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC1),
+            ResultData.CheckSlope.ResetParameter();
+            ResultData.CheckSlope.SetDeviationLimit(ApplicationSetting.Get_Double_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_DeviationLimit));
+            ResultData.CheckSlope.SetCheck_LCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC1),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC2),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC3),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC4),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC5));
 
-            ResultData.CheckSlopeData.SetCheck_HCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC1),
+            ResultData.CheckSlope.SetCheck_HCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC1),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC2),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC3),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC4),
@@ -154,7 +154,7 @@ namespace RGBTester.Logic
         {
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
-            ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
+            ResultData = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
             Scope.TestFail = false;
             RGBfunc.FailReasonFlag.ResetAllFlag();

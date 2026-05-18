@@ -31,7 +31,7 @@ namespace RGBTester.Device
 
         public byte LED_B_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_B;
         
-        public byte LED_B2_LSB { get; private set; } = 0x04;        //需要修改成API定義
+        public byte LED_B2_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_B;        //需要修改成API定義
 
         public byte LED_RGB_MSB { get; private set; } = 0x00;       //沒有用到
 

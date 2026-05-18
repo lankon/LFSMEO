@@ -21,10 +21,12 @@ namespace RGBTester.Logic
 
         #region paramter define
         private RGBTesterFunction RGBfunc;
-        private Dictionary<string, StreamWriter> TestFiles = new Dictionary<string, StreamWriter>();
         private RGBTesterDataFile_FileType FileType;
+        public CheckSlopeData CheckSlope { get; private set; }
+        private Dictionary<string, StreamWriter> TestFiles = new Dictionary<string, StreamWriter>();
         private eModuleType ModuleType;
         private DateTime DateNow;
+
         public double R_Offset_HCM { get; private set; }
         public double G_Offset_HCM { get; private set; }
         public double B_Offset_HCM { get; private set; }
@@ -104,7 +106,9 @@ namespace RGBTester.Logic
             if (ModuleType == eModuleType.IV_Calibration)
                 FileType = new RGBTesterDataFile_IVCalibration(RGBfunc, this);
             else if (ModuleType == eModuleType.Function_Test)
-                FileType = new RGBTesterDataFile_FunctionTester(this);
+                FileType = new RGBTesterDataFile_FunctionTester(RGBfunc, this);
+
+            CheckSlope = new CheckSlopeData(FileType);
         }
         public void CreateFile(string describe = "")
         {

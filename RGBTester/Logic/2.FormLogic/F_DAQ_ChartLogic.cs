@@ -42,7 +42,7 @@ namespace RGBTester.Logic
 
             func.Set_LED_Rigester();
 
-            if (!lea.SetLed_DAC(color, test_side, value))
+            if (!lea.SetLed_DAC(color, test_side, 0))
             {
                 status_box.ShowMessage("Set Light Engine  0 DAC Fail");
                 return;
