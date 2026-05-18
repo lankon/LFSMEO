@@ -9,19 +9,20 @@ namespace RGBTester.Base
 {
     public interface IWriteFile
     {
-        double R_Offset_HCM { get;}
-        double G_Offset_HCM { get;}
-        double B_Offset_HCM { get;}
-        double R_Offset_LCM { get;}
-        double G_Offset_LCM { get;}
-        double B_Offset_LCM { get;}
-        double R_Slope_HCM { get;}
-        double G_Slope_HCM { get;}
-        double B_Slope_HCM { get;}
-        double R_Slope_LCM { get;}
-        double G_Slope_LCM { get;}
-        double B_Slope_LCM { get;}
-
+        //double R_Offset_HCM { get;}
+        //double G_Offset_HCM { get;}
+        //double B_Offset_HCM { get;}
+        //double R_Offset_LCM { get;}
+        //double G_Offset_LCM { get;}
+        //double B_Offset_LCM { get;}
+        //double R_Slope_HCM { get;}
+        //double G_Slope_HCM { get;}
+        //double B_Slope_HCM { get;}
+        //double R_Slope_LCM { get;}
+        //double G_Slope_LCM { get;}
+        //double B_Slope_LCM { get;}
+        Dictionary<string, double> LED_Slope { get; }
+        Dictionary<string, double> LED_Offset { get; }
         CheckSlopeData CheckSlope { get; }
 
         void SetModuleAndCustomer(eModuleType eModule);
@@ -66,6 +67,7 @@ namespace RGBTester.Base
         public List<double> DISP_1V2 = new List<double>();
         public List<double> WLD = new List<double>();
         public List<double> Lumens = new List<double>();
+        public List<double> OpticalPower = new List<double>();
 
         // [Record]
         public List<double> CycleTime = new List<double>();

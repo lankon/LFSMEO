@@ -12,12 +12,16 @@ namespace RGBTester.Logic
 {
     public class F_OpticalTestLogic
     {
-        public F_OpticalTestLogic(IBaseMainTask baseMainTask)
+        public F_OpticalTestLogic(IBaseMainTask baseMainTask, RGBTesterFunction rGBFunc)
         {
             MainTask = baseMainTask;
+            RGBFunc = rGBFunc;
         }
 
+        #region parameter define
         IBaseMainTask MainTask;
+        RGBTesterFunction RGBFunc;
+        #endregion
 
         #region public function
         public void StartOpticalTest()
@@ -31,6 +35,8 @@ namespace RGBTester.Logic
                 test_side = "Right";
             else
                 test_side = "Both";
+
+            RGBFunc.SetFunctionTestProcess(false);
 
             MainTask.SetTask<TaskOpticalTest>(test_side);
             MainTask.Run();

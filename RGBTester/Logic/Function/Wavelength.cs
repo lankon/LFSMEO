@@ -110,47 +110,90 @@ namespace RGBTester.Logic.Function
             y = Y / (X + Y + Z);
         }
         #endregion
+
+        #region public function
+        public double[] Get_CIExy()
+        {
+            double[] cie_xy = new double[2] { x, y };
+            
+            return cie_xy;
+        }
+        public double Calculate_Power(double[] wavelengths, double[] intensities)
+        {
+            double deltaLamda = wavelengths[1] - wavelengths[0];
+            double TotalPower = 0;
+
+            for(int i=0; i< wavelengths.Length; i++)
+            {
+                TotalPower += intensities[i];
+            }
+
+            return TotalPower * deltaLamda;
+        }
         public double Calculate_WLD(double[] wavelengths, double[] intensities, double whiteX = 0.3333, double whiteY = 0.3333)
         {
             CalculateChromaticityCoordinates(wavelengths, intensities);
 
-            //計算樣本相對於白點的向量
+            // 計算樣本相對於白點的向量
             double targetDx = x - whiteX;
             double targetDy = y - whiteY;
 
-            //如果樣本點就在白點上（或是極度靠近），它沒有主波長（它是中性色）
             if (Math.Abs(targetDx) < 1e-9 && Math.Abs(targetDy) < 1e-9)
-                return 0;
+                return 0; // 就在白點上
 
-            //使用Atan2取得樣本點的角度 (-PI 到 PI)
-            double targetAngle = Math.Atan2(targetDy, targetDx);
+            // 確保 LocusPoints 依波長排序
+            var sortedLocus = LocusPoints.OrderBy(lp => lp.Wavelength).ToList();
 
-            double minAngleDiff = double.MaxValue;
-            double dominantWavelength = -1;
-
-            //遍歷光譜軌跡
-            foreach (var lp in LocusPoints)
+            // 遍歷每一個相鄰的 Locus 區間
+            for (int i = 0; i < sortedLocus.Count - 1; i++)
             {
-                double locusDx = lp.x - whiteX;
-                double locusDy = lp.y - whiteY;
+                double p1Dx = sortedLocus[i].x - whiteX;
+                double p1Dy = sortedLocus[i].y - whiteY;
 
-                //取得軌跡點的角度
-                double locusAngle = Math.Atan2(locusDy, locusDx);
+                double p2Dx = sortedLocus[i + 1].x - whiteX;
+                double p2Dy = sortedLocus[i + 1].y - whiteY;
 
-                //計算角度差 (取絕對值)
-                double angleDiff = Math.Abs(targetAngle - locusAngle);
+                // 利用外積 (Cross Product) 判斷 target 向量是否在 p1 向量與 p2 向量夾角之間
+                // 也就是判斷 target 是否在 p1 的某側，同時在 p2 的另一側
+                double cross1 = targetDx * p1Dy - targetDy * p1Dx;
+                double cross2 = targetDx * p2Dy - targetDy * p2Dx;
+                double crossLocus = p1Dx * p2Dy - p1Dy * p2Dx;
 
-                //處理角度環繞問題 (例如 179度 與 -179度 其實只差 2度)
-                if (angleDiff > Math.PI) angleDiff = 2 * Math.PI - angleDiff;
-
-                if (angleDiff < minAngleDiff)
+                // 如果 cross1 和 cross2 異號，代表 target 射線夾在 p1 與 p2 射線的無限延伸直線之間
+                // 同時必須確保 target 的方向不是反向延伸 (利用同向內積點乘判斷)
+                if (cross1 * cross2 < 0 && (targetDx * p1Dx + targetDy * p1Dy) > 0)
                 {
-                    minAngleDiff = angleDiff;
-                    dominantWavelength = lp.Wavelength;
+                    // 確定夾住區間後，為了做精確的波長線性內插，這時候再用 Math.Atan2 計算微小區間內的比例
+                    double angleTarget = Math.Atan2(targetDy, targetDx);
+                    double angle1 = Math.Atan2(p1Dy, p1Dx);
+                    double angle2 = Math.Atan2(p2Dy, p2Dx);
+
+                    // 在這 1nm 的微小相鄰點內處理 Atan2 環繞 Bug
+                    double diffTotal = angle2 - angle1;
+                    if (diffTotal > Math.PI) diffTotal -= 2 * Math.PI;
+                    if (diffTotal < -Math.PI) diffTotal += 2 * Math.PI;
+
+                    double diffTarget = angleTarget - angle1;
+                    if (diffTarget > Math.PI) diffTarget -= 2 * Math.PI;
+                    if (diffTarget < -Math.PI) diffTarget += 2 * Math.PI;
+
+                    // 計算精確內插比例 t
+                    double t = Math.Abs(diffTotal) > 0 ? (diffTarget / diffTotal) : 0;
+
+                    // 限制 t 的範圍在 0~1 之間，防止浮點數微小溢出
+                    t = Math.Max(0, Math.Min(1, t));
+
+                    double w1 = sortedLocus[i].Wavelength;
+                    double w2 = sortedLocus[i + 1].Wavelength;
+
+                    return w1 + t * (w2 - w1);
                 }
             }
 
-            return dominantWavelength;
+            // 找不到主波長，可能為紫色邊界線 (Purple Line)
+            return -1;
         }
+        #endregion
+
     }
 }

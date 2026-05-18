@@ -54,6 +54,7 @@ namespace RGBTester.Logic
             lea.Open();
 
             RGBfunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_SerialNumber);
+            RGBfunc.SetFunctionTestProcess(true);
 
             RGBTesterMachine.DIOL.Clear_AI_VirtualData();
             StartFormLogic.ReadVirtual_AI_Data();

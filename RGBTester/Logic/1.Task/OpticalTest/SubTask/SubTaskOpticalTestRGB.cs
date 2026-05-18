@@ -231,7 +231,7 @@ namespace RGBTester.Logic
                         }
                         else
                         {
-                            Transition(WORK.WPC_TEST);
+                            Transition(WORK.SUCCESS);
                         }
                     }
                     break;

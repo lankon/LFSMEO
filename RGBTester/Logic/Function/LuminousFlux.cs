@@ -97,17 +97,20 @@ namespace RGBTester.Logic
         
         public double CalculateTotalLumens(double[] wavelengths, double[] Intensity)
         {
+            //單位：Wavelength->nm , Intensity->W/nm
+            
             double totalLumens = 0;
             double km = 683.002;
 
+            double deltaL = wavelengths[1] - wavelengths[0];
+
             for (int i = 0; i < wavelengths.Length; i++)
             {
-                //計算波長間隔
-                double deltaL = (i == 0) ? (wavelengths[1] - wavelengths[0]) : (wavelengths[i] - wavelengths[i - 1]);
-
                 double vL = cieFunction.GetVLambda(wavelengths[i]);
-                totalLumens += km * Intensity[i] * vL * deltaL;
+                totalLumens += Intensity[i] * vL;
             }
+
+            totalLumens = (totalLumens * deltaL) * km;
 
             return totalLumens;
         }

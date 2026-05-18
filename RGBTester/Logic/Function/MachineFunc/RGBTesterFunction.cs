@@ -11,8 +11,6 @@ using ToolFunction;
 
 namespace RGBTester.Logic
 {
-    
-    
     public partial class RGBTesterFunction
     {
         public RGBTesterFunction(IServiceProvider serviceProvider, IRGBTesterMachine machine)
@@ -27,6 +25,7 @@ namespace RGBTester.Logic
 
         #region parameter define
         public string SerialNumber = "";
+        public bool IsFunctionTestProcess = false;
         IServiceProvider ServiceProvider;
         IRGBTesterMachine Machine;
         IFunction_LightEngine LEA;
@@ -97,7 +96,6 @@ namespace RGBTester.Logic
 
             Tool.SaveLogToFile("Set LED Voltage Value", level: "DBG");
         }
-        
         public void SetMaxCurrent(double LCM_I, double HCM_I)
         {
             MaxCurrent_LCM = LCM_I;
@@ -128,6 +126,14 @@ namespace RGBTester.Logic
 
             DataBaseTestResult data_base = ServiceProvider.GetRequiredService<DataBaseTestResult>();
             data_base.Manager.InsertData(log);
+        }
+        public void SetFunctionTestProcess(bool flag)
+        {
+            IsFunctionTestProcess = flag;
+        }
+        public bool GetFunctionTestProcess() 
+        {
+            return IsFunctionTestProcess;
         }
         public eModuleType GetModuleType()
         {

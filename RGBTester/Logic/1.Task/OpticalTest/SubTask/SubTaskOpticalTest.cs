@@ -11,6 +11,7 @@ using RGBTester.Base;
 using RGBTester.Logic.Function;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace RGBTester.Logic
 {
@@ -49,15 +50,18 @@ namespace RGBTester.Logic
         private string CurrentModeStatus = "";
         private float[] fSpectrumRawData;
         private double[] SpectrumRawData;
-        
+        private double LED_Slope = 0;
+        private double LED_Offset = 0;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         private IF_ProgressBar ProgressBar;
+        private IWriteFile WriteFile;
         private Dictionary<string, Dictionary<string, CurrentCondition>> CurrentConfig; //雙層字典：[Side (Left/Right)][Color (R/G/B/B2)]
         private LuminousFlux LF = new LuminousFlux();
         private Queue<int> qCurrent = new Queue<int>();
         private Queue<int>[] qWPC_Current;
         private RGBTesterData TesterData = new RGBTesterData();
+        private RGBTesterFunction RGBFunc;
         private Wavelength WL = new Wavelength();
 
         public class CurrentCondition
@@ -174,6 +178,8 @@ namespace RGBTester.Logic
         private void Preset()
         {
             ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
+            RGBFunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            WriteFile = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
             string[] res = Type.Split('_');
 
@@ -200,7 +206,7 @@ namespace RGBTester.Logic
         }
         private void InitialCurrentConfig()
         {
-            string[] sides = { "Left"/*, "Right" */};
+            string[] sides = { "Left", "Right"};
 
             qWPC_Current = new Queue<int>[TestColors.Length];
             CurrentConfig = new Dictionary<string, Dictionary<string, CurrentCondition>>();
@@ -284,31 +290,61 @@ namespace RGBTester.Logic
         }
         private int CalculateDACfromCurrent(int current)
         {
-            double offset = 0;
-            double slope = 0;
-
             double LCM_I = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_MaxCurrent);
 
-            if(current > LCM_I)
+            if(RGBFunc.GetFunctionTestProcess() == true && TestColor != "WPC")
             {
-                slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_HCM_TestSlope);
-                offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_HCM_TestOffset);
-                SetLedCurrentMode("HCM");
+                try
+                {
+                    if (current > LCM_I)
+                    {
+                        if (TestColor != "WPC")
+                        {
+                            LED_Slope = WriteFile.LED_Slope[$"{TestColor}_Slope_HCM"];
+                            LED_Offset = WriteFile.LED_Offset[$"{TestColor}_Offset_HCM"];
+                        }
+
+                        SetLedCurrentMode("HCM");
+                    }
+                    else
+                    {
+                        if (TestColor != "WPC")
+                        {
+                            LED_Slope = WriteFile.LED_Slope[$"{TestColor}_Slope_LCM"];
+                            LED_Offset = WriteFile.LED_Offset[$"{TestColor}_Offset_LCM"];
+                        }
+
+                        SetLedCurrentMode("LCM");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Tool.SaveLogToFile($"CalculateDACfromCurrent對應變數失敗,{ex}", level:"ERR");
+                }
             }
             else
             {
-                slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_TestSlope);
-                offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_TestOffset);
-                SetLedCurrentMode("LCM");
+                if (current > LCM_I)
+                {
+                    LED_Slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_HCM_TestSlope);
+                    LED_Offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_HCM_TestOffset);
+                    SetLedCurrentMode("HCM");
+                }
+                else
+                {
+                    LED_Slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_TestSlope);
+                    LED_Offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_LCM_TestOffset);
+                    SetLedCurrentMode("LCM");
+                }
             }
 
-            if (slope < 0.0001)
+            if (LED_Slope < 0.0001)
             {
                 Tool.SaveLogToFile("斜率異常,電流推算DAC失敗", level: "WRN");
                 return 0;
             }
 
-            int dac = (int)((current - offset) / slope);
+            int dac = (int)((current - LED_Offset) / LED_Slope);
 
             if (dac > 1022)
                 dac = 1022;
@@ -384,7 +420,6 @@ namespace RGBTester.Logic
                         Preset();
 
                         Deps.LightEngine.SetLed_CurrentMode("LCM"); //先轉成LCM避免Clamping
-                        CurrentModeStatus = "LCM";
 
                         if (TestColor == "WPC")
                             IntgTimeSetting = ApplicationSetting.Get_Int_Recipe<eF_OpticalTestRecipe>((int)eF_OpticalTestRecipe.TxtBx_Left_IntgTimeStart_WPC);
@@ -497,7 +532,9 @@ namespace RGBTester.Logic
                         float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
                         double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
 
-                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, SpectrumRawData));
+                        //強度單位必須為W
+                        double[] W_Intensity = SpectrumRawData.Select(x=>x/1000).ToArray();
+                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, W_Intensity));
 
                         State = WORK.CALCULATE_WAVELENGTH;
                         goto case WORK.CALCULATE_WAVELENGTH;
@@ -509,6 +546,7 @@ namespace RGBTester.Logic
                         double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
 
                         TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData));
+                        TesterData.OpticalPower.Add(WL.Calculate_Power(wavelength, SpectrumRawData));
 
                         if(TestColor == "WPC")
                         {

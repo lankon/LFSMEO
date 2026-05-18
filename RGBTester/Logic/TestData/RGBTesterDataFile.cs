@@ -17,6 +17,7 @@ namespace RGBTester.Logic
         public RGBTesterDataFile(RGBTesterFunction rGBTesterFunction)
         {
             RGBfunc = rGBTesterFunction;
+            SetModuleAndCustomer(RGBfunc.GetModuleType());
         }
 
         #region paramter define
@@ -24,25 +25,10 @@ namespace RGBTester.Logic
         private RGBTesterDataFile_FileType FileType;
         public CheckSlopeData CheckSlope { get; private set; }
         private Dictionary<string, StreamWriter> TestFiles = new Dictionary<string, StreamWriter>();
+        public Dictionary<string, double> LED_Slope { get; } = new Dictionary<string, double>();
+        public Dictionary<string, double> LED_Offset { get; } = new Dictionary<string, double>();
         private eModuleType ModuleType;
         private DateTime DateNow;
-
-        public double R_Offset_HCM { get; private set; }
-        public double G_Offset_HCM { get; private set; }
-        public double B_Offset_HCM { get; private set; }
-        public double B2_Offset_HCM { get; private set; }
-        public double R_Offset_LCM { get; private set; }
-        public double G_Offset_LCM { get; private set; }
-        public double B_Offset_LCM { get; private set; }
-        public double B2_Offset_LCM { get; private set; }
-        public double R_Slope_HCM { get; private set; }
-        public double G_Slope_HCM { get; private set; }
-        public double B_Slope_HCM { get; private set; }
-        public double B2_Slope_HCM { get; private set; }
-        public double R_Slope_LCM { get; private set; }
-        public double G_Slope_LCM { get; private set; }
-        public double B_Slope_LCM { get; private set; }
-        public double B2_Slope_LCM { get; private set; }
         #endregion
 
         #region private function
@@ -177,48 +163,39 @@ namespace RGBTester.Logic
 
         public void ResetCalibrationData()
         {
-            R_Offset_HCM = -99;
-            R_Offset_LCM = -99;
-            R_Slope_HCM = -99;
-            R_Slope_LCM = -99;
+            LED_Offset["R_Offset_HCM"] = -99;
+            LED_Offset["R_Offset_LCM"] = -99;
+            LED_Offset["R_Slope_HCM"] = -99;
+            LED_Offset["R_Slope_LCM"] = -99;
 
-            G_Offset_HCM = -99;
-            G_Offset_LCM = -99;
-            G_Slope_HCM = -99;
-            G_Slope_LCM = -99;
+            LED_Offset["G_Offset_HCM"] = -99;
+            LED_Offset["G_Offset_LCM"] = -99;
+            LED_Offset["G_Slope_HCM"] = -99;
+            LED_Offset["G_Slope_LCM"] = -99;
 
-            B_Offset_HCM = -99;
-            B_Offset_LCM = -99;
-            B_Slope_HCM = -99;
-            B_Slope_LCM = -99;
+            LED_Offset["B_Offset_HCM"] = -99;
+            LED_Offset["B_Offset_LCM"] = -99;
+            LED_Offset["B_Slope_HCM"] = -99;
+            LED_Offset["B_Slope_LCM"] = -99;
+
+            LED_Offset["B2_Offset_HCM"] = -99;
+            LED_Offset["B2_Offset_LCM"] = -99;
+            LED_Offset["B2_Slope_HCM"] = -99;
+            LED_Offset["B2_Slope_LCM"] = -99;
         }
         public void SetCalibrationData(string color, string current_mode, double slope, double offset)
         {
             string offset_item = $"{color}_Offset_{current_mode}";
             string slope_item = $"{color}_Slope_{current_mode}";
 
-            Type type = this.GetType();
-
-            // --- 設定 Offset 值 ---
-            PropertyInfo offsetProperty = type.GetProperty(offset_item);
-            if (offsetProperty != null && offsetProperty.CanWrite)
+            try
             {
-                offsetProperty.SetValue(this, offset);
+                LED_Offset[offset_item] = offset;
+                LED_Slope[slope_item] = slope;
             }
-            else
+            catch(Exception ex)
             {
-                Tool.SaveLogToFile($"錯誤：找不到或無法寫入屬性 {offset_item}");
-            }
-
-            // --- 設定 Slope 值 ---
-            PropertyInfo slopeProperty = type.GetProperty(slope_item);
-            if (slopeProperty != null && slopeProperty.CanWrite)
-            {
-                slopeProperty.SetValue(this, slope);
-            }
-            else
-            {
-                Tool.SaveLogToFile($"錯誤：找不到或無法寫入屬性 {slopeProperty}");
+                Tool.SaveLogToFile("SetCalibrationData找不到對應的Key", level: "ERR");
             }
         }
         public void WriteCalibrationResult(string sn, string describe = "")
