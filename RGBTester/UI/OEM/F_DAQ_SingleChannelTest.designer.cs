@@ -29,8 +29,8 @@ namespace RGBTester.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
             this.TxtBx_AveraingCount = new System.Windows.Forms.TextBox();
@@ -62,6 +62,8 @@ namespace RGBTester.UI
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.Cmbx_CardType = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.TxtBx_IODev = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_DAQ_Result)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -111,14 +113,14 @@ namespace RGBTester.UI
             this.DGV_DAQ_Result.AllowUserToDeleteRows = false;
             this.DGV_DAQ_Result.AllowUserToResizeColumns = false;
             this.DGV_DAQ_Result.AllowUserToResizeRows = false;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_DAQ_Result.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_DAQ_Result.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_DAQ_Result.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_DAQ_Result.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_CH0,
@@ -131,14 +133,14 @@ namespace RGBTester.UI
             this.Title_CH7,
             this.Title_CH8,
             this.Title_CH9});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_DAQ_Result.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_DAQ_Result.DefaultCellStyle = dataGridViewCellStyle2;
             this.DGV_DAQ_Result.Location = new System.Drawing.Point(12, 58);
             this.DGV_DAQ_Result.Name = "DGV_DAQ_Result";
             this.DGV_DAQ_Result.RowHeadersVisible = false;
@@ -316,34 +318,38 @@ namespace RGBTester.UI
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 53.40502F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 46.59498F));
-            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.TxtBx_IOChannel, 1, 0);
+            this.tableLayoutPanel3.ColumnCount = 4;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_IODev, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label6, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_IOChannel, 3, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label3, 2, 0);
             this.tableLayoutPanel3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tableLayoutPanel3.Location = new System.Drawing.Point(363, 12);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(282, 40);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(359, 40);
             this.tableLayoutPanel3.TabIndex = 18;
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(6, 3);
+            this.label3.Location = new System.Drawing.Point(184, 3);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(139, 30);
+            this.label3.Size = new System.Drawing.Size(80, 30);
             this.label3.TabIndex = 4;
-            this.label3.Text = "IO Channel";
+            this.label3.Text = "IO Ch";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TxtBx_IOChannel
             // 
-            this.TxtBx_IOChannel.Location = new System.Drawing.Point(154, 6);
+            this.TxtBx_IOChannel.Location = new System.Drawing.Point(273, 6);
             this.TxtBx_IOChannel.Name = "TxtBx_IOChannel";
-            this.TxtBx_IOChannel.Size = new System.Drawing.Size(122, 29);
+            this.TxtBx_IOChannel.Size = new System.Drawing.Size(80, 29);
             this.TxtBx_IOChannel.TabIndex = 5;
             // 
             // tableLayoutPanel4
@@ -355,11 +361,11 @@ namespace RGBTester.UI
             this.tableLayoutPanel4.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.Cmbx_Range, 1, 0);
             this.tableLayoutPanel4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(651, 12);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(728, 12);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(282, 40);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(205, 40);
             this.tableLayoutPanel4.TabIndex = 19;
             // 
             // label4
@@ -367,7 +373,7 @@ namespace RGBTester.UI
             this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(6, 3);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(139, 30);
+            this.label4.Size = new System.Drawing.Size(98, 30);
             this.label4.TabIndex = 4;
             this.label4.Text = "Range";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -378,9 +384,9 @@ namespace RGBTester.UI
             this.Cmbx_Range.Items.AddRange(new object[] {
             "+-5V",
             "+-10V"});
-            this.Cmbx_Range.Location = new System.Drawing.Point(154, 6);
+            this.Cmbx_Range.Location = new System.Drawing.Point(113, 6);
             this.Cmbx_Range.Name = "Cmbx_Range";
-            this.Cmbx_Range.Size = new System.Drawing.Size(121, 28);
+            this.Cmbx_Range.Size = new System.Drawing.Size(86, 28);
             this.Cmbx_Range.TabIndex = 5;
             // 
             // tableLayoutPanel6
@@ -419,6 +425,23 @@ namespace RGBTester.UI
             this.Cmbx_CardType.Name = "Cmbx_CardType";
             this.Cmbx_CardType.Size = new System.Drawing.Size(121, 28);
             this.Cmbx_CardType.TabIndex = 5;
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label6.Location = new System.Drawing.Point(6, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 30);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "IO Dev";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_IODev
+            // 
+            this.TxtBx_IODev.Location = new System.Drawing.Point(95, 6);
+            this.TxtBx_IODev.Name = "TxtBx_IODev";
+            this.TxtBx_IODev.Size = new System.Drawing.Size(80, 29);
+            this.TxtBx_IODev.TabIndex = 7;
             // 
             // F_DAQ_SingleChannelTest
             // 
@@ -485,5 +508,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox Cmbx_CardType;
+        private System.Windows.Forms.TextBox TxtBx_IODev;
+        private System.Windows.Forms.Label label6;
     }
 }

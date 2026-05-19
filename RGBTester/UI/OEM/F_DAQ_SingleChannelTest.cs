@@ -78,7 +78,7 @@ namespace RGBTester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            if (TxtBx_AveraingCount.Text == "" || TxtBx_IOChannel.Text == "")
+            if (TxtBx_AveraingCount.Text == "" || TxtBx_IOChannel.Text == "" || TxtBx_IODev.Text == "")
                 return;
             long CycleTime = 0;
             const int channel_count = 10;
@@ -87,7 +87,9 @@ namespace RGBTester.UI
             double[] result = new double[channel_count];
             List<string[]> buffer = new List<string[]>();
             int AvgCount = Int32.Parse(TxtBx_AveraingCount.Text);
+            int IO_Dev = Int32.Parse(TxtBx_IODev.Text);
             int IO_Channel = Int32.Parse(TxtBx_IOChannel.Text);
+
             int IO_Range = Cmbx_Range.SelectedIndex;
             EIOCardType card_type;
 
@@ -103,7 +105,7 @@ namespace RGBTester.UI
             else
                 str_range = "+10V";
 
-            _ = DIOL.GetAInputStatus(card_type, 0, 0, 0, (byte)IO_Channel, str_range, 0);
+            _ = DIOL.GetAInputStatus(card_type, 0, 0, (byte)IO_Dev, (byte)IO_Channel, str_range, 0);
 
             DGV_DAQ_Result.Rows.Clear();
 
@@ -116,7 +118,7 @@ namespace RGBTester.UI
             {
                 for (int j = 0; j < AvgCount; j++)
                 {
-                    double res = DIOL.GetAInputStatus(card_type, 0, 0, 0, (byte)IO_Channel, str_range, 0);
+                    double res = DIOL.GetAInputStatus(card_type, 0, 0, (byte)IO_Dev, (byte)IO_Channel, str_range, 0);
                     total_res += res;
                 }
 
