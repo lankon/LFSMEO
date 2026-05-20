@@ -44,7 +44,7 @@ namespace DeviceFunction
                             IO[k].UpdateInput(lineNo: info.IO_LineNo[i], devNo: info.IO_DevNo[i]);
                         }
                     }
-                    else if(IO[k].GetName() == "PCI_9111DG")
+                    else if(IO[k].GetName() == "PCI_9111DG" || IO[k].GetName() == "PCI_9111HR")
                     {
                         for (byte i = 0; i <= 15; i++)
                             IO[k].UpdateInput(port: i);
@@ -206,14 +206,17 @@ namespace DeviceFunction
 
             return false;
         }
-        public bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false)
+        public bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, int iList = 0, bool truefalse = false)
         {
             for (int i = 0; i < IO.Count; i++)
             {
                 if (IO[i].GetName() != CardType.ToString())
                     continue;
 
-                IO[i].SetOutputStatus(cardNo, lineNo, devNo, port, truefalse);
+                if (IO_List[iList].Title_Inverse == "True" || IO_List[iList].Title_Inverse == "true")
+                    return IO[i].SetOutputStatus(cardNo, lineNo, devNo, port, !truefalse);
+                else if (IO_List[iList].Title_Inverse == "False" || IO_List[iList].Title_Inverse == "false")
+                    return IO[i].SetOutputStatus(cardNo, lineNo, devNo, port, truefalse);
             }
 
             return true;
