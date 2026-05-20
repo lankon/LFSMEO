@@ -303,6 +303,12 @@ namespace Device_OTO
 
             return SD_Live[index].Intensity;
         }
+        public float[] GetSpectrumRelativelyOneShot(string sn, uint integral_time, uint avg_time = 1)
+        {
+            float[] relative_power = GetSpectrumOneShot(sn, integral_time, avg_time);
+
+            return relative_power.Select(x => x / MaxIntensityValue * 100).ToArray();
+        }
         public float[] GetSpectrum(string sn, uint integral_time, uint avg_time = 1)
         {
             int index = GetDeviceIndex(sn);
@@ -318,6 +324,5 @@ namespace Device_OTO
 
             return SD_Live[index].Intensity;
         }
-
     }
 }

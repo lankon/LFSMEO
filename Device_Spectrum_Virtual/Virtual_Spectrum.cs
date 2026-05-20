@@ -13,6 +13,7 @@ namespace Device_Spectrum_Virtual
     public class Virtual_Spectrum : ISpectrometer
     {
         #region parameter define
+        float MaxIntensity = 0;
         float[] Wavelength = new float[4096];
         float[] Intensity = new float[4096];
         Queue<double> IntensityPercent = new Queue<double>();
@@ -36,6 +37,11 @@ namespace Device_Spectrum_Virtual
         public float[] GetSpectrumOneShot(string sn, uint integral_time, uint avg_time = 1)
         {
             return Intensity;
+        }
+
+        public float[] GetSpectrumRelativelyOneShot(string sn, uint integral_time, uint avg_time = 1)
+        {
+            return Intensity.Select(x => x / MaxIntensity * 100).ToArray();
         }
 
         public float[] GetWavelength(string sn)
@@ -85,6 +91,8 @@ namespace Device_Spectrum_Virtual
                 Intensity[i] = 0;
             }
 
+            MaxIntensity = Intensity.Max();
+
             return 0;    
         }
 
@@ -97,8 +105,9 @@ namespace Device_Spectrum_Virtual
                 //IntensityPercent.Enqueue(40);
                 //IntensityPercent.Enqueue(40);
             }
-            
-            return IntensityPercent.Dequeue();
+
+            return Intensity.Max() / MaxIntensity * 100;
+            //return IntensityPercent.Dequeue();
         }
     }
 }

@@ -38,6 +38,8 @@ namespace DeviceUI.Spectrometer
 
             ShowHint();
 
+            //Labl_Intensity.Parent = PgBar_Intensity;
+            
             SetSpectrumPlot();
 
             if (!Tool.DataGrid_DataLoad(DGV_Spectrum, "Spectrum.xml"))
@@ -71,6 +73,7 @@ namespace DeviceUI.Spectrometer
         }
         private void LeavePage()
         {
+            Timer_GetSpectrum.Enabled = false;
         }
         private void SetSpectrumPlot()
         {
@@ -241,6 +244,41 @@ namespace DeviceUI.Spectrometer
             else
             {
                 MessageBox.Show("IntetgralTime Setting Fail");
+            }
+        }
+
+        private void Btn_StopLive_Click(object sender, EventArgs e)
+        {
+            Timer_GetSpectrum.Enabled = false;
+            TxtBx_IntgralTime.Enabled = true;
+        }
+
+        private void Btn_Live_Click(object sender, EventArgs e)
+        {
+            if (UInt16.TryParse(TxtBx_IntgralTime.Text, out ushort intgTime) == true)
+            {
+                Timer_GetSpectrum.Interval = intgTime + 200;
+                Timer_GetSpectrum.Enabled = true;
+                TxtBx_IntgralTime.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("IntetgralTime Setting Fail");
+            }
+        }
+
+        private void Timer_GetSpectrum_Tick(object sender, EventArgs e)
+        {
+            if (UInt16.TryParse(TxtBx_IntgralTime.Text, out ushort intgTime) == true)
+            {
+                float[] intensity = Spectrometer.GetSpectrumRelativelyOneShot(ESpectrumName.SPECTRUM_1, intgTime);
+                float[] wl = Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
+                double[] intensityDouble = Array.ConvertAll(intensity, x => (double)x);
+                double[] wlDouble = Array.ConvertAll(wl, x => (double)x);
+
+                PgBar_Intensity.Value = (int)intensity.Max();
+                Labl_Intensity.Text = intensity.Max().ToString() + "%";
+                DrawSpectrumData(wlDouble, intensityDouble);
             }
         }
     }

@@ -138,6 +138,26 @@ namespace DeviceFunction
             return spectrum;
         }
 
+        public float[] GetSpectrumRelativelyOneShot(ESpectrumName name, uint integral_time, uint avg_time = 1)
+        {
+            SpectrumListDict.TryGetValue(name.ToString(), out SpectrumData spectrum_data);
+
+            if (spectrum_data == null)
+                return null;
+
+            float[] spectrum = null;
+
+            if (IsInitial == false)
+                return spectrum;
+
+            var targetDevice = SpectrometerList.FirstOrDefault(device =>
+                                                               device.GetSpectrometerType().ToString() == spectrum_data.Title_SpectrumType);
+
+            spectrum = targetDevice?.GetSpectrumRelativelyOneShot(spectrum_data.Title_ID, integral_time, avg_time);
+
+            return spectrum;
+        }
+
         public float[] GetSpectrum(ESpectrumName name, uint integral_time, uint avg_time = 1)
         {
             SpectrumListDict.TryGetValue(name.ToString(), out SpectrumData spectrum_data);
@@ -169,6 +189,8 @@ namespace DeviceFunction
         
             return percent;
         }
+
+        
         #endregion
 
     }
