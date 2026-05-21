@@ -38,10 +38,12 @@ namespace RGBTester.UI
             this.Btn_IO_Setting = new System.Windows.Forms.Button();
             this.Btn_DAQ_SamplingTest = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.Btn_Spectrometer = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.Btn_Light = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.Btn_Spectrometer = new System.Windows.Forms.Button();
+            this.Btn_MFactor = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -127,17 +129,6 @@ namespace RGBTester.UI
             this.label4.Text = "DAQ SP";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Btn_Spectrometer
-            // 
-            this.Btn_Spectrometer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Spectrometer.BackgroundImage")));
-            this.Btn_Spectrometer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_Spectrometer.Location = new System.Drawing.Point(515, 12);
-            this.Btn_Spectrometer.Name = "Btn_Spectrometer";
-            this.Btn_Spectrometer.Size = new System.Drawing.Size(60, 60);
-            this.Btn_Spectrometer.TabIndex = 42;
-            this.Btn_Spectrometer.UseVisualStyleBackColor = true;
-            this.Btn_Spectrometer.Click += new System.EventHandler(this.Btn_Spectrometer_Click);
-            // 
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -168,15 +159,51 @@ namespace RGBTester.UI
             this.label6.Text = "Light";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // Btn_Spectrometer
+            // 
+            this.Btn_Spectrometer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Spectrometer.BackgroundImage")));
+            this.Btn_Spectrometer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Spectrometer.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Spectrometer.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Btn_Spectrometer.Location = new System.Drawing.Point(517, 12);
+            this.Btn_Spectrometer.Name = "Btn_Spectrometer";
+            this.Btn_Spectrometer.Size = new System.Drawing.Size(60, 60);
+            this.Btn_Spectrometer.TabIndex = 46;
+            this.Btn_Spectrometer.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.Btn_Spectrometer.UseVisualStyleBackColor = true;
+            this.Btn_Spectrometer.Click += new System.EventHandler(this.Btn_Spectrometer_Click);
+            // 
+            // Btn_MFactor
+            // 
+            this.Btn_MFactor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_MFactor.Location = new System.Drawing.Point(754, 12);
+            this.Btn_MFactor.Name = "Btn_MFactor";
+            this.Btn_MFactor.Size = new System.Drawing.Size(60, 60);
+            this.Btn_MFactor.TabIndex = 47;
+            this.Btn_MFactor.UseVisualStyleBackColor = true;
+            this.Btn_MFactor.Click += new System.EventHandler(this.Btn_MFactor_Click);
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Location = new System.Drawing.Point(733, 75);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(105, 23);
+            this.label7.TabIndex = 48;
+            this.label7.Text = "Cal MFactor";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // F_OEM_Setting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.Btn_MFactor);
+            this.Controls.Add(this.Btn_Spectrometer);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.Btn_Light);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.Btn_Spectrometer);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Btn_DAQ_SamplingTest);
             this.Controls.Add(this.Btn_IO_Setting);
@@ -202,9 +229,11 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_IO_Setting;
         private System.Windows.Forms.Button Btn_DAQ_SamplingTest;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button Btn_Spectrometer;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button Btn_Light;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button Btn_Spectrometer;
+        private System.Windows.Forms.Button Btn_MFactor;
+        private System.Windows.Forms.Label label7;
     }
 }

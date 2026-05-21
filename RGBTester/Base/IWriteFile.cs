@@ -9,21 +9,10 @@ namespace RGBTester.Base
 {
     public interface IWriteFile
     {
-        //double R_Offset_HCM { get;}
-        //double G_Offset_HCM { get;}
-        //double B_Offset_HCM { get;}
-        //double R_Offset_LCM { get;}
-        //double G_Offset_LCM { get;}
-        //double B_Offset_LCM { get;}
-        //double R_Slope_HCM { get;}
-        //double G_Slope_HCM { get;}
-        //double B_Slope_HCM { get;}
-        //double R_Slope_LCM { get;}
-        //double G_Slope_LCM { get;}
-        //double B_Slope_LCM { get;}
         Dictionary<string, double> LED_Slope { get; }
         Dictionary<string, double> LED_Offset { get; }
         CheckSlopeData CheckSlope { get; }
+        OpticalData OpticalResult { get;}
 
         void SetModuleAndCustomer(eModuleType eModule);
         void CreateFile(string describe = "");
@@ -72,8 +61,12 @@ namespace RGBTester.Base
         // [Record]
         public List<double> CycleTime = new List<double>();
         public List<double> Temperature = new List<double>();
+        public List<int> IntegralTime = new List<int>();
         public double DAC_Avg, Current_Avg, Slope, Offset;
         public string CurrentMode = "";
+        public string SN = "";
+        public string TestSide = "";
+        public string TestColor = "";
     }
 
     public class RGBTesterDataFile_FileType

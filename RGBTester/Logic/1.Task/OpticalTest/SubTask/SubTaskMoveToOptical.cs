@@ -281,8 +281,7 @@ namespace RGBTester.Logic
                 case WORK.CHECK_ACTION_FINISH:
                     {
                         if (Deps.DIOL.GetInputStatus(EIOName.SphereDownSensor) == true &&
-                            Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true &&
-                            Deps.DIOL.GetInputStatus(EIOName.ChuckLeftSensor) == true)
+                            Deps.DIOL.GetInputStatus(EIOName.ChuckUpSensor) == true)
                         {
                             Transition(WORK.SUCCESS);
                         }
@@ -292,7 +291,6 @@ namespace RGBTester.Logic
                         }
                     }
                     break;
-
 
                 case WORK.SUCCESS:
                     {

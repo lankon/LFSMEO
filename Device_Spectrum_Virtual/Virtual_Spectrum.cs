@@ -106,7 +106,7 @@ namespace Device_Spectrum_Virtual
                 //IntensityPercent.Enqueue(40);
             }
 
-            return Intensity.Max() / MaxIntensity * 100;
+            return Intensity.Max() / MaxIntensity *0.7 * 100;
             //return IntensityPercent.Dequeue();
         }
     }

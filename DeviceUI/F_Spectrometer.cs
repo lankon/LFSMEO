@@ -84,18 +84,14 @@ namespace DeviceUI.Spectrometer
         }
         private void DrawSpectrumData(double[] wavelength, double[] intensity)
         {
-            // 清除舊有的繪圖物件 (4.1 的 Clear 會移除所有 Plottables)
             Plot_Spectrom.Plot.Clear();
 
-            // 加入數據線條 (4.1 的 AddScatter 直接回傳 ScatterPlot 物件)
             var myPlot = Plot_Spectrom.Plot.AddScatter(wavelength, intensity);
 
-            // 設定線條樣式 (4.1 使用屬性設定)
             myPlot.LineWidth = 2;
             myPlot.Color = Color.Blue; // 使用 System.Drawing.Color
             myPlot.MarkerSize = 0;
 
-            // 自動縮放並刷新 (4.1 預設就是 AutoAxis)
             Plot_Spectrom.Plot.AxisAuto();
             Plot_Spectrom.Refresh();
         }

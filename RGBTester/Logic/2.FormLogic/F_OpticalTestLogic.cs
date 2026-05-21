@@ -30,11 +30,15 @@ namespace RGBTester.Logic
             string test_side = "";
 
             if (side == (int)eTestMode.LEFT)
+            {
+                RGBFunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_OpticalTest>((int)eF_OpticalTest.TxtBx_Left_SN);
                 test_side = "Left";
+            }
             else if (side == (int)eTestMode.RIGHT)
+            {
+                RGBFunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_OpticalTest>((int)eF_OpticalTest.TxtBx_Right_SN);
                 test_side = "Right";
-            else
-                test_side = "Both";
+            }
 
             RGBFunc.SetFunctionTestProcess(false);
 

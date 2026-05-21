@@ -8,6 +8,8 @@ namespace RGBTester.Base
 {
     public enum eF_OpticalTest
     {
+        TxtBx_Left_SN,
+        TxtBx_Right_SN,
         Cmbx_TestMode,
     }
 

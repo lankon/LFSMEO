@@ -38,6 +38,7 @@ namespace RGBTester.Logic
         }
 
         #region parameter
+        private long cycletime = 0;
         private int delay_time = 1;
         private int TotalStep = 0;
         private int IntgTimeSetting = 0;
@@ -87,6 +88,8 @@ namespace RGBTester.Logic
             GET_SPECTRUM,
             CALCULATE_LUMEN,
             CALCULATE_WAVELENGTH,
+
+            WRITE_TEST_DATA,
 
             END,
 
@@ -185,6 +188,10 @@ namespace RGBTester.Logic
 
             TestSide = res[0];
             TestColor = res[1];
+
+            TesterData.TestColor = TestColor;
+            TesterData.TestSide = TestSide;
+            TesterData.SN = RGBFunc.SerialNumber;
 
             bool isLeft = (TestSide == "Left");
             Side = isLeft ? Deps.LightEngine.LED_LeftSide : Deps.LightEngine.LED_RightSide;
@@ -453,6 +460,7 @@ namespace RGBTester.Logic
                         }
 
                         ResetTimeCount(out delay_time);
+                        Tool.ResetTimeCount(out cycletime);
 
                         State = WORK.AUTO_INTEGRAL;
                         goto case WORK.AUTO_INTEGRAL;
@@ -466,6 +474,9 @@ namespace RGBTester.Logic
                         if(percent > 60 && percent < 80)
                         {
                             Tool.SaveLogToFile($"測試積分時間:{IntgTimeSetting}ms");
+                            TesterData.IntegralTime.Add(IntgTimeSetting);
+                            TesterData.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
+
                             State = WORK.GET_SPECTRUM;
                             goto case WORK.GET_SPECTRUM;
                         }
@@ -494,10 +505,11 @@ namespace RGBTester.Logic
                     {
                         TesterData.Lumens.Add(0);
                         TesterData.WLD.Add(0);
+                        TesterData.CycleTime.Add(Tool.GetTime(cycletime));
 
                         if ((qCurrent.Count == 0 && TestSide != "WPC") || (qWPC_Current[0].Count == 0 && TestSide == "WPC"))
                         {
-                            Transition(WORK.SUCCESS);
+                            Transition(WORK.WRITE_TEST_DATA);
                         }
                         else
                         {
@@ -547,11 +559,12 @@ namespace RGBTester.Logic
 
                         TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData));
                         TesterData.OpticalPower.Add(WL.Calculate_Power(wavelength, SpectrumRawData));
+                        TesterData.CycleTime.Add(Tool.GetTime(cycletime));
 
-                        if(TestColor == "WPC")
+                        if (TestColor == "WPC")
                         {
                             if (qWPC_Current[0].Count == 0)
-                                Transition(WORK.SUCCESS);
+                                Transition(WORK.WRITE_TEST_DATA);
                             else
                             {
                                 State = WORK.SET_LED_DAC;
@@ -561,13 +574,20 @@ namespace RGBTester.Logic
                         else
                         {
                             if (qCurrent.Count == 0)
-                                Transition(WORK.SUCCESS);
+                                Transition(WORK.WRITE_TEST_DATA);
                             else
                             {
                                 State = WORK.SET_LED_DAC;
                                 goto case WORK.SET_LED_DAC;
                             }
                         }
+                    }
+                    break;
+
+                case WORK.WRITE_TEST_DATA:
+                    {
+                        WriteFile.OpticalResult.WriteTestData(TesterData);
+                        Transition(WORK.SUCCESS);
                     }
                     break;
 

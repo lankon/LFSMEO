@@ -24,6 +24,7 @@ namespace RGBTester.Logic
         private RGBTesterFunction RGBfunc;
         private RGBTesterDataFile_FileType FileType;
         public CheckSlopeData CheckSlope { get; private set; }
+        public OpticalData OpticalResult { get; private set; }
         private Dictionary<string, StreamWriter> TestFiles = new Dictionary<string, StreamWriter>();
         public Dictionary<string, double> LED_Slope { get; } = new Dictionary<string, double>();
         public Dictionary<string, double> LED_Offset { get; } = new Dictionary<string, double>();
@@ -95,6 +96,7 @@ namespace RGBTester.Logic
                 FileType = new RGBTesterDataFile_FunctionTester(RGBfunc, this);
 
             CheckSlope = new CheckSlopeData(FileType);
+            OpticalResult = new OpticalData();
         }
         public void CreateFile(string describe = "")
         {
