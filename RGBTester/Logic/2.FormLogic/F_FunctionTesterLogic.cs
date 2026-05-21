@@ -45,8 +45,11 @@ namespace RGBTester.Logic
             RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckDown, true, (EIOName.ChuckDownSensor, true));
             RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckDown, false, (EIOName.ChuckDownSensor, false));
 
-            RGBTesterMachine.DIOL.AddIORule(EIOName.Chuck_LR, true, (EIOName.ChuckLeftSensor, true), (EIOName.ChuckRightSensor, false));
-            RGBTesterMachine.DIOL.AddIORule(EIOName.Chuck_LR, false, (EIOName.ChuckLeftSensor, false), (EIOName.ChuckRightSensor, true));
+            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckLeft, true, (EIOName.ChuckLeftSensor, true));
+            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckLeft, false, (EIOName.ChuckLeftSensor, false));
+
+            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckRight, true, (EIOName.ChuckRightSensor, true));
+            RGBTesterMachine.DIOL.AddIORule(EIOName.ChuckRight, false, (EIOName.ChuckRightSensor, false));
         }
         public int StartFunctionTest()
         {
