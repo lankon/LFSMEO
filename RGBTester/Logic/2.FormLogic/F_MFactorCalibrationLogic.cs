@@ -12,21 +12,135 @@ namespace RGBTester.Logic
     public class F_MFactorCalibrationLogic
     {
 
-        private List<double> StdWavelength = new List<double>();
-        private List<double> StdIntensity = new List<double>();
-        private List<int> iStdWavelength = new List<int>();
-        private List<double> iStdIntensity = new List<double>();
-
+        #region parameter function
+        private SpectrumData StdSpectrum;
+        private SpectrumData MatchSpectrum;
+        private SpectrumData MFactor = new SpectrumData();
+    
         public class SpectrumData
         {
             public List<int> Wavelength;
             public List<double> Intensity;
         }
+        #endregion
 
-        public void ReadStdSpectrumFile(string filePath)
+        #region private function
+        private SpectrumData GetSpectrumData(List<double> rawWavelength, List<double> rawIntensity)
         {
-            StdWavelength.Clear();
-            StdIntensity.Clear();
+            // 安全檢查：確保有資料且長度一致
+            if (rawWavelength == null || rawIntensity == null || rawWavelength.Count < 2 || rawWavelength.Count != rawIntensity.Count)
+            {
+                return new SpectrumData
+                {
+                    Wavelength = new List<int>(),
+                    Intensity = new List<double>()
+                };
+            }
+
+            List<int> iStdWavelength = new List<int>();
+            List<double> iStdIntensity = new List<double>();
+
+            int startX = (int)Math.Ceiling(rawWavelength.First());
+            int endX = (int)Math.Floor(rawWavelength.Last());
+
+            int i = 0;
+
+            // 開始對每一個整數點進行內插計算
+            for (int targetX = startX; targetX <= endX; targetX++)
+            {
+                // 尋找 targetX 在原始資料中夾在哪兩個點之間
+                while (i < rawWavelength.Count && rawWavelength[i] < targetX)
+                {
+                    i++;
+                }
+
+                // 確保找到的點在有效範圍內
+                if (i > 0 && i < rawWavelength.Count)
+                {
+                    double x0 = rawWavelength[i - 1];
+                    double y0 = rawIntensity[i - 1];
+                    double x1 = rawWavelength[i];
+                    double y1 = rawIntensity[i];
+
+                    // 線性內插核心公式
+                    double targetY = y0 + (targetX - x0) * (y1 - y0) / (x1 - x0);
+
+                    iStdWavelength.Add(targetX);
+                    iStdIntensity.Add(targetY);
+                }
+            }
+
+            SpectrumData spec = new SpectrumData();
+            spec.Wavelength = iStdWavelength;
+            spec.Intensity = iStdIntensity;
+
+            return spec;
+        }
+        private SpectrumData CompareSpectrum(SpectrumData specA, SpectrumData specB)
+        {
+            // 確保兩邊都有資料
+            if (specA?.Wavelength == null || specB?.Wavelength == null ||
+                specA.Wavelength.Count == 0 || specB.Wavelength.Count == 0)
+            {
+                return MFactor; // 回傳空清單
+            }
+
+            int startWavelength = Math.Max(specA.Wavelength.First(), specB.Wavelength.First());
+            int endWavelength = Math.Min(specA.Wavelength.Last(), specB.Wavelength.Last());
+
+            // 確認是否有重疊
+            if (startWavelength > endWavelength)
+            {
+                //無重疊
+                return MFactor;
+            }
+
+            SpectrumData temp = new SpectrumData();
+            temp.Wavelength = new List<int>();
+            temp.Intensity = new List<double>();
+
+            // 開始在重疊區間內進行相除
+            for (int wave = startWavelength; wave <= endWavelength; wave++)
+            {
+                // 找出 wave 在 specA 和 specB 中的索引位置
+                int indexA = specA.Wavelength.IndexOf(wave);
+                int indexB = specB.Wavelength.IndexOf(wave);
+
+                // 確保兩邊都有這個波長點
+                if (indexA != -1 && indexB != -1)
+                {
+                    double intensityA = specA.Intensity[indexA];
+                    double intensityB = specB.Intensity[indexB];
+
+                    // 分母不能為0
+                    if (intensityB != 0)
+                    {
+                        double ratio = intensityA / intensityB; // 這裡是以 A 除以 B，你可以根據需求改成 B 除以 A
+
+                        temp.Wavelength.Add(specB.Wavelength[indexB]);
+                        temp.Intensity.Add(ratio);
+                    }
+                    else
+                    {
+                        temp.Wavelength.Add(specB.Wavelength[indexB]);
+                        temp.Intensity.Add(0);
+                    }
+                }
+            }
+
+            MFactor.Wavelength = temp.Wavelength;
+            MFactor.Intensity = temp.Intensity;
+
+            return MFactor;
+        }
+        #endregion
+
+        #region public function
+        public SpectrumData ReadStdSpectrumFile(string filePath)
+        {
+            List<double> StdWavelength = new List<double>();
+            List<double> StdIntensity = new List<double>();
+
             try
             {
                 string[] lines = File.ReadAllLines(filePath);
@@ -54,53 +168,39 @@ namespace RGBTester.Logic
                         StdIntensity.Add(Tool.StringToDouble(splits[1]));
                     }
                 }
+
+                StdSpectrum = GetSpectrumData(StdWavelength, StdIntensity);
+
+                return StdSpectrum;
             }
             catch (Exception ex)
             {
-                Tool.SaveLogToFile($"{ex}", level:"ERR");
+                Tool.SaveLogToFile($"{ex}", level: "ERR");
+
+                return StdSpectrum;
             }
         }
-        public SpectrumData GetStdSpectrum()
+        public void CalMFactor(double[] wl, double[] intensity)
         {
-            iStdWavelength.Clear();
-            iStdIntensity.Clear();
-            
-            int startX = (int)Math.Ceiling(StdWavelength.First());
-            int endX = (int)Math.Floor(StdWavelength.Last());
+            List<double> l_wl = new List<double>(wl);
+            List<double> l_intensity = new List<double>(intensity);
 
-            List<string> resultLines = new List<string>();
+            MatchSpectrum = GetSpectrumData(l_wl, l_intensity);
 
-            // 開始對每一個整數點進行內插計算
-            for (int targetX = startX; targetX <= endX; targetX++)
+            MFactor = CompareSpectrum(StdSpectrum, MatchSpectrum);
+
+            // 寫檔
+            StreamWriter file = Tool.CreateFile("\\Setting\\MFactor", ".csv", false);
+            for (int i = 0; i < MFactor.Wavelength.Count; i++)
             {
-                // 尋找 targetX 在原始資料中夾在哪兩個點之間
-                int i = 0;
-                while (i < StdWavelength.Count && StdWavelength[i] < targetX)
-                {
-                    i++;
-                }
-
-                // 確保找到的點在有效範圍內
-                if (i > 0 && i < StdWavelength.Count)
-                {
-                    double x0 = StdWavelength[i - 1];
-                    double y0 = StdIntensity[i - 1];
-                    double x1 = StdWavelength[i];
-                    double y1 = StdIntensity[i];
-
-                    // 線性內插核心公式
-                    double targetY = y0 + (targetX - x0) * (y1 - y0) / (x1 - x0);
-
-                    iStdWavelength.Add(targetX);
-                    iStdIntensity.Add(targetY);
-                }
+                Tool.WriteFile(file, $"{MFactor.Wavelength[i]},{MFactor.Intensity[i]}");
             }
-
-            SpectrumData spec = new SpectrumData();
-            spec.Wavelength = iStdWavelength;
-            spec.Intensity = iStdIntensity;
-
-            return spec;
+            Tool.CloseFile(file);
         }
+        #endregion
+
+
+
+
     }
 }

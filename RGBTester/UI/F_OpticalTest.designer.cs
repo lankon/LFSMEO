@@ -3226,8 +3226,7 @@ namespace RGBTester.UI
             this.Cmbx_TestMode.FormattingEnabled = true;
             this.Cmbx_TestMode.Items.AddRange(new object[] {
             "LEFT",
-            "RIGHT",
-            "BOTH"});
+            "RIGHT"});
             this.Cmbx_TestMode.Location = new System.Drawing.Point(210, 6);
             this.Cmbx_TestMode.Name = "Cmbx_TestMode";
             this.Cmbx_TestMode.Size = new System.Drawing.Size(129, 28);

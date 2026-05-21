@@ -30,10 +30,15 @@ namespace RGBTester.UI
         #region parameter define
         IFunction_Spectrometer Spectrometer;
         F_MFactorCalibrationLogic MFactorCalibrationLogic = new F_MFactorCalibrationLogic();
-        private double[] MatchWavelength;   //之後要移動到Logic
-        private double[] MatchIntensity;    //之後要移動到Logic
-        private List<int> lMatchWavelength = new List<int>();       //之後要移動到Logic
-        private List<double> lMatchIntensity = new List<double>();  //之後要移動到Logic
+        private double[] MatchWavelength;
+        private double[] MatchIntensity;
+        private ProcessStep currentStep = ProcessStep.Init;
+        public enum ProcessStep
+        {
+            Init,
+            LIVE,
+            MFactorCalibration,
+        }
         #endregion
 
         #region private function
@@ -77,10 +82,14 @@ namespace RGBTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
+
+            UpdateUIState(ProcessStep.Init);
         }
         private void LeavePage()
         {
         }
+
+
         private void SetSpectrumPlot()
         {
             Plot_Spectrom.Plot.Grid(color: Color.FromArgb(13, Color.Black));
@@ -107,7 +116,6 @@ namespace RGBTester.UI
             Plot_Spectrom.Plot.SetAxisLimitsY(0, Plot_Spectrom.Plot.GetAxisLimits().YMax);
             Plot_Spectrom.Refresh();
         }
-
         private void Draw2ndSpectrumData(double[] wavelength, double[] intensity)
         {
             var myPlot = Plot_Spectrom.Plot.AddScatter(wavelength, intensity);
@@ -116,7 +124,6 @@ namespace RGBTester.UI
             myPlot.YAxisIndex = 1;
 
             Plot_Spectrom.Plot.YAxis2.Ticks(true);
-
 
             double mainYMax = Plot_Spectrom.Plot.GetAxisLimits(0, 0).YMax;
             Plot_Spectrom.Plot.SetAxisLimitsY(0, mainYMax, yAxisIndex: 0);
@@ -127,49 +134,27 @@ namespace RGBTester.UI
 
             Plot_Spectrom.Refresh();
         }
-        public F_MFactorCalibrationLogic.SpectrumData GetMatchSpectrum()    //之後要移動到Logic
+        private void UpdateUIState(ProcessStep step)
         {
-            lMatchIntensity.Clear();
-            lMatchWavelength.Clear();
+            currentStep = step;
 
-            int startX = (int)Math.Ceiling(MatchWavelength.First());
-            int endX = (int)Math.Floor(MatchWavelength.Last());
-
-            List<string> resultLines = new List<string>();
-
-            // 開始對每一個整數點進行內插計算
-            for (int targetX = startX; targetX <= endX; targetX++)
+            switch (step)
             {
-                // 尋找 targetX 在原始資料中夾在哪兩個點之間
-                int i = 0;
-                while (i < MatchWavelength.Length && MatchWavelength[i] < targetX)
-                {
-                    i++;
-                }
+                case ProcessStep.Init:
+                    Btn_ReadStdSpectrum.Enabled = true;
+                    Btn_SaveData.Enabled = false;
+                    Btn_Live.Enabled = false;
+                    break;
 
-                // 確保找到的點在有效範圍內
-                if (i > 0 && i < MatchWavelength.Length)
-                {
-                    double x0 = MatchWavelength[i - 1];
-                    double y0 = MatchIntensity[i - 1];
-                    double x1 = MatchWavelength[i];
-                    double y1 = MatchIntensity[i];
+                case ProcessStep.LIVE:
+                    Btn_Live.Enabled = true;
+                    break;
 
-                    // 線性內插核心公式
-                    double targetY = y0 + (targetX - x0) * (y1 - y0) / (x1 - x0);
-
-                    lMatchWavelength.Add(targetX);
-                    lMatchIntensity.Add(targetY);
-                }
+                case ProcessStep.MFactorCalibration:
+                    Btn_SaveData.Enabled = true;
+                    break;
             }
-
-            F_MFactorCalibrationLogic.SpectrumData spec = new F_MFactorCalibrationLogic.SpectrumData();
-            spec.Wavelength = lMatchWavelength;
-            spec.Intensity = lMatchIntensity;
-
-            return spec;
         }
-
         #endregion
 
         #region public function
@@ -207,20 +192,23 @@ namespace RGBTester.UI
                     string fullFilePath = openFileDialog.FileName;
                     string fileName = openFileDialog.SafeFileName;
 
-                    MFactorCalibrationLogic.ReadStdSpectrumFile(fullFilePath);
-                    var spec = MFactorCalibrationLogic.GetStdSpectrum();
-
+                    var spec = MFactorCalibrationLogic.ReadStdSpectrumFile(fullFilePath);
+                    
                     double[] wavelength = spec.Wavelength.Select(x => (double)x).ToArray();
                     double[] intensity = spec.Intensity.Select(x => x).ToArray();
 
+                    //繪圖
                     DrawSpectrumData(wavelength, intensity);
+
+                    UpdateUIState(ProcessStep.LIVE);
                 }
             }
         }
 
         private void Btn_SaveData_Click(object sender, EventArgs e)
         {
-
+            MFactorCalibrationLogic.CalMFactor(MatchWavelength, MatchIntensity);
+            MessageBox.Show("Save Success");
         }
 
         private void Timer_GetSpectrum_Tick(object sender, EventArgs e)
@@ -232,6 +220,9 @@ namespace RGBTester.UI
                 double[] intensityDouble = Array.ConvertAll(intensity, x => (double)x);
                 double[] wlDouble = Array.ConvertAll(wl, x => (double)x);
 
+                //MFactorCalibrationLogic.SetMatchSpectrum(wlDouble, intensityDouble);
+
+                //繪圖
                 PgBar_Intensity.Value = (int)intensity.Max();
                 Labl_Intensity.Text = intensity.Max().ToString() + "%";
                 Draw2ndSpectrumData(wlDouble, intensityDouble);
@@ -248,6 +239,7 @@ namespace RGBTester.UI
                 Timer_GetSpectrum.Interval = intgTime + 200;
                 Timer_GetSpectrum.Enabled = true;
                 TxtBx_IntgralTime.Enabled = false;
+                UpdateUIState(ProcessStep.MFactorCalibration);
             }
             else
             {
