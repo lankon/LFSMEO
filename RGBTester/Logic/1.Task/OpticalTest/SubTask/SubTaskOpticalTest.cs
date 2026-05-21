@@ -506,8 +506,10 @@ namespace RGBTester.Logic
                         TesterData.Lumens.Add(0);
                         TesterData.WLD.Add(0);
                         TesterData.CycleTime.Add(Tool.GetTime(cycletime));
+                        TesterData.Temperature.Add(0);
+                        TesterData.IntegralTime.Add(0);
 
-                        if ((qCurrent.Count == 0 && TestSide != "WPC") || (qWPC_Current[0].Count == 0 && TestSide == "WPC"))
+                        if ((qCurrent.Count == 0 && TestSide != "WPC")/* || (qWPC_Current[0].Count == 0 && TestSide == "WPC")*/)
                         {
                             Transition(WORK.WRITE_TEST_DATA);
                         }

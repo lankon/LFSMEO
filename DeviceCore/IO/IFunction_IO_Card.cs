@@ -83,7 +83,8 @@ namespace DeviceCore
         Sphere_LR,
         ChuckUp,
         ChuckDown,
-        Chuck_LR,
+        ChuckLeft,
+        ChuckRight,
 
         Vacuum_Pump,
         CCD_FiducialMaskWork,
