@@ -35,10 +35,13 @@ namespace RGBTester.Logic
             }
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
+            TestSide = set_state;
+
             F_StateControl = f_StateControl;
         }
 
         #region parameter
+        private string TestSide = "";
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         private bool OnlyLeftTest = false;
@@ -202,7 +205,7 @@ namespace RGBTester.Logic
                 case WORK.GOTO_OPTICAL_TEST_POSITION:
                     {
                         //建立SubTask
-                        SubTask = new SubTaskMoveToOptical(Deps, F_StateControl);
+                        SubTask = new SubTaskMoveToOptical(Deps, F_StateControl, TestSide);
                         //設定是否有SubTask執行
                         SetSubTaskProcessing(true);
 

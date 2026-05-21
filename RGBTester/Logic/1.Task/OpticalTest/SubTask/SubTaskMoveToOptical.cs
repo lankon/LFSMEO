@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
 using RGBTester.Base.FunctionTesterItem;
+
 
 namespace RGBTester.Logic
 {
@@ -30,6 +33,7 @@ namespace RGBTester.Logic
             ResetTimeCount(out task_delay);
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
+
             F_StateControl = f_StateControl;
         }
 
@@ -40,6 +44,7 @@ namespace RGBTester.Logic
         private EIOName SphereWork_Input;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private RGBTesterFunction RGBFunc;
         //private F_StateControl TaskForm;
         public enum WORK
         {
@@ -144,7 +149,14 @@ namespace RGBTester.Logic
         }
         private void Preset()
         {
-            if(TestSide == (int)eTestMode.LEFT)
+            RGBFunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+
+            if(RGBFunc.GetFunctionTestProcess() == true)
+                TestSide = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
+            else
+                TestSide = ApplicationSetting.Get_Int_Recipe<eF_OpticalTest>((int)eF_OpticalTest.Cmbx_TestMode);
+
+            if (TestSide == (int)eTestMode.LEFT)
                 SphereWork_Input = EIOName.SphereLeftSensor;
             else
                 SphereWork_Input = EIOName.SphereRightSensor;

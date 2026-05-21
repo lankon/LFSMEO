@@ -13,15 +13,12 @@ namespace Device_PCIS_DASK
         public Pcis_dask(string card_type)
         {
             if (card_type == "PCI_9111HR")
-            {
                 pCI_Parm.CardType = DASK64.PCI_9111HR;
-                pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
-            }
             else if (card_type == "PCI_9111DG")
-            {
                 pCI_Parm.CardType = DASK64.PCI_9111DG;
-                pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
-            }
+
+            pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
+            pCI_Parm.Output_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
         }
 
         #region parameter define
