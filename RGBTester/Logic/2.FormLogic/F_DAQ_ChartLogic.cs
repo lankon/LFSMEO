@@ -40,13 +40,13 @@ namespace RGBTester.Logic
             IF_StatusBox status_box = ServiceProvider.GetRequiredService<IF_StatusBox>();
             RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
 
-            func.Set_LED_Rigester();
+            //func.Set_LED_Rigester();
 
-            if (!lea.SetLed_DAC(color, test_side, 0))
-            {
-                status_box.ShowMessage("Set Light Engine  0 DAC Fail");
-                return;
-            }
+            //if (!lea.SetLed_DAC(color, test_side, 0))
+            //{
+            //    status_box.ShowMessage("Set Light Engine  0 DAC Fail");
+            //    return;
+            //}
 
             if (!lea.SetLed_CurrentMode(test_mode))
             {

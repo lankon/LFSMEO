@@ -127,9 +127,11 @@
     <Reference Include="Z23A_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_API.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\eElement_Form\eF_OpticalSetting.cs" />
     <Compile Include="Base\eElement_Form\eF_FunctionTester.cs" />
     <Compile Include="Base\eElement_Form\eF_OpticalTest.cs" />
     <Compile Include="Base\eElement_Form\eF_DAQ_ChartSetting.cs" />
@@ -165,6 +167,7 @@
     <Compile Include="Logic\1.Task\UnLoad\TaskUnLoad.cs" />
     <Compile Include="Logic\2.FormLogic\F_FunctionTesterLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_MFactorCalibrationLogic.cs" />
+    <Compile Include="Logic\2.FormLogic\F_OpticalSettingLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_OpticalTestLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_YieldReportLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_ParameterSettingLogic.cs" />
@@ -215,6 +218,12 @@
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGBTesterMachine.cs" />
+    <Compile Include="UI\Engineer\F_OpticalSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Engineer\F_OpticalSetting.designer.cs">
+      <DependentUpon>F_OpticalSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_DAQ_Chart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -325,6 +334,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Engineer\F_OpticalSetting.resx">
+      <DependentUpon>F_OpticalSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_DAQ_Chart.resx">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>

@@ -7,28 +7,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 
-using ToolFunction;
-using RGBTester.Logic;
-using RGBTester.Base;
 using DeviceCore;
+using ToolFunction;
+using RGBTester.Base;
+using RGBTester.Logic;
+using UserPrivilege.Base;
+
+
 
 namespace RGBTester.UI
 {
     public partial class F_MFactorCalibration : Form
     {
-        public F_MFactorCalibration(IFunction_Spectrometer function_Spectrometer)
+        public F_MFactorCalibration(IFunction_Spectrometer function_Spectrometer, IF_UserPrivilegeLogic f_UserPrivilegeLogic)
         {
             InitializeComponent();
 
             Spectrometer = function_Spectrometer;
+            UserPrivilege = f_UserPrivilegeLogic;
 
             InitialForm();
         }
 
         #region parameter define
         IFunction_Spectrometer Spectrometer;
+        IF_UserPrivilegeLogic UserPrivilege;
         F_MFactorCalibrationLogic MFactorCalibrationLogic = new F_MFactorCalibrationLogic();
         private double[] MatchWavelength;
         private double[] MatchIntensity;
@@ -83,6 +89,13 @@ namespace RGBTester.UI
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
 
+
+            bool oem = UserPrivilege.AtLeastOEM();
+            bool eng = UserPrivilege.AtLeastEng();
+
+            Btn_ReadStdSpectrum.Enabled = oem;
+            Btn_SaveData.Enabled = oem;
+
             UpdateUIState(ProcessStep.Init);
         }
         private void LeavePage()
@@ -90,6 +103,19 @@ namespace RGBTester.UI
         }
 
 
+        private void SaveData(double[] wl, double[] intensity)
+        {
+            StreamWriter file = Tool.CreateFile("Result\\Spectrum", ".csv", false);
+
+            Tool.WriteFile(file, $"Wavelength,Intensity");
+
+            for (int i = 0; i < wl.Length; i++)
+            {
+                Tool.WriteFile(file, $"{wl[i]},{intensity[i]}");
+            }
+
+            Tool.CloseFile(file);
+        }
         private void SetSpectrumPlot()
         {
             Plot_Spectrom.Plot.Grid(color: Color.FromArgb(13, Color.Black));
@@ -118,6 +144,8 @@ namespace RGBTester.UI
         }
         private void Draw2ndSpectrumData(double[] wavelength, double[] intensity)
         {
+            Plot_Spectrom.Plot.Clear();
+
             var myPlot = Plot_Spectrom.Plot.AddScatter(wavelength, intensity);
 
             myPlot.Color = System.Drawing.Color.Green;
@@ -136,24 +164,24 @@ namespace RGBTester.UI
         }
         private void UpdateUIState(ProcessStep step)
         {
-            currentStep = step;
+            //currentStep = step;
 
-            switch (step)
-            {
-                case ProcessStep.Init:
-                    Btn_ReadStdSpectrum.Enabled = true;
-                    Btn_SaveData.Enabled = false;
-                    Btn_Live.Enabled = false;
-                    break;
+            //switch (step)
+            //{
+            //    case ProcessStep.Init:
+            //        Btn_ReadStdSpectrum.Enabled = true;
+            //        Btn_SaveData.Enabled = false;
+            //        Btn_Live.Enabled = false;
+            //        break;
 
-                case ProcessStep.LIVE:
-                    Btn_Live.Enabled = true;
-                    break;
+            //    case ProcessStep.LIVE:
+            //        Btn_Live.Enabled = true;
+            //        break;
 
-                case ProcessStep.MFactorCalibration:
-                    Btn_SaveData.Enabled = true;
-                    break;
-            }
+            //    case ProcessStep.MFactorCalibration:
+            //        Btn_SaveData.Enabled = true;
+            //        break;
+            //}
         }
         #endregion
 
@@ -171,10 +199,10 @@ namespace RGBTester.UI
                 ReadAllEnumSetting();
 
                 LeavePage();
-                ////釋放記憶體資源
-                //Tool.ReleaseButtonImages(this);
-                //this.Close();
-                //this.Dispose();
+                //釋放記憶體資源
+                Tool.ReleaseButtonImages(this);
+                this.Close();
+                this.Dispose();
             }
             else
             {
@@ -199,8 +227,6 @@ namespace RGBTester.UI
 
                     //繪圖
                     DrawSpectrumData(wavelength, intensity);
-
-                    UpdateUIState(ProcessStep.LIVE);
                 }
             }
         }
@@ -215,16 +241,16 @@ namespace RGBTester.UI
         {
             if (UInt16.TryParse(TxtBx_IntgralTime.Text, out ushort intgTime) == true)
             {
-                float[] intensity = Spectrometer.GetSpectrumRelativelyOneShot(ESpectrumName.SPECTRUM_1, intgTime);
+                float[] intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, intgTime);
                 float[] wl = Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
                 double[] intensityDouble = Array.ConvertAll(intensity, x => (double)x);
                 double[] wlDouble = Array.ConvertAll(wl, x => (double)x);
 
                 //MFactorCalibrationLogic.SetMatchSpectrum(wlDouble, intensityDouble);
-
+                int percent = (int)Spectrometer.GetIntensityPercent(ESpectrumName.SPECTRUM_1);
                 //繪圖
-                PgBar_Intensity.Value = (int)intensity.Max();
-                Labl_Intensity.Text = intensity.Max().ToString() + "%";
+                PgBar_Intensity.Value = percent;
+                Labl_Intensity.Text = percent.ToString() + "%";
                 Draw2ndSpectrumData(wlDouble, intensityDouble);
 
                 MatchWavelength = wlDouble;
@@ -251,6 +277,31 @@ namespace RGBTester.UI
         {
             Timer_GetSpectrum.Enabled = false;
             TxtBx_IntgralTime.Enabled = true;
+        }
+
+        private void Btn_Capture_Click(object sender, EventArgs e)
+        {
+            if (UInt16.TryParse(TxtBx_IntgralTime.Text, out ushort intgTime) == true)
+            {
+                float[] intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, intgTime);
+                float[] wl = Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
+                double[] intensityDouble = Array.ConvertAll(intensity, x => (double)x);
+                double[] wlDouble = Array.ConvertAll(wl, x => (double)x);
+
+                SaveData(wlDouble, intensityDouble);
+
+                Wavelength CalWl = new Wavelength();
+                LuminousFlux lm = new LuminousFlux();
+
+                TxtBx_Power.Text = CalWl.Calculate_Power(wlDouble, intensityDouble, intgTime, 0.001).ToString();
+                TxtBx_Luminous.Text = lm.CalculateTotalLumens(wlDouble, intensityDouble, intgTime, 0.001).ToString();
+
+                DrawSpectrumData(wlDouble, intensityDouble);
+            }
+            else
+            {
+                MessageBox.Show("IntetgralTime Setting Fail");
+            }
         }
     }
 }

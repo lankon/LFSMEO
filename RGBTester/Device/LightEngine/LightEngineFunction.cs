@@ -49,7 +49,7 @@ namespace RGBTester.Device
         #region public function
         public void Set_LEA_Type()
         {
-            int type = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_ProductType);
+            int type = ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_ProductType); //有問題 不應該寫在這裡吧
             eLEAType select_type = eLEAType.VIRTUAL;
 
             if (type == (int)eLEAType.VIRTUAL)

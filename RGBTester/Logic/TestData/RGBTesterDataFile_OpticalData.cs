@@ -43,12 +43,12 @@ namespace RGBTester.Logic
             StreamWriter file = Tool.CreateFile(fileName, ".csv", false);
 
             // Ttitle
-            Tool.WriteFile(file, "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,Current(mA),Luminous Flux(lm),Wavelength(λd),LED Temperature(℃),IntegralTime(ms)");
+            Tool.WriteFile(file, "Station,SN,TestDate,TestTime,CycleTime(ms),UserName,DirLogName,Current(mA),Luminous Flux(lm),Wavelength(λd),LED Temperature(℃),IntegralTime(ms)");
             // TestData
             for(int i=0; i< result.Currentpoint.Count; i++)
             {
                 Tool.WriteFile(file, $"BFT,{result.SN},{timeDay},{DateNow.ToString("HH:mm:ss")},{result.CycleTime[i]},8888,Z23A_LEDIV_{result.SN}_Luminous,{result.Currentpoint[i]}," +
-                                 $"{result.Lumens[i]},{result.WLD[i]},{result.Temperature[i]},{result.IntegralTime[i]}");
+                                 $"{result.Lumens[i]:F2},{result.WLD[i]:F2},{result.Temperature[i]},{result.IntegralTime[i]}");
             }
 
             Tool.CloseFile(file);

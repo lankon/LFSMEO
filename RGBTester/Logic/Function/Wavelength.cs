@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RGBTester.Logic.Function
+namespace RGBTester.Logic
 {
     public class Wavelength
     {
@@ -118,17 +118,21 @@ namespace RGBTester.Logic.Function
             
             return cie_xy;
         }
-        public double Calculate_Power(double[] wavelengths, double[] intensities)
+        public double Calculate_Power(double[] wavelengths, double[] intensities, int IntgTime, double KValue)
         {
             double deltaLamda = wavelengths[1] - wavelengths[0];
             double TotalPower = 0;
+            double background = intensities.Max() * 0.01;
 
-            for(int i=0; i< wavelengths.Length; i++)
+            for (int i=0; i< wavelengths.Length; i++)
             {
-                TotalPower += intensities[i];
+                //TotalPower += ((intensities[i]) * KValue / IntgTime);
+                TotalPower += ((intensities[i] - (IntgTime*0.1375 + 876.57))/* * KValue / IntgTime*/);
             }
 
-            return TotalPower * deltaLamda;
+            //return TotalPower * deltaLamda;
+
+            return TotalPower / wavelengths.Length;
         }
         public double Calculate_WLD(double[] wavelengths, double[] intensities, double whiteX = 0.3333, double whiteY = 0.3333)
         {

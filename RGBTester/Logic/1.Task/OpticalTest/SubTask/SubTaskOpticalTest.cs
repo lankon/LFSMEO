@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Runtime.InteropServices;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
-using RGBTester.Logic.Function;
-using Microsoft.Extensions.DependencyInjection;
-using System.Runtime.InteropServices;
-using System.Reflection;
 
 namespace RGBTester.Logic
 {
@@ -42,6 +41,8 @@ namespace RGBTester.Logic
         private int delay_time = 1;
         private int TotalStep = 0;
         private int IntgTimeSetting = 0;
+        private int _searchMinTime = 0;     //二分法搜尋用
+        private int _searchMaxTime = 0;     //二分法搜尋用
         private byte Side;
         private byte Color;
         private string Type;
@@ -360,7 +361,7 @@ namespace RGBTester.Logic
         }
         private void UpdateProgressBar(Queue<int> state, int total_state)
         {
-            if (state.Count % 10 == 0)   //每幾步更新一次UI
+            if (state.Count % 1 == 0)   //每幾步更新一次UI
             {
                 double res = (double)state.Count / (double)total_state * 100;
                 int progress = 100 - (int)res;
@@ -371,6 +372,7 @@ namespace RGBTester.Logic
         {
             if(mode != CurrentModeStatus)
             {
+                Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0, 0);
                 Deps.LightEngine.SetLed_CurrentMode(mode);
                 CurrentModeStatus = mode;
             }
@@ -457,6 +459,9 @@ namespace RGBTester.Logic
                             TesterData.Currentpoint.Add(cur);
                             int dac = CalculateDACfromCurrent(cur);
                             Deps.LightEngine.SetLed_DAC(Color, Side, dac);
+
+                            _searchMaxTime = CurrentConfig[TestSide][TestColor].IntegralTimeStart;
+                            _searchMinTime = CurrentConfig[TestSide][TestColor].IntegralTimeEnd;
                         }
 
                         ResetTimeCount(out delay_time);
@@ -468,10 +473,13 @@ namespace RGBTester.Logic
                     break;
                 case WORK.AUTO_INTEGRAL:
                     {
+                        //=====================================
+                        // 取得光譜與強度
                         fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)IntgTimeSetting);
                         double percent = Deps.Spectrometer.GetIntensityPercent(ESpectrumName.SPECTRUM_1);
 
-                        if(percent > 60 && percent < 80)
+                        // 判斷是否達標
+                        if (percent > 60 && percent < 80)
                         {
                             Tool.SaveLogToFile($"測試積分時間:{IntgTimeSetting}ms");
                             TesterData.IntegralTime.Add(IntgTimeSetting);
@@ -480,25 +488,40 @@ namespace RGBTester.Logic
                             State = WORK.GET_SPECTRUM;
                             goto case WORK.GET_SPECTRUM;
                         }
-                        else if(IntgTimeSetting > CurrentConfig[TestSide][TestColor].IntegralTimeStart + 20 && percent < 60)
+
+                        // 更新二分法搜尋邊界
+                        if (percent >= 80)    
                         {
-                            Tool.SaveLogToFile("光強不足", level:"WRN");
-                            Transition(WORK.SET_DEFAULT_VALUE);
+                            // 過曝 / 太亮
+                            _searchMaxTime = IntgTimeSetting - 1;
                         }
-                        else if(IntgTimeSetting < CurrentConfig[TestSide][TestColor].IntegralTimeEnd && percent > 80)
+                        else if (percent <= 60)
                         {
-                            Tool.SaveLogToFile("分光卡過曝請調整積分時間", level:"ERR");
-                            Transition(WORK.ABORT);
+                            // 光強不足 / 太暗
+                            _searchMinTime = IntgTimeSetting + 1;
                         }
 
-                        if (percent < 60)
+                        // 異常處理：當最小邊界大於最大邊界，代表在此區間內找不到符合值
+                        if (_searchMinTime > _searchMaxTime)
                         {
-                            IntgTimeSetting += Math.Abs(CurrentConfig[TestSide][TestColor].IntegralTimeStep); //積分時間越來越長
+                            if (percent <= 60)
+                            {
+                                Tool.SaveLogToFile("光強不足 (已達搜尋極限)", level: "WRN");
+                                Transition(WORK.SET_DEFAULT_VALUE);
+                            }
+                            else
+                            {
+                                Tool.SaveLogToFile("分光卡過曝請調整積分時間 (已達搜尋極限)", level: "ERR");
+                                Transition(WORK.ABORT);
+                            }
+                            break;
                         }
-                        else if (percent > 80)
-                        {
-                            IntgTimeSetting -= Math.Abs(CurrentConfig[TestSide][TestColor].IntegralTimeStep); //積分時間越來越短
-                        }
+
+                        // 計算下一次的積分時間 (取上下限的中間值)
+                        int nextTime = (_searchMinTime + _searchMaxTime) / 2;
+
+                        // 套用新時間，等待下一次 state machine 迴圈再次讀取
+                        IntgTimeSetting = nextTime;
                     }
                     break;
                 case WORK.SET_DEFAULT_VALUE:
@@ -522,10 +545,9 @@ namespace RGBTester.Logic
                     break;
                 case WORK.GET_SPECTRUM:
                     {
-                        if(CheckTimeOverMilSec(delay_time, 10)) //硬體轉換時間,需依實際狀況調整
+                        if(CheckTimeOverMilSec(delay_time, 50)) //硬體轉換時間,需依實際狀況調整
                         {
-                            uint integral = 0;//(uint)CurrentConfig[TestSide][TestColor].IntegralTime;
-                            fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, integral);
+                            fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)IntgTimeSetting);
 
                             if(fSpectrumRawData == null)
                             {
@@ -546,9 +568,9 @@ namespace RGBTester.Logic
                         float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
                         double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
 
-                        //強度單位必須為W
-                        double[] W_Intensity = SpectrumRawData.Select(x=>x/1000).ToArray();
-                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, W_Intensity));
+                        double[] intensity = SpectrumRawData.Select(x => x).ToArray();
+                        double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
+                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, intensity, IntgTimeSetting, k_value));
 
                         State = WORK.CALCULATE_WAVELENGTH;
                         goto case WORK.CALCULATE_WAVELENGTH;
@@ -559,8 +581,12 @@ namespace RGBTester.Logic
                         float[] fwavelength = Deps.Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
                         double[] wavelength = fwavelength.Select(x => (double)x).ToArray();
 
+                        //強度單位必須為W/nm
+                        double[] W_Intensity = SpectrumRawData.Select(x => x).ToArray();
+
                         TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData));
-                        TesterData.OpticalPower.Add(WL.Calculate_Power(wavelength, SpectrumRawData));
+                        double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
+                        TesterData.OpticalPower.Add(WL.Calculate_Power(wavelength, W_Intensity, IntgTimeSetting, k_value));
                         TesterData.CycleTime.Add(Tool.GetTime(cycletime));
 
                         if (TestColor == "WPC")

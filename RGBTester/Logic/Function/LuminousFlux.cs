@@ -95,11 +95,12 @@ namespace RGBTester.Logic
             cieFunction = new CIE_1931_Function();
         }
         
-        public double CalculateTotalLumens(double[] wavelengths, double[] Intensity)
+        public double CalculateTotalLumens(double[] wavelengths, double[] Intensity, int IntgTime, double KValue)
         {
-            //單位：Wavelength->nm , Intensity->W/nm
+            //單位：Wavelength->nm , Intensity->Counts
             
             double totalLumens = 0;
+            double totalCount = 0;
             double km = 683.002;
 
             double deltaL = wavelengths[1] - wavelengths[0];
@@ -107,9 +108,13 @@ namespace RGBTester.Logic
             for (int i = 0; i < wavelengths.Length; i++)
             {
                 double vL = cieFunction.GetVLambda(wavelengths[i]);
-                totalLumens += Intensity[i] * vL;
+                double WattPerNm = Intensity[i] * KValue / IntgTime; //單位:W/nm
+                totalLumens += WattPerNm * vL;
+
+                totalCount += Intensity[i];
             }
 
+            totalCount = totalCount / 10000;
             totalLumens = (totalLumens * deltaL) * km;
 
             return totalLumens;

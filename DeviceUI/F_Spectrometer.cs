@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 using ToolFunction;
 using DeviceCore;
+using System.IO;
 
 namespace DeviceUI.Spectrometer
 {
@@ -115,6 +116,20 @@ namespace DeviceUI.Spectrometer
             }
 
             Spectrometer.LoadConfiguration(spectrum_list);
+        }
+
+        private void SaveData(double[] wl, double[] intensity)
+        {
+            StreamWriter file = Tool.CreateFile("Result\\Spectrum", ".csv", false);
+
+            Tool.WriteFile(file, $"Wavelength,Intensity");
+
+            for (int i=0; i<wl.Length; i++)
+            {
+                Tool.WriteFile(file, $"{wl[i]},{intensity[i]}");
+            }
+
+            Tool.CloseFile(file);
         }
         #endregion
 
@@ -234,6 +249,8 @@ namespace DeviceUI.Spectrometer
                 float[] wl = Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
                 double[] intensityDouble = Array.ConvertAll(intensity, x => (double)x);
                 double[] wlDouble = Array.ConvertAll(wl, x => (double)x);
+
+                SaveData(wlDouble, intensityDouble);
 
                 DrawSpectrumData(wlDouble, intensityDouble);
             }

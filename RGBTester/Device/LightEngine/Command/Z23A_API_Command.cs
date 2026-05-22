@@ -142,12 +142,12 @@ namespace RGBTester.Device
 
             int[] set_value;
 
-            if (values.Length >= 4)
-            {
-                int value_B2 = values[3];
-                set_value = new int[] { value_R, value_G, value_B, value_B2 };
-            }
-            else
+            //if (values.Length >= 4)
+            //{
+            //    int value_B2 = values[3];
+            //    set_value = new int[] { value_R, value_G, value_B, value_B2 };
+            //}
+            //else
                 set_value = new int[] { value_R, value_G, value_B };
 
             Z23A_FW.Error_Code res = api.RAA491901_Set_DAC_Value(Z23A_FW.Color.COLOR_ALL, set_value);
