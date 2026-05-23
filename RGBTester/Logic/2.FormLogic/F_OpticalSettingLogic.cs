@@ -19,8 +19,6 @@ namespace RGBTester.Logic
         IFunction_Spectrometer Spectrometer;
         #endregion
 
-
-
         public LinearCurveFitting BackgroundCalibration()
         {
             int[] Step = new int[10];
@@ -47,6 +45,9 @@ namespace RGBTester.Logic
             }
 
             LinearCurveFitting linearCurveFitting = new LinearCurveFitting(Step, dInttensity);
+
+            //設定至分光卡
+            Spectrometer.SetBackgroundCoef(linearCurveFitting.Slope, linearCurveFitting.Offset);
 
             return linearCurveFitting;
         }

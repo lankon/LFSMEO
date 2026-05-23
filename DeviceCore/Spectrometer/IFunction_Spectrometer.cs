@@ -36,6 +36,7 @@ namespace DeviceCore
     {
         void LoadConfiguration(List<SpectrumData> newSpectrumDataList);
         int Initial_All_Spectrometer();
+        void SetBackgroundCoef(double slope, double offset);
         float[] GetWavelengthSpan(ESpectrumName name);
         float[] GetSpectrumOneShot(ESpectrumName name, uint integral_time, uint avg_time = 1);
         float[] GetSpectrumRelativelyOneShot(ESpectrumName name, uint integral_time, uint avg_time = 1);

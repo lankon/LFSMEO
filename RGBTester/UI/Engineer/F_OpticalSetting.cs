@@ -104,7 +104,6 @@ namespace RGBTester.UI
         private void Btn_Calibration_Click(object sender, EventArgs e)
         {
             F_OpticalSettingLogic logic = new F_OpticalSettingLogic(Spectrometer);
-
             LinearCurveFitting res = logic.BackgroundCalibration();
 
             TxtBx_BackgroundGain.Text = res.Slope.ToString();

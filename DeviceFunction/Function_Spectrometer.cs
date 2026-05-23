@@ -20,6 +20,8 @@ namespace DeviceFunction
         }
 
         #region parameter define
+        private double BackgroundCoefSlope = 0;
+        private double BackgroundCoefOffset = 0;
         private bool IsInitial = false;
         private int DeviceIndex = 0;
         private IEnumerable<ISpectrometer> Spectrometer;
@@ -98,6 +100,12 @@ namespace DeviceFunction
             return ret;
         }
 
+        public void SetBackgroundCoef(double slope, double offset)
+        {
+            BackgroundCoefOffset = offset;
+            BackgroundCoefSlope = slope;
+        }
+
         public float[] GetWavelengthSpan(ESpectrumName name)
         {
             SpectrumListDict.TryGetValue(name.ToString(), out SpectrumData spectrum_data);
@@ -134,6 +142,10 @@ namespace DeviceFunction
                                                                device.GetSpectrometerType().ToString() == spectrum_data.Title_SpectrumType);
 
             spectrum = targetDevice?.GetSpectrumOneShot(spectrum_data.Title_ID, integral_time, avg_time);
+
+            //扣除背景雜訊
+            double background = integral_time * BackgroundCoefSlope + BackgroundCoefOffset > 900 ? integral_time * BackgroundCoefSlope + BackgroundCoefOffset : 900;
+            spectrum = spectrum.Select(x => (float)(x - background)).ToArray();
 
             return spectrum;
         }
@@ -172,6 +184,9 @@ namespace DeviceFunction
 
             spectrum = SpectrometerList[DeviceIndex].GetSpectrum(spectrum_data.Title_ID, integral_time, avg_time);
 
+            //扣除背景雜訊
+            spectrum.Select(x => x - (integral_time * BackgroundCoefSlope + BackgroundCoefOffset));
+
             return spectrum;
         }
 
@@ -189,8 +204,6 @@ namespace DeviceFunction
         
             return percent;
         }
-
-        
         #endregion
 
     }

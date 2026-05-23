@@ -55,6 +55,11 @@ namespace RGBTester.Logic
             IF_Spectrometer f_spectrometer = ServiceProvider.GetRequiredService<IF_Spectrometer>();
             f_spectrometer.Update_Spectrum_List();
             RGBTesterMachine.Spectrometer.Initial_All_Spectrometer();
+
+            //設定扣除背景值係數
+            double slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BackgroundGain);
+            double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BackgroundFOffset);
+            RGBTesterMachine.Spectrometer.SetBackgroundCoef(slope, offset);
         }
         private void ShowModuleForm<T>() where T : class
         {
