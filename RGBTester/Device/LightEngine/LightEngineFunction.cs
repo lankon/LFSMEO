@@ -42,7 +42,6 @@ namespace RGBTester.Device
         }
         #endregion
 
-
         #region private function
         #endregion
 

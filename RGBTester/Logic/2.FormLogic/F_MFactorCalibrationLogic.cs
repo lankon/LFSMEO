@@ -189,11 +189,12 @@ namespace RGBTester.Logic
 
             MFactor = CompareSpectrum(StdSpectrum, MatchSpectrum);
 
+            int index_600nm = MFactor.Wavelength.IndexOf(600);
             // 寫檔
             StreamWriter file = Tool.CreateFile("\\Setting\\MFactor", ".csv", false);
             for (int i = 0; i < MFactor.Wavelength.Count; i++)
             {
-                Tool.WriteFile(file, $"{MFactor.Wavelength[i]},{MFactor.Intensity[i]}");
+                Tool.WriteFile(file, $"{MFactor.Wavelength[i]},{MFactor.Intensity[i] / MFactor.Intensity[index_600nm]}");
             }
             Tool.CloseFile(file);
         }

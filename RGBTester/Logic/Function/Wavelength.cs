@@ -126,12 +126,9 @@ namespace RGBTester.Logic
             for (int i=0; i< wavelengths.Length; i++)
             {
                 TotalPower += ((intensities[i]) * KValue / IntgTime);
-                //TotalPower += ((intensities[i] - (IntgTime * 0.1375 + 876.57))/* * KValue / IntgTime*/);
             }
 
             return TotalPower * deltaLamda;
-
-            //return TotalPower / wavelengths.Length;
         }
         public double Calculate_WLD(double[] wavelengths, double[] intensities, double whiteX = 0.3333, double whiteY = 0.3333)
         {

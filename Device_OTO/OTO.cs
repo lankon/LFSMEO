@@ -221,13 +221,13 @@ namespace Device_OTO
         {
             try
             {
-                // 1. 取得設備 VID/PID 列表
+                // 取得設備 VID/PID 列表
                 var vidPidList = GetAvailableVidPidList();
                 
                 if (vidPidList == null) 
                     return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
 
-                // 2. 搜尋並嘗試開啟設備
+                // 搜尋並嘗試開啟設備
                 for (int j = 0; j < vidPidList.Length; j += 2)
                 {
                     uint vid = vidPidList[j];

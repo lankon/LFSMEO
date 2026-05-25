@@ -19,13 +19,14 @@ namespace RGBTester.UI
     public partial class F_FunctionTester : Form
     {
         public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic,
-                                IFunction_LightEngine lea)
+                                IFunction_LightEngine lea, IFunction_DataUpdate function_DataUpdate)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
             FunctionTesterLogic = f_FunctionTesterLogic;
             LEA = lea;
+            DataUpdate = function_DataUpdate;
 
             InitialForm();
         }
@@ -33,6 +34,7 @@ namespace RGBTester.UI
         #region parameter define
         IServiceProvider ServiceProvider;
         IFunction_LightEngine LEA;
+        IFunction_DataUpdate DataUpdate;
         F_FunctionTesterLogic FunctionTesterLogic;
         #endregion
 
@@ -157,10 +159,7 @@ namespace RGBTester.UI
 
         private void Btn_Test_Click(object sender, EventArgs e)
         {
-            QuantaAPI api = new QuantaAPI();
-            string res;
-
-            api.CheckRoutingSMT(out res, "efhuef;efefef;ef;");
+            DataUpdate.CheckConnectStatus("SNTest;BT;SMT;1235;Fittech");
         }
     }
 }

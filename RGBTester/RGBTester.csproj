@@ -142,6 +142,7 @@
     <Compile Include="Base\eElement_Form\eF_Equipment_Setting.cs" />
     <Compile Include="Base\eModileType.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
+    <Compile Include="Base\IFunction_DataUpdate.cs" />
     <Compile Include="Base\IF_Form\IF_OpticalTest.cs" />
     <Compile Include="Base\IF_Form\IF_ParameterSetting.cs" />
     <Compile Include="Base\IF_Form\IF_StartForm.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
     <Compile Include="Device\QuantaLogAPI\Command\QuantaAPI.cs" />
+    <Compile Include="Device\QuantaLogAPI\Function_DataUpdate.cs" />
     <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTestRGB.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTest.cs" />

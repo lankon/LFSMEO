@@ -204,11 +204,11 @@ namespace RGBTester.UI
             // 
             // Btn_Test
             // 
-            this.Btn_Test.Location = new System.Drawing.Point(50, 368);
+            this.Btn_Test.Location = new System.Drawing.Point(12, 375);
             this.Btn_Test.Name = "Btn_Test";
-            this.Btn_Test.Size = new System.Drawing.Size(121, 48);
+            this.Btn_Test.Size = new System.Drawing.Size(126, 58);
             this.Btn_Test.TabIndex = 13;
-            this.Btn_Test.Text = "Test";
+            this.Btn_Test.Text = "Check SMT";
             this.Btn_Test.UseVisualStyleBackColor = true;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 

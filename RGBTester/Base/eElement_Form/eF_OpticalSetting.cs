@@ -9,6 +9,7 @@ namespace RGBTester.Base
     public enum eF_OpticalSetting
     {
         TxtBx_OpticalKValue,
+        TxtBx_Standard,
         TxtBx_BackgroundGain,
         TxtBx_BackgroundFOffset,
     }

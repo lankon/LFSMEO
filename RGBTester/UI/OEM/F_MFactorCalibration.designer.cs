@@ -38,15 +38,17 @@ namespace RGBTester.UI
             this.Btn_Live = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_IntgralTime = new System.Windows.Forms.TextBox();
+            this.Btn_Capture = new System.Windows.Forms.Button();
             this.Btn_SaveData = new System.Windows.Forms.Button();
             this.PgBar_Intensity = new System.Windows.Forms.ProgressBar();
             this.Timer_GetSpectrum = new System.Windows.Forms.Timer(this.components);
-            this.Btn_Capture = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_Power = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.TxtBx_Luminous = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.TxtBx_Power = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.TxtBx_WLD = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -149,6 +151,19 @@ namespace RGBTester.UI
             this.TxtBx_IntgralTime.Size = new System.Drawing.Size(82, 29);
             this.TxtBx_IntgralTime.TabIndex = 1;
             // 
+            // Btn_Capture
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.Btn_Capture, 2);
+            this.Btn_Capture.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Capture.Location = new System.Drawing.Point(1, 109);
+            this.Btn_Capture.Margin = new System.Windows.Forms.Padding(0);
+            this.Btn_Capture.Name = "Btn_Capture";
+            this.Btn_Capture.Size = new System.Drawing.Size(229, 33);
+            this.Btn_Capture.TabIndex = 36;
+            this.Btn_Capture.Text = "Capture";
+            this.Btn_Capture.UseVisualStyleBackColor = true;
+            this.Btn_Capture.Click += new System.EventHandler(this.Btn_Capture_Click);
+            // 
             // Btn_SaveData
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.Btn_SaveData, 2);
@@ -173,36 +188,35 @@ namespace RGBTester.UI
             // 
             this.Timer_GetSpectrum.Tick += new System.EventHandler(this.Timer_GetSpectrum_Tick);
             // 
-            // Btn_Capture
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.Btn_Capture, 2);
-            this.Btn_Capture.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Capture.Location = new System.Drawing.Point(1, 109);
-            this.Btn_Capture.Margin = new System.Windows.Forms.Padding(0);
-            this.Btn_Capture.Name = "Btn_Capture";
-            this.Btn_Capture.Size = new System.Drawing.Size(229, 33);
-            this.Btn_Capture.TabIndex = 36;
-            this.Btn_Capture.Text = "Capture";
-            this.Btn_Capture.UseVisualStyleBackColor = true;
-            this.Btn_Capture.Click += new System.EventHandler(this.Btn_Capture_Click);
-            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.82456F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.17544F));
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_WLD, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.TxtBx_Power, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.TxtBx_Luminous, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 1);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(1076, 341);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(231, 80);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(231, 120);
             this.tableLayoutPanel2.TabIndex = 40;
+            // 
+            // TxtBx_Power
+            // 
+            this.TxtBx_Power.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Power.Location = new System.Drawing.Point(130, 44);
+            this.TxtBx_Power.Name = "TxtBx_Power";
+            this.TxtBx_Power.ReadOnly = true;
+            this.TxtBx_Power.Size = new System.Drawing.Size(95, 29);
+            this.TxtBx_Power.TabIndex = 7;
             // 
             // label2
             // 
@@ -233,14 +247,24 @@ namespace RGBTester.UI
             this.label3.Text = "Power(mW)";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // TxtBx_Power
+            // label4
             // 
-            this.TxtBx_Power.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Power.Location = new System.Drawing.Point(130, 44);
-            this.TxtBx_Power.Name = "TxtBx_Power";
-            this.TxtBx_Power.ReadOnly = true;
-            this.TxtBx_Power.Size = new System.Drawing.Size(95, 29);
-            this.TxtBx_Power.TabIndex = 7;
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(6, 79);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(115, 35);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "WLD(nm)";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_WLD
+            // 
+            this.TxtBx_WLD.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_WLD.Location = new System.Drawing.Point(130, 82);
+            this.TxtBx_WLD.Name = "TxtBx_WLD";
+            this.TxtBx_WLD.ReadOnly = true;
+            this.TxtBx_WLD.Size = new System.Drawing.Size(95, 29);
+            this.TxtBx_WLD.TabIndex = 9;
             // 
             // F_MFactorCalibration
             // 
@@ -284,5 +308,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TxtBx_Luminous;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox TxtBx_WLD;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -36,37 +36,73 @@ namespace RGBTester.Device
         }
         #endregion
 
-        public int CheckRoutingSMT(out string res, string info = "")
+        public int CheckRoutingSMT(string info = "")
         {
-            res = "";
-            
+            string res = "";
+            string processName = "Main";    //呼叫程式名稱
+
             try
             {
-                string[] info_array = info.Split(';');
+                if (string.IsNullOrWhiteSpace(info)) 
+                    return -1;
 
-                if(info_array.Length < 5)
+                string[] info_array = info.Split(';');
+                if (info_array.Length < 5) 
                     return -1;
 
                 string sn = info_array[0];
-                string station = info_array[1];
                 string line = info_array[2];
                 string op_id = info_array[3];
                 string equip_id = info_array[4];
-                
-                startInfo.Arguments = $"Main.exe -m CheckRoutingSMT -p {sn} {line} {op_id} {equip_id}";
 
-                using (Process process = Process.Start(startInfo))
+                Process[] runningProcesses = Process.GetProcessesByName(processName);
+                foreach (Process p in runningProcesses)
                 {
-                    res = process.StandardOutput.ReadToEnd();
-                    process.WaitForExit();
-                    return 0;
+                    try
+                    {
+                        // 發現上次殘留的進程（可能卡在 MES 網路超時），果斷強制殺掉，避免互相干擾
+                        p.Kill();
+                        p.WaitForExit(1000); // 等待 1 秒確保它徹底釋放記憶體
+                    }
+                    catch { /* 忽略已經在關閉中的進程錯誤 */ }
+                }
+
+                // 3. 配置這一次的啟動參數 (改用區域變數，不共用全域 startInfo)
+                ProcessStartInfo localStartInfo = new ProcessStartInfo
+                {
+                    FileName = processName + ".exe",
+                    Arguments = $"Main.exe -m CheckRoutingSMT -p {sn} {line} {op_id} {equip_id}",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,  // 要讀取回傳結果，必須開啟
+                    CreateNoWindow = false          // 隱藏黑畫面視窗
+                };
+
+                // 4. 啟動並執行
+                using (Process process = Process.Start(localStartInfo))
+                {
+                    if (process == null) return -1;
+
+                    if (process.WaitForExit(5000))
+                    {
+                        // 正常在 5 秒內執行完畢並關閉了，這時候才安全地讀取結果
+                        res = process.StandardOutput.ReadToEnd();
+                        return 0;
+                    }
+                    else
+                    {
+                        process.Kill(); // 強制中斷它
+                        res = "ERROR: MES Server Timeout (5s)";
+                        return -2;
+                    }
                 }
             }
             catch (Exception ex)
             {
+                res = $"Exception: {ex.Message}";
                 return -1;
             }
         }
+
         public void UpdateToSMTDB()
         {
             try

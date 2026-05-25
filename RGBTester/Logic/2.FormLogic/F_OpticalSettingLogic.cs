@@ -19,24 +19,36 @@ namespace RGBTester.Logic
         IFunction_Spectrometer Spectrometer;
         #endregion
 
-        public LinearCurveFitting BackgroundCalibration()
+        public LinearCurveFitting BackgroundCalibration(out double standard)
         {
             int[] Step = new int[10];
             double[] dInttensity = new double[10];
+            float[] intensity;
+            float totalcount = 0;
             int index = 0;
+            
+            //重置分光卡係數
+            Spectrometer.SetBackgroundCoef(0, 0, 0);
+
+            //計算Standard背景亮度
+            intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, 0);
+            for (int j = 0; j < intensity.Length; j++)
+            {
+                totalcount += intensity[j];
+            }
+            standard = totalcount / intensity.Length;
 
             for (int i=100; i<=1000; i = i+100)
             {
-                float[] intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)i);
-                float totalcount = 0;
+                intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)i);
+                totalcount = 0;
 
-                for(int j=0; j<intensity.Length; j++)
+                for (int j=0; j<intensity.Length; j++)
                 {
                     totalcount += intensity[j];
                 }
 
                 totalcount = totalcount / intensity.Length;
-
 
                 dInttensity[index] = totalcount;
                 Step[index] = i;
@@ -47,10 +59,9 @@ namespace RGBTester.Logic
             LinearCurveFitting linearCurveFitting = new LinearCurveFitting(Step, dInttensity);
 
             //設定至分光卡
-            Spectrometer.SetBackgroundCoef(linearCurveFitting.Slope, linearCurveFitting.Offset);
+            Spectrometer.SetBackgroundCoef(standard, linearCurveFitting.Slope, linearCurveFitting.Offset);
 
             return linearCurveFitting;
         }
-
     }
 }
