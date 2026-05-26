@@ -31,7 +31,7 @@ namespace RGBTester.Logic
             Spectrometer.SetBackgroundCoef(0, 0, 0);
 
             //計算Standard背景亮度
-            intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, 0);
+            intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, 0, pass_mfactor:true);
             for (int j = 0; j < intensity.Length; j++)
             {
                 totalcount += intensity[j];
@@ -40,7 +40,7 @@ namespace RGBTester.Logic
 
             for (int i=100; i<=1000; i = i+100)
             {
-                intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)i);
+                intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)i, pass_mfactor:true);
                 totalcount = 0;
 
                 for (int j=0; j<intensity.Length; j++)

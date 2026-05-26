@@ -14,8 +14,8 @@ namespace Device_Spectrum_Virtual
     {
         #region parameter define
         float MaxIntensity = 0;
-        float[] Wavelength = new float[4096];
-        float[] Intensity = new float[4096];
+        List<float> Wavelength = new List<float>();
+        List<float> Intensity = new List<float>();
         Queue<double> IntensityPercent = new Queue<double>();
         #endregion
 
@@ -31,12 +31,14 @@ namespace Device_Spectrum_Virtual
 
         public float[] GetSpectrum(string sn, uint integral_time, uint avg_time = 1)
         {
-            return Intensity;
+            float[] f_intensity = Intensity.Select(x => x).ToArray();
+            return f_intensity;
         }
 
         public float[] GetSpectrumOneShot(string sn, uint integral_time, uint avg_time = 1)
         {
-            return Intensity;
+            float[] f_intensity = Intensity.Select(x => x).ToArray();
+            return f_intensity;
         }
 
         public float[] GetSpectrumRelativelyOneShot(string sn, uint integral_time, uint avg_time = 1)
@@ -46,16 +48,17 @@ namespace Device_Spectrum_Virtual
 
         public float[] GetWavelength(string sn)
         {
-            return Wavelength;
+            float[] f_wl = Wavelength.Select(x => x).ToArray();
+            return f_wl;
         }
 
         public int Open()
         {
-            for(int i=0; i<Wavelength.Length; i++)
-            {
-                Wavelength[i] = Wavelength.Length;
-                Intensity[i] = 0;
-            }
+            //for(int i=0; i<Wavelength.Length; i++)
+            //{
+            //    Wavelength[i] = Wavelength.Length;
+            //    Intensity[i] = 0;
+            //}
 
             string path = AppDomain.CurrentDomain.BaseDirectory + @"\Setting\VirtualData\Virtual_Spectrum_Data.csv";
 
@@ -63,7 +66,6 @@ namespace Device_Spectrum_Virtual
                 return 0;
 
             string[] lines = File.ReadAllLines(path);
-            int index = 0;
 
             IEnumerable<string> dataLines = lines.Skip(1);
             foreach (string line in dataLines)
@@ -75,20 +77,10 @@ namespace Device_Spectrum_Virtual
                 if (values.Length < 2) continue; //確保有波長以及強度值
 
                 if (float.TryParse(values[0], out float nm_value))
-                    Wavelength[index] = nm_value;
+                    Wavelength.Add(nm_value);
 
                 if (float.TryParse(values[1], out float intensity_value))
-                    Intensity[index] = intensity_value;
-
-                index++;
-                 if (index >= Wavelength.Length)
-                    break;
-            }
-
-            for(int i=index; i<Wavelength.Length; i++)
-            {
-                Wavelength[i] = Wavelength[index-1]+1;
-                Intensity[i] = 0;
+                    Intensity.Add(intensity_value);
             }
 
             MaxIntensity = Intensity.Max();

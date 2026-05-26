@@ -200,7 +200,7 @@ namespace DeviceFunction
             return wavelegth;
         }
 
-        public float[] GetSpectrumOneShot(ESpectrumName name, uint integral_time, uint avg_time = 1)
+        public float[] GetSpectrumOneShot(ESpectrumName name, uint integral_time, uint avg_time = 1, bool pass_mfactor = false)
         {
             SpectrumListDict.TryGetValue(name.ToString(), out SpectrumData spectrum_data);
 
@@ -220,7 +220,7 @@ namespace DeviceFunction
             spectrum = spectrum.Select(x => (float)(x - background)).ToArray();
 
             //未讀取MFactor直接回傳頻譜
-            if (ReadMFactorSuccess == false)
+            if (ReadMFactorSuccess == false || pass_mfactor == true)
                 return spectrum;
 
             //取得對應波長
