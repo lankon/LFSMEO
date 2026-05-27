@@ -159,7 +159,9 @@ namespace RGBTester.UI
 
         private void Btn_Test_Click(object sender, EventArgs e)
         {
-            DataUpdate.CheckConnectStatus("SNTest;BT;SMT;1235;Fittech");
+            //DataUpdate.DataUpdate();
+
+            DataUpdate.CheckConnectStatus("B1A2J4T004;A12;Op456;Fittech");
         }
     }
 }

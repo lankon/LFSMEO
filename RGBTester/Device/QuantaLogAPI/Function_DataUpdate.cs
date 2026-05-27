@@ -28,7 +28,8 @@ namespace RGBTester.Device
 
         public bool DataUpdate()
         {
-            throw new NotImplementedException();
+            int res = Quanta.UpdateToSMTDB();
+            return res == 0;
         }
         #endregion
     }

@@ -473,15 +473,22 @@ namespace RGBTester.Logic
                     break;
                 case WORK.AUTO_INTEGRAL:
                     {
+                        int Intg_interval_start = 30;
+                        int Intg_interval_end = 80;
+
                         //=====================================
                         // 取得光譜與強度
                         fSpectrumRawData = Deps.Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)IntgTimeSetting);
                         double percent = Deps.Spectrometer.GetIntensityPercent(ESpectrumName.SPECTRUM_1);
 
                         // 判斷是否達標
-                        if (percent > 60 && percent < 80)
+                        if (percent > Intg_interval_start && percent < Intg_interval_end)
                         {
+                            int index = IntgTimeSetting / 11;
+                            IntgTimeSetting = 11 * index;
+
                             Tool.SaveLogToFile($"測試積分時間:{IntgTimeSetting}ms");
+
                             TesterData.IntegralTime.Add(IntgTimeSetting);
                             TesterData.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
 
@@ -490,12 +497,12 @@ namespace RGBTester.Logic
                         }
 
                         // 更新二分法搜尋邊界
-                        if (percent >= 80)    
+                        if (percent >= Intg_interval_end)    
                         {
                             // 過曝 / 太亮
                             _searchMaxTime = IntgTimeSetting - 1;
                         }
-                        else if (percent <= 60)
+                        else if (percent <= Intg_interval_start)
                         {
                             // 光強不足 / 太暗
                             _searchMinTime = IntgTimeSetting + 1;
@@ -504,7 +511,7 @@ namespace RGBTester.Logic
                         // 異常處理：當最小邊界大於最大邊界，代表在此區間內找不到符合值
                         if (_searchMinTime > _searchMaxTime)
                         {
-                            if (percent <= 60)
+                            if (percent <= Intg_interval_start)
                             {
                                 Tool.SaveLogToFile("光強不足 (已達搜尋極限)", level: "WRN");
                                 Transition(WORK.SET_DEFAULT_VALUE);

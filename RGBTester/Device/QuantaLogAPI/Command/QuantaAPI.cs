@@ -43,17 +43,17 @@ namespace RGBTester.Device
 
             try
             {
-                if (string.IsNullOrWhiteSpace(info)) 
+                if (string.IsNullOrWhiteSpace(info))
                     return -1;
 
                 string[] info_array = info.Split(';');
-                if (info_array.Length < 5) 
+                if (info_array.Length < 4)
                     return -1;
 
                 string sn = info_array[0];
-                string line = info_array[2];
-                string op_id = info_array[3];
-                string equip_id = info_array[4];
+                string line = info_array[1];
+                string op_id = info_array[2];
+                string equip_id = info_array[3];
 
                 Process[] runningProcesses = Process.GetProcessesByName(processName);
                 foreach (Process p in runningProcesses)
@@ -67,25 +67,37 @@ namespace RGBTester.Device
                     catch { /* 忽略已經在關閉中的進程錯誤 */ }
                 }
 
-                // 3. 配置這一次的啟動參數 (改用區域變數，不共用全域 startInfo)
+
+                //"Main.exe -m UpdateToSMTDB -p B1A2J4T004 BFT PASS ##Test1=PASS##Test2=PASS##FixtureID=UIR-BFT A12 OPID",//$"Main.exe -m CheckRoutingSMT -p {sn} {line} {op_id} {equip_id}",
+                // @"C:\Users\Fittech\Desktop\API_Test\Main.exe",
+
+                // 配置這一次的啟動參數 (改用區域變數，不共用全域 startInfo)
                 ProcessStartInfo localStartInfo = new ProcessStartInfo
                 {
                     FileName = processName + ".exe",
                     Arguments = $"Main.exe -m CheckRoutingSMT -p {sn} {line} {op_id} {equip_id}",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,  // 要讀取回傳結果，必須開啟
-                    CreateNoWindow = false          // 隱藏黑畫面視窗
+                    RedirectStandardError = true,
+                    CreateNoWindow = false,      // 隱藏黑畫面視窗
+                    StandardOutputEncoding = System.Text.Encoding.UTF8,
                 };
 
-                // 4. 啟動並執行
-                using (Process process = Process.Start(localStartInfo))
+                // 啟動並執行
+                using (Process process = new Process { StartInfo = localStartInfo })
                 {
                     if (process == null) return -1;
+
+                    process.Start();
+
+                    res = process.StandardOutput.ReadToEnd();
+                    res = process.StandardError.ReadToEnd();
 
                     if (process.WaitForExit(5000))
                     {
                         // 正常在 5 秒內執行完畢並關閉了，這時候才安全地讀取結果
                         res = process.StandardOutput.ReadToEnd();
+                        res = process.StandardError.ReadToEnd();
                         return 0;
                     }
                     else
@@ -103,21 +115,61 @@ namespace RGBTester.Device
             }
         }
 
-        public void UpdateToSMTDB()
+        public int UpdateToSMTDB()
         {
             try
             {
-                startInfo.Arguments = "Main.exe -m UpdateToSMTDB -p UIRIOB2601220023 BFT PASS ##Test1=PASS##Test2=PASS##TestTime=56##FixtureID=UIR-BFT##Program_ver=0.0.1##Testplan_ver=0.0.1 B12 10812122";
-
-                using (Process process = Process.Start(startInfo))
+                string processName = "Main";
+                string res = "";
+                Process[] runningProcesses = Process.GetProcessesByName(processName);
+                foreach (Process p in runningProcesses)
                 {
-                    string result = process.StandardOutput.ReadToEnd();
-                    process.WaitForExit();
-                    Console.WriteLine("執行結果： " + result);
+                    try
+                    {
+                        // 發現上次殘留的進程（可能卡在 MES 網路超時），果斷強制殺掉，避免互相干擾
+                        p.Kill();
+                        p.WaitForExit(1000); // 等待 1 秒確保它徹底釋放記憶體
+                    }
+                    catch { /* 忽略已經在關閉中的進程錯誤 */ }
+                }
+
+                // 配置這一次的啟動參數 (改用區域變數，不共用全域 startInfo)
+                ProcessStartInfo localStartInfo = new ProcessStartInfo
+                {
+                    FileName = processName + ".exe",//@"C:\Users\Fittech\Desktop\API_Test\Main.exe",
+                    Arguments = "Main.exe -m UpdateToSMTDB -p B1A2J4T004 BFT PASS ##Test1=PASS##Test2=PASS A12 OPID",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,  // 要讀取回傳結果，必須開啟
+                    RedirectStandardError = true,
+                    CreateNoWindow = false,      // 隱藏黑畫面視窗
+                    StandardOutputEncoding = System.Text.Encoding.UTF8,
+                };
+
+                // 啟動並執行
+                using (Process process = new Process { StartInfo = localStartInfo })
+                {
+                    if (process == null) return -1;
+
+                    process.Start();
+
+                    if (process.WaitForExit(5000))
+                    {
+                        // 正常在 5 秒內執行完畢並關閉了，這時候才安全地讀取結果
+                        res = process.StandardOutput.ReadToEnd();
+                        res = process.StandardError.ReadToEnd();
+                        return 0;
+                    }
+                    else
+                    {
+                        process.Kill(); // 強制中斷它
+                        res = "ERROR: MES Server Timeout (5s)";
+                        return -2;
+                    }
                 }
             }
             catch (Exception ex)
             {
+                return -1;
                 Console.WriteLine("執行失敗： " + ex.Message);
             }
         }

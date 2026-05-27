@@ -30,6 +30,13 @@ namespace RGBTester.UI
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.Cmbx_UseCH5 = new System.Windows.Forms.ComboBox();
+            this.Cmbx_UseCH4 = new System.Windows.Forms.ComboBox();
+            this.Cmbx_UseCH3 = new System.Windows.Forms.ComboBox();
+            this.Cmbx_UseCH2 = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.TxtBx_ReadCount = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.TxtBx_CH5 = new System.Windows.Forms.TextBox();
             this.TxtBx_CH4 = new System.Windows.Forms.TextBox();
             this.TxtBx_CH3 = new System.Windows.Forms.TextBox();
@@ -42,15 +49,8 @@ namespace RGBTester.UI
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.Btn_Save = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.TxtBx_ReadCount = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.Cmbx_UseCH1 = new System.Windows.Forms.ComboBox();
-            this.Cmbx_UseCH2 = new System.Windows.Forms.ComboBox();
-            this.Cmbx_UseCH3 = new System.Windows.Forms.ComboBox();
-            this.Cmbx_UseCH4 = new System.Windows.Forms.ComboBox();
-            this.Cmbx_UseCH5 = new System.Windows.Forms.ComboBox();
+            this.Btn_Save = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,6 +93,82 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(408, 271);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // Cmbx_UseCH5
+            // 
+            this.Cmbx_UseCH5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Cmbx_UseCH5.FormattingEnabled = true;
+            this.Cmbx_UseCH5.Items.AddRange(new object[] {
+            "NO USE",
+            "USE"});
+            this.Cmbx_UseCH5.Location = new System.Drawing.Point(312, 196);
+            this.Cmbx_UseCH5.Name = "Cmbx_UseCH5";
+            this.Cmbx_UseCH5.Size = new System.Drawing.Size(90, 28);
+            this.Cmbx_UseCH5.TabIndex = 19;
+            // 
+            // Cmbx_UseCH4
+            // 
+            this.Cmbx_UseCH4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Cmbx_UseCH4.FormattingEnabled = true;
+            this.Cmbx_UseCH4.Items.AddRange(new object[] {
+            "NO USE",
+            "USE"});
+            this.Cmbx_UseCH4.Location = new System.Drawing.Point(312, 157);
+            this.Cmbx_UseCH4.Name = "Cmbx_UseCH4";
+            this.Cmbx_UseCH4.Size = new System.Drawing.Size(90, 28);
+            this.Cmbx_UseCH4.TabIndex = 18;
+            // 
+            // Cmbx_UseCH3
+            // 
+            this.Cmbx_UseCH3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Cmbx_UseCH3.FormattingEnabled = true;
+            this.Cmbx_UseCH3.Items.AddRange(new object[] {
+            "NO USE",
+            "USE"});
+            this.Cmbx_UseCH3.Location = new System.Drawing.Point(312, 120);
+            this.Cmbx_UseCH3.Name = "Cmbx_UseCH3";
+            this.Cmbx_UseCH3.Size = new System.Drawing.Size(90, 28);
+            this.Cmbx_UseCH3.TabIndex = 17;
+            // 
+            // Cmbx_UseCH2
+            // 
+            this.Cmbx_UseCH2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Cmbx_UseCH2.FormattingEnabled = true;
+            this.Cmbx_UseCH2.Items.AddRange(new object[] {
+            "NO USE",
+            "USE"});
+            this.Cmbx_UseCH2.Location = new System.Drawing.Point(312, 82);
+            this.Cmbx_UseCH2.Name = "Cmbx_UseCH2";
+            this.Cmbx_UseCH2.Size = new System.Drawing.Size(90, 28);
+            this.Cmbx_UseCH2.TabIndex = 16;
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label9.Location = new System.Drawing.Point(312, 3);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(90, 35);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Use";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_ReadCount
+            // 
+            this.TxtBx_ReadCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_ReadCount.Location = new System.Drawing.Point(159, 234);
+            this.TxtBx_ReadCount.Name = "TxtBx_ReadCount";
+            this.TxtBx_ReadCount.Size = new System.Drawing.Size(144, 29);
+            this.TxtBx_ReadCount.TabIndex = 13;
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label8.Location = new System.Drawing.Point(6, 231);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(144, 35);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "Read Count";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TxtBx_CH5
             // 
@@ -204,45 +280,6 @@ namespace RGBTester.UI
             this.label7.Text = "CH5";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Btn_Save
-            // 
-            this.Btn_Save.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_Save.Location = new System.Drawing.Point(2, 273);
-            this.Btn_Save.Name = "Btn_Save";
-            this.Btn_Save.Size = new System.Drawing.Size(408, 42);
-            this.Btn_Save.TabIndex = 1;
-            this.Btn_Save.Text = "Save";
-            this.Btn_Save.UseVisualStyleBackColor = true;
-            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
-            // 
-            // label8
-            // 
-            this.label8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label8.Location = new System.Drawing.Point(6, 231);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(144, 35);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Read Count";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // TxtBx_ReadCount
-            // 
-            this.TxtBx_ReadCount.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_ReadCount.Location = new System.Drawing.Point(159, 234);
-            this.TxtBx_ReadCount.Name = "TxtBx_ReadCount";
-            this.TxtBx_ReadCount.Size = new System.Drawing.Size(144, 29);
-            this.TxtBx_ReadCount.TabIndex = 13;
-            // 
-            // label9
-            // 
-            this.label9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label9.Location = new System.Drawing.Point(312, 3);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(90, 35);
-            this.label9.TabIndex = 14;
-            this.label9.Text = "Use";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // Cmbx_UseCH1
             // 
             this.Cmbx_UseCH1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -255,53 +292,16 @@ namespace RGBTester.UI
             this.Cmbx_UseCH1.Size = new System.Drawing.Size(90, 28);
             this.Cmbx_UseCH1.TabIndex = 15;
             // 
-            // Cmbx_UseCH2
+            // Btn_Save
             // 
-            this.Cmbx_UseCH2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Cmbx_UseCH2.FormattingEnabled = true;
-            this.Cmbx_UseCH2.Items.AddRange(new object[] {
-            "NO USE",
-            "USE"});
-            this.Cmbx_UseCH2.Location = new System.Drawing.Point(312, 82);
-            this.Cmbx_UseCH2.Name = "Cmbx_UseCH2";
-            this.Cmbx_UseCH2.Size = new System.Drawing.Size(90, 28);
-            this.Cmbx_UseCH2.TabIndex = 16;
-            // 
-            // Cmbx_UseCH3
-            // 
-            this.Cmbx_UseCH3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Cmbx_UseCH3.FormattingEnabled = true;
-            this.Cmbx_UseCH3.Items.AddRange(new object[] {
-            "NO USE",
-            "USE"});
-            this.Cmbx_UseCH3.Location = new System.Drawing.Point(312, 120);
-            this.Cmbx_UseCH3.Name = "Cmbx_UseCH3";
-            this.Cmbx_UseCH3.Size = new System.Drawing.Size(90, 28);
-            this.Cmbx_UseCH3.TabIndex = 17;
-            // 
-            // Cmbx_UseCH4
-            // 
-            this.Cmbx_UseCH4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Cmbx_UseCH4.FormattingEnabled = true;
-            this.Cmbx_UseCH4.Items.AddRange(new object[] {
-            "NO USE",
-            "USE"});
-            this.Cmbx_UseCH4.Location = new System.Drawing.Point(312, 157);
-            this.Cmbx_UseCH4.Name = "Cmbx_UseCH4";
-            this.Cmbx_UseCH4.Size = new System.Drawing.Size(90, 28);
-            this.Cmbx_UseCH4.TabIndex = 18;
-            // 
-            // Cmbx_UseCH5
-            // 
-            this.Cmbx_UseCH5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Cmbx_UseCH5.FormattingEnabled = true;
-            this.Cmbx_UseCH5.Items.AddRange(new object[] {
-            "NO USE",
-            "USE"});
-            this.Cmbx_UseCH5.Location = new System.Drawing.Point(312, 196);
-            this.Cmbx_UseCH5.Name = "Cmbx_UseCH5";
-            this.Cmbx_UseCH5.Size = new System.Drawing.Size(90, 28);
-            this.Cmbx_UseCH5.TabIndex = 19;
+            this.Btn_Save.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Save.Location = new System.Drawing.Point(2, 273);
+            this.Btn_Save.Name = "Btn_Save";
+            this.Btn_Save.Size = new System.Drawing.Size(408, 42);
+            this.Btn_Save.TabIndex = 1;
+            this.Btn_Save.Text = "Save";
+            this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
             // 
             // F_DAQ_ChartSetting
             // 

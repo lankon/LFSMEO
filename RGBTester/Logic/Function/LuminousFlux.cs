@@ -108,7 +108,7 @@ namespace RGBTester.Logic
             for (int i = 0; i < wavelengths.Length; i++)
             {
                 double vL = cieFunction.GetVLambda(wavelengths[i]);
-                double WattPerNm = Intensity[i] * KValue / IntgTime; //單位:W/nm
+                double WattPerNm = Intensity[i] * KValue / IntgTime /1000; //單位:W/nm
                 totalLumens += WattPerNm * vL;
 
                 totalCount += Intensity[i];
