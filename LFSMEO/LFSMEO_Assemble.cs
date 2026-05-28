@@ -98,7 +98,7 @@ namespace LFSMEO
             services.AddSingleton<IF_IO_Card, F_IO_Card>();
             services.AddSingleton<IF_LightControl, F_LightControl>();
             services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
-            services.AddSingleton<IF_Spectrometer, F_Spectrometer>();
+            //services.AddSingleton<IF_Spectrometer, F_Spectrometer>();
 
             //[Form Logic]
             services.AddSingleton<F_MotionSettingLogic>();

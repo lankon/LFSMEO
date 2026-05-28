@@ -50,9 +50,9 @@ namespace RGBTester.Logic
         }
         private void Initial_Spectrometer_Function()
         {
-            IF_Spectrometer f_spectrometer = ServiceProvider.GetRequiredService<IF_Spectrometer>();
-            f_spectrometer.Update_Spectrum_List();
-            RGBTesterMachine.Spectrometer.Initial_All_Spectrometer();
+            //IF_Spectrometer f_spectrometer = ServiceProvider.GetRequiredService<IF_Spectrometer>();
+            //f_spectrometer.Update_Spectrum_List();
+            //RGBTesterMachine.Spectrometer.Initial_All_Spectrometer();
         }
         #endregion
 
