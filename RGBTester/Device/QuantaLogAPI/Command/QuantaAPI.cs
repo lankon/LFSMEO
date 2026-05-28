@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RGBTester.Device
@@ -67,15 +68,10 @@ namespace RGBTester.Device
                     catch { /* 忽略已經在關閉中的進程錯誤 */ }
                 }
 
-
-                //"Main.exe -m UpdateToSMTDB -p B1A2J4T004 BFT PASS ##Test1=PASS##Test2=PASS##FixtureID=UIR-BFT A12 OPID",//$"Main.exe -m CheckRoutingSMT -p {sn} {line} {op_id} {equip_id}",
-                // @"C:\Users\Fittech\Desktop\API_Test\Main.exe",
-
-                // 配置這一次的啟動參數 (改用區域變數，不共用全域 startInfo)
                 ProcessStartInfo localStartInfo = new ProcessStartInfo
                 {
                     FileName = processName + ".exe",
-                    Arguments = $"Main.exe -m CheckRoutingSMT -p {sn} {line} {op_id} {equip_id}",
+                    Arguments = $"-m CheckRoutingSMT -p {sn} {line} {op_id} {equip_id}",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,  // 要讀取回傳結果，必須開啟
                     RedirectStandardError = true,
@@ -90,12 +86,8 @@ namespace RGBTester.Device
 
                     process.Start();
 
-                    res = process.StandardOutput.ReadToEnd();
-                    res = process.StandardError.ReadToEnd();
-
                     if (process.WaitForExit(5000))
                     {
-                        // 正常在 5 秒內執行完畢並關閉了，這時候才安全地讀取結果
                         res = process.StandardOutput.ReadToEnd();
                         res = process.StandardError.ReadToEnd();
                         return 0;
