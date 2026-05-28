@@ -150,7 +150,7 @@ namespace RGBTester.Logic
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
             ResultData = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
-            RGBfunc.SetTestChannel(4);
+            RGBfunc.SetTestChannel(5);
             Period_DAQ_Count = RGBfunc.HardwareParam.Period_DAQ_Count * 3;   //抓三個週期的資料
 
             string[] res = Type.Split('_');
@@ -230,8 +230,7 @@ namespace RGBTester.Logic
             double[] Vin = new double[Period_DAQ_Count];
             double[] Vf = new double[Period_DAQ_Count];
             double[] Iled = new double[Period_DAQ_Count];
-            double[] DISP_6V0 = new double[Period_DAQ_Count];
-            double[] DISP_1V2 = new double[Period_DAQ_Count];
+            double[] InputCurrent = new double[Period_DAQ_Count];
             
             for (int i = 0; i < Period_DAQ_Count; i++)
             {
@@ -253,6 +252,9 @@ namespace RGBTester.Logic
                     Iled[i] = (Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_FB2) - RGBfunc.HardwareParam.CurrentMeasureBias);
                 else
                     Iled[i] = (Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_FB1) - RGBfunc.HardwareParam.CurrentMeasureBias);
+
+                //[InputCurrent]
+                InputCurrent[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_Iin);
             }
 
             double threshold = 0.95;
@@ -261,6 +263,7 @@ namespace RGBTester.Logic
             avgData.Avg_Vin = dataFilter.GetPreciseHighLevel(Vin.ToList(), threshold, 0.005);
             avgData.Avg_Vf = dataFilter.GetPreciseHighLevel(Vf.ToList(), threshold,0.005);
             avgData.Avg_Iled = dataFilter.GetPreciseHighLevel(Iled.ToList(), threshold,0.005);
+            avgData.Avg_Iin = dataFilter.GetPreciseHighLevel(InputCurrent.ToList(), threshold, 0.005);
 
             return avgData;
         }
@@ -442,7 +445,7 @@ namespace RGBTester.Logic
         }
         private bool MeasureAndAppendData(string mode, RGBTesterData testerData)
         {
-            double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0;
+            double sum_Vin = 0, sum_Vf = 0, sum_Iled = 0, sum_Iin = 0;
 
             double temperature = double.Parse(Deps.LightEngine.GetTemperature());
             CheckTestTemperature(temperature);
@@ -454,10 +457,12 @@ namespace RGBTester.Logic
                 sum_Vin += avgData.Avg_Vin;
                 sum_Vf += avgData.Avg_Vf;
                 sum_Iled += avgData.Avg_Iled;
+                sum_Iin += avgData.Avg_Iin;
             }
 
             testerData.CycleTime.Add(Tool.GetTime(CycleTime, "us"));
             testerData.Vin.Add(sum_Vin / RepeatTime);
+            testerData.Iin.Add(sum_Iin / RepeatTime);
 
             double vf = sum_Vf / RepeatTime;
             testerData.Vf.Add(vf);

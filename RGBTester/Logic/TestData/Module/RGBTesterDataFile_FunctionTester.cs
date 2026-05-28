@@ -53,7 +53,7 @@ namespace RGBTester.Logic._RGBTesterDataFile
                                                         $"LCM_Slope_LL = {LCM_Slope_LL} LCM_Slope_UL = {LCM_Slope_UL} " +
                                                         $"HCM_Slope_LL = {HCM_Slope_LL} HCM_Slope_UL = {HCM_Slope_UL} ";
 
-                title = test_condition + "\n" + "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,PP_DISP_6V0(V),PP_DISP_1V2(V),H Side Mode_DAC,Vin(V),Vf(V),Iled1(mA),Pled(mW),Temperature(℃),x,y,m,c,L Side Mode_DAC,Vin(V),Vf(V),Iled1(mA),Pled(mW),Temperature(℃),x,y,m,c";
+                title = test_condition + "\n" + "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,PP_DISP_6V0(V),PP_DISP_1V2(V),H Side Mode_DAC,Vin(V),Iin(mA),Vf(V),Iled1(mA),Pled(mW),Temperature(℃),x,y,m,c,L Side Mode_DAC,Vin(V),Iin(mA),Vf(V),Iled1(mA),Pled(mW),Temperature(℃),x,y,m,c";
             }
 
             return title;
@@ -63,6 +63,7 @@ namespace RGBTester.Logic._RGBTesterDataFile
             double unit_milli = 1000;
             string context =$"{test_data.DACpoint[index]:F2}," +
                             $"{test_data.Vin[index]:F2}," +
+                            $"{test_data.Iin[index]*1000:F2}," +
                             $"{test_data.Vf[index]:F2}," +
                             $"{test_data.Iled[index] * unit_milli:F2}," +
                             $"{test_data.Pled[index] * unit_milli:F2}," +

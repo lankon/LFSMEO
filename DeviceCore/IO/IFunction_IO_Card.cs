@@ -20,6 +20,8 @@ namespace DeviceCore
     public enum EIOName
     {
         #region Analog Input
+        Iin,
+        
         Left_Vin,
         Left_Iin_HCM,
         Left_Iin_LCM,
@@ -75,6 +77,7 @@ namespace DeviceCore
         CCD_FiducialMaskIdle_Sensor,
         SafePos_Sensor,
         GoToSafePos,
+        Vacuum,
         #endregion
 
         #region Output

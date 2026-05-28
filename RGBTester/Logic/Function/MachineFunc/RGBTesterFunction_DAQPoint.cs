@@ -36,6 +36,7 @@ namespace RGBTester.Logic
             public EIOName DAQ_V_B2;
             public EIOName DAQ_V_FB1;
             public EIOName DAQ_V_FB2;
+            public EIOName DAQ_Iin;
         }
         #endregion
 
@@ -56,6 +57,7 @@ namespace RGBTester.Logic
             daq.DAQ_V_B2 = isLeft ? EIOName.Left_V_B2 : EIOName.Right_V_B2;
             daq.DAQ_V_FB1 = isLeft ? EIOName.Left_V_FB1 : EIOName.Right_V_FB1;
             daq.DAQ_V_FB2 = isLeft ? EIOName.Left_V_FB2 : EIOName.Right_V_FB2;
+            daq.DAQ_Iin = EIOName.Iin;
 
             return daq;
         }

@@ -31,7 +31,7 @@ namespace RGBTester.Device
 
         public byte LED_B_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_B;
         
-        public byte LED_B2_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_B;        //需要修改成API定義
+        public byte LED_B2_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_B2;        //需要修改成API定義
 
         public byte LED_RGB_MSB { get; private set; } = 0x00;       //沒有用到
 
@@ -74,7 +74,7 @@ namespace RGBTester.Device
             if(IsInitial == false) return false;
             
             Z23A_FW.Color color = Z23A_FW.Color.COLOR_ALL;
-            int value_R = 0, value_G = 0, value_B = 0;
+            int value_R = 0, value_G = 0, value_B = 0, value_B2 = 0;
 
             if (value > 1023)   //硬體限制最大1023
                 value = 1023;
@@ -94,33 +94,14 @@ namespace RGBTester.Device
                 color = Z23A_FW.Color.COLOR_B;
                 value_B = value;
             }
+            else if(rgb == LED_B2_LSB)
+            {
+                value_B2 = value;
+            }
                 
-            int[] set_value = new int[] { value_R, value_G, value_B };
+            int[] set_value = new int[] { value_R, value_G, value_B, value_B2 };
 
              Z23A_FW.Error_Code res = api.RAA491901_Set_DAC_Value(Z23A_FW.Color.COLOR_ALL, set_value);
-
-            if (res == Z23A_FW.Error_Code.STATUS_OK)
-                return true;
-            else
-                return false;
-        }
-        public bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b)
-        {
-            if (IsInitial == false) return false;
-
-            Z23A_FW.Color color = Z23A_FW.Color.COLOR_ALL;
-            int value_R = value_r, value_G = value_g, value_B = value_b;
-
-            if (value_R > 1023)   //硬體限制最大1023
-                value_R = 1023;
-            if (value_G > 1023)   //硬體限制最大1023
-                value_G = 1023;
-            if (value_B > 1023)   //硬體限制最大1023
-                value_B = 1023;
-
-            int[] set_value = new int[] { value_R, value_G, value_B };
-
-            Z23A_FW.Error_Code res = api.RAA491901_Set_DAC_Value(Z23A_FW.Color.COLOR_ALL, set_value);
 
             if (res == Z23A_FW.Error_Code.STATUS_OK)
                 return true;
@@ -142,12 +123,12 @@ namespace RGBTester.Device
 
             int[] set_value;
 
-            //if (values.Length >= 4)
-            //{
-            //    int value_B2 = values[3];
-            //    set_value = new int[] { value_R, value_G, value_B, value_B2 };
-            //}
-            //else
+            if (values.Length >= 4)
+            {
+                int value_B2 = Math.Min(values[3], 1023);
+                set_value = new int[] { value_R, value_G, value_B, value_B2 };
+            }
+            else
                 set_value = new int[] { value_R, value_G, value_B };
 
             Z23A_FW.Error_Code res = api.RAA491901_Set_DAC_Value(Z23A_FW.Color.COLOR_ALL, set_value);

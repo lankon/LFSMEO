@@ -49,7 +49,7 @@ namespace RGBTester.Logic
             public int H_SigMag { get { return 20; } }                  //HCM訊號放大倍率(硬體)
             public int L_SigMag { get { return 200; } }                 //LCM訊號放大倍率(硬體)
             public int LED_SigMag { get { return 20; } }                //LED訊號放大倍率(硬體)
-            public double CurrentMeasureBias { get { return 0.9; } }    //Bias(硬體)
+            public double CurrentMeasureBias { get { return 1.0; } }    //Bias(硬體)
             public double Rfb_HCM { get { return _parent.Rfb_HCM; } }           //High Current Mode阻抗(硬體)-會隨產品變動
             public double Rfb_LCM { get { return _parent.Rfb_LCM; } }           //Low Current Mode阻抗(硬體)-會隨產品變動
             public double Rin { get { return 0.5; } }                   //輸入阻抗(硬體)

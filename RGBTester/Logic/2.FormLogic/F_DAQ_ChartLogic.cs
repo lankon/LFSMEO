@@ -54,6 +54,13 @@ namespace RGBTester.Logic
                 return;
             }
 
+            //if (!lea.SetLed_AllColorDAC(test_side, 250, 0, 0, 0))
+            //{
+            //    status_box.ShowMessage("Set Light Engine DAC Fail");
+            //    return;
+            //}
+
+
             if (!lea.SetLed_DAC(color, test_side, value))
             {
                 status_box.ShowMessage("Set Light Engine DAC Fail");

@@ -19,6 +19,7 @@ namespace RGBTester.Logic
         public class AvgData_FuncTester
         {
             public double Avg_Vin;
+            public double Avg_Iin;
             public double Avg_Vf;
             public double Avg_Iled;
             public double Avg_DISP_6V0;

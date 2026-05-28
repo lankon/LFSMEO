@@ -34,6 +34,7 @@ namespace RGBTester.Logic
         }
 
         #region parameter
+        private bool IsVacuumError = false;
         private int task_delay = 0;
         private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
@@ -193,7 +194,14 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.CHECK_POSITION_READY);
+
+                        if(Deps.DIOL.GetInputStatus(EIOName.Vacuum) == true)
+                            Transition(WORK.CHECK_POSITION_READY);
+                        else
+                        {
+                            IsVacuumError = true;
+                            Transition(WORK.ABORT);
+                        }
                     }
                     break;
 
@@ -250,8 +258,11 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
-                        SetStatus(TASK_STATUS.SUCCESS);
-                        Tool.SaveLogToFile($"{TaskName} End", level: "INF");
+                        if(CheckTimeOverSec(task_delay, 1))
+                        {
+                            SetStatus(TASK_STATUS.SUCCESS);
+                            Tool.SaveLogToFile($"{TaskName} End", level: "INF");
+                        }
                     }
                     break;
                 case WORK.FAIL:
@@ -269,7 +280,10 @@ namespace RGBTester.Logic
                     break;
                 case WORK.ABORT:
                     {
-                        StatusBox.ShowMessage("Chcuk Pos Error");
+                        if(IsVacuumError)
+                            StatusBox.ShowMessage("Vacuurm Error");
+                        else
+                            StatusBox.ShowMessage("Chcuk Pos Error");
 
                         SetStatus(TASK_STATUS.ABORT);
                     }
