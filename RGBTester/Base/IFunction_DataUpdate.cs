@@ -9,7 +9,7 @@ namespace RGBTester.Base
     public interface IFunction_DataUpdate
     {
         bool CheckConnectStatus(string command = "");
-        bool DataUpdate();
+        bool DataUpdate(List<string> data, string sn);
     }
     
 }

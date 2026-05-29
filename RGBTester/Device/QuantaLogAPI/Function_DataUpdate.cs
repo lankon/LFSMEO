@@ -26,9 +26,9 @@ namespace RGBTester.Device
             return res == 0;
         }
 
-        public bool DataUpdate()
+        public bool DataUpdate(List<string> data,string sn)
         {
-            int res = Quanta.UpdateToSMTDB();
+            int res = Quanta.UpdateToSMTDB(data, sn);
             return res == 0;
         }
         #endregion

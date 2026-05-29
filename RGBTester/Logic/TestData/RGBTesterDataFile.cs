@@ -14,13 +14,15 @@ namespace RGBTester.Logic
 {
     public class RGBTesterDataFile: IWriteFile
     {
-        public RGBTesterDataFile(RGBTesterFunction rGBTesterFunction)
+        public RGBTesterDataFile(IFunction_DataUpdate data_update, RGBTesterFunction rGBTesterFunction)
         {
             RGBfunc = rGBTesterFunction;
+            DataUpdate = data_update;
             SetModuleAndCustomer(RGBfunc.GetModuleType());
         }
 
         #region paramter define
+        private IFunction_DataUpdate DataUpdate;
         private RGBTesterFunction RGBfunc;
         private RGBTesterDataFile_FileType FileType;
         public CheckSlopeData CheckSlope { get; private set; }
@@ -210,6 +212,8 @@ namespace RGBTester.Logic
             }
 
             WriteFile($"0x0440,,Serial Number,,{sn}", describe);
+
+            DataUpdate.DataUpdate(calibration, $"0x0440,,Serial Number,,{sn}");
         }
 
         public RGBTesterData SetNonData(RGBTesterData data)
