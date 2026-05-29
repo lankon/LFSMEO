@@ -266,7 +266,7 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
-                        if(CheckTimeOverSec(task_delay, 1))
+                        if(CheckTimeOverSec(task_delay, 5))
                         {
                             SetStatus(TASK_STATUS.SUCCESS);
                             Tool.SaveLogToFile($"{TaskName} End", level: "INF");

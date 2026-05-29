@@ -178,7 +178,7 @@ namespace RGBTester.Device
 
                 CalibrationData = CalibrationData + $"##{title}={data[i]}";
             }
-
+            sn = sn.Split(',')[4];
             string command = "";
             if (Scope.TestFail == true)
                 command = $"-m UpdateToSMTDB -p {sn} BFT FAIL {CalibrationData} A12 OPID";
@@ -187,7 +187,7 @@ namespace RGBTester.Device
 
             DateTime DateNow = DateTime.Now;
             string Time = DateNow.ToString("yyyyMMddHHmmss");
-            string file_name = AppDomain.CurrentDomain.BaseDirectory + $"\\Result\\Calibration_{sn}_{Time}";
+            string file_name = $"\\Result\\{DateNow.ToString("yyyyMMdd")}\\Calibration_{sn}_{Time}";
 
             StreamWriter file =  Tool.CreateFile(file_name, ".csv", false);
             Tool.WriteFile(file, command);

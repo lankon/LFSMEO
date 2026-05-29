@@ -42,9 +42,9 @@ namespace RGBTester.UI
             this.Btn_OpticalForm = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.Btn_MoveToElectrical = new System.Windows.Forms.Button();
             this.Btn_UnLoad = new System.Windows.Forms.Button();
             this.Btn_Test = new System.Windows.Forms.Button();
-            this.Btn_MoveToElectrical = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.Pnl_Setting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -113,6 +113,7 @@ namespace RGBTester.UI
             // 
             // Btn_StartTest
             // 
+            this.Btn_StartTest.Enabled = false;
             this.Btn_StartTest.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Btn_StartTest.Location = new System.Drawing.Point(4, 3);
             this.Btn_StartTest.Name = "Btn_StartTest";
@@ -162,6 +163,7 @@ namespace RGBTester.UI
             // 
             this.Btn_OpticalForm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_OpticalForm.BackgroundImage")));
             this.Btn_OpticalForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_OpticalForm.Enabled = false;
             this.Btn_OpticalForm.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Btn_OpticalForm.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Btn_OpticalForm.Location = new System.Drawing.Point(114, 8);
@@ -190,13 +192,24 @@ namespace RGBTester.UI
             this.panel1.Controls.Add(this.Btn_StartTest);
             this.panel1.Location = new System.Drawing.Point(380, 234);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(563, 252);
+            this.panel1.Size = new System.Drawing.Size(563, 259);
             this.panel1.TabIndex = 12;
+            // 
+            // Btn_MoveToElectrical
+            // 
+            this.Btn_MoveToElectrical.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_MoveToElectrical.Location = new System.Drawing.Point(4, 195);
+            this.Btn_MoveToElectrical.Name = "Btn_MoveToElectrical";
+            this.Btn_MoveToElectrical.Size = new System.Drawing.Size(555, 59);
+            this.Btn_MoveToElectrical.TabIndex = 11;
+            this.Btn_MoveToElectrical.Text = "MoveTo Electrical";
+            this.Btn_MoveToElectrical.UseVisualStyleBackColor = true;
+            this.Btn_MoveToElectrical.Click += new System.EventHandler(this.Btn_MoveToElectrical_Click);
             // 
             // Btn_UnLoad
             // 
             this.Btn_UnLoad.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_UnLoad.Location = new System.Drawing.Point(4, 134);
+            this.Btn_UnLoad.Location = new System.Drawing.Point(4, 132);
             this.Btn_UnLoad.Name = "Btn_UnLoad";
             this.Btn_UnLoad.Size = new System.Drawing.Size(555, 59);
             this.Btn_UnLoad.TabIndex = 10;
@@ -212,18 +225,8 @@ namespace RGBTester.UI
             this.Btn_Test.TabIndex = 13;
             this.Btn_Test.Text = "Check SMT";
             this.Btn_Test.UseVisualStyleBackColor = true;
+            this.Btn_Test.Visible = false;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
-            // 
-            // Btn_MoveToElectrical
-            // 
-            this.Btn_MoveToElectrical.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_MoveToElectrical.Location = new System.Drawing.Point(4, 196);
-            this.Btn_MoveToElectrical.Name = "Btn_MoveToElectrical";
-            this.Btn_MoveToElectrical.Size = new System.Drawing.Size(555, 53);
-            this.Btn_MoveToElectrical.TabIndex = 11;
-            this.Btn_MoveToElectrical.Text = "MoveTo Electrical";
-            this.Btn_MoveToElectrical.UseVisualStyleBackColor = true;
-            this.Btn_MoveToElectrical.Click += new System.EventHandler(this.Btn_MoveToElectrical_Click);
             // 
             // F_FunctionTester
             // 
