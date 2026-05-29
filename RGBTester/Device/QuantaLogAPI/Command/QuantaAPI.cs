@@ -86,7 +86,7 @@ namespace RGBTester.Device
 
                     process.Start();
 
-                    if (process.WaitForExit(5000))
+                    if (process.WaitForExit(30000))
                     {
                         res = process.StandardOutput.ReadToEnd();
                         res = process.StandardError.ReadToEnd();
@@ -95,7 +95,7 @@ namespace RGBTester.Device
                     else
                     {
                         process.Kill(); // 強制中斷它
-                        res = "ERROR: MES Server Timeout (5s)";
+                        res = "ERROR: MES Server Timeout (30s)";
                         return -2;
                     }
                 }

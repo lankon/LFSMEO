@@ -243,16 +243,24 @@ namespace RGBTester.Logic
                     break;
 
                 case WORK.CHUCK_UP:
-                    if (Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor))
                     {
+                        if (!Deps.DIOL.GetInputStatus(EIOName.ChuckRightSensor))
+                        {
+                            ResetTimeCount(out task_delay);
+                            break;
+                        }
+                        else if (CheckTimeOverSec(task_delay, 5))
+                        {
+                            Transition(WORK.ABORT);
+                        }
+
+                        if (!CheckTimeOverSec(task_delay, 1))
+                            break;
+
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckUp, true);
                         Deps.DIOL.SetOutputStatus(EIOName.ChuckDown, false);
                         ResetTimeCount(out task_delay);
                         Transition(WORK.SUCCESS);
-                    }
-                    else if (CheckTimeOverSec(task_delay, 5))
-                    {
-                        Transition(WORK.ABORT);
                     }
                     break;
 

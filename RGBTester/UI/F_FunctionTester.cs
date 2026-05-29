@@ -163,5 +163,12 @@ namespace RGBTester.UI
 
             DataUpdate.CheckConnectStatus("B1A2J4T004;A12;Op456;Fittech");
         }
+
+        private void Btn_MoveToElectrical_Click(object sender, EventArgs e)
+        {
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+            MainTask.SetTask<SubTaskMoveToElectrical>();
+            MainTask.Run();
+        }
     }
 }

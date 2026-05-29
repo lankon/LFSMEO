@@ -254,7 +254,7 @@ namespace RGBTester.Logic
                     Iled[i] = (Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_V_FB1) - RGBfunc.HardwareParam.CurrentMeasureBias);
 
                 //[InputCurrent]
-                InputCurrent[i] = Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_Iin);
+                InputCurrent[i] = (Deps.DIOL.GetAInputStatus(DAQPoint.DAQ_Iin) - 1) / 10 / 0.5; //Bias:1 Mag:10 Ohm:0.5
             }
 
             double threshold = 0.95;

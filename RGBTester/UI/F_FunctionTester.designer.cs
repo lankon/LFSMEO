@@ -44,6 +44,7 @@ namespace RGBTester.UI
             this.panel1 = new System.Windows.Forms.Panel();
             this.Btn_UnLoad = new System.Windows.Forms.Button();
             this.Btn_Test = new System.Windows.Forms.Button();
+            this.Btn_MoveToElectrical = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.Pnl_Setting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -184,11 +185,12 @@ namespace RGBTester.UI
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.Btn_MoveToElectrical);
             this.panel1.Controls.Add(this.Btn_UnLoad);
             this.panel1.Controls.Add(this.Btn_StartTest);
             this.panel1.Location = new System.Drawing.Point(380, 234);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(563, 199);
+            this.panel1.Size = new System.Drawing.Size(563, 252);
             this.panel1.TabIndex = 12;
             // 
             // Btn_UnLoad
@@ -211,6 +213,17 @@ namespace RGBTester.UI
             this.Btn_Test.Text = "Check SMT";
             this.Btn_Test.UseVisualStyleBackColor = true;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
+            // 
+            // Btn_MoveToElectrical
+            // 
+            this.Btn_MoveToElectrical.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_MoveToElectrical.Location = new System.Drawing.Point(4, 196);
+            this.Btn_MoveToElectrical.Name = "Btn_MoveToElectrical";
+            this.Btn_MoveToElectrical.Size = new System.Drawing.Size(555, 53);
+            this.Btn_MoveToElectrical.TabIndex = 11;
+            this.Btn_MoveToElectrical.Text = "MoveTo Electrical";
+            this.Btn_MoveToElectrical.UseVisualStyleBackColor = true;
+            this.Btn_MoveToElectrical.Click += new System.EventHandler(this.Btn_MoveToElectrical_Click);
             // 
             // F_FunctionTester
             // 
@@ -249,5 +262,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button Btn_UnLoad;
         private System.Windows.Forms.Button Btn_Test;
+        private System.Windows.Forms.Button Btn_MoveToElectrical;
     }
 }
