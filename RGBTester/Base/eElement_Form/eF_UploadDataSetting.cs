@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace RGBTester.Base
 {
-    public enum eF_OpticalSetting
+    public enum eF_UploadDataSetting
     {
-        TxtBx_OpticalKValue,
-        TxtBx_Standard,
-        TxtBx_BackgroundGain,
-        TxtBx_BackgroundOffset,
+        TxtBx_Station,
+        TxtBx_Line,
     }
 }
 

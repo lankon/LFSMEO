@@ -11,28 +11,20 @@ using System.Windows.Forms;
 
 using ToolFunction;
 using DeviceCore;
-using UserPrivilege.Base;
 using RGBTester.Base;
 using RGBTester.Logic;
 
-
 namespace RGBTester.UI
 {
-    public partial class F_OpticalSetting : Form
+    public partial class F_UploadDataSetting : Form
     {
-        public F_OpticalSetting(IFunction_Spectrometer function_Spectrometer, IF_UserPrivilegeLogic f_UserPrivilegeLogic)
+        public F_UploadDataSetting()
         {
             InitializeComponent();
-
-            Spectrometer = function_Spectrometer;
-            UserPrivilege = f_UserPrivilegeLogic;
-
             InitialForm();
         }
 
         #region parameter define
-        IFunction_Spectrometer Spectrometer;
-        IF_UserPrivilegeLogic UserPrivilege;
         #endregion
 
         #region private function
@@ -52,7 +44,7 @@ namespace RGBTester.UI
         }
         private void ReadAllEnumSetting()
         {
-            ApplicationSetting.ReadAllRecipe<eF_OpticalSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_UploadDataSetting>();
             //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 
             //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
@@ -60,12 +52,12 @@ namespace RGBTester.UI
         }
         private void UpdateEnumSettingToForm()
         {
-            ApplicationSetting.UpdataRecipeToForm<eF_OpticalSetting>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_UploadDataSetting>(this);
             //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
         }
         private void SaveAllEnumSetting()
         {
-            ApplicationSetting.SaveRecipeFromForm<eF_OpticalSetting>(this);
+            ApplicationSetting.SaveRecipeFromForm<eF_UploadDataSetting>(this);
 
             //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
             //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
@@ -74,23 +66,9 @@ namespace RGBTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
-
-            bool oem = UserPrivilege.AtLeastOEM();
-            bool eng = UserPrivilege.AtLeastEng();
-
-            TxtBx_BackgroundOffset.Enabled = oem;
-            TxtBx_BackgroundGain.Enabled = oem;
-            TxtBx_OpticalKValue.Enabled = oem;
-            TxtBx_Standard.Enabled = oem;
         }
         private void LeavePage()
         {
-            //再存一次,這樣使用者直接輸入數值時才可將數值設定至分光卡
-            double std = Tool.StringToDouble(TxtBx_Standard.Text);
-            double slope = Tool.StringToDouble(TxtBx_BackgroundGain.Text);
-            double offset = Tool.StringToDouble(TxtBx_BackgroundOffset.Text);
-
-            Spectrometer.SetBackgroundCoef(std, slope, offset);
         }
         #endregion
 
@@ -100,6 +78,7 @@ namespace RGBTester.UI
 
         }
         #endregion
+
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
         {
             if (!this.Visible)
@@ -117,16 +96,6 @@ namespace RGBTester.UI
             {
                 UpdatePage();
             }
-        }
-
-        private void Btn_Calibration_Click(object sender, EventArgs e)
-        {
-            F_OpticalSettingLogic logic = new F_OpticalSettingLogic(Spectrometer);
-            LinearCurveFitting res = logic.BackgroundCalibration(out double result);
-
-            TxtBx_Standard.Text = result.ToString();
-            TxtBx_BackgroundGain.Text = res.Slope.ToString();
-            TxtBx_BackgroundOffset.Text = res.Offset.ToString();
         }
     }
 }

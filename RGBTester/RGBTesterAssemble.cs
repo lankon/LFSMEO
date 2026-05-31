@@ -23,7 +23,7 @@ namespace RGBTester
             services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
             services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
             services.AddSingleton<IFunction_LightEngine, LightEngineFunction>();
-            services.AddSingleton<IFunction_DataUpdate, Function_DataUpdate>();
+            services.AddSingleton<IFunction_DataUpload, Function_DataUpload>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
@@ -53,6 +53,7 @@ namespace RGBTester
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
             services.AddTransient<F_MFactorCalibration>();
             services.AddTransient<F_OpticalSetting>();
+            services.AddTransient<F_UploadDataSetting>();
 
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();

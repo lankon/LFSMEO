@@ -33,8 +33,10 @@ namespace RGBTester.UI
             this.Cmbx_TestMode = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
             this.TxtBx_SerialNumber = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.TxtBx_OperatorID = new System.Windows.Forms.TextBox();
             this.Btn_StartTest = new System.Windows.Forms.Button();
             this.Btn_ElectricalFrom = new System.Windows.Forms.Button();
             this.Pnl_Setting = new System.Windows.Forms.Panel();
@@ -42,9 +44,10 @@ namespace RGBTester.UI
             this.Btn_OpticalForm = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.Btn_MoveToElectrical = new System.Windows.Forms.Button();
             this.Btn_UnLoad = new System.Windows.Forms.Button();
+            this.Btn_MoveToElectrical = new System.Windows.Forms.Button();
             this.Btn_Test = new System.Windows.Forms.Button();
+            this.Btn_MoveToOptical = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.Pnl_Setting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -55,8 +58,7 @@ namespace RGBTester.UI
             this.Cmbx_TestMode.FormattingEnabled = true;
             this.Cmbx_TestMode.Items.AddRange(new object[] {
             "LEFT",
-            "RIGHT",
-            "BOTH"});
+            "RIGHT"});
             this.Cmbx_TestMode.Location = new System.Drawing.Point(109, 6);
             this.Cmbx_TestMode.Name = "Cmbx_TestMode";
             this.Cmbx_TestMode.Size = new System.Drawing.Size(94, 28);
@@ -81,18 +83,31 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154F));
+            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.Cmbx_TestMode, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.TxtBx_SerialNumber, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label15, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(380, 189);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_OperatorID, 2, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(395, 107);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(563, 39);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(563, 73);
             this.tableLayoutPanel1.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.label4, 2);
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(3, 41);
+            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(203, 29);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Operator ID";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TxtBx_SerialNumber
             // 
@@ -110,6 +125,15 @@ namespace RGBTester.UI
             this.label1.TabIndex = 3;
             this.label1.Text = "SN";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_OperatorID
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.TxtBx_OperatorID, 2);
+            this.TxtBx_OperatorID.Location = new System.Drawing.Point(212, 41);
+            this.TxtBx_OperatorID.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.TxtBx_OperatorID.Name = "TxtBx_OperatorID";
+            this.TxtBx_OperatorID.Size = new System.Drawing.Size(345, 29);
+            this.TxtBx_OperatorID.TabIndex = 7;
             // 
             // Btn_StartTest
             // 
@@ -163,7 +187,6 @@ namespace RGBTester.UI
             // 
             this.Btn_OpticalForm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_OpticalForm.BackgroundImage")));
             this.Btn_OpticalForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_OpticalForm.Enabled = false;
             this.Btn_OpticalForm.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Btn_OpticalForm.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Btn_OpticalForm.Location = new System.Drawing.Point(114, 8);
@@ -187,24 +210,12 @@ namespace RGBTester.UI
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.Btn_MoveToElectrical);
             this.panel1.Controls.Add(this.Btn_UnLoad);
             this.panel1.Controls.Add(this.Btn_StartTest);
-            this.panel1.Location = new System.Drawing.Point(380, 234);
+            this.panel1.Location = new System.Drawing.Point(395, 186);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(563, 259);
+            this.panel1.Size = new System.Drawing.Size(563, 196);
             this.panel1.TabIndex = 12;
-            // 
-            // Btn_MoveToElectrical
-            // 
-            this.Btn_MoveToElectrical.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_MoveToElectrical.Location = new System.Drawing.Point(4, 195);
-            this.Btn_MoveToElectrical.Name = "Btn_MoveToElectrical";
-            this.Btn_MoveToElectrical.Size = new System.Drawing.Size(555, 59);
-            this.Btn_MoveToElectrical.TabIndex = 11;
-            this.Btn_MoveToElectrical.Text = "MoveTo Electrical";
-            this.Btn_MoveToElectrical.UseVisualStyleBackColor = true;
-            this.Btn_MoveToElectrical.Click += new System.EventHandler(this.Btn_MoveToElectrical_Click);
             // 
             // Btn_UnLoad
             // 
@@ -217,6 +228,17 @@ namespace RGBTester.UI
             this.Btn_UnLoad.UseVisualStyleBackColor = true;
             this.Btn_UnLoad.Click += new System.EventHandler(this.Btn_UnLoad_Click);
             // 
+            // Btn_MoveToElectrical
+            // 
+            this.Btn_MoveToElectrical.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_MoveToElectrical.Location = new System.Drawing.Point(1050, 258);
+            this.Btn_MoveToElectrical.Name = "Btn_MoveToElectrical";
+            this.Btn_MoveToElectrical.Size = new System.Drawing.Size(264, 59);
+            this.Btn_MoveToElectrical.TabIndex = 11;
+            this.Btn_MoveToElectrical.Text = "MoveTo Electrical";
+            this.Btn_MoveToElectrical.UseVisualStyleBackColor = true;
+            this.Btn_MoveToElectrical.Click += new System.EventHandler(this.Btn_MoveToElectrical_Click);
+            // 
             // Btn_Test
             // 
             this.Btn_Test.Location = new System.Drawing.Point(12, 375);
@@ -228,11 +250,23 @@ namespace RGBTester.UI
             this.Btn_Test.Visible = false;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
+            // Btn_MoveToOptical
+            // 
+            this.Btn_MoveToOptical.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_MoveToOptical.Location = new System.Drawing.Point(1050, 323);
+            this.Btn_MoveToOptical.Name = "Btn_MoveToOptical";
+            this.Btn_MoveToOptical.Size = new System.Drawing.Size(264, 59);
+            this.Btn_MoveToOptical.TabIndex = 14;
+            this.Btn_MoveToOptical.Text = "MoveTo Optical";
+            this.Btn_MoveToOptical.UseVisualStyleBackColor = true;
+            // 
             // F_FunctionTester
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.Btn_MoveToOptical);
+            this.Controls.Add(this.Btn_MoveToElectrical);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Pnl_Setting);
@@ -266,5 +300,8 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_UnLoad;
         private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Button Btn_MoveToElectrical;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox TxtBx_OperatorID;
+        private System.Windows.Forms.Button Btn_MoveToOptical;
     }
 }

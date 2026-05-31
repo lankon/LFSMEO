@@ -44,6 +44,8 @@ namespace RGBTester.Logic
         private string SN;                              //測試樣品SN
         private IF_BaseTask SubTask;                    //子流程
         private IF_StateControl F_StateControl;
+        private IF_StatusBox StatusBox;                 //顯示訊息
+        private IFunction_DataUpload DataUpload;        //上傳系統
         private ePartTestItem part_test_mode;
         private RGBTesterFunction RGBfunc;
         private bool OnlyLeftTest = false;
@@ -127,7 +129,6 @@ namespace RGBTester.Logic
                 }
             }
         }
-        
         private readonly string[] TestKeys = { "R", "G", "B", "Calibration", "BurnIn", "B2" };
         private void ExecuteFileAction(Action<string> fileAction)
         {
@@ -146,11 +147,31 @@ namespace RGBTester.Logic
         private void CloseTestFile() => ExecuteFileAction(k => Deps.File.CloseFile(k));
         private void CopyAndCloseTestFile() => ExecuteFileAction(k => Deps.File.CopyAndCloseTestFile(k));
         private void CloseAndDeleteTestFile() => ExecuteFileAction(k => Deps.File.CloseAndDeleteFile(k));
+        private void SetUploadInformation()
+        {
+            if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+            {
+                DataUpload = Deps.ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+
+                UploadInfo info = new UploadInfo
+                {
+                    OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
+                    SerialNunber = RGBfunc.SerialNumber,
+                    Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+                    Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+                };
+
+                DataUpload.SetInfromation(info);
+            }
+        }
 
         private void Preset() 
         {
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+
             CreateTestFile();
+            SetUploadInformation();
         }
         protected override void Transition(WORK target)
         {
@@ -328,7 +349,12 @@ namespace RGBTester.Logic
                         if (check == TASK_STATUS.SUCCESS)
                         {
                             if(Scope.TaskRGBTest.IsSingleTest == false || part_test_mode != ePartTestItem.BurinIn)
-                                Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Left_Calibration");
+                            {
+                                if(!Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Left_Calibration"))
+                                {
+                                    StatusBox.ShowMessage("Upload Data Fail");
+                                }
+                            }
                         }
                             
                         if(OnlyLeftTest) 
@@ -355,7 +381,12 @@ namespace RGBTester.Logic
                         if (check == TASK_STATUS.SUCCESS)
                         {
                             if (Scope.TaskRGBTest.IsSingleTest == false || part_test_mode != ePartTestItem.BurinIn)
-                                Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Right_Calibration");
+                            {
+                                if(!Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Right_Calibration"))
+                                {
+                                    StatusBox.ShowMessage("Upload Data Fail");
+                                }
+                            }
                         }
 
                         CheckResult(check, SUCCESS: WORK.SUCCESS);

@@ -10,6 +10,7 @@ namespace RGBTester.Base
     {
         Cmbx_TestMode,
         TxtBx_SerialNumber,
+        TxtBx_OperatorID,
     }
 }
 

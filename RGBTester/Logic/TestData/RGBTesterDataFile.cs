@@ -14,7 +14,7 @@ namespace RGBTester.Logic
 {
     public class RGBTesterDataFile: IWriteFile
     {
-        public RGBTesterDataFile(IFunction_DataUpdate data_update, RGBTesterFunction rGBTesterFunction)
+        public RGBTesterDataFile(IFunction_DataUpload data_update, RGBTesterFunction rGBTesterFunction)
         {
             RGBfunc = rGBTesterFunction;
             DataUpdate = data_update;
@@ -22,7 +22,7 @@ namespace RGBTester.Logic
         }
 
         #region paramter define
-        private IFunction_DataUpdate DataUpdate;
+        private IFunction_DataUpload DataUpdate;
         private RGBTesterFunction RGBfunc;
         private RGBTesterDataFile_FileType FileType;
         public CheckSlopeData CheckSlope { get; private set; }
@@ -202,7 +202,7 @@ namespace RGBTester.Logic
                 Tool.SaveLogToFile("SetCalibrationData找不到對應的Key", level: "ERR");
             }
         }
-        public void WriteCalibrationResult(string sn, string describe = "")
+        public bool WriteCalibrationResult(string sn, string describe = "")
         {
             List<string> calibration = FileType.GetCalibrationStr();
 
@@ -213,7 +213,9 @@ namespace RGBTester.Logic
 
             WriteFile($"0x0440,,Serial Number,,{sn}", describe);
 
-            DataUpdate.DataUpdate(calibration, $"0x0440,,Serial Number,,{sn}");
+            bool res = DataUpdate.DataUpdate(calibration, $"0x0440,,Serial Number,,{sn}");
+
+            return res;
         }
 
         public RGBTesterData SetNonData(RGBTesterData data)

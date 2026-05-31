@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
+using UserPrivilege.Base;
 using RGBTester.Base;
 using RGBTester.Device;
 using RGBTester.Logic;
@@ -19,7 +20,8 @@ namespace RGBTester.UI
     public partial class F_FunctionTester : Form
     {
         public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic,
-                                IFunction_LightEngine lea, IFunction_DataUpdate function_DataUpdate)
+                                IFunction_LightEngine lea, IFunction_DataUpload function_DataUpdate,
+                                IF_UserPrivilegeLogic Privilege)
         {
             InitializeComponent();
 
@@ -27,14 +29,16 @@ namespace RGBTester.UI
             FunctionTesterLogic = f_FunctionTesterLogic;
             LEA = lea;
             DataUpdate = function_DataUpdate;
+            UserPrivilege = Privilege;
 
             InitialForm();
         }
 
         #region parameter define
         IServiceProvider ServiceProvider;
+        IF_UserPrivilegeLogic UserPrivilege;
         IFunction_LightEngine LEA;
-        IFunction_DataUpdate DataUpdate;
+        IFunction_DataUpload DataUpdate;
         F_FunctionTesterLogic FunctionTesterLogic;
         #endregion
 
@@ -82,6 +86,14 @@ namespace RGBTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
+
+            bool oem = UserPrivilege.AtLeastOEM();
+            bool eng = UserPrivilege.AtLeastEng();
+
+            Btn_MoveToElectrical.Visible = oem;
+            Btn_MoveToOptical.Visible = oem;
+            Btn_ElectricalFrom.Enabled = eng;
+            Btn_OpticalForm.Enabled = eng;
         }
         private void LeavePage()
         {
@@ -148,20 +160,28 @@ namespace RGBTester.UI
                 SaveAllEnumSetting();
                 ReadAllEnumSetting();
 
-                FunctionTesterLogic.StartFunctionTest();
+                int res = FunctionTesterLogic.StartFunctionTest();
+
+                if(res == -1)
+                    MessageBox.Show("Upload System No Connent", "Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
                 MessageBox.Show("Please press Ctrl + Click to start the test.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
         }
 
         private void Btn_Test_Click(object sender, EventArgs e)
         {
             //DataUpdate.DataUpdate();
+            UploadInfo info = new UploadInfo
+            {
+                Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+                Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+            };
 
-            DataUpdate.CheckConnectStatus("B1A2J4T004;A12;Op456;Fittech");
+            DataUpdate.SetInfromation(info);
+            DataUpdate.CheckConnectStatus();
         }
 
         private void Btn_MoveToElectrical_Click(object sender, EventArgs e)

@@ -121,5 +121,10 @@ namespace RGBTester.UI
         {
             ShowForm<F_OpticalSetting>();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ShowForm<F_UploadDataSetting>();
+        }
     }
 }

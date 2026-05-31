@@ -53,6 +53,11 @@ namespace RGBTester.Logic
         }
         public int StartFunctionTest()
         {
+            IFunction_DataUpload data_upload = ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+
+            if (data_upload.CheckConnectStatus() == false)
+                return -1;
+
             IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             lea.Open();
 

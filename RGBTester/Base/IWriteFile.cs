@@ -30,7 +30,7 @@ namespace RGBTester.Base
         // [Calibration File]
         void ResetCalibrationData();
         void SetCalibrationData(string color, string current_mode, double slope, double offset);
-        void WriteCalibrationResult(string sn, string describe = "");
+        bool WriteCalibrationResult(string sn, string describe = "");
 
         RGBTesterData SetNonData(RGBTesterData data);
     }

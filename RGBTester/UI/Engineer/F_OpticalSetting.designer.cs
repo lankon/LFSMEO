@@ -30,16 +30,16 @@ namespace RGBTester.UI
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_OpticalKValue = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.TxtBx_BackgroundGain = new System.Windows.Forms.TextBox();
-            this.TxtBx_BackgroundFOffset = new System.Windows.Forms.TextBox();
             this.Btn_Calibration = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TxtBx_BackgroundOffset = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.TxtBx_BackgroundGain = new System.Windows.Forms.TextBox();
             this.TxtBx_Standard = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +55,7 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.Controls.Add(this.TxtBx_OpticalKValue, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.Btn_Calibration, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_BackgroundFOffset, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_BackgroundOffset, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.TxtBx_BackgroundGain, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.TxtBx_Standard, 1, 2);
@@ -71,15 +71,15 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(656, 238);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
-            // label2
+            // label4
             // 
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(6, 117);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(180, 35);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Gain";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(6, 79);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(180, 35);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Standard";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label59
             // 
@@ -111,32 +111,6 @@ namespace RGBTester.UI
             this.TxtBx_OpticalKValue.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_OpticalKValue.TabIndex = 5;
             // 
-            // label3
-            // 
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(6, 155);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(180, 35);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Offset";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_BackgroundGain
-            // 
-            this.TxtBx_BackgroundGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_BackgroundGain.Location = new System.Drawing.Point(223, 120);
-            this.TxtBx_BackgroundGain.Name = "TxtBx_BackgroundGain";
-            this.TxtBx_BackgroundGain.Size = new System.Drawing.Size(427, 29);
-            this.TxtBx_BackgroundGain.TabIndex = 15;
-            // 
-            // TxtBx_BackgroundFOffset
-            // 
-            this.TxtBx_BackgroundFOffset.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_BackgroundFOffset.Location = new System.Drawing.Point(223, 158);
-            this.TxtBx_BackgroundFOffset.Name = "TxtBx_BackgroundFOffset";
-            this.TxtBx_BackgroundFOffset.Size = new System.Drawing.Size(427, 29);
-            this.TxtBx_BackgroundFOffset.TabIndex = 16;
-            // 
             // Btn_Calibration
             // 
             this.Btn_Calibration.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -148,6 +122,42 @@ namespace RGBTester.UI
             this.Btn_Calibration.UseVisualStyleBackColor = true;
             this.Btn_Calibration.Click += new System.EventHandler(this.Btn_Calibration_Click);
             // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Location = new System.Drawing.Point(6, 155);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(180, 35);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Offset";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_BackgroundOffset
+            // 
+            this.TxtBx_BackgroundOffset.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BackgroundOffset.Location = new System.Drawing.Point(223, 158);
+            this.TxtBx_BackgroundOffset.Name = "TxtBx_BackgroundOffset";
+            this.TxtBx_BackgroundOffset.Size = new System.Drawing.Size(427, 29);
+            this.TxtBx_BackgroundOffset.TabIndex = 16;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(6, 117);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(180, 35);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Gain";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_BackgroundGain
+            // 
+            this.TxtBx_BackgroundGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BackgroundGain.Location = new System.Drawing.Point(223, 120);
+            this.TxtBx_BackgroundGain.Name = "TxtBx_BackgroundGain";
+            this.TxtBx_BackgroundGain.Size = new System.Drawing.Size(427, 29);
+            this.TxtBx_BackgroundGain.TabIndex = 15;
+            // 
             // TxtBx_Standard
             // 
             this.TxtBx_Standard.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -155,16 +165,6 @@ namespace RGBTester.UI
             this.TxtBx_Standard.Name = "TxtBx_Standard";
             this.TxtBx_Standard.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_Standard.TabIndex = 18;
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(6, 79);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(180, 35);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "Standard";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // F_OpticalSetting
             // 
@@ -191,7 +191,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox TxtBx_BackgroundGain;
-        private System.Windows.Forms.TextBox TxtBx_BackgroundFOffset;
+        private System.Windows.Forms.TextBox TxtBx_BackgroundOffset;
         private System.Windows.Forms.Button Btn_Calibration;
         private System.Windows.Forms.TextBox TxtBx_Standard;
         private System.Windows.Forms.Label label4;
