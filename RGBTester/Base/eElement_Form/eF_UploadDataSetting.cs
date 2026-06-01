@@ -8,8 +8,12 @@ namespace RGBTester.Base
 {
     public enum eF_UploadDataSetting
     {
+        TxtBx_FixtureID,
         TxtBx_Station,
         TxtBx_Line,
+        TxtBx_ProgramVer,
+        TxtBx_Testplan,
+        TxtBx_PCName,
     }
 }
 

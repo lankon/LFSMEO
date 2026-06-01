@@ -30,8 +30,12 @@ namespace RGBTester.Device
 
         public bool CheckConnectStatus()
         {
-            string command = UploadInfo.SerialNunber + "," + UploadInfo.Line + "," + UploadInfo.OperatorID;
+            string command = UploadInfo.SerialNunber + "," + UploadInfo.Station + "," + UploadInfo.Line + "," + 
+                                UploadInfo.OperatorID + "," + UploadInfo.FixtureID + "," + UploadInfo.ProgramVer  + "," + 
+                                UploadInfo.Testplan + "," + UploadInfo.PCName;
+
             int res = Quanta.CheckRoutingSMT(command);
+
             return res == 0;
         }
 

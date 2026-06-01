@@ -10,8 +10,12 @@ namespace RGBTester.Base
     {
         public string OperatorID = "";
         public string SerialNunber = "";
+        public string ProgramVer = "";
+        public string Testplan = "";
         public string Station = "";
+        public string PCName = "";
         public string Line = "";
+        public string FixtureID = "";
     }
     
     public interface IFunction_DataUpload

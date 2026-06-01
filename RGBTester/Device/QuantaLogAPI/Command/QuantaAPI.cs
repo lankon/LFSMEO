@@ -80,8 +80,14 @@ namespace RGBTester.Device
                     if (process.WaitForExit(30000)) //系統超過30秒未回覆
                     {
                         res = process.StandardOutput.ReadToEnd();
-                        res = process.StandardError.ReadToEnd();
-                        return 0;
+
+                        if (res.Contains("iResult:PASS"))
+                            return 0;
+                        else
+                            return -3;
+
+                        //res = process.StandardError.ReadToEnd();
+                        //return 0;
                     }
                     else
                     {
@@ -104,18 +110,23 @@ namespace RGBTester.Device
             if (string.IsNullOrWhiteSpace(info))
                 return -1;
 
-            string[] info_array = info.Split(';');
+            string[] info_array = info.Split(',');
             if (info_array.Length < 4)
                 return -1;
 
             string sn = info_array[0];
-            string line = info_array[1];
-            string op_id = info_array[2];
+            string station = info_array[1];
+            string line = info_array[2];
+            string op_id = info_array[3];
+            string fixture_id = info_array[4];
+            string program_id = info_array[5];
+            string test_plan = info_array[6];
+            string pc_name = info_array[7];
 
             int res = 0;
 
             if(!TestMode)
-                res = SendCommand($"-m CheckRoutingSMT -p {sn} {line} {op_id} FunctionTester");
+                res = SendCommand($"-m CheckRoutingSMT -p {sn} {station} {line} {op_id} FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan}##PC_Name={pc_name}");
 
             return res;
         }
@@ -132,10 +143,10 @@ namespace RGBTester.Device
 
                 CalibrationData = CalibrationData + $"##{title}={data[i]}";
             }
-
-            sn = sn.Split(',')[4];
-            string line = sn.Split(',')[5];
-            string op_id = sn.Split(',')[6];
+            string temp = sn;
+            sn = temp.Split(',')[4];
+            string line = temp.Split(',')[5];
+            string op_id = temp.Split(',')[6];
 
             if (Scope.TestFail == true) //!!!!!違反架構寫法
                 command = $"-m UpdateToSMTDB -p {sn} BFT FAIL {CalibrationData} {line} {op_id}";
