@@ -21,7 +21,7 @@ namespace RGBTester.Logic
 
         public LinearCurveFitting BackgroundCalibration(out double standard)
         {
-            int[] Step = new int[10];
+            double[] Step = new double[10];
             double[] dInttensity = new double[10];
             float[] intensity;
             float totalcount = 0;

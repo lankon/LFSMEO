@@ -177,6 +177,7 @@
     <Compile Include="Logic\Function\LuminousFlux.cs" />
     <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_DAQPoint.cs" />
     <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_Data.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_OpticalLinearOffset.cs" />
     <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_HardwareSetting.cs" />
     <Compile Include="Logic\Function\DataBaseTestResult.cs" />
     <Compile Include="Logic\Function\Wavelength.cs" />

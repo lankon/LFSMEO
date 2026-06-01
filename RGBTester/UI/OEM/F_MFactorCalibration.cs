@@ -293,9 +293,14 @@ namespace RGBTester.UI
                 Wavelength CalWl = new Wavelength();
                 LuminousFlux lm = new LuminousFlux();
                 double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
+
+                double org_power = CalWl.Calculate_Power(wlDouble, intensityDouble, intgTime, k_value);
+                double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
+                double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
+
                 TxtBx_WLD.Text = CalWl.Calculate_WLD(wlDouble, intensityDouble).ToString();
-                TxtBx_Power.Text = CalWl.Calculate_Power(wlDouble, intensityDouble, intgTime, k_value).ToString();
-                TxtBx_Luminous.Text = lm.CalculateTotalLumens(wlDouble, intensityDouble, intgTime, k_value).ToString();
+                TxtBx_Power.Text = (CalWl.Calculate_Power(wlDouble, intensityDouble, intgTime, k_value) * gain + offset).ToString();
+                TxtBx_Luminous.Text = (lm.CalculateTotalLumens(wlDouble, intensityDouble, intgTime, k_value) * gain + offset).ToString();
 
                 DrawSpectrumData(wlDouble, intensityDouble);
             }

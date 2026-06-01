@@ -577,7 +577,9 @@ namespace RGBTester.Logic
 
                         double[] intensity = SpectrumRawData.Select(x => x).ToArray();
                         double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
-                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, intensity, IntgTimeSetting, k_value));
+                        double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
+                        double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
+                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, intensity, IntgTimeSetting, k_value) * gain + offset);
 
                         State = WORK.CALCULATE_WAVELENGTH;
                         goto case WORK.CALCULATE_WAVELENGTH;
@@ -593,7 +595,12 @@ namespace RGBTester.Logic
 
                         TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData));
                         double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
-                        TesterData.OpticalPower.Add(WL.Calculate_Power(wavelength, W_Intensity, IntgTimeSetting, k_value));
+                        double org_power = WL.Calculate_Power(wavelength, W_Intensity, IntgTimeSetting, k_value);
+                        double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
+                        double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
+                        double calibration_power = org_power * gain + offset;
+
+                        TesterData.OpticalPower.Add(calibration_power);
                         TesterData.CycleTime.Add(Tool.GetTime(cycletime));
 
                         if (TestColor == "WPC")

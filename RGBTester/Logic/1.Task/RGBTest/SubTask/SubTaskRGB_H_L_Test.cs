@@ -655,12 +655,12 @@ namespace RGBTester.Logic
                             if(IsClamping == true)
                             {
                                 //因為Clamping的關係會有幾筆異常資料，所以斷點前面再往前移動5筆，確保線性擬合的資料都是正常的
-                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Take(StartClampingCount-5).ToArray(),
+                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Take(StartClampingCount-5).Select(x=>(double)x).ToArray(),
                                                                               TesterData_L.Iled.Take(StartClampingCount-5).Select(x => x * 1000).ToArray());
                             }
                             else
                             {
-                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(),
+                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Select(x => (double)x).ToArray(),
                                                                               TesterData_L.Iled.Select(x => x * 1000).ToArray());
                             }
 
@@ -819,12 +819,12 @@ namespace RGBTester.Logic
                             if (IsClamping == true)
                             {
                                 //因為Clamping的關係會有幾筆異常資料，所以斷點前面再往前移動5筆，確保線性擬合的資料都是正常的
-                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount-5).ToArray(),
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount-5).Select(x => (double)x).ToArray(),
                                                                               TesterData_H.Iled.Take(StartClampingCount-5).Select(x => x * 1000).ToArray());
                             }
                             else
                             {
-                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(),
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Select(x => (double)x).ToArray(),
                                                                               TesterData_H.Iled.Select(x => x * 1000).ToArray());
                             } 
 

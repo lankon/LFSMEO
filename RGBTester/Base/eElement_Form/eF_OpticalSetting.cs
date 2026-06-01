@@ -12,6 +12,9 @@ namespace RGBTester.Base
         TxtBx_Standard,
         TxtBx_BackgroundGain,
         TxtBx_BackgroundOffset,
+
+        TxtBx_PowerGain,
+        TxtBx_PowerOffset,
     }
 }
 

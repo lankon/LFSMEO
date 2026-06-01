@@ -75,6 +75,9 @@ namespace RGBTester.UI
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
 
+            if (!Tool.DataGrid_DataLoad(DGV_CalibrationData, "PowerCalibrationData.xml"))
+                Tool.SaveLogToFile("PowerCalibrationData讀取失敗");
+
             bool oem = UserPrivilege.AtLeastOEM();
             bool eng = UserPrivilege.AtLeastEng();
 
@@ -82,6 +85,10 @@ namespace RGBTester.UI
             TxtBx_BackgroundGain.Enabled = oem;
             TxtBx_OpticalKValue.Enabled = oem;
             TxtBx_Standard.Enabled = oem;
+            TxtBx_PowerGain.Enabled = oem;
+            TxtBx_PowerOffset.Enabled = oem;
+            DGV_CalibrationData.Enabled = oem;
+            TbLy_Button.Enabled = oem;
         }
         private void LeavePage()
         {
@@ -91,6 +98,25 @@ namespace RGBTester.UI
             double offset = Tool.StringToDouble(TxtBx_BackgroundOffset.Text);
 
             Spectrometer.SetBackgroundCoef(std, slope, offset);
+        }
+
+        private void CalculatePowerCalibration()
+        {
+            List<double> std = new List<double>();
+            List<double> measure = new List<double>();
+
+            foreach (DataGridViewRow row in DGV_CalibrationData.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                std.Add(Tool.StringToDouble(row.Cells["Title_Std"]?.Value?.ToString()));
+                measure.Add(Tool.StringToDouble(row.Cells["Title_Measure"]?.Value?.ToString()));
+            }
+
+            LinearCurveFitting fitting = new LinearCurveFitting(measure.ToArray(), std.ToArray());
+
+            TxtBx_PowerGain.Text = fitting.Slope.ToString();
+            TxtBx_PowerOffset.Text = fitting.Offset.ToString();
         }
         #endregion
 
@@ -127,6 +153,34 @@ namespace RGBTester.UI
             TxtBx_Standard.Text = result.ToString();
             TxtBx_BackgroundGain.Text = res.Slope.ToString();
             TxtBx_BackgroundOffset.Text = res.Offset.ToString();
+        }
+
+        private void Btn_Save_Click(object sender, EventArgs e)
+        {
+            Tool.DataGrid_DataSave(DGV_CalibrationData, "PowerCalibrationData.xml");
+        }
+
+        private void Btn_Load_Click(object sender, EventArgs e)
+        {
+            if (!Tool.DataGrid_DataLoad(DGV_CalibrationData, "PowerCalibrationData.xml"))
+                Tool.SaveLogToFile("PowerCalibrationData讀取失敗");
+        }
+
+        private void Btn_Add_Click(object sender, EventArgs e)
+        {
+            string[] context = new string[] { "0", "0", "0"};
+
+            Tool.DataGrid_AddRow(DGV_CalibrationData, context);
+        }
+
+        private void Btn_Remove_Click(object sender, EventArgs e)
+        {
+            Tool.DataGrid_DeleteRow(DGV_CalibrationData);
+        }
+
+        private void Btn_PowerCalibration_Click(object sender, EventArgs e)
+        {
+            CalculatePowerCalibration();
         }
     }
 }
