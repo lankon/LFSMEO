@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ToolFunction;
 using RGBTester.Base;
 using RGBTester.Base.FunctionTesterItem;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -40,6 +41,7 @@ namespace RGBTester.Logic
         private string TestSide;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
+        private IF_StatusBox StatusBox;
         public enum WORK
         {
             NONE,
@@ -141,6 +143,8 @@ namespace RGBTester.Logic
         }
         private void Preset()
         {
+            StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+
             int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
             if (method == (int)eTestMode.LEFT)
                 TestSide = "Left";
@@ -218,7 +222,12 @@ namespace RGBTester.Logic
                 case WORK.WAIT_ELECTRIC_TEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-                        CheckResult(check, SUCCESS: WORK.OPTICAL_TEST);
+
+
+                        if(Scope.TestFail == true)
+                            CheckResult(check);
+                        else
+                            CheckResult(check, SUCCESS: WORK.OPTICAL_TEST);
                     }
                     break;
 
@@ -244,6 +253,11 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
+                        if (Scope.TestFail == false)
+                        {
+                            StatusBox.ShowMessage("", "PASS");
+                        }
+                        
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level: "INF");
                     }

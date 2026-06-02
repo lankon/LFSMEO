@@ -56,13 +56,23 @@ namespace RGBTester.UI
         private void UpdateUI(string msg, Form form)
         {
             Labl_ShowMessage.Text = msg;
+            Labl_Status.BackColor = Color.Red;
+            Labl_Status.Text = "FAIL";
             InvokeShowForm(form);
             Tool.SaveLogToFile(msg, level:"ERR");
+        }
+        private void UpdateUI_OK(string msg, Form form)
+        {
+            Labl_ShowMessage.Text = msg;
+            Labl_Status.BackColor = Color.Green;
+            Labl_Status.Text = "PASS";
+            InvokeShowForm(form);
+            Tool.SaveLogToFile(msg, level: "ERR");
         }
         #endregion
 
         #region public function
-        public void ShowMessage(string msg)
+        public void ShowMessage(string msg, string status = "ERR")
         {
             var main_form = ServiceProvider.GetRequiredService<F_MainForm>();
 
@@ -73,7 +83,11 @@ namespace RGBTester.UI
             {
                 this.BeginInvoke(new Action(() =>
                 {
-                    UpdateUI(msg, main_form);
+                    if (status == "ERR")
+                        UpdateUI(msg, main_form);
+                    else
+                        UpdateUI_OK(msg, main_form);
+
                 }));
             }
             else

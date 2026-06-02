@@ -137,7 +137,6 @@ namespace RGBTester.UI
             // 
             // Btn_StartTest
             // 
-            this.Btn_StartTest.Enabled = false;
             this.Btn_StartTest.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Btn_StartTest.Location = new System.Drawing.Point(4, 3);
             this.Btn_StartTest.Name = "Btn_StartTest";
@@ -247,6 +246,7 @@ namespace RGBTester.UI
             this.Btn_Test.TabIndex = 13;
             this.Btn_Test.Text = "Check SMT";
             this.Btn_Test.UseVisualStyleBackColor = true;
+            this.Btn_Test.Visible = false;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
             // Btn_MoveToOptical

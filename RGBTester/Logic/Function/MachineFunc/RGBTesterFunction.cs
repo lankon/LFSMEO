@@ -42,6 +42,8 @@ namespace RGBTester.Logic
             public bool IsClampingErr = false;
             public bool IsTemperatureErr = false;
             public bool IsSlopeCalculateCurrentErr = false;
+            public bool IsLuminousErr = false;
+            public bool IsVoltageErr = false;
 
             public void ResetAllFlag()
             {
@@ -49,6 +51,8 @@ namespace RGBTester.Logic
                 IsClampingErr = false;
                 IsTemperatureErr = false;
                 IsSlopeCalculateCurrentErr = false;
+                IsLuminousErr = false;
+                IsVoltageErr = false;
             }
 
             public string GetFailDescription()
@@ -63,9 +67,13 @@ namespace RGBTester.Logic
                     error_message.Add("Temperature Fail");
                 if(IsSlopeCalculateCurrentErr)
                     error_message.Add("Slope Cal Current Fail");
+                if(IsLuminousErr)
+                    error_message.Add("Luminous Fail");
+                if(IsVoltageErr)
+                    error_message.Add("Voltage Fail");
 
                 if (IsSlopeErr == false && IsClampingErr == false && 
-                    IsTemperatureErr == false && IsSlopeCalculateCurrentErr==false)
+                    IsTemperatureErr == false && IsSlopeCalculateCurrentErr==false && IsLuminousErr == false && IsVoltageErr == false)
                     error_message.Add("None");
 
                 string res = "";

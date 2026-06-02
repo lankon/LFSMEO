@@ -90,7 +90,7 @@ namespace RGBTester.UI
             bool oem = UserPrivilege.AtLeastOEM();
             bool eng = UserPrivilege.AtLeastEng();
 
-            Btn_MoveToElectrical.Visible = oem;
+            Btn_MoveToElectrical.Visible = eng;
             Btn_MoveToOptical.Visible = oem;
             Btn_ElectricalFrom.Enabled = eng;
             Btn_OpticalForm.Enabled = eng;

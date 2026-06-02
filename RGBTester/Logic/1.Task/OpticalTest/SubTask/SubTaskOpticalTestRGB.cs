@@ -263,6 +263,12 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
+                        if (Scope.TestFail == true)
+                        {
+                            string description = RGBfunc.FailReasonFlag.GetFailDescription();
+                            StatusBox.ShowMessage(description);
+                        }
+
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level:"INF");
                     }

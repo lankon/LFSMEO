@@ -245,9 +245,9 @@ namespace RGBTester.Device
             //    set_value = new int[] { value_R, value_G, value_B };
 
             //目前需要全部設一樣
-            double[]  set_value = new double[] { voltage, voltage, voltage, voltage };
+            double[]  set_value = new double[] { voltage, voltage, voltage};
 
-            Z23A_FW.Error_Code res = api.MAX77675_Set_Target_Voltage(Z23A_FW.Color.COLOR_ALL, set_value);
+            Z23A_FW.Error_Code res = api.MAX77675_Set_Target_Voltage(Z23A_FW.Color.COLOR_ALL, values);
 
             if (res == Z23A_FW.Error_Code.STATUS_OK)
                 return true;

@@ -44,10 +44,12 @@ namespace RGBTester.Logic
 
             if(func.GetModuleType() == eModuleType.Function_Test)
             {
-                if (color == lea.LED_B2)
-                    lea.SetLed_AllColorVoltage(test_side, 3.6, 3.6, 3.6, 3.6);
-                else
-                    lea.SetLed_AllColorVoltage(test_side, 5.5, 5.5, 5.5, 5.5);
+                if (color == lea.LED_B2 || color == lea.LED_B)
+                    lea.SetLed_AllColorVoltage(test_side, 0.5, 0.5, 3.6);
+                else if(color == lea.LED_R)
+                    lea.SetLed_AllColorVoltage(test_side, 5.5, 0.5, 0.5);
+                else if(color == lea.LED_G)
+                    lea.SetLed_AllColorVoltage(test_side, 0.5, 5.5, 0.5);
             }
 
             if (!lea.SetLed_CurrentMode(test_mode))

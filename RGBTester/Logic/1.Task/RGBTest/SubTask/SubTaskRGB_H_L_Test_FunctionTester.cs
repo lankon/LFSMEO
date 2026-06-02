@@ -164,7 +164,7 @@ namespace RGBTester.Logic
             RepeatTime = isLeft ? LeftRepeatTime : RightRepeatTime;
 
             //為了確保Voltage都在5.5,因為光性測試時有調低Voltage
-            Deps.LightEngine.SetLed_AllColorVoltage(Side, 5.5, 5.5, 5.5, 5.5);
+            Deps.LightEngine.SetLed_AllColorVoltage(Side, 5.5, 5.5, 5.5);
 
             if (TestColor == "R")
             {
@@ -406,6 +406,23 @@ namespace RGBTester.Logic
                 }
             }
         }
+        private void CheckVoltage()
+        {
+            if(TesterData_L.DISP_6V0[0] > 6.15 || TesterData_L.DISP_6V0[0] < 6.05)
+            {
+                Scope.TestFail = true;
+                Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3} Err", level: "WRN");
+                RGBfunc.FailReasonFlag.IsVoltageErr = true;
+            }
+
+            if (TesterData_L.DISP_1V2[0] > 1.23 || TesterData_L.DISP_1V2[0] < 1.17)
+            {
+                Scope.TestFail = true;
+                Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3} Err", level: "WRN");
+                RGBfunc.FailReasonFlag.IsVoltageErr = true;
+            }
+
+        }
         private void CheckClamping(List<int> DAC, List<double> ILed, string CM)
         {
             if (ILed.Count < 50 || IsClamping)
@@ -439,11 +456,11 @@ namespace RGBTester.Logic
         private void CheckTestTemperature(double temperature)
         {
             double limit = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_FailOverTemp);
-            if (temperature > limit)
+            if (temperature > limit || temperature < -50)
             {
                 Scope.TestFail = true;
                 RGBfunc.FailReasonFlag.IsTemperatureErr = true;
-                Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高", level: "WRN");
+                Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高或溫度感測異常", level: "WRN");
             }
         }
         private bool MeasureAndAppendData(string mode, RGBTesterData testerData)
@@ -831,6 +848,8 @@ namespace RGBTester.Logic
                         string log_name = "";
                         DateTime now = DateTime.Now;
 
+                        CheckVoltage();
+
                         if (TestSide == "Left")
                             log_name = $"Z23A_LEDIV L{SN}_Summary{now.ToString("yyyyMMdd")}()";
                         else if (TestSide == "Right")
@@ -859,7 +878,7 @@ namespace RGBTester.Logic
                             else if (i < TesterData_L.Vin.Count)
                             {
                                 Deps.File.WriteFile($",{TesterData_L.CycleTime[i]},8888,{log_name},", Type, false);
-                                Deps.File.WriteFile($"{TesterData_H.DISP_6V0[0]},{TesterData_H.DISP_1V2[0]},", Type, false);
+                                Deps.File.WriteFile($"{TesterData_L.DISP_6V0[0]},{TesterData_L.DISP_1V2[0]},", Type, false);
                                 Write_NonData_Result();
                                 Deps.File.WriteFile(",", Type, false);
                                 Write_LCM_Result(i);

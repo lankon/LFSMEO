@@ -87,7 +87,7 @@ namespace RGBTester.UI
             bool oem = UserPrivilege.AtLeastOEM();
             bool eng = UserPrivilege.AtLeastEng();
 
-            Btn_DAQ_Chart.Visible = oem;
+            Btn_DAQ_Chart.Visible = eng;
             Btn_OEM_Setting.Enabled = oem;
             Btn_ParameterSetting.Enabled = eng;
         }

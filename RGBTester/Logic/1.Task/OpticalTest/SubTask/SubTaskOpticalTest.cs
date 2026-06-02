@@ -44,6 +44,7 @@ namespace RGBTester.Logic
         private int _searchMinTime = 0;     //二分法搜尋用
         private int _searchMaxTime = 0;     //二分法搜尋用
         private int TestDAC = 0;
+        private int TestCurrent = 0;
         private byte Side;
         private byte Color;
         private string Type;
@@ -231,10 +232,12 @@ namespace RGBTester.Logic
             }
 
             //測試藍光時為了避免紅光漏光,Voltage要調低
-            if(TestColor == "B" || TestColor == "B2")
-                Deps.LightEngine.SetLed_AllColorVoltage(Side, 3.6, 3.6, 3.6, 3.6);
-            else
-                Deps.LightEngine.SetLed_AllColorVoltage(Side, 5.5, 5.5, 5.5, 5.5);
+            if (TestColor == "B" || TestColor == "B2")
+                Deps.LightEngine.SetLed_AllColorVoltage(Side, 0.5, 0.5, 3.6);
+            else if (TestColor == "R")
+                Deps.LightEngine.SetLed_AllColorVoltage(Side, 5.5, 0.5, 0.5);
+            else if(TestColor == "G")
+                Deps.LightEngine.SetLed_AllColorVoltage(Side, 0.5, 5.5, 0.5);
 
             InitialCurrentConfig();
             SetCurrentCondition();
@@ -404,6 +407,30 @@ namespace RGBTester.Logic
                 CurrentModeStatus = mode;
             }
         }
+        private void CheckLumCondition(double test_current, double lum)
+        {
+            if(TestColor == "R" && Math.Abs(test_current - 50) < 0.001 && 
+              (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RLight_LL) || 
+               lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RLight_UL)))
+            {
+                RGBFunc.FailReasonFlag.IsLuminousErr = true;
+            }
+            else if (TestColor == "G" && Math.Abs(test_current - 80) < 0.001 &&
+                    (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GLight_LL) ||
+                     lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GLight_UL)))
+            {
+                RGBFunc.FailReasonFlag.IsLuminousErr = true;
+            }
+            else if ((TestColor == "B" || TestColor == "B2") && Math.Abs(test_current - 50) < 0.001 &&
+                     (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BLight_LL) ||
+                      lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BLight_UL)))
+            {
+                RGBFunc.FailReasonFlag.IsLuminousErr = true;
+            }
+
+            if(RGBFunc.FailReasonFlag.IsLuminousErr == true)
+                Scope.TestFail = true;
+        }
         #endregion
 
         #region public function
@@ -467,6 +494,8 @@ namespace RGBTester.Logic
                     break;
                 case WORK.SET_LED_DAC:
                     {
+                        Tool.ResetTimeCount(out cycletime);
+
                         if (TestColor == "WPC")
                         {
                             UpdateProgressBar(qWPC_Current[0], TotalStep);
@@ -482,9 +511,9 @@ namespace RGBTester.Logic
                         {
                             UpdateProgressBar(qCurrent, TotalStep);
 
-                            int cur = qCurrent.Dequeue();
-                            TesterData.Currentpoint.Add(cur);
-                            TestDAC = CalculateDACfromCurrent(cur);
+                            TestCurrent = qCurrent.Dequeue();
+                            TesterData.Currentpoint.Add(TestCurrent);
+                            TestDAC = CalculateDACfromCurrent(TestCurrent);
                             Deps.LightEngine.SetLed_DAC(Color, Side, TestDAC);
 
                             _searchMaxTime = CurrentConfig[TestSide][TestColor].IntegralTimeStart;
@@ -492,7 +521,6 @@ namespace RGBTester.Logic
                         }
 
                         ResetTimeCount(out delay_time);
-                        Tool.ResetTimeCount(out cycletime);
 
                         State = WORK.AUTO_INTEGRAL;
                         goto case WORK.AUTO_INTEGRAL;
@@ -500,6 +528,9 @@ namespace RGBTester.Logic
                     break;
                 case WORK.AUTO_INTEGRAL:
                     {
+                        //if (!CheckTimeOverMilSec(delay_time, 500))
+                        //    break;
+                        
                         int Intg_interval_start = 30;
                         int Intg_interval_end = 80;
 
@@ -567,6 +598,8 @@ namespace RGBTester.Logic
                         TesterData.Temperature.Add(0);
                         TesterData.IntegralTime.Add(0);
 
+                        CheckLumCondition(TestCurrent, 0);
+
                         if ((qCurrent.Count == 0 && TestSide != "WPC")/* || (qWPC_Current[0].Count == 0 && TestSide == "WPC")*/)
                         {
                             Transition(WORK.WRITE_TEST_DATA);
@@ -589,7 +622,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.WAIT_REST:
                     {
-                        if (CheckTimeOverMilSec(delay_time, 1000)) //硬體轉換時間,需依實際狀況調整
+                        if (CheckTimeOverMilSec(delay_time, 2000)) //硬體轉換時間,需依實際狀況調整
                         {
                             Deps.LightEngine.SetLed_DAC(Color, Side, TestDAC);
                             ResetTimeCount(out delay_time);
@@ -628,7 +661,11 @@ namespace RGBTester.Logic
                         double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
                         double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
                         double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
-                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, intensity, IntgTimeSetting, k_value) * gain * PowerGain + offset);
+
+                        double lum_result = LF.CalculateTotalLumens(wavelength, intensity, IntgTimeSetting, k_value) * gain * PowerGain + offset;
+                        TesterData.Lumens.Add(lum_result);
+
+                        CheckLumCondition(TestCurrent, lum_result);
 
                         State = WORK.CALCULATE_WAVELENGTH;
                         goto case WORK.CALCULATE_WAVELENGTH;

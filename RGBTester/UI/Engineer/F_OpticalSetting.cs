@@ -89,6 +89,12 @@ namespace RGBTester.UI
             TxtBx_PowerOffset.Enabled = oem;
             DGV_CalibrationData.Enabled = oem;
             TbLy_Button.Enabled = oem;
+            TxtBx_RedPowerGain.Enabled = oem;
+            TxtBx_BluePowerGain.Enabled = oem;
+            TxtBx_GreenPowerGain.Enabled = oem;
+            TxtBx_RedWavelengthGain.Enabled = oem;
+            TxtBx_GreenWavelengthGain.Enabled = oem;
+            TxtBx_BlueWavelengthGain.Enabled = oem;
         }
         private void LeavePage()
         {

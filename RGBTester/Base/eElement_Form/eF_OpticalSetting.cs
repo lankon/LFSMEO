@@ -23,6 +23,15 @@ namespace RGBTester.Base
         TxtBx_RedWavelengthGain,
         TxtBx_GreenWavelengthGain,
         TxtBx_BlueWavelengthGain,
+
+        TxtBx_RLight_UL,
+        TxtBx_GLight_UL,
+        TxtBx_BLight_UL,
+
+        TxtBx_RLight_LL,
+        TxtBx_GLight_LL,
+        TxtBx_BLight_LL,
+
     }
 }
 

@@ -126,7 +126,7 @@ namespace RGBTester.Device
             int res = 0;
 
             if(!TestMode)
-                res = SendCommand($"-m CheckRoutingSMT -p {sn} {station} {line} {op_id} FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan}##PC_Name={pc_name}");
+                res = SendCommand($"-m CheckRoutingSMT -p {sn} {station} {line} {op_id} ##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan}##PC_Name={pc_name}");
 
             return res;
         }
