@@ -511,8 +511,8 @@ namespace RGBTester.Logic
                         // 判斷是否達標
                         if (percent > Intg_interval_start && percent < Intg_interval_end)
                         {
-                            int index = IntgTimeSetting / 11;
-                            IntgTimeSetting = 11 * index;
+                            double index = IntgTimeSetting / 11.11111;
+                            IntgTimeSetting = 11 * (int)index;
 
                             Tool.SaveLogToFile($"測試積分時間:{IntgTimeSetting}ms");
 
