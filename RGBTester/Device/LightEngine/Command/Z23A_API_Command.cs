@@ -40,6 +40,10 @@ namespace RGBTester.Device
         public byte LED_LeftSide { get; private set; } = 0x80;      //Z23A沒有左右邊,但流程需要,所以給一個區分左右邊的值
         #endregion
 
+        #region private function
+
+        #endregion
+
         #region public function
         public bool Open()
         {
@@ -138,7 +142,6 @@ namespace RGBTester.Device
             else
                 return false;
         }
-
         public bool SetLed_CurrentMode(string mode)
         {
             if (IsInitial == false) return false;
@@ -182,7 +185,6 @@ namespace RGBTester.Device
             else
                 return error;
         }
-
         public bool ResetLED()
         {
             Z23A_FW.Error_Code res = api.RAA491901_Set_Startup_State(Z23A_FW.RAA_State.DISABLE_STATE);
@@ -217,10 +219,41 @@ namespace RGBTester.Device
             else
                 return false;
         }
-        #endregion
 
-        #region private function
+        public bool SetLed_AllColorVoltage(byte side, params double[] values)
+        {
+            if (IsInitial == false)
+                return false;
 
+            if (values == null || values.Length < 1)
+                return false;
+
+            double voltage = Math.Min(values[0], 5.5);
+
+            //int value_R = Math.Min(values[0], 1023);
+            //int value_G = Math.Min(values[1], 1023);
+            //int value_B = Math.Min(values[2], 1023);
+
+            //int[] set_value;
+
+            //if (values.Length >= 4)
+            //{
+            //    int value_B2 = Math.Min(values[3], 1023);
+            //    set_value = new int[] { value_R, value_G, value_B, value_B2 };
+            //}
+            //else
+            //    set_value = new int[] { value_R, value_G, value_B };
+
+            //目前需要全部設一樣
+            double[]  set_value = new double[] { voltage, voltage, voltage, voltage };
+
+            Z23A_FW.Error_Code res = api.MAX77675_Set_Target_Voltage(Z23A_FW.Color.COLOR_ALL, set_value);
+
+            if (res == Z23A_FW.Error_Code.STATUS_OK)
+                return true;
+            else
+                return false;
+        }
         #endregion
     }
 }

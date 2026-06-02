@@ -53,11 +53,6 @@ namespace RGBTester.Logic
         }
         public int StartFunctionTest()
         {
-            IFunction_DataUpload data_upload = ServiceProvider.GetRequiredService<IFunction_DataUpload>();
-
-            if (data_upload.CheckConnectStatus() == false)
-                return -1;
-
             IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             lea.Open();
 
@@ -66,6 +61,25 @@ namespace RGBTester.Logic
 
             RGBTesterMachine.DIOL.Clear_AI_VirtualData();
             StartFormLogic.ReadVirtual_AI_Data();
+
+            //確認上傳資訊
+            IFunction_DataUpload data_upload = ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+            UploadInfo info = new UploadInfo
+            {
+                OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
+                SerialNunber = RGBfunc.SerialNumber,
+
+                FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
+                PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
+                ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
+                Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+                Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+                Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
+            };
+            data_upload.SetInfromation(info);
+            
+            if (data_upload.CheckConnectStatus() == false)
+                return -1;
 
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             MainTask.SetTask<TaskFunctionTest>();

@@ -22,8 +22,8 @@ namespace RGBTester.Base
         bool ResetLED();
 
         bool SetLed_DAC(byte rgb, byte side, int value);
-        //bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b);
         bool SetLed_AllColorDAC(byte side, params int[] values);
+        bool SetLed_AllColorVoltage(byte side, params double[] values);
         bool SetLed_CurrentMode(string mode);
         bool Set_RegisterValue(byte adr, byte len, byte[] value);
 

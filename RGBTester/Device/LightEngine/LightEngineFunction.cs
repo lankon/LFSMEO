@@ -139,6 +139,29 @@ namespace RGBTester.Device
                 return false;
             }
         }
+        public bool SetLed_AllColorVoltage(byte side, params double[] values)
+        {
+            string s_side = "";
+
+            if (side == LED_LeftSide)
+                s_side = "Left";
+            else
+                s_side = "Right";
+
+            if (LEA.SetLed_AllColorVoltage(side, values))
+            {
+                if (values.Length == 4)
+                    Tool.SaveLogToFile($"Set {s_side} All Color DAC = R:{values[0]} G:{values[1]} B:{values[2]} B2:{values[3]}");
+                else
+                    Tool.SaveLogToFile($"Set {s_side} All Color DAC = R:{values[0]} G:{values[1]} B:{values[2]}");
+                return true;
+            }
+            else
+            {
+                Tool.SaveLogToFile($"Set {s_side} All Color DAC fail");
+                return false;
+            }
+        }
         public bool SetLed_CurrentMode(string mode)
         {
             Tool.SaveLogToFile($"Set LED {mode}");

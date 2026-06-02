@@ -15,6 +15,14 @@ namespace RGBTester.Base
 
         TxtBx_PowerGain,
         TxtBx_PowerOffset,
+
+        TxtBx_RedPowerGain,
+        TxtBx_GreenPowerGain,
+        TxtBx_BluePowerGain,
+
+        TxtBx_RedWavelengthGain,
+        TxtBx_GreenWavelengthGain,
+        TxtBx_BlueWavelengthGain,
     }
 }
 

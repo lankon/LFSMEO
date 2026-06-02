@@ -67,6 +67,9 @@ namespace RGBTester.Logic
 
         public int StartTaskAction(string method = "")
         {
+            var RGBFunc = ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+
             IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             lea.Open();
 
@@ -74,8 +77,6 @@ namespace RGBTester.Logic
 
             if (res < 0)
                 return res;
-            var RGBFunc = ServiceProvider.GetRequiredService<RGBTesterFunction>();
-            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             
             if(method == "Left")
             {
@@ -87,8 +88,31 @@ namespace RGBTester.Logic
                 RGBFunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                 MainTask.SetTask<TaskRGBTest>("Right");
             }
-            else
-                MainTask.SetTask<TaskRGBTest>("Both");
+            //else
+            //    MainTask.SetTask<TaskRGBTest>("Both");
+            
+            //確認上傳資訊
+            if (RGBFunc.GetModuleType() == eModuleType.Function_Test)
+            {
+                IFunction_DataUpload data_upload = ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+
+                UploadInfo info = new UploadInfo
+                {
+                    OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
+                    SerialNunber = RGBFunc.SerialNumber,
+
+                    FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
+                    PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
+                    ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
+                    Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+                    Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+                    Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
+                };
+                data_upload.SetInfromation(info);
+
+                if (data_upload.CheckConnectStatus() == false)
+                    return -1;
+            }
 
             MainTask.Run();
 

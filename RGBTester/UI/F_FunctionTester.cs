@@ -148,9 +148,16 @@ namespace RGBTester.UI
 
         private void Btn_UnLoad_Click(object sender, EventArgs e)
         {
-            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-            MainTask.SetTask<TaskUnLoad>();
-            MainTask.Run();
+            if (Control.ModifierKeys == Keys.Control || UserPrivilege.AtLeastOEM())
+            {
+                var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+                MainTask.SetTask<TaskUnLoad>();
+                MainTask.Run();
+            }
+            else
+            {
+                MessageBox.Show("Please press Ctrl + Click to start the test.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void Btn_StartTest_Click(object sender, EventArgs e)
@@ -188,8 +195,8 @@ namespace RGBTester.UI
 
             };
 
-            DataUpdate.SetInfromation(info);
-            DataUpdate.CheckConnectStatus();
+            DataUpdate.SetInfromation(info);    //測試用
+            DataUpdate.CheckConnectStatus();    //測試用
         }
 
         private void Btn_MoveToElectrical_Click(object sender, EventArgs e)

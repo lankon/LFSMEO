@@ -163,6 +163,9 @@ namespace RGBTester.Logic
             DAQPoint = RGBfunc.Get_DAQ_PointFuncTester(Side);
             RepeatTime = isLeft ? LeftRepeatTime : RightRepeatTime;
 
+            //為了確保Voltage都在5.5,因為光性測試時有調低Voltage
+            Deps.LightEngine.SetLed_AllColorVoltage(Side, 5.5, 5.5, 5.5, 5.5);
+
             if (TestColor == "R")
             {
                 Color = Deps.LightEngine.LED_R;

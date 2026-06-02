@@ -43,6 +43,7 @@ namespace RGBTester.Logic
         private int IntgTimeSetting = 0;
         private int _searchMinTime = 0;     //二分法搜尋用
         private int _searchMaxTime = 0;     //二分法搜尋用
+        private int TestDAC = 0;
         private byte Side;
         private byte Color;
         private string Type;
@@ -54,6 +55,8 @@ namespace RGBTester.Logic
         private double[] SpectrumRawData;
         private double LED_Slope = 0;
         private double LED_Offset = 0;
+        private double PowerGain = 1.0;
+        private double WavelengthGain = 0;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         private IF_ProgressBar ProgressBar;
@@ -86,6 +89,8 @@ namespace RGBTester.Logic
             AUTO_INTEGRAL,
             SET_DEFAULT_VALUE,
 
+            REST,
+            WAIT_REST,
             GET_SPECTRUM,
             CALCULATE_LUMEN,
             CALCULATE_WAVELENGTH,
@@ -197,17 +202,39 @@ namespace RGBTester.Logic
             bool isLeft = (TestSide == "Left");
             Side = isLeft ? Deps.LightEngine.LED_LeftSide : Deps.LightEngine.LED_RightSide;
             if (TestColor == "R")
+            {
                 Color = Deps.LightEngine.LED_R;
+                PowerGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RedPowerGain);
+                WavelengthGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RedWavelengthGain);
+            }
             else if(TestColor == "G")
+            {
                 Color = Deps.LightEngine.LED_G;
+                PowerGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GreenPowerGain);
+                WavelengthGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GreenWavelengthGain);
+            }
             else if(TestColor == "B")
+            {
                 Color = Deps.LightEngine.LED_B;
+                PowerGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BluePowerGain);
+                WavelengthGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BlueWavelengthGain);
+            }
             else if(TestColor == "B2")
+            {
                 Color = Deps.LightEngine.LED_B2;
+                PowerGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BluePowerGain);
+                WavelengthGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BlueWavelengthGain);
+            }
             else if (TestColor == "WPC")
             {
 
             }
+
+            //測試藍光時為了避免紅光漏光,Voltage要調低
+            if(TestColor == "B" || TestColor == "B2")
+                Deps.LightEngine.SetLed_AllColorVoltage(Side, 3.6, 3.6, 3.6, 3.6);
+            else
+                Deps.LightEngine.SetLed_AllColorVoltage(Side, 5.5, 5.5, 5.5, 5.5);
 
             InitialCurrentConfig();
             SetCurrentCondition();
@@ -457,8 +484,8 @@ namespace RGBTester.Logic
 
                             int cur = qCurrent.Dequeue();
                             TesterData.Currentpoint.Add(cur);
-                            int dac = CalculateDACfromCurrent(cur);
-                            Deps.LightEngine.SetLed_DAC(Color, Side, dac);
+                            TestDAC = CalculateDACfromCurrent(cur);
+                            Deps.LightEngine.SetLed_DAC(Color, Side, TestDAC);
 
                             _searchMaxTime = CurrentConfig[TestSide][TestColor].IntegralTimeStart;
                             _searchMinTime = CurrentConfig[TestSide][TestColor].IntegralTimeEnd;
@@ -492,8 +519,8 @@ namespace RGBTester.Logic
                             TesterData.IntegralTime.Add(IntgTimeSetting);
                             TesterData.Temperature.Add(double.Parse(Deps.LightEngine.GetTemperature()));
 
-                            State = WORK.GET_SPECTRUM;
-                            goto case WORK.GET_SPECTRUM;
+                            State = WORK.REST;
+                            goto case WORK.REST;
                         }
 
                         // 更新二分法搜尋邊界
@@ -534,6 +561,7 @@ namespace RGBTester.Logic
                 case WORK.SET_DEFAULT_VALUE:
                     {
                         TesterData.Lumens.Add(0);
+                        TesterData.OpticalPower.Add(0);
                         TesterData.WLD.Add(0);
                         TesterData.CycleTime.Add(Tool.GetTime(cycletime));
                         TesterData.Temperature.Add(0);
@@ -547,6 +575,27 @@ namespace RGBTester.Logic
                         {
                             State = WORK.SET_LED_DAC;
                             goto case WORK.SET_LED_DAC;
+                        }
+                    }
+                    break;
+                case WORK.REST:
+                    {
+                        Deps.LightEngine.SetLed_DAC(Color, Side, 0);
+                        ResetTimeCount(out delay_time);
+
+                        State = WORK.WAIT_REST;
+                        goto case WORK.WAIT_REST;
+                    }
+                    break;
+                case WORK.WAIT_REST:
+                    {
+                        if (CheckTimeOverMilSec(delay_time, 1000)) //硬體轉換時間,需依實際狀況調整
+                        {
+                            Deps.LightEngine.SetLed_DAC(Color, Side, TestDAC);
+                            ResetTimeCount(out delay_time);
+
+                            State = WORK.GET_SPECTRUM;
+                            goto case WORK.GET_SPECTRUM;
                         }
                     }
                     break;
@@ -579,7 +628,7 @@ namespace RGBTester.Logic
                         double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
                         double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
                         double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
-                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, intensity, IntgTimeSetting, k_value) * gain + offset);
+                        TesterData.Lumens.Add(LF.CalculateTotalLumens(wavelength, intensity, IntgTimeSetting, k_value) * gain * PowerGain + offset);
 
                         State = WORK.CALCULATE_WAVELENGTH;
                         goto case WORK.CALCULATE_WAVELENGTH;
@@ -593,12 +642,12 @@ namespace RGBTester.Logic
                         //強度單位必須為W/nm
                         double[] W_Intensity = SpectrumRawData.Select(x => x).ToArray();
 
-                        TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData));
+                        TesterData.WLD.Add(WL.Calculate_WLD(wavelength, SpectrumRawData) + WavelengthGain);
                         double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
                         double org_power = WL.Calculate_Power(wavelength, W_Intensity, IntgTimeSetting, k_value);
                         double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
                         double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
-                        double calibration_power = org_power * gain + offset;
+                        double calibration_power = org_power * gain * PowerGain + offset;
 
                         TesterData.OpticalPower.Add(calibration_power);
                         TesterData.CycleTime.Add(Tool.GetTime(cycletime));

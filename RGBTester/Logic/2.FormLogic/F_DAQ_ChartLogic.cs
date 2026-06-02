@@ -36,30 +36,25 @@ namespace RGBTester.Logic
         #endregion
         public void SetLedCondition(byte test_side, byte color, int value, string test_mode)
         {
+            //[Debug]
+            
             IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             IF_StatusBox status_box = ServiceProvider.GetRequiredService<IF_StatusBox>();
             RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
 
-            //func.Set_LED_Rigester();
-
-            //if (!lea.SetLed_DAC(color, test_side, 0))
-            //{
-            //    status_box.ShowMessage("Set Light Engine  0 DAC Fail");
-            //    return;
-            //}
+            if(func.GetModuleType() == eModuleType.Function_Test)
+            {
+                if (color == lea.LED_B2)
+                    lea.SetLed_AllColorVoltage(test_side, 3.6, 3.6, 3.6, 3.6);
+                else
+                    lea.SetLed_AllColorVoltage(test_side, 5.5, 5.5, 5.5, 5.5);
+            }
 
             if (!lea.SetLed_CurrentMode(test_mode))
             {
                 status_box.ShowMessage("Set Light Engine Current Mode Fail");
                 return;
             }
-
-            //if (!lea.SetLed_AllColorDAC(test_side, 250, 0, 0, 0))
-            //{
-            //    status_box.ShowMessage("Set Light Engine DAC Fail");
-            //    return;
-            //}
-
 
             if (!lea.SetLed_DAC(color, test_side, value))
             {

@@ -57,9 +57,25 @@ namespace RGBTester.UI
             this.Btn_Load = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.Btn_Remove = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.TxtBx_RedPowerGain = new System.Windows.Forms.TextBox();
+            this.TxtBx_GreenPowerGain = new System.Windows.Forms.TextBox();
+            this.TxtBx_BluePowerGain = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.TxtBx_RedWavelengthGain = new System.Windows.Forms.TextBox();
+            this.TxtBx_GreenWavelengthGain = new System.Windows.Forms.TextBox();
+            this.TxtBx_BlueWavelengthGain = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CalibrationData)).BeginInit();
             this.TbLy_Button.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -370,11 +386,178 @@ namespace RGBTester.UI
             this.Btn_Remove.UseVisualStyleBackColor = true;
             this.Btn_Remove.Click += new System.EventHandler(this.Btn_Remove_Click);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.86813F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.13187F));
+            this.tableLayoutPanel2.Controls.Add(this.label15, 0, 7);
+            this.tableLayoutPanel2.Controls.Add(this.label8, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label9, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label10, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label11, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_RedPowerGain, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_GreenPowerGain, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_BluePowerGain, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label14, 0, 6);
+            this.tableLayoutPanel2.Controls.Add(this.label13, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_RedWavelengthGain, 1, 5);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_GreenWavelengthGain, 1, 6);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_BlueWavelengthGain, 1, 7);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(674, 12);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 8;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(640, 276);
+            this.tableLayoutPanel2.TabIndex = 36;
+            // 
+            // label8
+            // 
+            this.label8.BackColor = System.Drawing.Color.Silver;
+            this.tableLayoutPanel2.SetColumnSpan(this.label8, 2);
+            this.label8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label8.Location = new System.Drawing.Point(6, 3);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(628, 20);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "Power Gain";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label9.Location = new System.Drawing.Point(6, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(180, 35);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "Red";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label10.Location = new System.Drawing.Point(6, 64);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(170, 35);
+            this.label10.TabIndex = 23;
+            this.label10.Text = "Green";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label11.Location = new System.Drawing.Point(6, 102);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(170, 35);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "Blue";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_RedPowerGain
+            // 
+            this.TxtBx_RedPowerGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_RedPowerGain.Location = new System.Drawing.Point(210, 29);
+            this.TxtBx_RedPowerGain.Name = "TxtBx_RedPowerGain";
+            this.TxtBx_RedPowerGain.Size = new System.Drawing.Size(424, 29);
+            this.TxtBx_RedPowerGain.TabIndex = 25;
+            // 
+            // TxtBx_GreenPowerGain
+            // 
+            this.TxtBx_GreenPowerGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_GreenPowerGain.Location = new System.Drawing.Point(210, 67);
+            this.TxtBx_GreenPowerGain.Name = "TxtBx_GreenPowerGain";
+            this.TxtBx_GreenPowerGain.Size = new System.Drawing.Size(424, 29);
+            this.TxtBx_GreenPowerGain.TabIndex = 26;
+            // 
+            // TxtBx_BluePowerGain
+            // 
+            this.TxtBx_BluePowerGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BluePowerGain.Location = new System.Drawing.Point(210, 105);
+            this.TxtBx_BluePowerGain.Name = "TxtBx_BluePowerGain";
+            this.TxtBx_BluePowerGain.Size = new System.Drawing.Size(424, 29);
+            this.TxtBx_BluePowerGain.TabIndex = 27;
+            // 
+            // label12
+            // 
+            this.label12.BackColor = System.Drawing.Color.Silver;
+            this.tableLayoutPanel2.SetColumnSpan(this.label12, 2);
+            this.label12.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label12.Location = new System.Drawing.Point(6, 140);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(628, 20);
+            this.label12.TabIndex = 28;
+            this.label12.Text = "Wavelength Gain";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label13.Location = new System.Drawing.Point(6, 163);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(180, 35);
+            this.label13.TabIndex = 29;
+            this.label13.Text = "Red";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label14
+            // 
+            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Location = new System.Drawing.Point(6, 201);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(170, 35);
+            this.label14.TabIndex = 30;
+            this.label14.Text = "Green";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label15.Location = new System.Drawing.Point(6, 239);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(170, 35);
+            this.label15.TabIndex = 31;
+            this.label15.Text = "Blue";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_RedWavelengthGain
+            // 
+            this.TxtBx_RedWavelengthGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_RedWavelengthGain.Location = new System.Drawing.Point(210, 166);
+            this.TxtBx_RedWavelengthGain.Name = "TxtBx_RedWavelengthGain";
+            this.TxtBx_RedWavelengthGain.Size = new System.Drawing.Size(424, 29);
+            this.TxtBx_RedWavelengthGain.TabIndex = 32;
+            // 
+            // TxtBx_GreenWavelengthGain
+            // 
+            this.TxtBx_GreenWavelengthGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_GreenWavelengthGain.Location = new System.Drawing.Point(210, 204);
+            this.TxtBx_GreenWavelengthGain.Name = "TxtBx_GreenWavelengthGain";
+            this.TxtBx_GreenWavelengthGain.Size = new System.Drawing.Size(424, 29);
+            this.TxtBx_GreenWavelengthGain.TabIndex = 33;
+            // 
+            // TxtBx_BlueWavelengthGain
+            // 
+            this.TxtBx_BlueWavelengthGain.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_BlueWavelengthGain.Location = new System.Drawing.Point(210, 242);
+            this.TxtBx_BlueWavelengthGain.Name = "TxtBx_BlueWavelengthGain";
+            this.TxtBx_BlueWavelengthGain.Size = new System.Drawing.Size(424, 29);
+            this.TxtBx_BlueWavelengthGain.TabIndex = 34;
+            // 
             // F_OpticalSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.TbLy_Button);
             this.Controls.Add(this.DGV_CalibrationData);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -386,6 +569,8 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CalibrationData)).EndInit();
             this.TbLy_Button.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -418,5 +603,20 @@ namespace RGBTester.UI
         private System.Windows.Forms.TextBox TxtBx_PowerGain;
         private System.Windows.Forms.TextBox TxtBx_PowerOffset;
         private System.Windows.Forms.Button Btn_PowerCalibration;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox TxtBx_RedPowerGain;
+        private System.Windows.Forms.TextBox TxtBx_GreenPowerGain;
+        private System.Windows.Forms.TextBox TxtBx_BluePowerGain;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox TxtBx_RedWavelengthGain;
+        private System.Windows.Forms.TextBox TxtBx_GreenWavelengthGain;
+        private System.Windows.Forms.TextBox TxtBx_BlueWavelengthGain;
     }
 }

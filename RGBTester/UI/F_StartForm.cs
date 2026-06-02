@@ -222,7 +222,10 @@ namespace RGBTester.UI
                 method = "Both";
 
             Scope.TaskRGBTest.IsSingleTest = false;
-            StartFormLogic.StartTaskAction(method);
+            int res = StartFormLogic.StartTaskAction(method);
+
+            if (res == -1)
+                MessageBox.Show("Upload System No Connent", "Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void F_StartForm_VisibleChanged(object sender, EventArgs e)

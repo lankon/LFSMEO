@@ -149,32 +149,34 @@ namespace RGBTester.Logic
         private void CloseAndDeleteTestFile() => ExecuteFileAction(k => Deps.File.CloseAndDeleteFile(k));
         private void SetUploadInformation()
         {
-            if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
-            {
-                DataUpload = Deps.ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+            //移動到按鈕
 
-                UploadInfo info = new UploadInfo
-                {
-                    OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
-                    SerialNunber = RGBfunc.SerialNumber,
+            //if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+            //{
+            //    DataUpload = Deps.ServiceProvider.GetRequiredService<IFunction_DataUpload>();
 
-                    FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
-                    PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
-                    ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
-                    Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
-                    Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
-                    Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
-                };
+            //    UploadInfo info = new UploadInfo
+            //    {
+            //        OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
+            //        SerialNunber = RGBfunc.SerialNumber,
 
-                DataUpload.SetInfromation(info);
-            }
+            //        FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
+            //        PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
+            //        ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
+            //        Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+            //        Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+            //        Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
+            //    };
+
+            //    DataUpload.SetInfromation(info);
+            //}
         }
 
         private void Preset() 
         {
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
-
+          
             CreateTestFile();
             SetUploadInformation();
         }
