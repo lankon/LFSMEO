@@ -714,7 +714,10 @@ namespace RGBTester.Logic
 
                 case WORK.WRITE_TEST_DATA:
                     {
-                        WriteFile.OpticalResult.WriteTestData(TesterData);
+                        string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
+                        string copy_path1 = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath1);
+
+                        WriteFile.OpticalResult.WriteTestData(TesterData, copy_path, copy_path1);
                         Transition(WORK.SUCCESS);
                     }
                     break;
