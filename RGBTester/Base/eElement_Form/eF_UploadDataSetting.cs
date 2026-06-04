@@ -8,6 +8,7 @@ namespace RGBTester.Base
 {
     public enum eF_UploadDataSetting
     {
+        Cmbx_UseUploadSystem,
         TxtBx_FixtureID,
         TxtBx_Station,
         TxtBx_Line,

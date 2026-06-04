@@ -30,6 +30,10 @@ namespace RGBTester.Device
 
         public bool CheckConnectStatus()
         {
+            if (ApplicationSetting.Get_Int_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.Cmbx_UseUploadSystem) == 0)
+                return true;    //違反程式架構寫法
+            
+            
             string command = UploadInfo.SerialNunber + "," + UploadInfo.Station + "," + UploadInfo.Line + "," + 
                                 UploadInfo.OperatorID + "," + UploadInfo.FixtureID + "," + UploadInfo.ProgramVer  + "," + 
                                 UploadInfo.Testplan + "," + UploadInfo.PCName;
@@ -41,6 +45,9 @@ namespace RGBTester.Device
 
         public bool DataUpdate(List<string> data,string sn)
         {
+            if (ApplicationSetting.Get_Int_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.Cmbx_UseUploadSystem) == 0)
+                return true;    //違反程式架構寫法
+
             sn = sn + "," + UploadInfo.Line + "," + UploadInfo.OperatorID;
 
             int res = Quanta.UpdateToSMTDB(data, sn);

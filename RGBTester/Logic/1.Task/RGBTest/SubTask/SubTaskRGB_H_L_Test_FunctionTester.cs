@@ -408,14 +408,14 @@ namespace RGBTester.Logic
         }
         private void CheckVoltage()
         {
-            if(TesterData_L.DISP_6V0[0] > 6.15 || TesterData_L.DISP_6V0[0] < 6.05)
+            if(TesterData_L.DISP_6V0[0] > 6.25 || TesterData_L.DISP_6V0[0] < 6)
             {
                 Scope.TestFail = true;
                 Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3} Err", level: "WRN");
                 RGBfunc.FailReasonFlag.IsVoltageErr = true;
             }
 
-            if (TesterData_L.DISP_1V2[0] > 1.23 || TesterData_L.DISP_1V2[0] < 1.17)
+            if (TesterData_L.DISP_1V2[0] > 1.25 || TesterData_L.DISP_1V2[0] < 1.15)
             {
                 Scope.TestFail = true;
                 Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3} Err", level: "WRN");

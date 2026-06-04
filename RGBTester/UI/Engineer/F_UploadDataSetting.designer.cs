@@ -36,12 +36,14 @@ namespace RGBTester.UI
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.TxtBx_ProgramVer = new System.Windows.Forms.TextBox();
             this.TxtBx_Testplan = new System.Windows.Forms.TextBox();
             this.TxtBx_PCName = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.TxtBx_FixtureID = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.Cmbx_UseUploadSystem = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,21 +53,24 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.0781F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.9219F));
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Line, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Station, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_ProgramVer, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Testplan, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_PCName, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.TxtBx_FixtureID, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Station, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_ProgramVer, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Testplan, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_PCName, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_FixtureID, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.TxtBx_Line, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.Cmbx_UseUploadSystem, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 6;
+            this.tableLayoutPanel1.RowCount = 8;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -73,13 +78,14 @@ namespace RGBTester.UI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(656, 233);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(656, 331);
             this.tableLayoutPanel1.TabIndex = 9;
             // 
             // TxtBx_Line
             // 
             this.TxtBx_Line.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Line.Location = new System.Drawing.Point(223, 44);
+            this.TxtBx_Line.Location = new System.Drawing.Point(223, 82);
             this.TxtBx_Line.Name = "TxtBx_Line";
             this.TxtBx_Line.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_Line.TabIndex = 7;
@@ -87,7 +93,7 @@ namespace RGBTester.UI
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(6, 3);
+            this.label1.Location = new System.Drawing.Point(6, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(180, 35);
             this.label1.TabIndex = 3;
@@ -97,7 +103,7 @@ namespace RGBTester.UI
             // TxtBx_Station
             // 
             this.TxtBx_Station.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Station.Location = new System.Drawing.Point(223, 6);
+            this.TxtBx_Station.Location = new System.Drawing.Point(223, 44);
             this.TxtBx_Station.Name = "TxtBx_Station";
             this.TxtBx_Station.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_Station.TabIndex = 5;
@@ -105,7 +111,7 @@ namespace RGBTester.UI
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(6, 41);
+            this.label2.Location = new System.Drawing.Point(6, 79);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(180, 35);
             this.label2.TabIndex = 6;
@@ -115,7 +121,7 @@ namespace RGBTester.UI
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(6, 117);
+            this.label3.Location = new System.Drawing.Point(6, 155);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(180, 35);
             this.label3.TabIndex = 8;
@@ -125,27 +131,17 @@ namespace RGBTester.UI
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(6, 155);
+            this.label4.Location = new System.Drawing.Point(6, 193);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(180, 35);
             this.label4.TabIndex = 9;
             this.label4.Text = "Testplan";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(6, 193);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(180, 35);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "PC Name";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // TxtBx_ProgramVer
             // 
             this.TxtBx_ProgramVer.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_ProgramVer.Location = new System.Drawing.Point(223, 120);
+            this.TxtBx_ProgramVer.Location = new System.Drawing.Point(223, 158);
             this.TxtBx_ProgramVer.Name = "TxtBx_ProgramVer";
             this.TxtBx_ProgramVer.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_ProgramVer.TabIndex = 11;
@@ -153,7 +149,7 @@ namespace RGBTester.UI
             // TxtBx_Testplan
             // 
             this.TxtBx_Testplan.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Testplan.Location = new System.Drawing.Point(223, 158);
+            this.TxtBx_Testplan.Location = new System.Drawing.Point(223, 196);
             this.TxtBx_Testplan.Name = "TxtBx_Testplan";
             this.TxtBx_Testplan.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_Testplan.TabIndex = 12;
@@ -161,7 +157,7 @@ namespace RGBTester.UI
             // TxtBx_PCName
             // 
             this.TxtBx_PCName.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_PCName.Location = new System.Drawing.Point(223, 196);
+            this.TxtBx_PCName.Location = new System.Drawing.Point(223, 234);
             this.TxtBx_PCName.Name = "TxtBx_PCName";
             this.TxtBx_PCName.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_PCName.TabIndex = 13;
@@ -169,20 +165,52 @@ namespace RGBTester.UI
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(6, 79);
+            this.label6.Location = new System.Drawing.Point(6, 117);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(180, 35);
             this.label6.TabIndex = 14;
             this.label6.Text = "FixtureID";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Location = new System.Drawing.Point(6, 231);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(180, 35);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "PC Name";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // TxtBx_FixtureID
             // 
             this.TxtBx_FixtureID.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_FixtureID.Location = new System.Drawing.Point(223, 82);
+            this.TxtBx_FixtureID.Location = new System.Drawing.Point(223, 120);
             this.TxtBx_FixtureID.Name = "TxtBx_FixtureID";
             this.TxtBx_FixtureID.Size = new System.Drawing.Size(427, 29);
             this.TxtBx_FixtureID.TabIndex = 15;
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Location = new System.Drawing.Point(6, 3);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(180, 35);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Use UploadSystem";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // Cmbx_UseUploadSystem
+            // 
+            this.Cmbx_UseUploadSystem.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Cmbx_UseUploadSystem.FormattingEnabled = true;
+            this.Cmbx_UseUploadSystem.Items.AddRange(new object[] {
+            "No Use",
+            "Use"});
+            this.Cmbx_UseUploadSystem.Location = new System.Drawing.Point(223, 6);
+            this.Cmbx_UseUploadSystem.Name = "Cmbx_UseUploadSystem";
+            this.Cmbx_UseUploadSystem.Size = new System.Drawing.Size(427, 28);
+            this.Cmbx_UseUploadSystem.TabIndex = 17;
             // 
             // F_UploadDataSetting
             // 
@@ -215,5 +243,7 @@ namespace RGBTester.UI
         private System.Windows.Forms.TextBox TxtBx_PCName;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox TxtBx_FixtureID;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox Cmbx_UseUploadSystem;
     }
 }

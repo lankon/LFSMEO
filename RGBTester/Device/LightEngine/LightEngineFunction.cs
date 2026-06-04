@@ -75,14 +75,21 @@ namespace RGBTester.Device
 
         public bool Open()
         {
-            bool res = LEA.Open();
+            try
+            {
+                bool res = LEA.Open();
 
-            if (res == true)
-                Tool.SaveLogToFile("Light Engine Initial Success");
-            else
-                Tool.SaveLogToFile("Light Engine Initial Fail", level:"ERR");
+                if (res == true)
+                    Tool.SaveLogToFile("Light Engine Initial Success");
+                else
+                    Tool.SaveLogToFile("Light Engine Initial Fail", level: "ERR");
 
-            return res;
+                return res;
+            }
+            catch
+            {
+                return false;
+            }
         }
         public bool ResetLED()
         {
