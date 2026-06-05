@@ -418,7 +418,7 @@ namespace RGBTester.Logic
             if (TesterData_L.DISP_1V2[0] > 1.25 || TesterData_L.DISP_1V2[0] < 1.15)
             {
                 Scope.TestFail = true;
-                Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3} Err", level: "WRN");
+                Tool.SaveLogToFile($"Voltage_1V2 = {TesterData_L.DISP_1V2[0]:F3} Err", level: "WRN");
                 RGBfunc.FailReasonFlag.IsVoltageErr = true;
             }
 

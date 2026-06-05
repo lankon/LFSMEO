@@ -213,9 +213,11 @@ namespace RGBTester.Logic
 
             WriteFile($"0x0440,,Serial Number,,{sn}", describe);
 
-            bool res = DataUpdate.DataUpdate(calibration, $"0x0440,,Serial Number,,{sn}");
+            //bool res = DataUpdate.DataUpdate(calibration, $"0x0440,,Serial Number,,{sn}");
+            //違反程式架構
+            OpticalResult.InputMessage(calibration, $"0x0440,,Serial Number,,{sn}", DataUpdate);
 
-            return res;
+            return true;
         }
 
         public RGBTesterData SetNonData(RGBTesterData data)

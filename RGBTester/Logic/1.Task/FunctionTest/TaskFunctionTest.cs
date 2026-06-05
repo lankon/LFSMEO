@@ -42,6 +42,7 @@ namespace RGBTester.Logic
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
+        private IWriteFile WriteFile;
         public enum WORK
         {
             NONE,
@@ -144,6 +145,7 @@ namespace RGBTester.Logic
         private void Preset()
         {
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+            WriteFile = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
             int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
             if (method == (int)eTestMode.LEFT)
@@ -223,8 +225,7 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-
-                        if(Scope.TestFail == true)
+                        if (Scope.TestFail == true)
                             CheckResult(check);
                         else
                             CheckResult(check, SUCCESS: WORK.OPTICAL_TEST);
@@ -249,15 +250,16 @@ namespace RGBTester.Logic
                     }
                     break;
 
-                
-
                 case WORK.SUCCESS:
                     {
                         if (Scope.TestFail == false)
                         {
                             StatusBox.ShowMessage("", "PASS");
                         }
-                        
+
+                        if(!WriteFile.OpticalResult.UpdateResult())
+                            StatusBox.ShowMessage("Upload Data Fail");
+
                         SetStatus(TASK_STATUS.SUCCESS);
                         Tool.SaveLogToFile($"{TaskName} End", level: "INF");
                     }

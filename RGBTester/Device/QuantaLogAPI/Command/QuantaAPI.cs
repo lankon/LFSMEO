@@ -84,7 +84,10 @@ namespace RGBTester.Device
                         if (res.Contains("iResult:PASS"))
                             return 0;
                         else
+                        {
+                            Tool.SaveLogToFile("Quanta System Upload Err:" + res);
                             return -3;
+                        }
 
                         //res = process.StandardError.ReadToEnd();
                         //return 0;

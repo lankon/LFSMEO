@@ -27,9 +27,18 @@ namespace RGBTester.Logic
         //    public double Wavelength;
         //    public double Temperature;
         //}
+        List<string> Calibration = new List<string>();
+        string Cmd = "";
+        private IFunction_DataUpload DataUpdate;
         #endregion
 
         #region public function
+        public void InputMessage(List<string> calibration, string cmd, IFunction_DataUpload upload)
+        {
+            Calibration = calibration;
+            Cmd = cmd;
+            DataUpdate = upload;
+        }
         public void WriteTestData(RGBTesterData result, params string[] copy_path)
         {
             DateTime DateNow = DateTime.Now;
@@ -63,6 +72,18 @@ namespace RGBTester.Logic
             }
 
             Tool.CloseFile(file);
+        }
+        public bool UpdateResult()
+        {
+            bool res = true;
+            if (Calibration.Count != 0)
+            {
+                res = DataUpdate.DataUpdate(Calibration, Cmd);
+                Calibration.Clear();
+                Cmd = "";
+            }
+
+            return res;
         }
         #endregion
 
