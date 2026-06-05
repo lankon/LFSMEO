@@ -85,7 +85,7 @@ namespace RGBTester.Device
                             return 0;
                         else
                         {
-                            Tool.SaveLogToFile("Quanta System Upload Err:" + res);
+                            Tool.SaveLogToFile("Quanta System Upload Err:" + res, level:"ERR");
                             return -3;
                         }
 
@@ -150,11 +150,14 @@ namespace RGBTester.Device
             sn = temp.Split(',')[4];
             string line = temp.Split(',')[5];
             string op_id = temp.Split(',')[6];
+            string fixture_id = temp.Split(',')[7];
+            string program_id = temp.Split(',')[8];
+            string test_plan = temp.Split(',')[9];
 
             if (Scope.TestFail == true) //!!!!!違反架構寫法
-                command = $"-m UpdateToSMTDB -p {sn} BFT FAIL {CalibrationData} {line} {op_id}";
+                command = $"-m UpdateToSMTDB -p {sn} BFT FAIL {CalibrationData}##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan} {line} {op_id}";
             else
-                command = $"-m UpdateToSMTDB -p {sn} BFT PASS {CalibrationData} {line} {op_id}";
+                command = $"-m UpdateToSMTDB -p {sn} BFT PASS {CalibrationData}##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan} {line} {op_id}";
 
             DateTime DateNow = DateTime.Now;
             string Time = DateNow.ToString("yyyyMMddHHmmss");

@@ -76,6 +76,8 @@ namespace RGBTester.UI
             this.label75 = new System.Windows.Forms.Label();
             this.TxtBx_Left_B2_HCM_DAC_End = new System.Windows.Forms.TextBox();
             this.TxtBx_Left_B2_DAC_Step = new System.Windows.Forms.TextBox();
+            this.label76 = new System.Windows.Forms.Label();
+            this.label74 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.TxtBx_LeftRedSlope_H = new System.Windows.Forms.TextBox();
@@ -148,6 +150,10 @@ namespace RGBTester.UI
             this.TxtBx_Right_B2_LCM_DAC_End = new System.Windows.Forms.TextBox();
             this.TxtBx_Right_B2_HCM_DAC_End = new System.Windows.Forms.TextBox();
             this.TxtBx_Right_B2_DAC_Step = new System.Windows.Forms.TextBox();
+            this.label77 = new System.Windows.Forms.Label();
+            this.label79 = new System.Windows.Forms.Label();
+            this.label80 = new System.Windows.Forms.Label();
+            this.label81 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.TxtBx_RightRedSlope_H = new System.Windows.Forms.TextBox();
@@ -221,12 +227,6 @@ namespace RGBTester.UI
             this.LyPnl_ProductType = new System.Windows.Forms.TableLayoutPanel();
             this.Cmbx_ProductType = new System.Windows.Forms.ComboBox();
             this.label50 = new System.Windows.Forms.Label();
-            this.label76 = new System.Windows.Forms.Label();
-            this.label74 = new System.Windows.Forms.Label();
-            this.label77 = new System.Windows.Forms.Label();
-            this.label79 = new System.Windows.Forms.Label();
-            this.label80 = new System.Windows.Forms.Label();
-            this.label81 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.TbCtrl_Left_DAC_Setting.SuspendLayout();
@@ -718,7 +718,7 @@ namespace RGBTester.UI
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(152, 35);
             this.label73.TabIndex = 0;
-            this.label73.Text = "DAC Start (mA)";
+            this.label73.Text = "DAC Start";
             this.label73.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TxtBx_Left_B2_DAC_Start
@@ -744,7 +744,7 @@ namespace RGBTester.UI
             this.label75.Name = "label75";
             this.label75.Size = new System.Drawing.Size(152, 35);
             this.label75.TabIndex = 14;
-            this.label75.Text = "DAC Step (mA)";
+            this.label75.Text = "DAC Step";
             this.label75.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TxtBx_Left_B2_HCM_DAC_End
@@ -762,6 +762,26 @@ namespace RGBTester.UI
             this.TxtBx_Left_B2_DAC_Step.Name = "TxtBx_Left_B2_DAC_Step";
             this.TxtBx_Left_B2_DAC_Step.Size = new System.Drawing.Size(109, 29);
             this.TxtBx_Left_B2_DAC_Step.TabIndex = 8;
+            // 
+            // label76
+            // 
+            this.label76.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label76.Location = new System.Drawing.Point(287, 3);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(152, 35);
+            this.label76.TabIndex = 15;
+            this.label76.Text = "DAC End HCM";
+            this.label76.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label74
+            // 
+            this.label74.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label74.Location = new System.Drawing.Point(287, 41);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(152, 35);
+            this.label74.TabIndex = 16;
+            this.label74.Text = "DAC End LCM";
+            this.label74.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tableLayoutPanel2
             // 
@@ -1558,6 +1578,46 @@ namespace RGBTester.UI
             this.TxtBx_Right_B2_DAC_Step.Name = "TxtBx_Right_B2_DAC_Step";
             this.TxtBx_Right_B2_DAC_Step.Size = new System.Drawing.Size(109, 29);
             this.TxtBx_Right_B2_DAC_Step.TabIndex = 8;
+            // 
+            // label77
+            // 
+            this.label77.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label77.Location = new System.Drawing.Point(6, 3);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(152, 35);
+            this.label77.TabIndex = 15;
+            this.label77.Text = "DAC Start";
+            this.label77.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label79
+            // 
+            this.label79.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label79.Location = new System.Drawing.Point(6, 41);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(152, 35);
+            this.label79.TabIndex = 16;
+            this.label79.Text = "DAC Step";
+            this.label79.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label80
+            // 
+            this.label80.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label80.Location = new System.Drawing.Point(287, 3);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(152, 35);
+            this.label80.TabIndex = 17;
+            this.label80.Text = "DAC End HCM";
+            this.label80.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label81
+            // 
+            this.label81.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label81.Location = new System.Drawing.Point(287, 41);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(152, 35);
+            this.label81.TabIndex = 18;
+            this.label81.Text = "DAC End LCM";
+            this.label81.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tableLayoutPanel3
             // 
@@ -2383,66 +2443,6 @@ namespace RGBTester.UI
             this.label50.TabIndex = 4;
             this.label50.Text = "Product Type";
             this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label76
-            // 
-            this.label76.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label76.Location = new System.Drawing.Point(287, 3);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(152, 35);
-            this.label76.TabIndex = 15;
-            this.label76.Text = "DAC End HCM";
-            this.label76.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label74
-            // 
-            this.label74.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label74.Location = new System.Drawing.Point(287, 41);
-            this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(152, 35);
-            this.label74.TabIndex = 16;
-            this.label74.Text = "DAC End LCM";
-            this.label74.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label77
-            // 
-            this.label77.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label77.Location = new System.Drawing.Point(6, 3);
-            this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(152, 35);
-            this.label77.TabIndex = 15;
-            this.label77.Text = "DAC Start";
-            this.label77.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label79
-            // 
-            this.label79.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label79.Location = new System.Drawing.Point(6, 41);
-            this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(152, 35);
-            this.label79.TabIndex = 16;
-            this.label79.Text = "DAC Step";
-            this.label79.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label80
-            // 
-            this.label80.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label80.Location = new System.Drawing.Point(287, 3);
-            this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(152, 35);
-            this.label80.TabIndex = 17;
-            this.label80.Text = "DAC End HCM";
-            this.label80.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label81
-            // 
-            this.label81.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label81.Location = new System.Drawing.Point(287, 41);
-            this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(152, 35);
-            this.label81.TabIndex = 18;
-            this.label81.Text = "DAC End LCM";
-            this.label81.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // F_StartForm
             // 

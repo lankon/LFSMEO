@@ -59,8 +59,8 @@ namespace RGBTester.Logic
             RGBfunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_SerialNumber);
             RGBfunc.SetFunctionTestProcess(true);
 
-            //RGBTesterMachine.DIOL.Clear_AI_VirtualData();
-            //StartFormLogic.ReadVirtual_AI_Data();
+            RGBTesterMachine.DIOL.Clear_AI_VirtualData();
+            StartFormLogic.ReadVirtual_AI_Data();
 
             //確認上傳資訊
             IFunction_DataUpload data_upload = ServiceProvider.GetRequiredService<IFunction_DataUpload>();

@@ -48,7 +48,8 @@ namespace RGBTester.Device
             if (ApplicationSetting.Get_Int_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.Cmbx_UseUploadSystem) == 0)
                 return true;    //違反程式架構寫法
 
-            sn = sn + "," + UploadInfo.Line + "," + UploadInfo.OperatorID;
+            sn = sn + "," + UploadInfo.Line + "," + UploadInfo.OperatorID + "," + UploadInfo.FixtureID + "," + UploadInfo.ProgramVer + "," +
+                            UploadInfo.Testplan + "," + UploadInfo.PCName;
 
             int res = Quanta.UpdateToSMTDB(data, sn);
 
