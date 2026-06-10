@@ -413,23 +413,27 @@ namespace RGBTester.Logic
               (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RLight_LL) || 
                lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RLight_UL)))
             {
-                RGBFunc.FailReasonFlag.IsLuminousErr = true;
+                RGBFunc.FailReasonFlag.IsRedLuminousErr = true;
+                Tool.SaveLogToFile($"{TestColor} Luminous Out of Range");
             }
             else if (TestColor == "G" && Math.Abs(test_current - 80) < 0.001 &&
                     (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GLight_LL) ||
                      lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GLight_UL)))
             {
-                RGBFunc.FailReasonFlag.IsLuminousErr = true;
+                RGBFunc.FailReasonFlag.IsGreenLuminousErr = true;
+                Tool.SaveLogToFile($"{TestColor} Luminous Out of Range");
             }
             else if ((TestColor == "B" || TestColor == "B2") && Math.Abs(test_current - 50) < 0.001 &&
                      (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BLight_LL) ||
                       lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BLight_UL)))
             {
-                RGBFunc.FailReasonFlag.IsLuminousErr = true;
-            }
+                if(TestColor == "B")
+                    RGBFunc.FailReasonFlag.IsBlueLuminousErr = true;
+                else if(TestColor == "B2")
+                    RGBFunc.FailReasonFlag.IsBlue2LuminousErr = true;
 
-            if(RGBFunc.FailReasonFlag.IsLuminousErr == true)
-                Scope.TestFail = true;
+                Tool.SaveLogToFile($"{TestColor} Luminous Out of Range");
+            }
         }
         #endregion
 

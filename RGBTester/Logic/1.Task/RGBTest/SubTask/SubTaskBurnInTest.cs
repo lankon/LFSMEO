@@ -222,7 +222,6 @@ namespace RGBTester.Logic
             double limit = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_FailOverTemp);
             if (temperature > limit)
             {
-                Scope.TestFail = true;
                 RGBfunc.FailReasonFlag.IsTemperatureErr = true;
                 Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高", level: "WRN");
                 return false;

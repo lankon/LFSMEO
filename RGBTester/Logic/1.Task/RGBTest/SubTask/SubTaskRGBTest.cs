@@ -169,7 +169,6 @@ namespace RGBTester.Logic
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
             ResultData = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
-            Scope.TestFail = false;
             RGBfunc.FailReasonFlag.ResetAllFlag();
             SetCheckSlopeDAC();
 
@@ -418,7 +417,7 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
-                        if(Scope.TestFail == true)
+                        if(RGBfunc.FailReasonFlag.IsTestFail() == true)
                         {
                             string description = RGBfunc.FailReasonFlag.GetFailDescription();
                             StatusBox.ShowMessage(description);

@@ -381,7 +381,6 @@ namespace RGBTester.Logic
             {
                 if(res > HCM_UL || res < HCM_LL)
                 {
-                    Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{HCM_LL:F3}~{HCM_UL:F3}", level: "WRN");
                     RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
@@ -390,7 +389,6 @@ namespace RGBTester.Logic
             {
                 if (res > LCM_UL || res < LCM_LL)
                 {
-                    Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{LCM_LL:F3}~{LCM_UL:F3}", level: "WRN");
                     RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
@@ -435,7 +433,6 @@ namespace RGBTester.Logic
 
                     if (startClampingDAC < failLimit)
                     {
-                        Scope.TestFail = true;
                         RGBfunc.FailReasonFlag.IsClampingErr = true;
                     }
 
@@ -487,7 +484,6 @@ namespace RGBTester.Logic
             double limit = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_FailOverTemp);
             if (temperature > limit)
             {
-                Scope.TestFail = true;
                 RGBfunc.FailReasonFlag.IsTemperatureErr = true;
                 Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高", level: "WRN");
             }

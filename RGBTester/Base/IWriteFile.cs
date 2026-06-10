@@ -7,12 +7,13 @@ using RGBTester.Logic;
 
 namespace RGBTester.Base
 {
-    public interface IWriteFile
+    public interface IWriteFile   //改善_職責過於混雜
     {
-        Dictionary<string, double> LED_Slope { get; }
-        Dictionary<string, double> LED_Offset { get; }
-        CheckSlopeData CheckSlope { get; }
-        OpticalData OpticalResult { get;}
+        Dictionary<string, double> LED_Slope { get; }   //R/G/B...Slope結果
+        Dictionary<string, double> LED_Offset { get; }  //R/G/B...Offset結果
+        CheckSlopeData CheckSlope { get; }              //檢查Slope結果
+        OpticalData OpticalResult { get; }              //光性量測資料
+        UploadData UploadData { get; }                  //資料上傳系統
 
         void SetModuleAndCustomer(eModuleType eModule);
         void CreateFile(string describe = "");

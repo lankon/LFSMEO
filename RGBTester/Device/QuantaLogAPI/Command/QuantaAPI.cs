@@ -20,7 +20,6 @@ namespace RGBTester.Device
         }
 
         #region private function
-        private bool TestMode = false;
         //private ProcessStartInfo startInfo;
         #endregion
 
@@ -128,33 +127,33 @@ namespace RGBTester.Device
 
             int res = 0;
 
-            if(!TestMode)
-                res = SendCommand($"-m CheckRoutingSMT -p {sn} {station} {line} {op_id} ##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan}##PC_Name={pc_name}");
+            res = SendCommand($"-m CheckRoutingSMT -p {sn} {station} {line} {op_id} ##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan}##PC_Name={pc_name}");
 
             return res;
         }
 
-        public int UpdateToSMTDB(List<string>data,string sn)
+        public int UpdateToSMTDB(List<string>data,string infomation)
         {
             int res = 0;
             string CalibrationData = "";
-            string command;
-
+            
             for (int i=0; i< data.Count; i++)
             {
                 string title = data[i].Split(',')[1];
 
                 CalibrationData = CalibrationData + $"##{title}={data[i]}";
             }
-            string temp = sn;
-            sn = temp.Split(',')[4];
-            string line = temp.Split(',')[5];
-            string op_id = temp.Split(',')[6];
-            string fixture_id = temp.Split(',')[7];
-            string program_id = temp.Split(',')[8];
-            string test_plan = temp.Split(',')[9];
 
-            if (Scope.TestFail == true) //!!!!!違反架構寫法
+            bool passs = infomation.Split(',')[0] == "PASS" ? true : false;
+            string sn = infomation.Split(',')[1];
+            string line = infomation.Split(',')[2];
+            string op_id = infomation.Split(',')[3];
+            string fixture_id = infomation.Split(',')[4];
+            string program_id = infomation.Split(',')[5];
+            string test_plan = infomation.Split(',')[6];
+
+            string command;
+            if (passs == false)
                 command = $"-m UpdateToSMTDB -p {sn} BFT FAIL {CalibrationData}##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan} {line} {op_id}";
             else
                 command = $"-m UpdateToSMTDB -p {sn} BFT PASS {CalibrationData}##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan} {line} {op_id}";
@@ -163,8 +162,7 @@ namespace RGBTester.Device
             string Time = DateNow.ToString("yyyyMMddHHmmss");
             string file_name = $"\\Result\\{DateNow.ToString("yyyyMMdd")}\\Calibration_{sn}_{Time}";
 
-            if(!TestMode)
-                res = SendCommand(command); //上傳系統
+            res = SendCommand(command); //上傳系統
 
             //儲存至本機端
             StreamWriter file = Tool.CreateFile(file_name, ".csv", false);

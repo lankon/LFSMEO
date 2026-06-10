@@ -18,12 +18,11 @@ namespace RGBTester.Base
     }
 }
 
-//namespace RGBTester.Base.FunctionTesterItem
-//{
-//    public enum eTestMode
-//    {
-//        LEFT,
-//        RIGHT,
-//        BOTH,
-//    }
-//}
+namespace RGBTester.Base.UploadDataSetting
+{
+    public enum eUseUploadSystem
+    {
+        PASS,
+        USE,
+    }
+}

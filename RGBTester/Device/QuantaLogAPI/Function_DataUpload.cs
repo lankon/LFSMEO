@@ -17,22 +17,32 @@ namespace RGBTester.Device
         }
 
         #region parameter define
-        QuantaAPI Quanta = new QuantaAPI();
-        UploadInfo UploadInfo;
+        private bool IsUseUpload = false;
+        private QuantaAPI Quanta = new QuantaAPI(); //違規_違反程式架構寫法,必須要有interface,並且可以選擇客戶別
+        private UploadInfo UploadInfo;
         #endregion
 
         #region public function
-        public bool SetInfromation(UploadInfo info)
+        public bool SetInformation(UploadInfo info)
         {
             UploadInfo = info;
             return true;
         }
 
+        public UploadInfo GetInformation()
+        {
+            return UploadInfo;
+        }
+
+        public void IsUseUploadFunction(bool use)
+        {
+            IsUseUpload = use;
+        }
+
         public bool CheckConnectStatus()
         {
-            if (ApplicationSetting.Get_Int_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.Cmbx_UseUploadSystem) == 0)
-                return true;    //違反程式架構寫法
-            
+            if (IsUseUpload == false)
+                return true;
             
             string command = UploadInfo.SerialNunber + "," + UploadInfo.Station + "," + UploadInfo.Line + "," + 
                                 UploadInfo.OperatorID + "," + UploadInfo.FixtureID + "," + UploadInfo.ProgramVer  + "," + 
@@ -43,15 +53,19 @@ namespace RGBTester.Device
             return res == 0;
         }
 
-        public bool DataUpdate(List<string> data,string sn)
+        public bool DataUpdate(List<string> data,string command)
         {
-            if (ApplicationSetting.Get_Int_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.Cmbx_UseUploadSystem) == 0)
-                return true;    //違反程式架構寫法
+            if (IsUseUpload == false)
+                return true;
 
-            sn = sn + "," + UploadInfo.Line + "," + UploadInfo.OperatorID + "," + UploadInfo.FixtureID + "," + UploadInfo.ProgramVer + "," +
-                            UploadInfo.Testplan + "," + UploadInfo.PCName;
+            string test_result = command;
+            string info = test_result + "," +
+                          UploadInfo.SerialNunber + "," + UploadInfo.Line + "," + 
+                          UploadInfo.OperatorID + "," + UploadInfo.FixtureID + "," + 
+                          UploadInfo.ProgramVer + "," + UploadInfo.Testplan + "," + 
+                          UploadInfo.PCName;
 
-            int res = Quanta.UpdateToSMTDB(data, sn);
+            int res = Quanta.UpdateToSMTDB(data, info);
 
             if (res != 0)
                 Tool.SaveLogToFile($"資料上傳系統失敗,ErrorCode:{res}");

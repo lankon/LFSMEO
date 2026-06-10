@@ -12,19 +12,24 @@ using System.Windows.Forms;
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
+using RGBTester.Base.UploadDataSetting;
 using RGBTester.Logic;
 
 namespace RGBTester.UI
 {
     public partial class F_UploadDataSetting : Form
     {
-        public F_UploadDataSetting()
+        public F_UploadDataSetting(IFunction_DataUpload function_DataUpload)
         {
             InitializeComponent();
+
+            DataUpload = function_DataUpload;
+
             InitialForm();
         }
 
         #region parameter define
+        IFunction_DataUpload DataUpload;
         #endregion
 
         #region private function

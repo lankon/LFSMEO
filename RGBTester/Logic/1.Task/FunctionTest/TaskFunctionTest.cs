@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using RGBTester.Base;
 using RGBTester.Base.FunctionTesterItem;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -39,9 +39,11 @@ namespace RGBTester.Logic
 
         #region parameter
         private string TestSide;
+        private RGBTesterFunction RGBfunc;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
+        private IFunction_DataUpload DataUpload;
         private IWriteFile WriteFile;
         public enum WORK
         {
@@ -146,6 +148,8 @@ namespace RGBTester.Logic
         {
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             WriteFile = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
+            DataUpload = Deps.ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+            RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
 
             int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
             if (method == (int)eTestMode.LEFT)
@@ -225,7 +229,7 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        if (Scope.TestFail == true)
+                        if (RGBfunc.FailReasonFlag.IsTestFail() == true)
                             CheckResult(check);
                         else
                             CheckResult(check, SUCCESS: WORK.OPTICAL_TEST);
@@ -252,12 +256,19 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
-                        if (Scope.TestFail == false)
+                        string test_result = "";
+
+                        if (RGBfunc.FailReasonFlag.IsTestFail() == false)
                         {
-                            StatusBox.ShowMessage("", "PASS");
+                            StatusBox.ShowMessage("Test PASS", "PASS");
+                            test_result = "PASS";
+                        }
+                        else
+                        {
+                            test_result = "FAIL";
                         }
 
-                        if(!WriteFile.OpticalResult.UpdateResult())
+                        if (!WriteFile.UploadData.UpdateResult(test_result))
                             StatusBox.ShowMessage("Upload Data Fail");
 
                         SetStatus(TASK_STATUS.SUCCESS);

@@ -57,7 +57,7 @@ namespace RGBTester.UI
         {
             Labl_ShowMessage.Text = msg;
             Labl_Status.BackColor = Color.Red;
-            Labl_Status.Text = "FAIL";
+            Labl_Status.Text = "Error";
             InvokeShowForm(form);
             Tool.SaveLogToFile(msg, level:"ERR");
         }
@@ -65,9 +65,9 @@ namespace RGBTester.UI
         {
             Labl_ShowMessage.Text = msg;
             Labl_Status.BackColor = Color.Green;
-            Labl_Status.Text = "PASS";
+            Labl_Status.Text = "Info";
             InvokeShowForm(form);
-            Tool.SaveLogToFile(msg, level: "ERR");
+            Tool.SaveLogToFile(msg, level: "INF");
         }
         #endregion
 
@@ -87,7 +87,6 @@ namespace RGBTester.UI
                         UpdateUI(msg, main_form);
                     else
                         UpdateUI_OK(msg, main_form);
-
                 }));
             }
             else

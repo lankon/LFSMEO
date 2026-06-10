@@ -12,33 +12,16 @@ namespace RGBTester.Logic
 {
     public class OpticalData
     {
-        public OpticalData()
+        public OpticalData(RGBTesterFunction rGBTesterFunction)
         {
+            RGBfunc = rGBTesterFunction;
         }
 
-
         #region parameter define
-        //public Dictionary<string, TestResult> dicTestResult = new Dictionary<string, TestResult>();
-
-        //public class TestResult
-        //{
-        //    public double Lumen;
-        //    public double OpticalPower;
-        //    public double Wavelength;
-        //    public double Temperature;
-        //}
-        List<string> Calibration = new List<string>();
-        string Cmd = "";
-        private IFunction_DataUpload DataUpdate;
+        RGBTesterFunction RGBfunc;
         #endregion
 
         #region public function
-        public void InputMessage(List<string> calibration, string cmd, IFunction_DataUpload upload)
-        {
-            Calibration = calibration;
-            Cmd = cmd;
-            DataUpdate = upload;
-        }
         public void WriteTestData(RGBTesterData result, params string[] copy_path)
         {
             DateTime DateNow = DateTime.Now;
@@ -64,32 +47,24 @@ namespace RGBTester.Logic
             string p1 = copy_path.Length > 0 ? copy_path[0] : "";
             string p2 = copy_path.Length > 1 ? copy_path[1] : "";
 
+            string pass_fail = "";
+            if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+            {
+                if (RGBfunc.FailReasonFlag.IsTestFail() == true)
+                    pass_fail = "FAIL";
+                else
+                    pass_fail = "PASS";
+            }
+
             if (p1 != "" || p2 != "")
             {
                 Tool.CopyFile(file,
-                            (copy_path.Length > 0 ? copy_path[0] : "") + $"\\{timeDay}",
-                            (copy_path.Length > 1 ? copy_path[1] : "") + $"\\{timeDay}");
+                            (copy_path.Length > 0 ? copy_path[0] : "") + $"\\{timeDay}\\{pass_fail}",
+                            (copy_path.Length > 1 ? copy_path[1] : "") + $"\\{timeDay}\\{pass_fail}");
             }
 
             Tool.CloseFile(file);
         }
-        public bool UpdateResult()
-        {
-            bool res = true;
-            if (Calibration.Count != 0)
-            {
-                res = DataUpdate.DataUpdate(Calibration, Cmd);
-                Calibration.Clear();
-                Cmd = "";
-            }
-
-            return res;
-        }
         #endregion
-
-
-
-
-
     }
 }

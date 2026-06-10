@@ -1,12 +1,14 @@
-﻿using DeviceCore;
-using Microsoft.Extensions.DependencyInjection;
-using RGBTester.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+
 using ToolFunction;
+using DeviceCore;
+using RGBTester.Base;
+using RGBTester.Base.UploadDataSetting;
 
 namespace RGBTester.Logic
 {
@@ -26,6 +28,36 @@ namespace RGBTester.Logic
         private IServiceProvider ServiceProvider;
         private RGBTesterFunction RGBfunc;
         private F_StartFormLogic StartFormLogic;
+        #endregion
+
+        #region private function
+        private int UploadSetting()
+        {
+            IFunction_DataUpload data_upload = ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+            UploadInfo info = new UploadInfo
+            {
+                OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
+                SerialNunber = RGBfunc.SerialNumber,
+
+                FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
+                PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
+                ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
+                Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+                Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+                Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
+            };
+            data_upload.SetInformation(info);
+
+            if (ApplicationSetting.Get_Int_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.Cmbx_UseUploadSystem) == (int)eUseUploadSystem.USE)
+                data_upload.IsUseUploadFunction(true);
+            else
+                data_upload.IsUseUploadFunction(false);
+
+            if (data_upload.CheckConnectStatus() == false)
+                return -1;
+
+            return 0;
+        }
         #endregion
 
         public void SetVirtual_IO_Rule()
@@ -62,25 +94,9 @@ namespace RGBTester.Logic
             RGBTesterMachine.DIOL.Clear_AI_VirtualData();
             StartFormLogic.ReadVirtual_AI_Data();
 
-            //確認上傳資訊
-            IFunction_DataUpload data_upload = ServiceProvider.GetRequiredService<IFunction_DataUpload>();
-            UploadInfo info = new UploadInfo
-            {
-                OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
-                SerialNunber = RGBfunc.SerialNumber,
-
-                FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
-                PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
-                ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
-                Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
-                Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
-                Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
-            };
-            data_upload.SetInfromation(info);
-            
-            if (data_upload.CheckConnectStatus() == false)
+            if (UploadSetting() != 0)
                 return -1;
-
+            
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             MainTask.SetTask<TaskFunctionTest>();
             MainTask.Run();

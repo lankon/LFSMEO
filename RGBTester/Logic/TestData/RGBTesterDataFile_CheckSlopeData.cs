@@ -13,9 +13,10 @@ namespace RGBTester.Logic
 {
     public class CheckSlopeData
     {
-        public CheckSlopeData(RGBTesterDataFile_FileType file_type)
+        public CheckSlopeData(RGBTesterDataFile_FileType file_type, RGBTesterFunction rGBTesterFunction)
         {
             FileType = file_type;
+            RGBfunc = rGBTesterFunction;
 
             //增加測試顏色時需添加
             if (FileType.GetModuleType() == eModuleType.IV_Calibration)
@@ -27,6 +28,7 @@ namespace RGBTester.Logic
         #region parameter define
         private RGBTesterDataFile_FileType FileType;
         private StreamWriter OutputFile;
+        private RGBTesterFunction RGBfunc;
         private bool PASS = false;
         private const int CheckCount = 5;
         private double Limit_Dev = 15;
@@ -185,6 +187,15 @@ namespace RGBTester.Logic
                 Tool.WriteFile(OutputFile, FileType.GetCheckSlopeStr(i));
             }
 
+            string pass_fail = "";
+            if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+            {
+                if (RGBfunc.FailReasonFlag.IsTestFail() == true)
+                    pass_fail = "FAIL";
+                else
+                    pass_fail = "PASS";
+            }
+
             // Copy the result file to the specified paths
             string p1 = copy_path.Length > 0 ? copy_path[0] : "";
             string p2 = copy_path.Length > 1 ? copy_path[1] : "";
@@ -192,8 +203,8 @@ namespace RGBTester.Logic
             if (p1 != "" || p2 != "")
             {
                 Tool.CopyFile(OutputFile,
-                            (copy_path.Length > 0 ? copy_path[0] : "") + $"\\{now_date}",
-                            (copy_path.Length > 1 ? copy_path[1] : "") + $"\\{now_date}");
+                            (copy_path.Length > 0 ? copy_path[0] : "") + $"\\{now_date}\\{pass_fail}",
+                            (copy_path.Length > 1 ? copy_path[1] : "") + $"\\{now_date}\\{pass_fail}");
             }
 
             Tool.CloseFile(OutputFile);

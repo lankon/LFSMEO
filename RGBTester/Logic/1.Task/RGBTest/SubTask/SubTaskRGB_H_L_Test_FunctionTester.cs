@@ -391,7 +391,6 @@ namespace RGBTester.Logic
             {
                 if(res > HCM_UL || res < HCM_LL)
                 {
-                    Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{HCM_LL:F3}~{HCM_UL:F3}", level: "WRN");
                     RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
@@ -400,7 +399,6 @@ namespace RGBTester.Logic
             {
                 if (res > LCM_UL || res < LCM_LL)
                 {
-                    Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{LCM_LL:F3}~{LCM_UL:F3}", level: "WRN");
                     RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
@@ -410,16 +408,14 @@ namespace RGBTester.Logic
         {
             if(TesterData_L.DISP_6V0[0] > 6.25 || TesterData_L.DISP_6V0[0] < 6)
             {
-                Scope.TestFail = true;
-                Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3} Err", level: "WRN");
-                RGBfunc.FailReasonFlag.IsVoltageErr = true;
+                Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3},Out of Range:6~6.25", level: "ERR");
+                RGBfunc.FailReasonFlag.IsVoltageErr_6V = true;
             }
 
             if (TesterData_L.DISP_1V2[0] > 1.25 || TesterData_L.DISP_1V2[0] < 1.15)
             {
-                Scope.TestFail = true;
-                Tool.SaveLogToFile($"Voltage_1V2 = {TesterData_L.DISP_1V2[0]:F3} Err", level: "WRN");
-                RGBfunc.FailReasonFlag.IsVoltageErr = true;
+                Tool.SaveLogToFile($"Voltage_1V2 = {TesterData_L.DISP_1V2[0]:F3},Out of Range:1.15~1.25", level: "ERR");
+                RGBfunc.FailReasonFlag.IsVoltageErr_1V2 = true;
             }
 
         }
@@ -443,7 +439,6 @@ namespace RGBTester.Logic
 
                     if (startClampingDAC < failLimit)
                     {
-                        Scope.TestFail = true;
                         RGBfunc.FailReasonFlag.IsClampingErr = true;
                     }
 
@@ -458,7 +453,6 @@ namespace RGBTester.Logic
             double limit = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_FailOverTemp);
             if (temperature > limit || temperature < -50)
             {
-                Scope.TestFail = true;
                 RGBfunc.FailReasonFlag.IsTemperatureErr = true;
                 Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高或溫度感測異常", level: "WRN");
             }

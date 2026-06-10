@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
 
+	<UnRelease version="1.26.6.1" date="2026-06-09">
+		<Item type="Added">新增FunctionTester</Item>
+	</UnRelease>
+
 	<Release version="1.26.4.2" date="2026-04-13">
 		<Item type="Fixed">斜率計算電流誤差檢查</Item>
 		<Item type="Fixed">F_Recipe錯誤釋放記憶體</Item>

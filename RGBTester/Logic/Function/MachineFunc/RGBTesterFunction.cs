@@ -42,8 +42,12 @@ namespace RGBTester.Logic
             public bool IsClampingErr = false;
             public bool IsTemperatureErr = false;
             public bool IsSlopeCalculateCurrentErr = false;
-            public bool IsLuminousErr = false;
-            public bool IsVoltageErr = false;
+            public bool IsVoltageErr_6V = false;
+            public bool IsVoltageErr_1V2 = false;
+            public bool IsRedLuminousErr = false;
+            public bool IsGreenLuminousErr = false;
+            public bool IsBlueLuminousErr = false;
+            public bool IsBlue2LuminousErr = false;
 
             public void ResetAllFlag()
             {
@@ -51,8 +55,23 @@ namespace RGBTester.Logic
                 IsClampingErr = false;
                 IsTemperatureErr = false;
                 IsSlopeCalculateCurrentErr = false;
-                IsLuminousErr = false;
-                IsVoltageErr = false;
+                IsVoltageErr_6V = false;
+                IsVoltageErr_1V2 = false;
+                IsRedLuminousErr = false;
+                IsGreenLuminousErr = false;
+                IsBlueLuminousErr = false;
+                IsBlue2LuminousErr = false;
+            }
+
+            public bool IsTestFail()
+            {
+                if (IsSlopeErr || IsClampingErr || IsTemperatureErr ||
+                    IsSlopeCalculateCurrentErr ||
+                    IsVoltageErr_6V || IsVoltageErr_1V2 || IsRedLuminousErr ||
+                    IsGreenLuminousErr || IsBlueLuminousErr || IsBlue2LuminousErr)
+                    return true;
+                else
+                    return false;
             }
 
             public string GetFailDescription()
@@ -67,13 +86,23 @@ namespace RGBTester.Logic
                     error_message.Add("Temperature Fail");
                 if(IsSlopeCalculateCurrentErr)
                     error_message.Add("Slope Cal Current Fail");
-                if(IsLuminousErr)
-                    error_message.Add("Luminous Fail");
-                if(IsVoltageErr)
-                    error_message.Add("Voltage Fail");
+                if (IsVoltageErr_6V)
+                    error_message.Add("Voltage 6V Fail");
+                if (IsVoltageErr_1V2)
+                    error_message.Add("Voltage 1.2V Fail");
+                if(IsRedLuminousErr)
+                    error_message.Add("Red Luminous Fail");
+                if (IsGreenLuminousErr)
+                    error_message.Add("Green Luminous Fail");
+                if (IsBlueLuminousErr)
+                    error_message.Add("Blue Luminous Fail");
+                if (IsBlue2LuminousErr)
+                    error_message.Add("Blue2 Luminous Fail");
 
                 if (IsSlopeErr == false && IsClampingErr == false && 
-                    IsTemperatureErr == false && IsSlopeCalculateCurrentErr==false && IsLuminousErr == false && IsVoltageErr == false)
+                    IsTemperatureErr == false && IsSlopeCalculateCurrentErr==false && 
+                    IsVoltageErr_6V && IsVoltageErr_1V2 && IsRedLuminousErr && IsGreenLuminousErr &&
+                    IsBlueLuminousErr && IsBlue2LuminousErr)
                     error_message.Add("None");
 
                 string res = "";

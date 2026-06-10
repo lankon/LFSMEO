@@ -20,9 +20,10 @@ namespace RGBTester.Base
     
     public interface IFunction_DataUpload
     {
-        bool SetInfromation(UploadInfo info);
+        bool SetInformation(UploadInfo info);
+        UploadInfo GetInformation();
+        void IsUseUploadFunction(bool use);
         bool CheckConnectStatus();
-        bool DataUpdate(List<string> data, string sn);
+        bool DataUpdate(List<string> data, string command);
     }
-    
 }

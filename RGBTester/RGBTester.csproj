@@ -184,6 +184,7 @@
     <Compile Include="Logic\TestData\RGBTesterDataFile_CheckSlopeData.cs" />
     <Compile Include="Logic\TestData\Module\RGBTesterDataFile_FunctionTester.cs" />
     <Compile Include="Logic\TestData\Module\RGBTesterDataFile_IVCalibration.cs" />
+    <Compile Include="Logic\TestData\RGBTesterDataFile_UploadData.cs" />
     <Compile Include="Logic\TestData\RGBTesterDataFile_OpticalData.cs" />
     <Compile Include="UI\Engineer\F_ElectricalSetting.cs">
       <SubType>Form</SubType>

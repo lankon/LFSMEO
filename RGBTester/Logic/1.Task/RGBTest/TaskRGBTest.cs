@@ -168,7 +168,7 @@ namespace RGBTester.Logic
             //        Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
             //    };
 
-            //    DataUpload.SetInfromation(info);
+            //    DataUpload.SetInformation(info);
             //}
         }
 

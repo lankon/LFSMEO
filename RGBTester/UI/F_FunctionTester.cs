@@ -94,6 +94,7 @@ namespace RGBTester.UI
             Btn_MoveToOptical.Visible = oem;
             Btn_ElectricalFrom.Enabled = eng;
             Btn_OpticalForm.Enabled = eng;
+
         }
         private void LeavePage()
         {
@@ -162,7 +163,7 @@ namespace RGBTester.UI
 
         private void Btn_StartTest_Click(object sender, EventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control)
+            if (Control.ModifierKeys == Keys.Control || UserPrivilege.AtLeastOEM())
             {
                 SaveAllEnumSetting();
                 ReadAllEnumSetting();
@@ -181,22 +182,22 @@ namespace RGBTester.UI
         private void Btn_Test_Click(object sender, EventArgs e)
         {
             //DataUpdate.DataUpdate();
-            UploadInfo info = new UploadInfo
-            {
-                OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
-                SerialNunber = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_SerialNumber),
+            //UploadInfo info = new UploadInfo
+            //{
+            //    OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
+            //    SerialNunber = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_SerialNumber),
 
-                FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
-                PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
-                ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
-                Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
-                Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
-                Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
+            //    FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
+            //    PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
+            //    ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
+            //    Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+            //    Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+            //    Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
 
-            };
+            //};
 
-            DataUpdate.SetInfromation(info);    //測試用
-            DataUpdate.CheckConnectStatus();    //測試用
+            //DataUpdate.SetInformation(info);    //測試用
+            //DataUpdate.CheckConnectStatus();    //測試用
         }
 
         private void Btn_MoveToElectrical_Click(object sender, EventArgs e)
