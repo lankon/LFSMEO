@@ -9,6 +9,8 @@ namespace RGBTester.Base
     public enum eF_Equipment_Setting
     {
         Cmbx_ShowFormName,
+        Cmbx_ElectricalModule,
+        Cmbx_OpticalModule,
     }
 
     public enum eMachineSetting

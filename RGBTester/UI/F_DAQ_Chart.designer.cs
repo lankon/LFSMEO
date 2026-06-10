@@ -29,9 +29,9 @@ namespace RGBTester.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.Btn_CaptureData = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -50,6 +50,7 @@ namespace RGBTester.UI
             this.Labl_Result3 = new System.Windows.Forms.Label();
             this.Labl_Result2 = new System.Windows.Forms.Label();
             this.Labl_Result1 = new System.Windows.Forms.Label();
+            this.Pnl_ShowSetting = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -58,34 +59,34 @@ namespace RGBTester.UI
             // chart1
             // 
             this.chart1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisX.LineColor = System.Drawing.Color.Gray;
-            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            chartArea1.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea1.AxisX.MajorTickMark.Enabled = false;
-            chartArea1.AxisY.LabelStyle.Enabled = false;
-            chartArea1.AxisY.LineColor = System.Drawing.Color.Gray;
-            chartArea1.AxisY.MajorGrid.Enabled = false;
-            chartArea1.AxisY.MajorTickMark.Enabled = false;
-            chartArea1.BackColor = System.Drawing.Color.Black;
-            chartArea1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Far;
-            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend1.Name = "Legend1";
-            legend1.TitleAlignment = System.Drawing.StringAlignment.Near;
-            this.chart1.Legends.Add(legend1);
+            chartArea7.AxisX.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
+            chartArea7.AxisX.LineColor = System.Drawing.Color.Gray;
+            chartArea7.AxisX.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            chartArea7.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea7.AxisX.MajorTickMark.Enabled = false;
+            chartArea7.AxisY.LabelStyle.Enabled = false;
+            chartArea7.AxisY.LineColor = System.Drawing.Color.Gray;
+            chartArea7.AxisY.MajorGrid.Enabled = false;
+            chartArea7.AxisY.MajorTickMark.Enabled = false;
+            chartArea7.BackColor = System.Drawing.Color.Black;
+            chartArea7.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea7.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea7.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea7);
+            legend7.Alignment = System.Drawing.StringAlignment.Far;
+            legend7.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend7.Name = "Legend1";
+            legend7.TitleAlignment = System.Drawing.StringAlignment.Near;
+            this.chart1.Legends.Add(legend7);
             this.chart1.Location = new System.Drawing.Point(12, 12);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Color = System.Drawing.Color.Red;
-            series1.Legend = "Legend1";
-            series1.MarkerBorderColor = System.Drawing.Color.White;
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Color = System.Drawing.Color.Red;
+            series7.Legend = "Legend1";
+            series7.MarkerBorderColor = System.Drawing.Color.White;
+            series7.Name = "Series1";
+            this.chart1.Series.Add(series7);
             this.chart1.Size = new System.Drawing.Size(1302, 599);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -145,7 +146,8 @@ namespace RGBTester.UI
             this.TestColor.Items.AddRange(new object[] {
             "Red",
             "Green",
-            "Blue"});
+            "Blue",
+            "Blue2"});
             this.TestColor.Location = new System.Drawing.Point(412, 6);
             this.TestColor.Name = "TestColor";
             this.TestColor.Size = new System.Drawing.Size(73, 28);
@@ -321,11 +323,21 @@ namespace RGBTester.UI
             this.Labl_Result1.Text = "0.000";
             this.Labl_Result1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // Pnl_ShowSetting
+            // 
+            this.Pnl_ShowSetting.BackColor = System.Drawing.Color.Transparent;
+            this.Pnl_ShowSetting.Location = new System.Drawing.Point(921, 18);
+            this.Pnl_ShowSetting.Name = "Pnl_ShowSetting";
+            this.Pnl_ShowSetting.Size = new System.Drawing.Size(358, 51);
+            this.Pnl_ShowSetting.TabIndex = 8;
+            this.Pnl_ShowSetting.Click += new System.EventHandler(this.Pnl_ShowSetting_Click);
+            // 
             // F_DAQ_Chart
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.Pnl_ShowSetting);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Btn_SaveData);
             this.Controls.Add(this.tableLayoutPanel5);
@@ -363,5 +375,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label Labl_Result3;
         private System.Windows.Forms.Label Labl_Result2;
         private System.Windows.Forms.Label Labl_Result1;
+        private System.Windows.Forms.Panel Pnl_ShowSetting;
     }
 }

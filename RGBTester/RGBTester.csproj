@@ -63,6 +63,12 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=9.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.9.0.10\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="ScottPlot, Version=4.1.74.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.4.1.74\lib\net48\ScottPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="ScottPlot.WinForms, Version=4.1.74.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.WinForms.4.1.74\lib\net48\ScottPlot.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="Serilog, Version=4.3.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.4.3.0\lib\net471\Serilog.dll</HintPath>
     </Reference>
@@ -84,6 +90,9 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.7.2\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -118,42 +127,76 @@
     <Reference Include="Z23A_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_API.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\eElement_Form\eF_UploadDataSetting.cs" />
+    <Compile Include="Base\eElement_Form\eF_OpticalSetting.cs" />
+    <Compile Include="Base\eElement_Form\eF_FunctionTester.cs" />
+    <Compile Include="Base\eElement_Form\eF_OpticalTest.cs" />
+    <Compile Include="Base\eElement_Form\eF_DAQ_ChartSetting.cs" />
     <Compile Include="Base\eElement_Form\eF_YieldReport.cs" />
     <Compile Include="Base\eElement_Form\eF_ParameterSetting.cs" />
     <Compile Include="Base\eElement_Form\eF_Recipe.cs" />
     <Compile Include="Base\eElement_Form\eF_StartForm.cs" />
     <Compile Include="Base\eElement_Form\eF_Equipment_Setting.cs" />
+    <Compile Include="Base\eModileType.cs" />
     <Compile Include="Base\IBaseMainTaskMulti.cs" />
+    <Compile Include="Base\IFunction_DataUpdate.cs" />
+    <Compile Include="Base\IF_Form\IF_OpticalTest.cs" />
     <Compile Include="Base\IF_Form\IF_ParameterSetting.cs" />
     <Compile Include="Base\IF_Form\IF_StartForm.cs" />
     <Compile Include="Base\IF_Form\IF_MainForm.cs" />
     <Compile Include="Base\IF_Form\IF_ProgressBar.cs" />
     <Compile Include="Base\IF_Form\IF_StatusBox.cs" />
     <Compile Include="Base\IF_Form\IF_StateControl.cs" />
-    <Compile Include="Base\ILightEngineFunction.cs" />
+    <Compile Include="Base\IFunction_LightEngine.cs" />
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Device\QuantaLogAPI\Command\QuantaAPI.cs" />
+    <Compile Include="Device\QuantaLogAPI\Function_DataUpload.cs" />
+    <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTestRGB.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTest.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\TaskOpticalTest.cs" />
+    <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTask_DISP_Test.cs" />
+    <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskMoveToElectrical.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskBurnInTest.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskMoveToOptical.cs" />
+    <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskRGB_H_L_Test_FunctionTester.cs" />
+    <Compile Include="Logic\1.Task\UnLoad\SubTask\SubTaskUnLoad.cs" />
+    <Compile Include="Logic\1.Task\UnLoad\TaskUnLoad.cs" />
+    <Compile Include="Logic\2.FormLogic\F_FunctionTesterLogic.cs" />
+    <Compile Include="Logic\2.FormLogic\F_MFactorCalibrationLogic.cs" />
+    <Compile Include="Logic\2.FormLogic\F_OpticalSettingLogic.cs" />
+    <Compile Include="Logic\2.FormLogic\F_OpticalTestLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_YieldReportLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_ParameterSettingLogic.cs" />
-    <Compile Include="Logic\Function\TestResultDataBase.cs" />
-    <Compile Include="Logic\TestData\ResultData.cs" />
-    <Compile Include="UI\F_ParameterSetting.cs">
+    <Compile Include="Logic\Function\LuminousFlux.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_DAQPoint.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_Data.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_OpticalLinearOffset.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction_HardwareSetting.cs" />
+    <Compile Include="Logic\Function\DataBaseTestResult.cs" />
+    <Compile Include="Logic\Function\Wavelength.cs" />
+    <Compile Include="Logic\TestData\RGBTesterDataFile_CheckSlopeData.cs" />
+    <Compile Include="Logic\TestData\Module\RGBTesterDataFile_FunctionTester.cs" />
+    <Compile Include="Logic\TestData\Module\RGBTesterDataFile_IVCalibration.cs" />
+    <Compile Include="Logic\TestData\RGBTesterDataFile_UploadData.cs" />
+    <Compile Include="Logic\TestData\RGBTesterDataFile_OpticalData.cs" />
+    <Compile Include="UI\Engineer\F_ElectricalSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_ParameterSetting.designer.cs">
-      <DependentUpon>F_ParameterSetting.cs</DependentUpon>
+    <Compile Include="UI\Engineer\F_ElectricalSetting.designer.cs">
+      <DependentUpon>F_ElectricalSetting.cs</DependentUpon>
     </Compile>
     <Content Include="ChangeLog.xml" />
     <Compile Include="Device\LightEngine\Command\Z23ACommand.cs" />
     <Compile Include="Device\LightEngine\LightEngineFunction.cs" />
     <Compile Include="Device\LightEngine\Command\Z23A_API_Command.cs" />
     <Compile Include="Logic\1.Task\RGBTest\TaskRGBTest.cs" />
-    <Compile Include="Logic\1.Task\TaskMotionTest.cs" />
     <Compile Include="Logic\2.FormLogic\F_DAQ_ChartLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_RecipeLogic.cs" />
     <Compile Include="Logic\Function\DataFilter.cs" />
@@ -164,9 +207,8 @@
     <Compile Include="Base\IBaseTask.cs" />
     <Compile Include="Device\LightEngine\Command\Virtual_LEA_Command.cs" />
     <Compile Include="Device\LightEngine\Command\GL18Command.cs" />
-    <Compile Include="Logic\Function\RGBTesterFunction.cs" />
+    <Compile Include="Logic\Function\MachineFunc\RGBTesterFunction.cs" />
     <Compile Include="Logic\TestData\RGBTesterDataFile.cs" />
-    <Compile Include="Logic\TestData\RGBTesterData.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskRGB_H_L_Test.cs" />
     <Compile Include="Logic\1.Task\RGBTest\SubTask\SubTaskRGBTest.cs" />
     <Compile Include="Logic\0.Thread\MainTaskMulti.cs" />
@@ -181,11 +223,47 @@
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RGBTesterMachine.cs" />
+    <Compile Include="UI\Engineer\F_UploadDataSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Engineer\F_UploadDataSetting.designer.cs">
+      <DependentUpon>F_UploadDataSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Engineer\F_OpticalSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Engineer\F_OpticalSetting.designer.cs">
+      <DependentUpon>F_OpticalSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_DAQ_Chart.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\F_DAQ_Chart.designer.cs">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_FunctionTester.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_FunctionTester.designer.cs">
+      <DependentUpon>F_FunctionTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_OpticalTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_OpticalTest.designer.cs">
+      <DependentUpon>F_OpticalTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Engineer\F_EngineerSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Engineer\F_EngineerSetting.designer.cs">
+      <DependentUpon>F_EngineerSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_DAQ_ChartSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_DAQ_ChartSetting.designer.cs">
+      <DependentUpon>F_DAQ_ChartSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\F_YieldReport.cs">
       <SubType>Form</SubType>
@@ -211,10 +289,16 @@
     <Compile Include="UI\OEM\F_OEM_Setting.designer.cs">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_Recipe.cs">
+    <Compile Include="UI\OEM\F_MFactorCalibration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_Recipe.designer.cs">
+    <Compile Include="UI\OEM\F_MFactorCalibration.designer.cs">
+      <DependentUpon>F_MFactorCalibration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Standard\F_Recipe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Standard\F_Recipe.designer.cs">
       <DependentUpon>F_Recipe.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\OEM\F_DAQ_SamplingTest.cs">
@@ -235,22 +319,22 @@
     <Compile Include="UI\F_StartForm_ButtonGroup.designer.cs">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_ProgressBar.cs">
+    <Compile Include="UI\Standard\F_ProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_ProgressBar.designer.cs">
+    <Compile Include="UI\Standard\F_ProgressBar.designer.cs">
       <DependentUpon>F_ProgressBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_StatusBox.cs">
+    <Compile Include="UI\Standard\F_StatusBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_StatusBox.designer.cs">
+    <Compile Include="UI\Standard\F_StatusBox.designer.cs">
       <DependentUpon>F_StatusBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\F_StateControl.cs">
+    <Compile Include="UI\Standard\F_StateControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\F_StateControl.designer.cs">
+    <Compile Include="UI\Standard\F_StateControl.designer.cs">
       <DependentUpon>F_StateControl.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -262,8 +346,26 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Engineer\F_UploadDataSetting.resx">
+      <DependentUpon>F_UploadDataSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Engineer\F_OpticalSetting.resx">
+      <DependentUpon>F_OpticalSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_DAQ_Chart.resx">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_FunctionTester.resx">
+      <DependentUpon>F_FunctionTester.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_OpticalTest.resx">
+      <DependentUpon>F_OpticalTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Engineer\F_EngineerSetting.resx">
+      <DependentUpon>F_EngineerSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_DAQ_ChartSetting.resx">
+      <DependentUpon>F_DAQ_ChartSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_YieldReport.resx">
       <DependentUpon>F_YieldReport.cs</DependentUpon>
@@ -277,7 +379,10 @@
     <EmbeddedResource Include="UI\OEM\F_OEM_Setting.resx">
       <DependentUpon>F_OEM_Setting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_Recipe.resx">
+    <EmbeddedResource Include="UI\OEM\F_MFactorCalibration.resx">
+      <DependentUpon>F_MFactorCalibration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Standard\F_Recipe.resx">
       <DependentUpon>F_Recipe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OEM\F_DAQ_SamplingTest.resx">
@@ -289,17 +394,17 @@
     <EmbeddedResource Include="UI\F_StartForm_ButtonGroup.resx">
       <DependentUpon>F_StartForm_ButtonGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_ProgressBar.resx">
+    <EmbeddedResource Include="UI\Standard\F_ProgressBar.resx">
       <DependentUpon>F_ProgressBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_StatusBox.resx">
+    <EmbeddedResource Include="UI\Standard\F_StatusBox.resx">
       <DependentUpon>F_StatusBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_StateControl.resx">
+    <EmbeddedResource Include="UI\Standard\F_StateControl.resx">
       <DependentUpon>F_StateControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_ParameterSetting.resx">
-      <DependentUpon>F_ParameterSetting.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Engineer\F_ElectricalSetting.resx">
+      <DependentUpon>F_ElectricalSetting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +425,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

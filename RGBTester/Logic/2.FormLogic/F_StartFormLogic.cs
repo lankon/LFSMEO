@@ -17,51 +17,35 @@ namespace RGBTester.Logic
 {
     public class F_StartFormLogic
     {
-        public F_StartFormLogic(IRGBTesterMachine machine, IServiceProvider serviceProvider)
+        public F_StartFormLogic(IRGBTesterMachine machine, IServiceProvider serviceProvider, RGBTesterFunction rGBTesterFunction)
         {
             Machine = machine;
             ServiceProvider = serviceProvider;
+            RGBFunc = rGBTesterFunction;
         }
 
         #region parameter define
         IRGBTesterMachine Machine;
         IServiceProvider ServiceProvider;
+        RGBTesterFunction RGBFunc;
         #endregion
 
         #region public function
-        public void OpenChillerComm()
-        {
-            //Machine.Chiller.Open("COM8",9600, Parity.None, 8, StopBits.One);
-            Machine.Chiller.SetTemperature(25);
-        }
-
-        public void GetChillerStatus()
-        {
-            Thread.Sleep(100);
-            
-            while(true)
-            {
-                Machine.Chiller.GetStatus();
-
-                Thread.Sleep(100);
-            }
-        }
-
         public string GetTemperature()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            var lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             return lea.GetTemperature();
         }
 
         public int[] Get_DAC_Value()
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            var lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             return lea.Get_DAC();
         }
 
         public void Set_DAC_Test(int red, int green, int blue)
         {
-            var lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            var lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
 
             //因為Z23A沒有分左右邊，所以這邊只設定左邊
             if (red != 0)
@@ -83,23 +67,30 @@ namespace RGBTester.Logic
 
         public int StartTaskAction(string method = "")
         {
-            ILightEngineFunction lea = ServiceProvider.GetRequiredService<ILightEngineFunction>();
+            var RGBFunc = ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+
+            IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             lea.Open();
 
             int res = CheckTestCondition();
 
             if (res < 0)
                 return res;
-
-            var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             
             if(method == "Left")
+            {
+                RGBFunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                 MainTask.SetTask<TaskRGBTest>("Left");
+            }
             else if(method == "Right")
+            {
+                RGBFunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                 MainTask.SetTask<TaskRGBTest>("Right");
-            else
-                MainTask.SetTask<TaskRGBTest>("Both");
-
+            }
+            //else
+            //    MainTask.SetTask<TaskRGBTest>("Both");
+            
             MainTask.Run();
 
             return 0;
@@ -114,12 +105,23 @@ namespace RGBTester.Logic
             if (!File.Exists(filePath))
                 return -1;
 
-            EIOName[] eIONames = new EIOName[] { EIOName.Left_Iin_HCM, EIOName.Left_Iin_LCM, EIOName.Left_Vin,
+            EIOName[] eIONames = null;
+            if (RGBFunc.GetModuleType() == eModuleType.IV_Calibration)
+            {
+                eIONames = new EIOName[] { EIOName.Left_Iin_HCM, EIOName.Left_Iin_LCM, EIOName.Left_Vin,
                                                  EIOName.Right_VLED, EIOName.Left_ILED, EIOName.Right_Iin_LCM,
                                                  EIOName.Right_Vin, EIOName.Right_ILED, EIOName.Left_VLED,
-                                                 EIOName.Left_VLED_R, EIOName.Left_VLED_B, EIOName.Left_VLED_G, 
+                                                 EIOName.Left_VLED_R, EIOName.Left_VLED_B, EIOName.Left_VLED_G,
                                                  EIOName.Right_Iin_HCM, EIOName.Right_VLED_R, EIOName.Right_VLED_G,
                                                  EIOName.Right_VLED_B};
+            }
+            else if(RGBFunc.GetModuleType() == eModuleType.Function_Test)
+            {
+                eIONames = new EIOName[] { EIOName.Left_6V, EIOName.Left_1V2, EIOName.Left_Vin,
+                                            EIOName.Left_VLED_R, EIOName.Left_VLED_G, EIOName.Left_VLED_B,
+                                            EIOName.Left_V_R, EIOName.Left_V_G, EIOName.Left_V_B1,
+                                            EIOName.Left_V_B2, EIOName.Left_V_FB1, EIOName.Left_V_FB2,};
+            }
 
             string[] lines = File.ReadAllLines(filePath);
 
@@ -135,7 +137,7 @@ namespace RGBTester.Logic
 
                 if (values.Length < 2) continue; // 確保至少有 DAC 索引和一個通道值
 
-                for(int i=1; i<values.Length-1; i++)
+                for(int i=1; i<values.Length; i++)
                 {
                     if(double.TryParse(values[i], out double d_value))
                         Machine.DIOL.Add_AI_VirtualData(eIONames[i-1], d_value);

@@ -1,6 +1,7 @@
 ﻿using DeviceCore;
 using Microsoft.Extensions.DependencyInjection;
 using RGBTester.Base;
+using RGBTester.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ToolFunction;
 
 namespace RGBTester.Logic
@@ -53,6 +55,22 @@ namespace RGBTester.Logic
             IF_Spectrometer f_spectrometer = ServiceProvider.GetRequiredService<IF_Spectrometer>();
             f_spectrometer.Update_Spectrum_List();
             RGBTesterMachine.Spectrometer.Initial_All_Spectrometer();
+
+            //設定扣除背景值係數
+            double std = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_Standard);
+            double slope = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BackgroundGain);
+            double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BackgroundOffset);
+            RGBTesterMachine.Spectrometer.SetBackgroundCoef(std, slope, offset);
+            RGBTesterMachine.Spectrometer.SetMFactor();
+        }
+        private void ShowModuleForm<T>() where T : class
+        {
+            var startForm = ServiceProvider.GetRequiredService<T>();
+            if (startForm is Form form)
+            {
+                Tool.SetForm(Scope.MainPanel, form);
+                form.Show();
+            }
         }
         #endregion
 
@@ -66,14 +84,39 @@ namespace RGBTester.Logic
 
         public void ReadAllSetting()
         {
+            Tool.SaveLogToFile("Load Application Setting");
             ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             ApplicationSetting.ReadAllRecipe<eF_Recipe>();
             ApplicationSetting.ReadAllRecipe<eF_ParameterSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_OpticalTest>();
+            ApplicationSetting.ReadAllRecipe<eF_StartForm>();
+            ApplicationSetting.ReadAllRecipe<eF_OpticalSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_UploadDataSetting>();
 
             Tool.SaveLogToFile("Load Recipe File");
             var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
             string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             recipe.ReadRecipe(cur_recipe_name);
+
+            //[Read Recipe]
+            ApplicationSetting.ReadAllRecipe<eF_OpticalTestRecipe>(cur_recipe_name);
+
+        }
+
+        public void ShowStartForm()
+        {
+            Tool.HideElementOnPanel(Scope.MainPanel);
+
+            RGBTesterFunction func = ServiceProvider.GetRequiredService<RGBTesterFunction>();
+
+            if(func.GetModuleType() == eModuleType.IV_Calibration)
+                ShowModuleForm<IF_StartForm>();
+            else if(func.GetModuleType() == eModuleType.Function_Test)
+                ShowModuleForm<F_FunctionTester>();
+
+            var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
+            Tool.SetForm(Scope.UpButtonPanel, group);
+            group.Show();
         }
 
         public int DeleteExpireFileInFolder()

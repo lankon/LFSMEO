@@ -20,7 +20,7 @@ namespace Device_Virtual
         }
 
         #region parameter define
-        Queue<double>[] AI_Virtual;
+        Queue<double>[,] AI_Virtual;    //紀錄[DevNo,Port]對應的AI訊號
         private List<IORule> IO_Rules = new List<IORule>();
         Device_Parameter _Param = new Device_Parameter();
         private int lineMaxCount = 5;
@@ -42,6 +42,16 @@ namespace Device_Virtual
 
             // 結果 (Effect) 支援多個 Input
             public List<(int InputAddress, bool InputValue)> Effects { get; set; } = new List<(int, bool)>();
+        }
+        private bool CheckCondition(byte cardNo= 0, byte lineNo = 0, byte DevNo = 0, byte port = 0)
+        {
+            if(DevNo < 0 || port < 0)
+                return false;
+            
+            if(DevNo >= devMaxCount || port >= portMaxCount)
+                return false;
+
+            return true;
         }
         #endregion
 
@@ -71,11 +81,16 @@ namespace Device_Virtual
 
         public bool Open()
         {
-            AI_Virtual = new Queue<double>[portMaxCount];
+            AI_Virtual = new Queue<double>[devMaxCount, portMaxCount];
 
-            for (int i = 0; i < portMaxCount; i++)
-                AI_Virtual[i] = new Queue<double>();
-            
+            for (int i = 0; i < AI_Virtual.GetLength(0); i++)
+            {
+                for (int j = 0; j < AI_Virtual.GetLength(1); j++)
+                {
+                    AI_Virtual[i, j] = new Queue<double>();
+                }
+            }
+
             return true;
         }
 
@@ -122,28 +137,40 @@ namespace Device_Virtual
             //var sw = Stopwatch.StartNew();
             //while (sw.ElapsedTicks < targetTicks * 40) { }
 
-            if (AI_Virtual[port] == null)
+            if (!CheckCondition())
+                return 5;
+
+            if (port >= AI_Virtual.Length || port < 0)
+                return 5;
+
+            if (AI_Virtual[devNo, port] == null)
                 return 5;
             
-            if(AI_Virtual[port].Count <= 0)
+            if(AI_Virtual[devNo, port].Count <= 0)
                 return 5;
             else
-                return AI_Virtual[port].Dequeue();
+                return AI_Virtual[devNo, port].Dequeue();
         }
 
         //[Virtual IO Card Function]
-        public int Add_AI_VirtualData(byte port, double value)
+        public int Add_AI_VirtualData(byte devNo, byte port, double value)
         {
-            AI_Virtual[port].Enqueue(value);
+            if (!CheckCondition())
+                return -1;
+            
+            AI_Virtual[devNo, port].Enqueue(value);
 
             return 0;
         }
 
         public int Clear_AI_VirtualData()
         {
-            for(int i=0; i<AI_Virtual.Length; i++)
+            for (int i = 0; i < AI_Virtual.GetLength(0); i++)
             {
-                AI_Virtual[i].Clear();
+                for (int j = 0; j < AI_Virtual.GetLength(1); j++)
+                {
+                    AI_Virtual[i, j].Clear();
+                }
             }
 
             return 0;

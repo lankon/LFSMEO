@@ -8,6 +8,6 @@ namespace RGBTester.Base
 {
     public interface IF_StatusBox
     {
-        void ShowMessage(string msg);
+        void ShowMessage(string msg, string status = "ERR");
     }
 }

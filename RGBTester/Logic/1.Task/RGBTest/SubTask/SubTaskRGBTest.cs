@@ -2,6 +2,7 @@
 using RGBTester.Base;
 using RGBTester.Device;
 using RGBTester.UI;
+using SampleCode.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToolFunction;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace RGBTester.Logic
 {
@@ -39,7 +39,9 @@ namespace RGBTester.Logic
 
         #region parameter
         RGBTesterFunction RGBfunc;
-        ResultData ResultData;
+        private RGBTesterData TesterData_H = new RGBTesterData();
+        private RGBTesterData TesterData_L = new RGBTesterData();
+        IWriteFile ResultData;
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
@@ -51,13 +53,18 @@ namespace RGBTester.Logic
             INITIAL,
             IDLE,
 
+            DISP_TEST,
+            WAIT_DISP_TEST,
+
             LED_R_TEST,
             LED_G_TEST,
             LED_B_TEST,
+            LED_B2_TEST,
 
             WAIT_LED_R_TEST,
             WAIT_LED_G_TEST,
             WAIT_LED_B_TEST,
+            WAIT_LED_B2_TEST,
 
             CHECK_SLOPE_OFFSET,
 
@@ -141,15 +148,15 @@ namespace RGBTester.Logic
         }
         private void SetCheckSlopeDAC()
         {
-            ResultData.CheckSlopeData.ResetParameter();
-            ResultData.CheckSlopeData.SetDeviationLimit(ApplicationSetting.Get_Double_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_DeviationLimit));
-            ResultData.CheckSlopeData.SetCheck_LCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC1),
+            ResultData.CheckSlope.ResetParameter();
+            ResultData.CheckSlope.SetDeviationLimit(ApplicationSetting.Get_Double_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_DeviationLimit));
+            ResultData.CheckSlope.SetCheck_LCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC1),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC2),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC3),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC4),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_LCM_Check_DAC5));
 
-            ResultData.CheckSlopeData.SetCheck_HCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC1),
+            ResultData.CheckSlope.SetCheck_HCM_DAC(ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC1),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC2),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC3),
                                                         ApplicationSetting.Get_Int_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_HCM_Check_DAC4),
@@ -160,20 +167,12 @@ namespace RGBTester.Logic
         {
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
-            ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
+            ResultData = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
-            Scope.TestFail = false;
             RGBfunc.FailReasonFlag.ResetAllFlag();
             SetCheckSlopeDAC();
 
-            if (Type == "Left")
-            {
-                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-            }
-            else if(Type == "Right")
-            {
-                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
-            }
+            SN = RGBfunc.SerialNumber;
         }
         #endregion
 
@@ -233,19 +232,49 @@ namespace RGBTester.Logic
                             if (select == (int)ePartTestItem.BurinIn)
                                 Transition(WORK.BURN_IN_TEST);
                             else
-                                Transition(WORK.LED_R_TEST);
+                            {
+                                if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                                    Transition(WORK.LED_R_TEST);
+                                else if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                                    Transition(WORK.DISP_TEST);
+                            }
                         }
                         else
-                            Transition(WORK.LED_R_TEST);
-
+                        {
+                            if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                                Transition(WORK.LED_R_TEST);
+                            else if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                                Transition(WORK.DISP_TEST);
+                        }
                     }
                     break;
 
+                #region PP_DISP
+                case WORK.DISP_TEST:
+                    {
+                        Tool.SaveLogToFile("PP DISP Test", level: "INF");
+                        SubTask = new SubTask_DISP_Test(Deps, F_StateControl, TesterData_L, TesterData_H,  Type);
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_DISP_TEST);
+                    }
+                    break;
+                case WORK.WAIT_DISP_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.LED_R_TEST);
+                    }
+                    break;
+                #endregion
                 #region RED
                 case WORK.LED_R_TEST:
                     {
                         Tool.SaveLogToFile("LED_R_Test", level: "INF");
-                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type+"_R");
+                        
+                        if(RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_R");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_R");
+
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_R_TEST);
                     }
@@ -261,7 +290,12 @@ namespace RGBTester.Logic
                 case WORK.LED_G_TEST:
                     {
                         Tool.SaveLogToFile("LED_G_TEST", level: "INF");
-                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
+
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_G");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_G");
+
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_G_TEST);
                     }
@@ -277,7 +311,12 @@ namespace RGBTester.Logic
                 case WORK.LED_B_TEST:
                     {
                         Tool.SaveLogToFile("LED_B_TEST", level: "INF");
-                        SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
+
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_B");
+
                         SetSubTaskProcessing(true);
                         Transition(WORK.WAIT_LED_B_TEST);
                     }
@@ -286,34 +325,57 @@ namespace RGBTester.Logic
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                        CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
+                        else
+                            CheckResult(check, SUCCESS: WORK.LED_B2_TEST);
+                    }
+                    break;
+                #endregion
+                #region BLUE2
+                case WORK.LED_B2_TEST:
+                    {
+                        Tool.SaveLogToFile("LED_B2_TEST", level: "INF");
 
-                        
+                        if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                            SubTask = new SubTaskRGB_H_L_Test(Deps, F_StateControl, Type + "_B2");
+                        else
+                            SubTask = new SubTaskRGB_H_L_Test_FunctionTester(Deps, F_StateControl, TesterData_L, TesterData_H, Type + "_B2");
+
+                        SetSubTaskProcessing(true);
+                        Transition(WORK.WAIT_LED_B2_TEST);
+                    }
+                    break;
+                case WORK.WAIT_LED_B2_TEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check, SUCCESS: WORK.CHECK_SLOPE_OFFSET);
                     }
                     break;
                 #endregion
 
                 case WORK.CHECK_SLOPE_OFFSET:
                     {
-                        bool res = ResultData.CheckSlopeData.CheckSlopeCorrect();
-                        var para_set = Deps.ServiceProvider.GetRequiredService<IF_ParameterSetting>();
-                        para_set.ShowSlopeCheckDataInvoke(ResultData.CheckSlopeData.LCM_R_Calculate, ResultData.CheckSlopeData.LCM_R_Dev,
-                                                            ResultData.CheckSlopeData.LCM_G_Calculate, ResultData.CheckSlopeData.LCM_G_Dev,
-                                                            ResultData.CheckSlopeData.LCM_B_Calculate, ResultData.CheckSlopeData.LCM_B_Dev,
-                                                            ResultData.CheckSlopeData.HCM_R_Calculate, ResultData.CheckSlopeData.HCM_R_Dev,
-                                                            ResultData.CheckSlopeData.HCM_G_Calculate, ResultData.CheckSlopeData.HCM_G_Dev,
-                                                            ResultData.CheckSlopeData.HCM_B_Calculate, ResultData.CheckSlopeData.HCM_B_Dev);
+                        bool res = ResultData.CheckSlope.CheckSlopeCorrect();
+                        var para_set = Deps.ServiceProvider.GetRequiredService<IF_ElectricalSetting>();
+                        var data = ResultData.CheckSlope.dicCheckResult;
+                        para_set.ShowSlopeCheckDataInvoke(data["R_LCM"].CalCurrent, data["R_LCM"].Dev,
+                                                            data["G_LCM"].CalCurrent, data["G_LCM"].Dev,
+                                                            data["B_LCM"].CalCurrent, data["B_LCM"].Dev,
+                                                            data["R_HCM"].CalCurrent, data["R_HCM"].Dev,
+                                                            data["G_HCM"].CalCurrent, data["G_HCM"].Dev,
+                                                            data["B_HCM"].CalCurrent, data["B_HCM"].Dev);
 
-                        if (!res)
-                        {
-                            Scope.TestFail = true;
-                            RGBfunc.FailReasonFlag.IsSlopeCalculateCurrentErr = true;
-                        }
+                        //if (!res)
+                        //{
+                        //    Scope.TestFail = true;
+                        //    RGBfunc.FailReasonFlag.IsSlopeCalculateCurrentErr = true;
+                        //}
 
                         string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
                         string copy_path1 = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath1);
                         string side = (Type == "Left") ? "L" : "R";
-                        ResultData.CheckSlopeData.OutputResult(SN, side, copy_path, copy_path1);
+                        ResultData.CheckSlope.OutputResult(SN, side, copy_path, copy_path1);
 
                         if (Scope.TaskRGBTest.IsSingleTest == true)
                         {
@@ -355,7 +417,7 @@ namespace RGBTester.Logic
 
                 case WORK.SUCCESS:
                     {
-                        if(Scope.TestFail == true)
+                        if(RGBfunc.FailReasonFlag.IsTestFail() == true)
                         {
                             string description = RGBfunc.FailReasonFlag.GetFailDescription();
                             StatusBox.ShowMessage(description);

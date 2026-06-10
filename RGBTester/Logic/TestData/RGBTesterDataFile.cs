@@ -8,369 +8,249 @@ using System.Reflection;
 
 using ToolFunction;
 using RGBTester.Base;
+using RGBTester.Logic._RGBTesterDataFile;
 
 namespace RGBTester.Logic
 {
     public class RGBTesterDataFile: IWriteFile
     {
-        public RGBTesterDataFile()
+        public RGBTesterDataFile(IFunction_DataUpload data_update, RGBTesterFunction rGBTesterFunction)
         {
-
+            RGBfunc = rGBTesterFunction;
+            DataUpdate = data_update;
+            SetModuleAndCustomer(RGBfunc.GetModuleType());
         }
 
         #region paramter define
-        DateTime now;
-        private StreamWriter LeftRedFile;
-        private StreamWriter LeftGreenFile;
-        private StreamWriter LeftBlueFile;
-        private StreamWriter RightRedFile;
-        private StreamWriter RightGreenFile;
-        private StreamWriter RightBlueFile;
-        private StreamWriter LeftCalibrationFile;
-        private StreamWriter RightCalibrationFile;
-        private StreamWriter LeftBurnInFile;
-        private StreamWriter RightBurnInFile;
-        public double R_Offset_HCM { get; private set; }
-        public double G_Offset_HCM { get; private set; }
-        public double B_Offset_HCM { get; private set; }
-        public double R_Offset_LCM { get; private set; }
-        public double G_Offset_LCM { get; private set; }
-        public double B_Offset_LCM { get; private set; }
-        public double R_Slope_HCM { get; private set; }
-        public double G_Slope_HCM { get; private set; }
-        public double B_Slope_HCM { get; private set; }
-        public double R_Slope_LCM { get; private set; }
-        public double G_Slope_LCM { get; private set; }
-        public double B_Slope_LCM { get; private set; }
+        private Dictionary<string, StreamWriter> TestFiles = new Dictionary<string, StreamWriter>();    //電性檔案
+        private RGBTesterDataFile_FileType FileType;    //依客戶別或機型產生對應的資料
+        private RGBTesterFunction RGBfunc;              //RGBTester相關Function
+        private IFunction_DataUpload DataUpdate;        //資料上傳函式
+        private eModuleType ModuleType;                 //機型
+        private DateTime DateNow;                       //時間
+
+        public CheckSlopeData CheckSlope { get; private set; }      //檢查Slope結果
+        public OpticalData OpticalResult { get; private set; }      //光性量測資料
+        public UploadData UploadData { get; private set; }          //資料上傳系統
+        public Dictionary<string, double> LED_Slope { get; } = new Dictionary<string, double>();    //R/G/B...Slope結果
+        public Dictionary<string, double> LED_Offset { get; } = new Dictionary<string, double>();   //R/G/B...Offset結果
+        #endregion
+
+        #region private function
+        private string CreateFileName(string describe = "")
+        {
+            DateNow = DateTime.Now;
+            string timeDay = DateNow.ToString("yyyyMMdd");
+            string timeFull = DateNow.ToString("yyyyMMddHHmmss");
+            string SN = RGBfunc.SerialNumber;
+            string fileName = "";
+
+            string folderPath = $"\\Result\\{timeDay}\\";       //檔案儲存資料夾路徑
+
+            string[] res = describe.Split('_');                 //分割關鍵字
+
+            if (res.Length == 2)
+            {
+                string sideStr = res[0];        //"Left" 或 "Right"
+                string typeStr = res[1];        //"R", "G", "B", "Calibration", "BurnIn"
+
+                string S = sideStr == "Left" ? "L" : "R";
+                bool isSpecialMode = (typeStr == "Calibration" || typeStr == "BurnIn");
+
+                if (isSpecialMode)
+                {
+                    // 特殊模式格式: Z23A_LEDIV_L_SN_Calibration_時間
+                    fileName = $@"Z23A_LEDIV_{S}_{SN}_{typeStr}_{timeFull}";
+                }
+                else
+                {
+                    // 一般測試格式: Z23A_LEDIV_L_R_SN_Summary_時間
+                    fileName = $@"Z23A_LEDIV_{S}_{typeStr}_{SN}_Summary_{timeFull}";
+                }
+            }
+
+            fileName = folderPath +fileName;
+
+            return fileName;
+        }
+        private void WriteTitle(string type)
+        {
+            string title = FileType.GetTitleStr(type);
+
+            if (title == "")
+                return;
+
+            TestFiles.TryGetValue(type, out StreamWriter file);
+            Tool.WriteFile(file, title);
+        }
         #endregion
 
         #region public function
+        public void SetModuleAndCustomer(eModuleType eModule)
+        {
+            ModuleType = eModule;
+
+            if (FileType != null)
+                return;
+
+            if (ModuleType == eModuleType.IV_Calibration)
+                FileType = new RGBTesterDataFile_IVCalibration(RGBfunc, this);
+            else if (ModuleType == eModuleType.Function_Test)
+                FileType = new RGBTesterDataFile_FunctionTester(RGBfunc, this);
+
+            CheckSlope = new CheckSlopeData(FileType, RGBfunc);
+            OpticalResult = new OpticalData(RGBfunc);
+            UploadData = new UploadData(DataUpdate);
+        }
         public void CreateFile(string describe = "")
         {
-            now = DateTime.Now;
-            string file_name = "";
-            string SN = "";
-            string Side = "";
-            string Color = "";
-            string KeyText = "";
+            string fileName = CreateFileName(describe);
 
-            string[] res = describe.Split('_'); //ex.Right_G
+            StreamWriter fileHandle = Tool.CreateFile(fileName, ".csv", false);
+            TestFiles[describe] = fileHandle;
 
-            for(int i=0; i<res.Length; i++)
-            {
-                if (res[i] == "Left")
-                {
-                    SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-                    Side = "L";
-                }
-                else if (res[i] == "Right")
-                {
-                    SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
-                    Side = "R";
-                }
-
-                if (res[i] == "R")
-                    Color = "R";
-                else if (res[i] == "G")
-                    Color = "G";
-                else if (res[i] == "B")
-                    Color = "B";
-
-                if (res[i] == "Calibration")
-                    KeyText = "Calibration";
-
-                if (res[i] == "BurnIn")
-                    KeyText = "BurnIn";
-            }
-
-            file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_{Side}_{Color}_{SN}_Summary_{now.ToString("yyyyMMddHHmmss")}";
-
-            if (describe == "Left_R")
-                LeftRedFile = Tool.CreateFile(file_name, ".csv", false);
-            else if (describe == "Left_G")
-                LeftGreenFile = Tool.CreateFile(file_name, ".csv", false);
-            else if (describe == "Left_B")
-                LeftBlueFile = Tool.CreateFile(file_name, ".csv", false);
-            else if (describe == "Right_R")
-                RightRedFile = Tool.CreateFile(file_name, ".csv", false);
-            else if (describe == "Right_G")
-                RightGreenFile = Tool.CreateFile(file_name, ".csv", false);
-            else if (describe == "Right_B")
-                RightBlueFile = Tool.CreateFile(file_name, ".csv", false);
-            else if(describe == "Left_Calibration")
-            {
-                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_L_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
-                LeftCalibrationFile = Tool.CreateFile(file_name, ".csv", false);
-            }
-            else if (describe == "Right_Calibration")
-            {
-                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_R_{SN}_Calibration_{now.ToString("yyyyMMddHHmmss")}";
-                RightCalibrationFile = Tool.CreateFile(file_name, ".csv", false);
-            }
-            else if (describe == "Left_BurnIn")
-            {
-                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_L_{SN}_BurnIn_{now.ToString("yyyyMMddHHmmss")}";
-                LeftBurnInFile = Tool.CreateFile(file_name, ".csv", false);
-            }
-            else if (describe == "Right_BurnIn")
-            {
-                file_name = $"\\Result\\{now.ToString("yyyyMMdd")}\\Z23A_LEDIV_R_{SN}_BurnIn_{now.ToString("yyyyMMddHHmmss")}";
-                RightBurnInFile = Tool.CreateFile(file_name, ".csv", false);
-            }
-
-            if (Side != "" && KeyText == "")
-                WriteTitle_RGBTester(describe);
-            else if(KeyText == "Calibration")
-                WriteTitle(describe);
+            WriteTitle(describe);
         }
-        public void WriteTestResult(int dac, double v_in, double i_in, double p_in, double vf,
-                                    double vfb, double i_led, double p_led, double eff, double temperature,
-                                    double x, double y, double m, double c, string color)
+
+        public void WriteTestResult(RGBTesterData test_data, int index, string type)
         {
-            // [Check Pass/Fail]
-            string bin_v_in, bin_i_in, bin_vf, bin_i_led;
-            bin_v_in = CheckPassFail(0, 5.5, v_in);
-            bin_i_in = CheckPassFail(130, 192, i_in);
-            bin_vf = CheckPassFail(0, 4, vf);
-            bin_i_led = CheckPassFail(30, 300, i_led);
+            string context = FileType.GetTestReultStr(test_data, index);
 
-            string context = $"{dac},{v_in:F2},{bin_v_in},{i_in:F2},{bin_i_in},{p_in:F2},{vf:F2}," +
-                             $"{bin_vf},{vfb:F3},{i_led:F2},{bin_i_led},{p_led:F2},{eff:F2},{temperature:F2},{x:F2}," +
-                             $"{y:F2},{m:F3},{c:F2}";
-
-            WriteFile(context, color, false);
+            WriteFile(context, type, false);
         }
-        public void WriteCalibrationResult(string sn, string describe = "")
+        public void WriteExtendTestResult(RGBTesterData test_data, int index, string type)
         {
-            //[High Current Mode]
-            WriteFile($"0x0400,led1_offset_mA_h,LED1 offset for high res,mA,{R_Offset_HCM:F4}", describe);
-            WriteFile($"0x0404,led1_slope_mA_cnt_h,LED1 slope for high res,mA/DACstep,{R_Slope_HCM:F4}", describe);
-            WriteFile($"0x0408,led2_offset_mA_h,LED2 offset for high res,mA,{G_Offset_HCM:F4}", describe);
-            WriteFile($"0x040C,led2_slope_mA_cnt_h,LED2 slope for high res,mA/DACstep,{G_Slope_HCM:F4}", describe);
-            WriteFile($"0x0410,led3_offset_mA_h,LED3 offset for high res,mA,{B_Offset_HCM:F4}", describe);
-            WriteFile($"0x0414,led3_slope_mA_cnt_h,LED3 slope for high res,mA/DACstep,{B_Slope_HCM:F4}", describe);
-            //[Low Current Mode]
-            WriteFile($"0x0420,led1_offset_mA_l,LED1 offset for low res,mA,{R_Offset_LCM:F4}", describe);
-            WriteFile($"0x0424,led1_slope_mA_cnt_l,LED1 slope for low res,mA/DACstep,{R_Slope_LCM:F4}", describe);
-            WriteFile($"0x0428,led2_offset_mA_l,LED2 offset for low res,mA,{G_Offset_LCM:F4}", describe);
-            WriteFile($"0x042C,led2_slope_mA_cnt_l,LED2 slope for low res,mA/DACstep,{G_Slope_LCM:F4}", describe);
-            WriteFile($"0x0430,led3_offset_mA_l,LED3 offset for low res,mA,{B_Offset_LCM:F4}", describe);
-            WriteFile($"0x0434,led3_slope_mA_cnt_l,LED3 slope for low res,mA/DACstep,{B_Slope_LCM:F4}", describe);
-            //[SN]
-            WriteFile($"0x0440,,Serial Number,,{sn}", describe);
+            string context = FileType.GetExtendTestResultStr(test_data, index);
+
+            WriteFile(context, type, false);
         }
-        
         public void WriteFile(string context = "", string describe = "", bool NewLine = true)
         {
-            if (describe == "Left_R")
-                Tool.WriteFile(LeftRedFile, context, NewLine: NewLine);
-            else if(describe == "Left_G")
-                Tool.WriteFile(LeftGreenFile, context, NewLine: NewLine);
-            else if(describe == "Left_B")
-                Tool.WriteFile(LeftBlueFile, context, NewLine: NewLine);
-            else if (describe == "Right_R")
-                Tool.WriteFile(RightRedFile, context, NewLine: NewLine);
-            else if (describe == "Right_G")
-                Tool.WriteFile(RightGreenFile, context, NewLine: NewLine);
-            else if(describe == "Right_B")
-                Tool.WriteFile(RightBlueFile, context, NewLine: NewLine);
-            else if(describe == "Left_Calibration")
-                Tool.WriteFile(LeftCalibrationFile, context, NewLine: NewLine);
-            else if (describe == "Right_Calibration")
-                Tool.WriteFile(RightCalibrationFile, context, NewLine: NewLine);
-            else if (describe == "Left_BurnIn")
-                Tool.WriteFile(LeftBurnInFile, context, NewLine: NewLine);
-            else if (describe == "Right_BurnIn")
-                Tool.WriteFile(RightBurnInFile, context, NewLine: NewLine);
+            TestFiles.TryGetValue(describe, out StreamWriter file);
+            Tool.WriteFile(file, context, NewLine: NewLine);
         }
+        
         public void CloseFile(string describe = "")
         {
-            if (describe == "Left_R" && LeftRedFile != null)
-                Tool.CloseFile(LeftRedFile);
-            else if (describe == "Left_G" && LeftGreenFile != null)
-                Tool.CloseFile(LeftGreenFile);
-            else if (describe == "Left_B" && LeftBlueFile != null)
-                Tool.CloseFile(LeftBlueFile);
-            else if (describe == "Right_R" && RightRedFile != null)
-                Tool.CloseFile(RightRedFile);
-            else if (describe == "Right_G" && RightGreenFile != null)
-                Tool.CloseFile(RightGreenFile);
-            else if (describe == "Right_B" && RightBlueFile != null)
-                Tool.CloseFile(RightBlueFile);
-            else if(describe == "Left_Calibration")
-                Tool.CloseFile(LeftCalibrationFile);
-            else if(describe == "Right_Calibration")
-                Tool.CloseFile(RightCalibrationFile);
-            else if(describe =="Left_BurnIn")
-                Tool.CloseFile(LeftBurnInFile);
-            else if(describe =="Right_BurnIn")
-                Tool.CloseFile(RightBurnInFile);
+            TestFiles.TryGetValue(describe, out StreamWriter file);
+
+            if (file == null)
+                return;
+
+            Tool.CloseFile(file);
         }
         public void CloseAndDeleteFile(string describe = "")
         {
-            if (describe == "Left_R" && LeftRedFile != null)
-                Tool.CloseAndDeleteFile(LeftRedFile);
-            else if (describe == "Left_G" && LeftGreenFile != null)
-                Tool.CloseAndDeleteFile(LeftGreenFile);
-            else if (describe == "Left_B" && LeftBlueFile != null)
-                Tool.CloseAndDeleteFile(LeftBlueFile);
-            else if (describe == "Right_R" && RightRedFile != null)
-                Tool.CloseAndDeleteFile(RightRedFile);
-            else if (describe == "Right_G" && RightGreenFile != null)
-                Tool.CloseAndDeleteFile(RightGreenFile);
-            else if (describe == "Right_B" && RightBlueFile != null)
-                Tool.CloseAndDeleteFile(RightBlueFile);
-            else if (describe == "Left_Calibration")
-                Tool.CloseAndDeleteFile(LeftCalibrationFile);
-            else if (describe == "Right_Calibration")
-                Tool.CloseAndDeleteFile(RightCalibrationFile);
-            else if (describe == "Left_BurnIn")
-                Tool.CloseAndDeleteFile(LeftBurnInFile);
-            else if (describe == "Right_BurnIn")
-                Tool.CloseAndDeleteFile(RightBurnInFile);
+            TestFiles.TryGetValue(describe, out StreamWriter file);
+
+            if (file == null)
+                return;
+
+            Tool.CloseAndDeleteFile(file);
         }
         public void CopyAndCloseTestFile(string describe)
         {
             string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
             string copy_path1 = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath1);
 
-            if(copy_path != "")
-                copy_path = copy_path + $"\\{now.ToString("yyyyMMdd")}";
+            string result = "";
+
+            if(ModuleType == eModuleType.Function_Test)
+            {
+                if (RGBfunc.FailReasonFlag.IsTestFail() == true)
+                    result = "FAIL";
+                else
+                    result = "PASS";
+            }
+
+            if (copy_path != "")
+                copy_path = copy_path + $"\\{DateNow.ToString("yyyyMMdd")}\\{result}";
 
             if (copy_path1 != "")
-                copy_path1 = copy_path1 + $"\\{now.ToString("yyyyMMdd")}";
+                copy_path1 = copy_path1 + $"\\{DateNow.ToString("yyyyMMdd")}\\{result}";
 
-            if (describe == "Left_R" && LeftRedFile != null)
-                Tool.CopyFile(LeftRedFile, copy_path, copy_path1);
-            else if (describe == "Left_G" && LeftGreenFile != null)
-                Tool.CopyFile(LeftGreenFile, copy_path, copy_path1);
-            else if (describe == "Left_B" && LeftBlueFile != null)
-                Tool.CopyFile(LeftBlueFile, copy_path, copy_path1);
-            else if (describe == "Right_R" && RightRedFile != null)
-                Tool.CopyFile(RightRedFile, copy_path, copy_path1);
-            else if (describe == "Right_G" && RightGreenFile != null)
-                Tool.CopyFile(RightGreenFile, copy_path, copy_path1);
-            else if (describe == "Right_B" && RightBlueFile != null)
-                Tool.CopyFile(RightBlueFile, copy_path, copy_path1);
-            else if (describe == "Left_Calibration")
-                Tool.CopyFile(LeftCalibrationFile, copy_path, copy_path1);
-            else if (describe == "Right_Calibration")
-                Tool.CopyFile(RightCalibrationFile, copy_path, copy_path1);
-            else if (describe == "Left_BurnIn")
-                Tool.CopyFile(LeftBurnInFile, copy_path, copy_path1);
-            else if (describe == "Right_BurnIn")
-                Tool.CopyFile(RightBurnInFile, copy_path, copy_path1);
+            TestFiles.TryGetValue(describe, out StreamWriter file);
+
+            if (file == null)
+                return;
+
+            Tool.CopyFile(file, copy_path, copy_path1);
         }
+
         public void ResetCalibrationData()
         {
-            R_Offset_HCM = -99;
-            R_Offset_LCM = -99;
-            R_Slope_HCM = -99;
-            R_Slope_LCM = -99;
+            LED_Offset["R_Offset_HCM"] = -99;
+            LED_Offset["R_Offset_LCM"] = -99;
+            LED_Slope["R_Slope_HCM"] = -99;
+            LED_Slope["R_Slope_LCM"] = -99;
 
-            G_Offset_HCM = -99;
-            G_Offset_LCM = -99;
-            G_Slope_HCM = -99;
-            G_Slope_LCM = -99;
+            LED_Offset["G_Offset_HCM"] = -99;
+            LED_Offset["G_Offset_LCM"] = -99;
+            LED_Slope["G_Slope_HCM"] = -99;
+            LED_Slope["G_Slope_LCM"] = -99;
 
-            B_Offset_HCM = -99;
-            B_Offset_LCM = -99;
-            B_Slope_HCM = -99;
-            B_Slope_LCM = -99;
+            LED_Offset["B_Offset_HCM"] = -99;
+            LED_Offset["B_Offset_LCM"] = -99;
+            LED_Slope["B_Slope_HCM"] = -99;
+            LED_Slope["B_Slope_LCM"] = -99;
+
+            LED_Offset["B2_Offset_HCM"] = -99;
+            LED_Offset["B2_Offset_LCM"] = -99;
+            LED_Slope["B2_Slope_HCM"] = -99;
+            LED_Slope["B2_Slope_LCM"] = -99;
         }
         public void SetCalibrationData(string color, string current_mode, double slope, double offset)
         {
             string offset_item = $"{color}_Offset_{current_mode}";
             string slope_item = $"{color}_Slope_{current_mode}";
 
-            Type type = this.GetType();
-
-            // --- 設定 Offset 值 ---
-            PropertyInfo offsetProperty = type.GetProperty(offset_item);
-            if (offsetProperty != null && offsetProperty.CanWrite)
+            try
             {
-                offsetProperty.SetValue(this, offset);
+                LED_Offset[offset_item] = offset;
+                LED_Slope[slope_item] = slope;
             }
-            else
+            catch(Exception ex)
             {
-                Tool.SaveLogToFile($"錯誤：找不到或無法寫入屬性 {offset_item}");
-            }
-
-            // --- 設定 Slope 值 ---
-            PropertyInfo slopeProperty = type.GetProperty(slope_item);
-            if (slopeProperty != null && slopeProperty.CanWrite)
-            {
-                slopeProperty.SetValue(this, slope);
-            }
-            else
-            {
-                Tool.SaveLogToFile($"錯誤：找不到或無法寫入屬性 {slopeProperty}");
+                Tool.SaveLogToFile("SetCalibrationData找不到對應的Key", level: "ERR");
             }
         }
-        #endregion
-
-        #region private function
-        private void WriteTitle(string type)
+        public bool WriteCalibrationResult(string sn, string describe = "")
         {
-            StreamWriter file = LeftCalibrationFile;
+            List<string> calibration = FileType.GetCalibrationStr();
 
-            if (type == "Left_Calibration")
-                file = LeftCalibrationFile;
-            else if (type == "Right_Calibration")
-                file = RightCalibrationFile;
+            for (int i = 0; i < calibration.Count; i++)
+            {
+                WriteFile(calibration[i], describe);
+            }
 
-            string title = "OTP Addr ,Field Name,Description,Unit,Data";
+            WriteFile($"0x0440,,Serial Number,,{sn}", describe);
 
-            Tool.WriteFile(file, title);
-            Tool.WriteFile(file, ",,,,");
-        }
-        private void WriteTitle_RGBTester(string type)
-        {
-            StreamWriter file = null;
-            //string low_range = ",,,,,,,,0,,130,,,0,,30,,,,,,,,,,0,,130,,,0,,30,,,,,,,,";
-            //string high_range = ",,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,,,5.5,,192,,,4.0,,300,,,,,,,,";
-            //string unit = ",,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,,,,mV,,mA,,,,,mA,,,,℃,,,,";
-            string Rfb_LCM = ApplicationSetting.Get_String_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_LCM);
-            string Rfb_HCM = ApplicationSetting.Get_String_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_HCM);
-            string LCM_Slope_LL = ApplicationSetting.Get_String_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_LCM_Slope_LL);
-            string LCM_Slope_UL = ApplicationSetting.Get_String_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_LCM_Slope_UL);
-            string HCM_Slope_LL = ApplicationSetting.Get_String_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_HCM_Slope_LL);
-            string HCM_Slope_UL = ApplicationSetting.Get_String_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_HCM_Slope_UL);
+            if (ModuleType == eModuleType.Function_Test)
+                UploadData.InputMessage(calibration, "");
 
-            string test_condition = $"TestCondition:Rfb_LCM = {Rfb_LCM} Rfb_HCM = {Rfb_HCM} " +
-                                                    $"LCM_Slope_LL = {LCM_Slope_LL} LCM_Slope_UL = {LCM_Slope_UL} " +
-                                                    $"HCM_Slope_LL = {HCM_Slope_LL} HCM_Slope_UL = {HCM_Slope_UL} ";
-
-            string title = "Station,SN,TestDate,TestTime,CycleTime(us),UserName,DirLogName,H Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Vfb(V),Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c,L Side Mode_DAC,Vin(V),Status,Iin(mA),Status,Pin(mW),Vf(V),Status,Vfb(V),Iled(mA),Status,Pled(mW),Eff(%),Temperature(℃),x,y,m,c";
-
-            if (type == "Left_R")
-                file = LeftRedFile;
-            else if (type == "Left_G")
-                file = LeftGreenFile;
-            else if (type == "Left_B")
-                file = LeftBlueFile;
-            else if (type == "Right_R")
-                file = RightRedFile;
-            else if (type == "Right_G")
-                file = RightGreenFile;
-            else if (type == "Right_B")
-                file = RightBlueFile;
-
-            //Tool.WriteFile(file, low_range);
-            //Tool.WriteFile(file, high_range);
-            //Tool.WriteFile(file, unit);
-            Tool.WriteFile(file, test_condition);
-            Tool.WriteFile(file, title);
+            return true;
         }
 
-        private string CheckPassFail(double low, double high, double value)
+        public RGBTesterData SetNonData(RGBTesterData data)
         {
-            return "PASS";
+            data.DACpoint.Add(-99);
             
-            //if (value >= low && value <= high)
-            //    return "PASS";
-            //else
-            //    return "FAIL";
+            data.Vled.Add(-99);
+            
+            data.Vin.Add(-99);
+            data.Iin.Add(-99);
+            data.Pin.Add(-99);
+            data.Vf.Add(-99);
+            data.Iled.Add(-99);
+            data.Pled.Add(-99);
+            data.Eff.Add(-99);
+            data.DISP_6V0.Add(-99);
+            data.DISP_1V2.Add(-99);
+
+            data.CycleTime.Add(-99);
+            data.Temperature.Add(-99);
+
+            return data;
         }
         #endregion
     }

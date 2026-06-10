@@ -26,15 +26,12 @@ namespace SampleCode.Logic
                     State = WORK.INITIAL;
                     break;
             }
-            ResetTimeCount(out task_delay);
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
         }
 
         #region parameter
-        private int task_delay = 0;
-        private int delay_time = 1;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         //private F_StateControl TaskForm;
@@ -199,19 +196,13 @@ namespace SampleCode.Logic
                     break;
                 case WORK.SUCCESS:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                            Tool.SaveLogToFile("WaferAlign End", level:"INF");
-                        }
+                        SetStatus(TASK_STATUS.SUCCESS);
+                        Tool.SaveLogToFile($"{TaskName} End", level: "INF");
                     }
                     break;
                 case WORK.FAIL:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.FAIL);
-                        }
+                        SetStatus(TASK_STATUS.FAIL);
                     }
                     break;
                 case WORK.PAUSE:
@@ -235,10 +226,7 @@ namespace SampleCode.Logic
                     break;
                 case WORK.END:
                     {
-                        if (CheckTimeOverSec(task_delay, delay_time))
-                        {
-                            SetStatus(TASK_STATUS.SUCCESS);
-                        }
+                        SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
             }

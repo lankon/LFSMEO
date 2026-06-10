@@ -83,8 +83,8 @@ namespace LFSMEO
 
             //[Device]
             MN200 mn200 = new MN200();
-            Pcis_dask pcis_9111DG = new Pcis_dask("PCI_9111DG");
             Pcis_dask pcis_9111HR = new Pcis_dask("PCI_9111HR");
+            Pcis_dask pcis_9111DG = new Pcis_dask("PCI_9111DG");
             Virtual_IO virtual_io = new Virtual_IO();
             OTO Spectro_OTO = new OTO();
             APS APS = new APS();
@@ -94,8 +94,8 @@ namespace LFSMEO
             services.AddSingleton<IMotionCard>(APS);
             services.AddSingleton<IMotionCard, Virtual_Motion>();
             services.AddSingleton<IIOCard>(mn200);
-            services.AddSingleton<IIOCard>(pcis_9111DG);
             services.AddSingleton<IIOCard>(pcis_9111HR);
+            services.AddSingleton<IIOCard>(pcis_9111DG);
             services.AddSingleton<IIOCard>(virtual_io);
             services.AddSingleton<ISpectrometer>(Spectro_OTO);
             services.AddSingleton<ISpectrometer, Virtual_Spectrum>();

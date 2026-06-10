@@ -100,6 +100,7 @@ namespace RGBTester.Logic
         private IF_StateControl F_StateControl;
         private IF_StatusBox StatusBox;
         private IF_ProgressBar ProgressBar;
+        private IWriteFile ResultData;
         private EIOName DAQ_Vf, DAQ_Iin_LCM, DAQ_Iin_HCM;
         private EIOName DAQ_Vin, DAQ_ILED, DAQ_VLED;
         private RGBTesterData TesterData_H = new RGBTesterData();
@@ -107,7 +108,6 @@ namespace RGBTester.Logic
         private LinearCurveFitting LinearCurveFitting_L;
         private LinearCurveFitting LinearCurveFitting_H;
         RGBTesterFunction RGBfunc;
-        private ResultData ResultData;
 
         public enum WORK
         {
@@ -142,7 +142,7 @@ namespace RGBTester.Logic
             StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
             ProgressBar = Deps.ServiceProvider.GetRequiredService<IF_ProgressBar>();
             RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
-            ResultData = Deps.ServiceProvider.GetRequiredService<ResultData>();
+            ResultData = Deps.ServiceProvider.GetRequiredService<IWriteFile>();
 
             Period_DAQ_Count = RGBfunc.HardwareParam.Period_DAQ_Count * 3;   //抓三個週期的資料
 
@@ -202,6 +202,8 @@ namespace RGBTester.Logic
 
             TotalState_H = qDAC_H.Count;
             TotalState_L = qDAC_L.Count;
+            TesterData_H.CurrentMode = "HCM";
+            TesterData_L.CurrentMode = "LCM";
 
             double R_LCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_LCM);
             double R_HCM = ApplicationSetting.Get_Double_Recipe<eF_StartFormRecipe>((int)eF_StartFormRecipe.TxtBx_Rfb_HCM);
@@ -319,36 +321,28 @@ namespace RGBTester.Logic
         private void Write_LCM_Result(int index)
         {
             double milli = 1000;
-
-            double Vfb = TesterData_L.Iled[index] * RGBfunc.HardwareParam.Rfb_LCM * RGBfunc.HardwareParam.LED_SigMag;
-
-            Deps.File.WriteTestResult(TesterData_L.DACpoint[index], TesterData_L.Vin[index], TesterData_L.Iin[index] * milli,
-                                    TesterData_L.Pin[index] * milli, TesterData_L.Vf[index], Vfb, TesterData_L.Iled[index] * milli,
-                                    TesterData_L.Pled[index] * milli, TesterData_L.Eff[index] * 100, TesterData_L.Temperature[index],
-                                    LinearCurveFitting_L.mDAC, LinearCurveFitting_L.mCurrent,
-                                    LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, Type);
-
+            Deps.File.WriteTestResult(TesterData_L, index, Type);
             CheckIledResult(TesterData_L.Iled[index] * milli, "LCM");
         }
         private void Write_NonData_Result()
         {
-            Deps.File.WriteTestResult(-99, -99, -99,
-                                        -99, -99, -99,
-                                        -99, -99, -99,
-                                        -99, -99, -99,
-                                        -99, -99, Type);
+            RGBTesterData non_data = new RGBTesterData();
+            non_data = Deps.File.SetNonData(non_data);
+            Deps.File.WriteTestResult(non_data, 0, Type);
         }
         private void Write_HCM_Result(int index)
         {
             double milli = 1000;
 
-            double Vfb = TesterData_H.Iled[index] * RGBfunc.HardwareParam.Rfb_HCM * RGBfunc.HardwareParam.LED_SigMag;
+            //double Vfb = TesterData_H.Iled[index] * RGBfunc.HardwareParam.Rfb_HCM * RGBfunc.HardwareParam.LED_SigMag;
 
-            Deps.File.WriteTestResult(TesterData_H.DACpoint[index], TesterData_H.Vin[index], TesterData_H.Iin[index] * milli,
-                                                            TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], Vfb, TesterData_H.Iled[index] * milli,
-                                                            TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
-                                                            LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
-                                                            LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
+            //Deps.File.WriteTestResult(TesterData_H.DACpoint[index], TesterData_H.Vin[index], TesterData_H.Iin[index] * milli,
+            //                                                TesterData_H.Pin[index] * milli, TesterData_H.Vf[index], Vfb, TesterData_H.Iled[index] * milli,
+            //                                                TesterData_H.Pled[index] * milli, TesterData_H.Eff[index] * 100, TesterData_H.Temperature[index],
+            //                                                LinearCurveFitting_H.mDAC, LinearCurveFitting_H.mCurrent,
+            //                                                LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, Type);
+
+            Deps.File.WriteTestResult(TesterData_H, index, Type);
 
             CheckIledResult(TesterData_H.Iled[index] * milli, "HCM");
         }
@@ -387,7 +381,6 @@ namespace RGBTester.Logic
             {
                 if(res > HCM_UL || res < HCM_LL)
                 {
-                    Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{HCM_LL:F3}~{HCM_UL:F3}", level: "WRN");
                     RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
@@ -396,7 +389,6 @@ namespace RGBTester.Logic
             {
                 if (res > LCM_UL || res < LCM_LL)
                 {
-                    Scope.TestFail = true;
                     Tool.SaveLogToFile($"Slope = {res:F3},斜率超出上下限範圍:{LCM_LL:F3}~{LCM_UL:F3}", level: "WRN");
                     RGBfunc.FailReasonFlag.IsSlopeErr = true;
                 }
@@ -441,7 +433,6 @@ namespace RGBTester.Logic
 
                     if (startClampingDAC < failLimit)
                     {
-                        Scope.TestFail = true;
                         RGBfunc.FailReasonFlag.IsClampingErr = true;
                     }
 
@@ -493,7 +484,6 @@ namespace RGBTester.Logic
             double limit = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_FailOverTemp);
             if (temperature > limit)
             {
-                Scope.TestFail = true;
                 RGBfunc.FailReasonFlag.IsTemperatureErr = true;
                 Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高", level: "WRN");
             }
@@ -661,33 +651,42 @@ namespace RGBTester.Logic
                             if(IsClamping == true)
                             {
                                 //因為Clamping的關係會有幾筆異常資料，所以斷點前面再往前移動5筆，確保線性擬合的資料都是正常的
-                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Take(StartClampingCount-5).ToArray(),
+                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Take(StartClampingCount-5).Select(x=>(double)x).ToArray(),
                                                                               TesterData_L.Iled.Take(StartClampingCount-5).Select(x => x * 1000).ToArray());
                             }
                             else
                             {
-                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.ToArray(),
+                                LinearCurveFitting_L = new LinearCurveFitting(TesterData_L.DACpoint.Select(x => (double)x).ToArray(),
                                                                               TesterData_L.Iled.Select(x => x * 1000).ToArray());
                             }
 
-                            var IF_Ser = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
+                            //畫面顯示測試結果
+                            var IF_StFm = Deps.ServiceProvider.GetRequiredService<IF_StartForm>();
                             if(IsClamping == false)
-                                IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, false);
+                                IF_StFm.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, false);
                             else
-                                IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, true);
+                                IF_StFm.ShowSlopeOffsetResult(TestSide, TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset, true);
+                            
+                            //確認斜率,Offset推算結果
                             RGBfunc.SlopeOffsetResult.SetResult(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
-
+                            
+                            //測試結果報表
                             Deps.File.SetCalibrationData(TestColor, "LCM", LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
+                            TesterData_L.DAC_Avg = LinearCurveFitting_L.mDAC;
+                            TesterData_L.Current_Avg = LinearCurveFitting_L.mCurrent;
+                            TesterData_L.Slope = LinearCurveFitting_L.Slope;
+                            TesterData_L.Offset = LinearCurveFitting_L.Offset;
+
                             CheckTestResult(LinearCurveFitting_L.Slope, "LCM");
 
-                            double[] current = new double[ResultData.CheckSlopeData.Check_LCM_DAC.Length];
-                            for (int i=0; i< ResultData.CheckSlopeData.Check_LCM_DAC.Length; i++)
+                            double[] current = new double[ResultData.CheckSlope.Check_LCM_DAC.Length];
+                            for (int i=0; i< ResultData.CheckSlope.Check_LCM_DAC.Length; i++)
                             {
-                                int index = TesterData_L.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_LCM_DAC[i]);
+                                int index = TesterData_L.DACpoint.IndexOf(ResultData.CheckSlope.Check_LCM_DAC[i]);
 
                                 if (index == -1)
                                 {
-                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_LCM_DAC[i]} Not Found!", level: "WRN");
+                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlope.Check_LCM_DAC[i]} Not Found!", level: "WRN");
                                     current[i] = 0;
                                 }
                                 else
@@ -695,7 +694,7 @@ namespace RGBTester.Logic
                                     current[i] = TesterData_L.Iled[index] * 1000;
                                 }
                             }
-                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "LCM", current, LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
+                            ResultData.CheckSlope.SetCurrentData(TestColor, "LCM", current, LinearCurveFitting_L.Slope, LinearCurveFitting_L.Offset);
 
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.GET_ADC_LOW.ToString());
                             Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CALCULATE_LOW.ToString());
@@ -816,12 +815,12 @@ namespace RGBTester.Logic
                             if (IsClamping == true)
                             {
                                 //因為Clamping的關係會有幾筆異常資料，所以斷點前面再往前移動5筆，確保線性擬合的資料都是正常的
-                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount-5).ToArray(),
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount-5).Select(x => (double)x).ToArray(),
                                                                               TesterData_H.Iled.Take(StartClampingCount-5).Select(x => x * 1000).ToArray());
                             }
                             else
                             {
-                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.ToArray(),
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Select(x => (double)x).ToArray(),
                                                                               TesterData_H.Iled.Select(x => x * 1000).ToArray());
                             } 
 
@@ -832,17 +831,22 @@ namespace RGBTester.Logic
                                 IF_Ser.ShowSlopeOffsetResult(TestSide, TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset, true);
                             RGBfunc.SlopeOffsetResult.SetResult(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
 
+                            TesterData_H.DAC_Avg = LinearCurveFitting_H.mDAC;
+                            TesterData_H.Current_Avg = LinearCurveFitting_H.mCurrent;
+                            TesterData_H.Slope = LinearCurveFitting_H.Slope;
+                            TesterData_H.Offset = LinearCurveFitting_H.Offset;
+
                             Deps.File.SetCalibrationData(TestColor, "HCM", LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
                             CheckTestResult(LinearCurveFitting_H.Slope, "HCM");
 
                             double[] current = new double[TesterData_H.DACpoint.Count];
-                            for (int i = 0; i < ResultData.CheckSlopeData.Check_HCM_DAC.Length; i++)
+                            for (int i = 0; i < ResultData.CheckSlope.Check_HCM_DAC.Length; i++)
                             {
-                                int index = TesterData_H.DACpoint.IndexOf(ResultData.CheckSlopeData.Check_HCM_DAC[i]);
+                                int index = TesterData_H.DACpoint.IndexOf(ResultData.CheckSlope.Check_HCM_DAC[i]);
 
                                 if (index == -1)
                                 {
-                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlopeData.Check_HCM_DAC[i]} Not Found!", level: "WRN");
+                                    Tool.SaveLogToFile($"Check DAC {ResultData.CheckSlope.Check_HCM_DAC[i]} Not Found!", level: "WRN");
                                     current[i] = 0;
                                 }
                                 else
@@ -850,7 +854,7 @@ namespace RGBTester.Logic
                                     current[i] = TesterData_H.Iled[index] * 1000;
                                 }
                             }
-                            ResultData.CheckSlopeData.SetCurrentData(TestColor, "HCM", current, LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
+                            ResultData.CheckSlope.SetCurrentData(TestColor, "HCM", current, LinearCurveFitting_H.Slope, LinearCurveFitting_H.Offset);
 
 
                             if (!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
@@ -886,19 +890,14 @@ namespace RGBTester.Logic
                 case WORK.WRITE_TEST_DATA:
                     {
                         int data_count = Math.Max(TesterData_L.Vin.Count, TesterData_H.Vin.Count);
-                        string SN = "";
+                        string SN = RGBfunc.SerialNumber;
                         string log_name = "";
                         DateTime now = DateTime.Now;
+
                         if (TestSide == "Left")
-                        {
-                            SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
                             log_name = $"Z23A_LEDIV L{SN}_Summary{now.ToString("yyyyMMdd")}()";
-                        }
                         else if (TestSide == "Right")
-                        {
-                            SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
                             log_name = $"Z23A_LEDIV R{SN}_Summary{now.ToString("yyyyMMdd")}()";
-                        }
 
                         for (int i = 0; i < data_count; i++)
                         {

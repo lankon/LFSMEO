@@ -17,6 +17,8 @@ namespace DeviceCore
         void BindingDeviceIndex(string serialNumber);
         float[] GetWavelength(string sn);
         float[] GetSpectrumOneShot(string sn, uint integral_time, uint avg_time = 1);
+        float[] GetSpectrumRelativelyOneShot(string sn, uint integral_time, uint avg_time = 1);
         float[] GetSpectrum(string sn, uint integral_time, uint avg_time = 1);
+        double GetIntensityPercent(string sn);
     }
 }

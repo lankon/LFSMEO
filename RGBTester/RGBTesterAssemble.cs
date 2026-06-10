@@ -22,7 +22,8 @@ namespace RGBTester
             //[Device]
             services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
             services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
-            services.AddSingleton<ILightEngineFunction, LightEngineFunction>();
+            services.AddSingleton<IFunction_LightEngine, LightEngineFunction>();
+            services.AddSingleton<IFunction_DataUpload, Function_DataUpload>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
@@ -38,14 +39,21 @@ namespace RGBTester
             services.AddSingleton<IF_StatusBox, F_StatusBox>();
             services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
             services.AddSingleton<F_DAQ_Chart>();
-            services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
+            services.AddSingleton<IF_ElectricalSetting, F_ElectricalSetting>();
 
             //[Form]
             //退出Form後即close掉,要用再new
             services.AddTransient<F_OEM_Setting>();
             services.AddTransient<F_Equipment_Setting>();
             services.AddTransient<F_YieldReport>();
+            services.AddTransient<F_OpticalTest>();
+            services.AddTransient<F_FunctionTester>();
+            services.AddTransient<F_EngineerSetting>();
+            services.AddTransient<F_DAQ_ChartSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
+            services.AddTransient<F_MFactorCalibration>();
+            services.AddTransient<F_OpticalSetting>();
+            services.AddTransient<F_UploadDataSetting>();
 
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
@@ -54,12 +62,14 @@ namespace RGBTester
             services.AddSingleton<F_DAQ_ChartLogic>();
             services.AddSingleton<F_ParameterSettingLogic>();
             services.AddSingleton<F_YieldReportLogic>();
+            services.AddSingleton<F_FunctionTesterLogic>();
+            services.AddSingleton<F_OpticalTestLogic>();
 
             //[Logic]
             services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<RGBTesterFunction>();
-            services.AddSingleton<TestResultDataBase>();
-            services.AddSingleton<ResultData>();
+            services.AddSingleton<DataBaseTestResult>();
+            //services.AddSingleton<ResultData>();
 
             return services;
         }

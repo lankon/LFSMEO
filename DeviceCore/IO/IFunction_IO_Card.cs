@@ -19,26 +19,56 @@ namespace DeviceCore
 
     public enum EIOName
     {
-        #region Input
-
-        #region RGBTester
+        #region Analog Input
+        Iin,
+        
+        Left_Vin,
         Left_Iin_HCM,
         Left_Iin_LCM,
-        Left_Vin,
-        Right_VLED,
-        Left_ILED,
-        Right_Iin_LCM,
-        Right_Vin,
-        Right_ILED,
         Left_VLED,
         Left_VLED_R,
         Left_VLED_G,
         Left_VLED_B,
+        Left_ILED,
+
+        Right_Vin,
         Right_Iin_HCM,
+        Right_Iin_LCM,
+        Right_VLED,
         Right_VLED_R,
         Right_VLED_G,
         Right_VLED_B,
+        Right_ILED,
+
+        Left_6V,
+        Left_1V2,
+        Left_V_R,
+        Left_V_G,
+        Left_V_B1,
+        Left_V_B2,
+        Left_V_FB1,
+        Left_V_FB2,
+
+        Right_6V,
+        Right_1V2,
+        Right_V_R,
+        Right_V_G,
+        Right_V_B1,
+        Right_V_B2,
+        Right_V_FB1,
+        Right_V_FB2,
+
         #endregion
+
+        #region Input
+        SphereUpSensor,
+        SphereDownSensor,
+        SphereLeftSensor,
+        SphereRightSensor,
+        ChuckUpSensor,
+        ChuckDownSensor,
+        ChuckLeftSensor,
+        ChuckRightSensor,
 
         SafePos_Sensor_In,
         SafePos_Sensor_Out,
@@ -47,9 +77,18 @@ namespace DeviceCore
         CCD_FiducialMaskIdle_Sensor,
         SafePos_Sensor,
         GoToSafePos,
+        Vacuum,
         #endregion
 
         #region Output
+        SphereUp,
+        SphereDown,
+        Sphere_LR,
+        ChuckUp,
+        ChuckDown,
+        ChuckLeft,
+        ChuckRight,
+
         Vacuum_Pump,
         CCD_FiducialMaskWork,
         CCD_FiducialMaskIdle,
@@ -83,7 +122,8 @@ namespace DeviceCore
         bool GetInputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
         bool GetInputStatus(EIOName name);
         bool GetOutputStatus(EIOCardType CardType, byte cardNo, byte lineNo, byte devNo, byte port, int iList);
-        bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false);
+        bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, int iList = 0, bool truefalse = false);
+        //bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false);
         bool SetOutputStatus(EIOName name, bool truefalse);
         
         //[Virtual IO Function]

@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using ToolFunction;
 using RGBTester.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RGBTester.Logic
 {
@@ -36,14 +38,16 @@ namespace RGBTester.Logic
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
         private string SN;                              //測試樣品SN
         private IF_BaseTask SubTask;                    //子流程
         private IF_StateControl F_StateControl;
+        private IF_StatusBox StatusBox;                 //顯示訊息
+        private IFunction_DataUpload DataUpload;        //上傳系統
         private ePartTestItem part_test_mode;
+        private RGBTesterFunction RGBfunc;
         private bool OnlyLeftTest = false;
         private bool OnlyRightTest = false;
         public enum WORK
@@ -51,6 +55,9 @@ namespace RGBTester.Logic
             NONE,
             INITIAL,
             IDLE,
+
+            MOVE_TO_TEST_POS,
+            WAIT_MOVE_TO_TEST_POS,
 
             LEFT_GLASSES_TEST,
             RIGHT_GLASSES_TEST,
@@ -74,6 +81,11 @@ namespace RGBTester.Logic
         {
             part_test_mode = (ePartTestItem)ApplicationSetting.Get_Int_Recipe<eF_StartForm>((int)eF_StartForm.Cmbx_PartTest);
 
+            string SN = RGBfunc.SerialNumber;
+            Tool.SaveLogToFile("測試樣品SN:" + SN);
+
+            Deps.File.SetModuleAndCustomer(RGBfunc.GetModuleType());
+
             if (!OnlyRightTest)
             {
                 if (Scope.TaskRGBTest.IsSingleTest == false || 
@@ -82,6 +94,9 @@ namespace RGBTester.Logic
                     Deps.File.CreateFile("Left_R");
                     Deps.File.CreateFile("Left_G");
                     Deps.File.CreateFile("Left_B");
+                    if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                        Deps.File.CreateFile("Left_B2");
+
                     Deps.File.CreateFile("Left_Calibration");
                 }
 
@@ -90,9 +105,6 @@ namespace RGBTester.Logic
                 {
                     Deps.File.CreateFile("Left_BurnIn");
                 }
-
-                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-                Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
 
             if(!OnlyLeftTest)
@@ -103,6 +115,10 @@ namespace RGBTester.Logic
                     Deps.File.CreateFile("Right_R");
                     Deps.File.CreateFile("Right_G");
                     Deps.File.CreateFile("Right_B");
+
+                    if(RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                        Deps.File.CreateFile("Right_B2");
+
                     Deps.File.CreateFile("Right_Calibration");
                 }
 
@@ -111,73 +127,58 @@ namespace RGBTester.Logic
                 {
                     Deps.File.CreateFile("Right_BurnIn");
                 }
-
-                SN = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
-                Tool.SaveLogToFile("測試樣品SN:" + SN);
             }
         }
-        private void CloseTestFile()
+        private readonly string[] TestKeys = { "R", "G", "B", "Calibration", "BurnIn", "B2" };
+        private void ExecuteFileAction(Action<string> fileAction)
         {
+            // 處理 Left
             if (!OnlyRightTest)
             {
-                Deps.File.CloseFile("Left_R");
-                Deps.File.CloseFile("Left_G");
-                Deps.File.CloseFile("Left_B");
-                Deps.File.CloseFile("Left_Calibration");
-                Deps.File.CloseFile("Left_BurnIn");
+                foreach (var key in TestKeys) fileAction($"Left_{key}");
             }
 
+            // 處理 Right
             if (!OnlyLeftTest)
             {
-                Deps.File.CloseFile("Right_R");
-                Deps.File.CloseFile("Right_G");
-                Deps.File.CloseFile("Right_B");
-                Deps.File.CloseFile("Right_Calibration");
-                Deps.File.CloseFile("Right_BurnIn");
+                foreach (var key in TestKeys) fileAction($"Right_{key}");
             }
         }
-        private void CopyAndCloseTestFile()
+        private void CloseTestFile() => ExecuteFileAction(k => Deps.File.CloseFile(k));
+        private void CopyAndCloseTestFile() => ExecuteFileAction(k => Deps.File.CopyAndCloseTestFile(k));
+        private void CloseAndDeleteTestFile() => ExecuteFileAction(k => Deps.File.CloseAndDeleteFile(k));
+        private void SetUploadInformation()
         {
-            if (!OnlyRightTest)
-            {
-                Deps.File.CopyAndCloseTestFile("Left_R");
-                Deps.File.CopyAndCloseTestFile("Left_G");
-                Deps.File.CopyAndCloseTestFile("Left_B");
-                Deps.File.CopyAndCloseTestFile("Left_Calibration");
-                Deps.File.CopyAndCloseTestFile("Left_BurnIn");
-            }
+            //移動到按鈕
 
-            if (!OnlyLeftTest)
-            {
-                Deps.File.CopyAndCloseTestFile("Right_R");
-                Deps.File.CopyAndCloseTestFile("Right_G");
-                Deps.File.CopyAndCloseTestFile("Right_B");
-                Deps.File.CopyAndCloseTestFile("Right_Calibration");
-                Deps.File.CopyAndCloseTestFile("Right_BurnIn");
-            }
+            //if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
+            //{
+            //    DataUpload = Deps.ServiceProvider.GetRequiredService<IFunction_DataUpload>();
+
+            //    UploadInfo info = new UploadInfo
+            //    {
+            //        OperatorID = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_OperatorID),
+            //        SerialNunber = RGBfunc.SerialNumber,
+
+            //        FixtureID = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_FixtureID),
+            //        PCName = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_PCName),
+            //        ProgramVer = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_ProgramVer),
+            //        Line = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Line),
+            //        Station = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Station),
+            //        Testplan = ApplicationSetting.Get_String_Recipe<eF_UploadDataSetting>((int)eF_UploadDataSetting.TxtBx_Testplan),
+            //    };
+
+            //    DataUpload.SetInformation(info);
+            //}
         }
-        private void CloseAndDeleteTestFile()
-        {
-            if (!OnlyRightTest)
-            {
-                Deps.File.CloseAndDeleteFile("Left_R");
-                Deps.File.CloseAndDeleteFile("Left_G");
-                Deps.File.CloseAndDeleteFile("Left_B");
-                Deps.File.CloseAndDeleteFile("Left_Calibration");
-                Deps.File.CloseAndDeleteFile("Left_BurnIn");
-            }
-            if (!OnlyLeftTest)
-            {
-                Deps.File.CloseAndDeleteFile("Right_R");
-                Deps.File.CloseAndDeleteFile("Right_G");
-                Deps.File.CloseAndDeleteFile("Right_B");
-                Deps.File.CloseAndDeleteFile("Right_Calibration");
-                Deps.File.CloseAndDeleteFile("Right_BurnIn");
-            }
-        }
+
         private void Preset() 
         {
+            RGBfunc = Deps.ServiceProvider.GetRequiredService<RGBTesterFunction>();
+            StatusBox = Deps.ServiceProvider.GetRequiredService<IF_StatusBox>();
+          
             CreateTestFile();
+            SetUploadInformation();
         }
         protected override void Transition(WORK target)
         {
@@ -292,13 +293,49 @@ namespace RGBTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        
-                        if(OnlyRightTest)
-                            Transition(WORK.RIGHT_GLASSES_TEST);
+
+                        if(RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                        {
+                            Transition(WORK.MOVE_TO_TEST_POS);
+                        }
                         else
-                            Transition(WORK.LEFT_GLASSES_TEST);
+                        {
+                            if (OnlyRightTest)
+                                Transition(WORK.RIGHT_GLASSES_TEST);
+                            else
+                                Transition(WORK.LEFT_GLASSES_TEST);
+                        }
                     }
                     break;
+
+                #region MOVE_TO_TEST_POS
+                case WORK.MOVE_TO_TEST_POS:
+                    {
+                        Tool.SaveLogToFile("MOVE_TO_TEST_POS", level: "INF");
+                        SubTask = new SubTaskMoveToElectrical(Deps, F_StateControl);
+                        SetSubTaskProcessing(true);
+
+                        Transition(WORK.WAIT_MOVE_TO_TEST_POS);
+                    }
+                    break;
+                case WORK.WAIT_MOVE_TO_TEST_POS:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+
+                        if (check == TASK_STATUS.SUCCESS)
+                        {
+                            if (OnlyRightTest)
+                                Transition(WORK.RIGHT_GLASSES_TEST);
+                            else
+                                Transition(WORK.LEFT_GLASSES_TEST);
+                        }
+                        else
+                        {
+                            CheckResult(check);
+                        }
+                    }
+                    break;
+                #endregion
 
                 #region Left
                 case WORK.LEFT_GLASSES_TEST:
@@ -317,9 +354,14 @@ namespace RGBTester.Logic
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
                         if (check == TASK_STATUS.SUCCESS)
-                        { 
-                            if(part_test_mode != ePartTestItem.BurinIn || Scope.TaskRGBTest.IsSingleTest == false)
-                                Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN), "Left_Calibration");
+                        {
+                            if(Scope.TaskRGBTest.IsSingleTest == false || part_test_mode != ePartTestItem.BurinIn)
+                            {
+                                if(!Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Left_Calibration"))
+                                {
+                                    StatusBox.ShowMessage("Upload Data Fail");
+                                }
+                            }
                         }
                             
                         if(OnlyLeftTest) 
@@ -329,6 +371,7 @@ namespace RGBTester.Logic
                     }
                     break;
                 #endregion
+
                 #region Right
                 case WORK.RIGHT_GLASSES_TEST:
                     {
@@ -344,8 +387,13 @@ namespace RGBTester.Logic
 
                         if (check == TASK_STATUS.SUCCESS)
                         {
-                            if (part_test_mode != ePartTestItem.BurinIn || Scope.TaskRGBTest.IsSingleTest == false)
-                                Deps.File.WriteCalibrationResult(ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN), "Right_Calibration");
+                            if (Scope.TaskRGBTest.IsSingleTest == false || part_test_mode != ePartTestItem.BurinIn)
+                            {
+                                if(!Deps.File.WriteCalibrationResult(RGBfunc.SerialNumber, "Right_Calibration"))
+                                {
+                                    StatusBox.ShowMessage("Upload Data Fail");
+                                }
+                            }
                         }
 
                         CheckResult(check, SUCCESS: WORK.SUCCESS);

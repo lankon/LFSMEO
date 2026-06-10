@@ -34,6 +34,7 @@ namespace RGBTester.Device
         public byte LED_R_LSB { get; private set; } = 0x13;
         public byte LED_G_LSB { get; private set; } = 0x14;
         public byte LED_B_LSB { get; private set; } = 0x15;
+        public byte LED_B2_LSB { get; private set; } = 0x16;
         public byte LED_RGB_MSB { get; private set; } = 0x17;
         #endregion
 
@@ -71,7 +72,11 @@ namespace RGBTester.Device
 
             return true;
         }
-        public bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b)
+        public bool SetLed_AllColorDAC(byte side, params int[] values)
+        {
+            return true;
+        }
+        public bool SetLed_AllColorVoltage(byte side, params double[] values)
         {
             return true;
         }
@@ -170,6 +175,8 @@ namespace RGBTester.Device
         }
 
         
+
+
         #endregion
     }
 }

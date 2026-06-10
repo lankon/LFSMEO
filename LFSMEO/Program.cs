@@ -19,11 +19,26 @@ namespace LFSMEO
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            CatchException();
             GetMachineType();
             LFSMEO_Assemble assemble = new LFSMEO_Assemble();
             Form main_form = assemble.BuildAndGetMainForm();
 
             Application.Run(main_form);
+        }
+
+        static void CatchException()
+        {
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += (s, e) =>
+            {
+                Tool.SaveExceptionToFile(e.Exception, "UI Thread Unhandled Exception");
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                Tool.SaveExceptionToFile(e.ExceptionObject as Exception, "Unhandled Exception");
+            };
         }
 
         static EMachineType GetMachineType()

@@ -167,7 +167,20 @@ namespace ToolFunction
                 default: log.Debug(Msg); break;
             }
         }
+        public static void SaveExceptionToFile(Exception ex, string msg = "")
+        {
+            string context =
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [ERR] {msg}\r\n" +
+                $"{ex}\r\n";
 
+            string folder = Path.Combine(Directory.GetCurrentDirectory(), "History");
+            Directory.CreateDirectory(folder);
+
+            string path = Path.Combine(folder, $"Exception_{DateTime.Now:yyyyMMdd}.log");
+            File.AppendAllText(path, context, Encoding.UTF8);
+
+            //SaveLogToFile($"{msg} {ex}", level: "ERR");
+        }
         public static void CloseLog()
         {
             Log.CloseAndFlush();
@@ -519,6 +532,35 @@ namespace ToolFunction
             {
                 SaveLogToFile("StringToDateTime型別轉換錯誤");
                 return DateTime.MinValue;
+            }
+        }
+
+        public static T GetControlByName<T>(Control container, string name) where T : Control
+        {
+            Control[] matches = container.Controls.Find(name, true);
+            if (matches.Length > 0 && matches[0] is T)
+            {
+                return (T)matches[0];
+            }
+            return null;
+        }
+
+        public static T StringToEnum<T>(string input) where T : struct, Enum
+        {
+            //如果是空字串，直接回傳預設值
+            if (string.IsNullOrEmpty(input))
+                return default(T);
+
+            //進行轉換
+            if (Enum.TryParse<T>(input, out T result))
+            {
+                return result;
+            }
+            else
+            {
+                //轉換失敗，輸出Log並回傳預設值
+                Tool.SaveLogToFile($"無法辨識的狀態字串:{input}，自動轉為預設值", level:"WRN");
+                return default(T);
             }
         }
     }
