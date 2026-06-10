@@ -87,6 +87,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="README.md" />
+    <None Include="Rules\DeviceCore.json" />
     <None Include="Rules\RGBTester.json" />
   </ItemGroup>
   <ItemGroup>

@@ -29,10 +29,19 @@ namespace ArchitectureChecker.Core
 
             ArchitectureScanResult result = new ArchitectureScanResult();
             List<string> files = new List<string>();
-            foreach (string file in Directory.GetFiles(fullRoot, "*.cs", SearchOption.AllDirectories))
+            foreach (string file in Directory.GetFiles(fullRoot, "*.*", SearchOption.AllDirectories))
             {
+                // 只掃描 .cs 和 .csproj
+                if (!file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) &&
+                    !file.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
                 // 跳過 bin、obj、.vs 等輸出或 IDE 暫存資料夾，避免掃到舊檔案。
-                if (IsUnderIgnoredFolder(file)) continue;
+                if (IsUnderIgnoredFolder(file)) 
+                    continue;
+                
                 files.Add(file);
             }
 
@@ -186,6 +195,21 @@ namespace ArchitectureChecker.Core
                 if (!normalizedPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return false;
                 string tail = normalizedPath.Substring(prefix.Length);
                 return tail.IndexOf('/') < 0 && tail.EndsWith(".cs", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (normalizedPattern.EndsWith("/**/*.csproj", StringComparison.OrdinalIgnoreCase))
+            {
+                string prefix = normalizedPattern.Substring(0, normalizedPattern.Length - "/**/*.csproj".Length) + "/";
+                return normalizedPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) &&
+                       normalizedPath.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (normalizedPattern.EndsWith("/*.csproj", StringComparison.OrdinalIgnoreCase))
+            {
+                string prefix = normalizedPattern.Substring(0, normalizedPattern.Length - "/*.csproj".Length) + "/";
+                if (!normalizedPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return false;
+                string tail = normalizedPath.Substring(prefix.Length);
+                return tail.IndexOf('/') < 0 && tail.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase);
             }
 
             return string.Equals(normalizedPath, normalizedPattern, StringComparison.OrdinalIgnoreCase);
