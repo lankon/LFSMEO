@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
 
+	
 	<Release version="1.26.5.1" date="2026-05-15">
 		<Item type="Fixed">修正PartTest功能選項為BurnIn時,全流程Calibration檔案為空問題</Item>
 	</Release>
