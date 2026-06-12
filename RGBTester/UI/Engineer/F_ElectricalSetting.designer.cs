@@ -95,6 +95,17 @@ namespace RGBTester.UI
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.TxtBx_DeviationLimit = new System.Windows.Forms.TextBox();
             this.LabelTime = new System.Windows.Forms.Label();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.LyPnl_VoltageLimit = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_Voltage_6V_LL = new System.Windows.Forms.TextBox();
+            this.TxtBx_Voltage_1V2_UL = new System.Windows.Forms.TextBox();
+            this.TxtBx_Voltage_1V2_LL = new System.Windows.Forms.TextBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.TxtBx_Voltage_6V_UL = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -103,6 +114,8 @@ namespace RGBTester.UI
             this.tableLayoutPanel6.SuspendLayout();
             this.LyPnl_HCM_CheckSlope.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
+            this.LyPnl_VoltageLimit.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -855,11 +868,138 @@ namespace RGBTester.UI
             this.LabelTime.Text = "Deviation Limit (%)";
             this.LabelTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 29.90506F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.09494F));
+            this.tableLayoutPanel7.Controls.Add(this.LyPnl_VoltageLimit, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.label32, 0, 0);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(12, 141);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(635, 84);
+            this.tableLayoutPanel7.TabIndex = 12;
+            // 
+            // LyPnl_VoltageLimit
+            // 
+            this.LyPnl_VoltageLimit.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.LyPnl_VoltageLimit.ColumnCount = 4;
+            this.LyPnl_VoltageLimit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.LyPnl_VoltageLimit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.LyPnl_VoltageLimit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.LyPnl_VoltageLimit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.LyPnl_VoltageLimit.Controls.Add(this.TxtBx_Voltage_6V_LL, 1, 1);
+            this.LyPnl_VoltageLimit.Controls.Add(this.TxtBx_Voltage_1V2_UL, 2, 1);
+            this.LyPnl_VoltageLimit.Controls.Add(this.TxtBx_Voltage_1V2_LL, 3, 1);
+            this.LyPnl_VoltageLimit.Controls.Add(this.label33, 3, 0);
+            this.LyPnl_VoltageLimit.Controls.Add(this.label34, 2, 0);
+            this.LyPnl_VoltageLimit.Controls.Add(this.label35, 0, 0);
+            this.LyPnl_VoltageLimit.Controls.Add(this.label36, 1, 0);
+            this.LyPnl_VoltageLimit.Controls.Add(this.TxtBx_Voltage_6V_UL, 0, 1);
+            this.LyPnl_VoltageLimit.Location = new System.Drawing.Point(196, 6);
+            this.LyPnl_VoltageLimit.Name = "LyPnl_VoltageLimit";
+            this.LyPnl_VoltageLimit.RowCount = 2;
+            this.LyPnl_VoltageLimit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_VoltageLimit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.LyPnl_VoltageLimit.Size = new System.Drawing.Size(433, 72);
+            this.LyPnl_VoltageLimit.TabIndex = 5;
+            // 
+            // TxtBx_Voltage_6V_LL
+            // 
+            this.TxtBx_Voltage_6V_LL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Voltage_6V_LL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Voltage_6V_LL.Location = new System.Drawing.Point(112, 40);
+            this.TxtBx_Voltage_6V_LL.Name = "TxtBx_Voltage_6V_LL";
+            this.TxtBx_Voltage_6V_LL.Size = new System.Drawing.Size(101, 29);
+            this.TxtBx_Voltage_6V_LL.TabIndex = 10;
+            // 
+            // TxtBx_Voltage_1V2_UL
+            // 
+            this.TxtBx_Voltage_1V2_UL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Voltage_1V2_UL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Voltage_1V2_UL.Location = new System.Drawing.Point(220, 40);
+            this.TxtBx_Voltage_1V2_UL.Name = "TxtBx_Voltage_1V2_UL";
+            this.TxtBx_Voltage_1V2_UL.Size = new System.Drawing.Size(101, 29);
+            this.TxtBx_Voltage_1V2_UL.TabIndex = 11;
+            // 
+            // TxtBx_Voltage_1V2_LL
+            // 
+            this.TxtBx_Voltage_1V2_LL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Voltage_1V2_LL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Voltage_1V2_LL.Location = new System.Drawing.Point(328, 40);
+            this.TxtBx_Voltage_1V2_LL.Name = "TxtBx_Voltage_1V2_LL";
+            this.TxtBx_Voltage_1V2_LL.Size = new System.Drawing.Size(101, 29);
+            this.TxtBx_Voltage_1V2_LL.TabIndex = 12;
+            // 
+            // label33
+            // 
+            this.label33.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label33.Location = new System.Drawing.Point(328, 1);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(101, 35);
+            this.label33.TabIndex = 14;
+            this.label33.Text = "1V2 Lower";
+            this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label34
+            // 
+            this.label34.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label34.Location = new System.Drawing.Point(220, 1);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(101, 35);
+            this.label34.TabIndex = 13;
+            this.label34.Text = "1V2 Upper";
+            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label35
+            // 
+            this.label35.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label35.Location = new System.Drawing.Point(4, 1);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(101, 35);
+            this.label35.TabIndex = 7;
+            this.label35.Text = "6V Upper";
+            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label36
+            // 
+            this.label36.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label36.Location = new System.Drawing.Point(112, 1);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(101, 35);
+            this.label36.TabIndex = 8;
+            this.label36.Text = "6V Lower";
+            this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TxtBx_Voltage_6V_UL
+            // 
+            this.TxtBx_Voltage_6V_UL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
+            this.TxtBx_Voltage_6V_UL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Voltage_6V_UL.Location = new System.Drawing.Point(4, 40);
+            this.TxtBx_Voltage_6V_UL.Name = "TxtBx_Voltage_6V_UL";
+            this.TxtBx_Voltage_6V_UL.Size = new System.Drawing.Size(101, 29);
+            this.TxtBx_Voltage_6V_UL.TabIndex = 5;
+            // 
+            // label32
+            // 
+            this.label32.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label32.Location = new System.Drawing.Point(3, 3);
+            this.label32.Margin = new System.Windows.Forms.Padding(0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(166, 78);
+            this.label32.TabIndex = 4;
+            this.label32.Text = "Voltage Limit";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // F_ElectricalSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1326, 661);
+            this.Controls.Add(this.tableLayoutPanel7);
             this.Controls.Add(this.tableLayoutPanel6);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -882,6 +1022,9 @@ namespace RGBTester.UI
             this.LyPnl_HCM_CheckSlope.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.LyPnl_VoltageLimit.ResumeLayout(false);
+            this.LyPnl_VoltageLimit.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -953,5 +1096,16 @@ namespace RGBTester.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TextBox TxtBx_DeviationLimit;
         private System.Windows.Forms.Label LabelTime;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.TableLayoutPanel LyPnl_VoltageLimit;
+        private System.Windows.Forms.TextBox TxtBx_Voltage_6V_LL;
+        private System.Windows.Forms.TextBox TxtBx_Voltage_1V2_UL;
+        private System.Windows.Forms.TextBox TxtBx_Voltage_1V2_LL;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.TextBox TxtBx_Voltage_6V_UL;
+        private System.Windows.Forms.Label label32;
     }
 }

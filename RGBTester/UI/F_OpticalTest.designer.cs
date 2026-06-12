@@ -1166,7 +1166,6 @@ namespace RGBTester.UI
             this.label52.TabIndex = 6;
             this.label52.Text = "Averaging Count";
             this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label52.Visible = false;
             // 
             // TxtBx_Right_AvgCount
             // 
@@ -1175,7 +1174,6 @@ namespace RGBTester.UI
             this.TxtBx_Right_AvgCount.Name = "TxtBx_Right_AvgCount";
             this.TxtBx_Right_AvgCount.Size = new System.Drawing.Size(116, 29);
             this.TxtBx_Right_AvgCount.TabIndex = 10;
-            this.TxtBx_Right_AvgCount.Visible = false;
             // 
             // TbCtrl_Right_DAC_Setting
             // 
@@ -2574,7 +2572,6 @@ namespace RGBTester.UI
             this.label2.TabIndex = 6;
             this.label2.Text = "Averaging Count";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Visible = false;
             // 
             // TxtBx_Left_AvgCount
             // 
@@ -2583,7 +2580,6 @@ namespace RGBTester.UI
             this.TxtBx_Left_AvgCount.Name = "TxtBx_Left_AvgCount";
             this.TxtBx_Left_AvgCount.Size = new System.Drawing.Size(116, 29);
             this.TxtBx_Left_AvgCount.TabIndex = 10;
-            this.TxtBx_Left_AvgCount.Visible = false;
             // 
             // TbCtrl_Left_DAC_Setting
             // 

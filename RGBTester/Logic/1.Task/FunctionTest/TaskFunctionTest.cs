@@ -39,6 +39,7 @@ namespace RGBTester.Logic
 
         #region parameter
         private string TestSide;
+        private int DelayTime = 0;
         private RGBTesterFunction RGBfunc;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
@@ -232,12 +233,27 @@ namespace RGBTester.Logic
                         if (RGBfunc.FailReasonFlag.IsTestFail() == true)
                             CheckResult(check);
                         else
-                            CheckResult(check, SUCCESS: WORK.OPTICAL_TEST);
+                        {
+                            if(check == TASK_STATUS.SUCCESS)
+                            {
+                                Deps.LightEngine.SetLed_AllColorDAC(0x00, 0, 0, 0, 0);  //先不用管哪一邊Z23A只有單邊
+                                ResetTimeCount(out DelayTime);
+                                Transition(WORK.OPTICAL_TEST);
+                            }
+                            else
+                                CheckResult(check, SUCCESS: WORK.OPTICAL_TEST);
+                        }
                     }
                     break;
 
                 case WORK.OPTICAL_TEST:
                     {
+                        int wait_time = ApplicationSetting.Get_Int_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PauseTime);
+                        wait_time = Math.Max(wait_time, 0);
+                        
+                        if (!CheckTimeOverSec(DelayTime, wait_time))
+                            break;
+                        
                         //建立SubTask
                         SubTask = new TaskOpticalTest(Deps, F_StateControl, TestSide);
                         //委派必要Function

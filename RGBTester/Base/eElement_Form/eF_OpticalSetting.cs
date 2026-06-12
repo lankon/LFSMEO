@@ -32,6 +32,13 @@ namespace RGBTester.Base
         TxtBx_GLight_LL,
         TxtBx_BLight_LL,
 
+        TxtBx_PauseTime,
+
+        TxtBx_Voltage_6V_UL,
+        TxtBx_Voltage_6V_LL,
+        TxtBx_Voltage_1V2_UL,
+        TxtBx_Voltage_1V2_LL,
+
     }
 }
 

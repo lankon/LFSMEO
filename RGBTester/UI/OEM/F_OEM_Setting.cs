@@ -160,14 +160,5 @@ namespace RGBTester.UI
                     light_set.ShowFormName(true);
             }
         }
-
-        private void Btn_MFactor_Click(object sender, EventArgs e)
-        {
-            Tool.HideElementOnPanel(Scope.MainPanel);
-
-            var form = ServiceProvider.GetRequiredService<F_MFactorCalibration>();
-            Tool.SetForm(Scope.MainPanel, form);
-            form.Show();
-        }
     }
 }

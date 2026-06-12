@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using ToolFunction;
+using UserPrivilege.Base;
 using RGBTester.Base;
 using RGBTester.Logic;
 
@@ -17,12 +18,17 @@ namespace RGBTester.UI
 {
     public partial class F_ElectricalSetting : Form, IF_ElectricalSetting
     {
-        public F_ElectricalSetting(IServiceProvider serviceProvider, F_ParameterSettingLogic f_ParameterSettingLogic)
+        public F_ElectricalSetting(IServiceProvider serviceProvider,
+                                   IF_UserPrivilegeLogic Privilege, 
+                                   F_ParameterSettingLogic f_ParameterSettingLogic,
+                                   RGBTesterFunction func)
         {
             InitializeComponent();
 
             ServiceProvider = serviceProvider;
             ParameterSettingLogic1 = f_ParameterSettingLogic;
+            UserPrivilege = Privilege;
+            RGBfunc = func;
 
             InitialForm();
         }
@@ -42,7 +48,9 @@ namespace RGBTester.UI
         Label[] Labl_CheckSlopeResult_HCM_G_Dev = new Label[count];
         Label[] Labl_CheckSlopeResult_HCM_B_Dev = new Label[count];
         IServiceProvider ServiceProvider;
+        IF_UserPrivilegeLogic UserPrivilege;
         F_ParameterSettingLogic ParameterSettingLogic1;
+        RGBTesterFunction RGBfunc;
         #endregion
 
         #region private function
@@ -86,6 +94,12 @@ namespace RGBTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
+
+            bool oem = UserPrivilege.AtLeastOEM();
+            bool eng = UserPrivilege.AtLeastEng();
+            bool function_tester = RGBfunc.GetModuleType() == eModuleType.Function_Test ? true : false;
+
+            LyPnl_VoltageLimit.Enabled = function_tester;
         }
 
         private void CreateLabel(ref Label label, TableLayoutPanel tableLayoutPanel, int column, int row)

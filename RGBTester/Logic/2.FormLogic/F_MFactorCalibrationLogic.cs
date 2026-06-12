@@ -4,23 +4,46 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
+using DeviceCore;
 using ToolFunction;
+using RGBTester.Base;
 
 namespace RGBTester.Logic
 {
     public class F_MFactorCalibrationLogic
     {
+        public F_MFactorCalibrationLogic(IServiceProvider serviceProvider)
+        {
+            ServiceProvider = serviceProvider;
+        }
 
         #region parameter function
         private SpectrumData StdSpectrum;
         private SpectrumData MatchSpectrum;
         private SpectrumData MFactor = new SpectrumData();
-    
+        IFunction_Spectrometer Spectrometer;
+        IServiceProvider ServiceProvider;
+        public double OpticalPower = 0;
+        public double WLD = 0;
+        public double Luminous = 0;
+
+        enum type
+        {
+            POWER,
+            WAVELENGTH,
+        }
+
         public class SpectrumData
         {
             public List<int> Wavelength;
             public List<double> Intensity;
+        }
+        public class dSpectrumData
+        {
+            public double[] Wavelength;
+            public double[] Intensity;
         }
         #endregion
 
@@ -133,6 +156,47 @@ namespace RGBTester.Logic
 
             return MFactor;
         }
+        private void SaveData(double[] wl, double[] intensity)
+        {
+            StreamWriter file = Tool.CreateFile("Result\\Spectrum", ".csv", false);
+
+            Tool.WriteFile(file, $"Wavelength,Intensity");
+
+            for (int i = 0; i < wl.Length; i++)
+            {
+                Tool.WriteFile(file, $"{wl[i]},{intensity[i]}");
+            }
+
+            Tool.CloseFile(file);
+        }
+        private double GetColorPowerGain(double wl, type _type)
+        {
+            double ColorPowerGain = 0;
+            double Wavelength = 0;
+
+            if (wl > 580 && wl < 680)
+            {
+                ColorPowerGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RedPowerGain);
+                Wavelength = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RedWavelengthGain);
+            }
+            else if (wl > 470 && wl < 570)
+            {
+                ColorPowerGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GreenPowerGain);
+                Wavelength = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GreenWavelengthGain);
+            }
+            else if(wl > 400 && wl < 500)
+            {
+                ColorPowerGain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BluePowerGain);
+                Wavelength = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BlueWavelengthGain);
+            }
+
+            if (_type == type.POWER)
+                return ColorPowerGain;
+            else if (_type == type.WAVELENGTH)
+                return Wavelength;
+
+            return 0;
+        }
         #endregion
 
         #region public function
@@ -197,6 +261,60 @@ namespace RGBTester.Logic
                 Tool.WriteFile(file, $"{MFactor.Wavelength[i]},{MFactor.Intensity[i] / MFactor.Intensity[index_600nm]}");
             }
             Tool.CloseFile(file);
+        }
+        public dSpectrumData CalculateOptical()
+        {
+            Spectrometer = ServiceProvider.GetRequiredService<IFunction_Spectrometer>();
+
+            int intgTime = ApplicationSetting.Get_Int_Recipe<eF_MFactorCalibration>((int)eF_MFactorCalibration.TxtBx_IntgralTime);
+            float[] intensity = Spectrometer.GetSpectrumOneShot(ESpectrumName.SPECTRUM_1, (uint)intgTime);
+            float[] wl = Spectrometer.GetWavelengthSpan(ESpectrumName.SPECTRUM_1);
+            double[] intensityDouble = Array.ConvertAll(intensity, x => (double)x);
+            double[] wlDouble = Array.ConvertAll(wl, x => (double)x);
+
+            SaveData(wlDouble, intensityDouble);
+
+            Wavelength CalWl = new Wavelength();
+            LuminousFlux lm = new LuminousFlux();
+            double k_value = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_OpticalKValue);
+
+            OpticalPower = CalWl.Calculate_Power(wlDouble, intensityDouble, intgTime, k_value);
+            Luminous = lm.CalculateTotalLumens(wlDouble, intensityDouble, intgTime, k_value);
+            WLD = CalWl.Calculate_WLD(wlDouble, intensityDouble);
+
+            dSpectrumData spectrum = new dSpectrumData();
+            spectrum.Wavelength = wlDouble;
+            spectrum.Intensity = intensityDouble;
+
+            return spectrum;
+        }
+        public double GetWLD()
+        {
+            double offset = GetColorPowerGain(WLD, type.WAVELENGTH);
+
+            WLD = WLD + offset;
+
+            return WLD;
+        }
+        public double GetOpticalPower()
+        {
+            double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
+            double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
+            double color_gain = GetColorPowerGain(WLD, type.POWER);
+
+            OpticalPower = OpticalPower * gain * color_gain + offset;
+
+            return OpticalPower;
+        }
+        public double GetLuminous()
+        {
+            double gain = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerGain);
+            double offset = ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_PowerOffset);
+            double color_gain = GetColorPowerGain(WLD, type.POWER);
+
+            Luminous = Luminous * gain * color_gain + offset;
+
+            return Luminous;
         }
         #endregion
 

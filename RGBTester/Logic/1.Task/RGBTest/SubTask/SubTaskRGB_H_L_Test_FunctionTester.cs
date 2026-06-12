@@ -406,13 +406,18 @@ namespace RGBTester.Logic
         }
         private void CheckVoltage()
         {
-            if(TesterData_L.DISP_6V0[0] > 6.25 || TesterData_L.DISP_6V0[0] < 6)
+            double UL_6V = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_6V_UL);
+            double LL_6V = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_6V_LL);
+            double UL_1V2 = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_1V2_UL);
+            double LL_1V2 = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_1V2_LL);
+
+            if (TesterData_L.DISP_6V0[0] > UL_6V || TesterData_L.DISP_6V0[0] < LL_6V)
             {
                 Tool.SaveLogToFile($"Voltage_6V = {TesterData_L.DISP_6V0[0]:F3},Out of Range:6~6.25", level: "ERR");
                 RGBfunc.FailReasonFlag.IsVoltageErr_6V = true;
             }
 
-            if (TesterData_L.DISP_1V2[0] > 1.25 || TesterData_L.DISP_1V2[0] < 1.15)
+            if (TesterData_L.DISP_1V2[0] > UL_1V2 || TesterData_L.DISP_1V2[0] < LL_1V2)
             {
                 Tool.SaveLogToFile($"Voltage_1V2 = {TesterData_L.DISP_1V2[0]:F3},Out of Range:1.15~1.25", level: "ERR");
                 RGBfunc.FailReasonFlag.IsVoltageErr_1V2 = true;
@@ -421,32 +426,66 @@ namespace RGBTester.Logic
         }
         private void CheckClamping(List<int> DAC, List<double> ILed, string CM)
         {
-            if (ILed.Count < 50 || IsClamping)
+            if (ILed.Count == 0) return;
+
+            if (TestColor != "R") return;
+
+            if (ILed[ILed.Count -1]*1000 < 10 || IsClamping)
             {
-                if (ILed.Count < 50) 
+                if (ILed[ILed.Count - 1] * 1000 < 10)   //ILed小於10mA不判斷
                     IsClamping = false;
-                
+
                 return;
             }
 
-            for(int i=1; i< ILed.Count; i++)
+            for (int i = 0; i < ILed.Count; i++)
             {
-                if((ILed[i] - ILed[i-1])*1000 < -100)
+                if (ILed[i]*1000 >= 150)
                 {
                     int startIdx = i;
                     int startClampingDAC = DAC[startIdx];
-                    int failLimit = ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_ClampingFailDAC);
+                    //int failLimit = ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_ClampingFailDAC);
 
-                    if (startClampingDAC < failLimit)
-                    {
-                        RGBfunc.FailReasonFlag.IsClampingErr = true;
-                    }
+                    //if (startClampingDAC < failLimit)
+                    //{
+                    //    RGBfunc.FailReasonFlag.IsClampingErr = true;
+                    //}
 
                     StartClampingCount = startIdx;
                     IsClamping = true;
-                    Tool.SaveLogToFile($"Clamping Detected! Start DAC:{startClampingDAC}", level: "WRN");
+                    Tool.SaveLogToFile($"電流飽和! Start DAC:{startClampingDAC}", level: "WRN");
+
+                    break; // 找到起點了，立刻跳出迴圈
                 }
             }
+            #region functionTester目前產品不會Clamping
+            //if (ILed.Count < 50 || IsClamping)
+            //{
+            //    if (ILed.Count < 50) 
+            //        IsClamping = false;
+
+            //    return;
+            //}
+
+            //for(int i=1; i< ILed.Count; i++)
+            //{
+            //    if((ILed[i] - ILed[i-1])*1000 < -100)
+            //    {
+            //        int startIdx = i;
+            //        int startClampingDAC = DAC[startIdx];
+            //        int failLimit = ApplicationSetting.Get_Int_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_ClampingFailDAC);
+
+            //        if (startClampingDAC < failLimit)
+            //        {
+            //            RGBfunc.FailReasonFlag.IsClampingErr = true;
+            //        }
+
+            //        StartClampingCount = startIdx;
+            //        IsClamping = true;
+            //        Tool.SaveLogToFile($"Clamping Detected! Start DAC:{startClampingDAC}", level: "WRN");
+            //    }
+            //}
+            #endregion
         }
         private void CheckTestTemperature(double temperature)
         {
@@ -763,8 +802,8 @@ namespace RGBTester.Logic
                             if (IsClamping == true)
                             {
                                 //因為Clamping的關係會有幾筆異常資料，所以斷點前面再往前移動5筆，確保線性擬合的資料都是正常的
-                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount-5).Select(x => (double)x).ToArray(),
-                                                                              TesterData_H.Iled.Take(StartClampingCount-5).Select(x => x * 1000).ToArray());
+                                LinearCurveFitting_H = new LinearCurveFitting(TesterData_H.DACpoint.Take(StartClampingCount).Select(x => (double)x).ToArray(),
+                                                                              TesterData_H.Iled.Take(StartClampingCount).Select(x => x * 1000).ToArray());
                             }
                             else
                             {
