@@ -4,6 +4,11 @@
 	
 	<UnRelease version="1.26.6.1" date="2026-06-09">
 		<Item type="Added">新增FunctionTester</Item>
+		<Item type="Fixed">光性量測前休息</Item>
+		<Item type="Fixed">6V,1V2上下限設定</Item>
+		<Item type="Fixed">流明,Power,WL靜態Debug測試</Item>
+		<Item type="Fixed">流明計算可設定平均次數</Item>
+		<Item type="Fixed">紅光電流高於150mA後不列入斜率,Offset計算</Item>
 	</UnRelease>
 
 	<Release version="1.26.5.1" date="2026-05-15">
