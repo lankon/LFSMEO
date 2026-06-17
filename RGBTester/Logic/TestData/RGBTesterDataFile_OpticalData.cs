@@ -59,8 +59,8 @@ namespace RGBTester.Logic
             if (p1 != "" || p2 != "")
             {
                 Tool.CopyFile(file,
-                            (copy_path.Length > 0 ? copy_path[0] : "") + $"\\{timeDay}\\{pass_fail}",
-                            (copy_path.Length > 1 ? copy_path[1] : "") + $"\\{timeDay}\\{pass_fail}");
+                            (copy_path.Length > 0 && copy_path[0] != "" ? copy_path[0] + $"\\{timeDay}\\{pass_fail}" : ""),
+                            (copy_path.Length > 1 && copy_path[1] != "" ? copy_path[1] + $"\\{timeDay}\\{pass_fail}" : ""));
             }
 
             Tool.CloseFile(file);

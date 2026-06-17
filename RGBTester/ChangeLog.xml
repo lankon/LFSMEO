@@ -3,6 +3,7 @@
 
 	<Release version="1.26.6.2" date="2026-06-17">
 		<Item type="Fixed">平均光性計算時未清空List</Item>
+		<Item type="Fixed">修正輸出檔案到異常位置問題</Item>
 	</Release>
 	<Release version="1.26.6.1" date="2026-06-09">
 		<Item type="Added">新增FunctionTester</Item>
