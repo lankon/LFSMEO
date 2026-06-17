@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
 
-	
-	<UnRelease version="1.26.6.1" date="2026-06-09">
+	<Release version="1.26.6.2" date="2026-06-17">
+		<Item type="Fixed">平均光性計算時未清空List</Item>
+	</Release>
+	<Release version="1.26.6.1" date="2026-06-09">
 		<Item type="Added">新增FunctionTester</Item>
 		<Item type="Fixed">光性量測前休息</Item>
 		<Item type="Fixed">6V,1V2上下限設定</Item>
 		<Item type="Fixed">流明,Power,WL靜態Debug測試</Item>
 		<Item type="Fixed">流明計算可設定平均次數</Item>
 		<Item type="Fixed">紅光電流高於150mA後不列入斜率,Offset計算</Item>
-	</UnRelease>
-
+	</Release>
 	<Release version="1.26.5.1" date="2026-05-15">
 		<Item type="Fixed">修正PartTest功能選項為BurnIn時,全流程Calibration檔案為空問題</Item>
 	</Release>

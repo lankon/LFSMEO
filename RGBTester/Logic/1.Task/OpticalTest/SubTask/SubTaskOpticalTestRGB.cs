@@ -223,7 +223,7 @@ namespace RGBTester.Logic
                             string color = TestQueue.Dequeue();
                             Tool.SaveLogToFile($"LED_{color}_Test", level: "INF");
 
-                            SubTask = new SubTaskOpticalTest_Debug(Deps, F_StateControl, Type + $"_{color}");
+                            SubTask = new SubTaskOpticalTest(Deps, F_StateControl, Type + $"_{color}");
                             SetSubTaskProcessing(true);
 
                             Transition(WORK.WAIT_TEST_COLOR);

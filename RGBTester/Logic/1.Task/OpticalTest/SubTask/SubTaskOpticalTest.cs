@@ -535,6 +535,9 @@ namespace RGBTester.Logic
                             _searchMinTime = CurrentConfig[TestSide][TestColor].IntegralTimeEnd;
                         }
 
+                        fSpectrumData.Clear();
+                        SpectrumData.Clear();
+
                         ResetTimeCount(out delay_time);
 
                         State = WORK.AUTO_INTEGRAL;
