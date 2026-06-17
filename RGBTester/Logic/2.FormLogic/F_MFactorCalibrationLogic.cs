@@ -158,7 +158,7 @@ namespace RGBTester.Logic
         }
         private void SaveData(double[] wl, double[] intensity)
         {
-            StreamWriter file = Tool.CreateFile("Result\\Spectrum", ".csv", false);
+            StreamWriter file = Tool.CreateFile($"Result\\Spectrum_{DateTime.Now.ToString("yyyyMMddHHmmss")}", ".csv", false);
 
             Tool.WriteFile(file, $"Wavelength,Intensity");
 

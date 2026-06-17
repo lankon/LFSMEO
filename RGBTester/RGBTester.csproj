@@ -159,6 +159,7 @@
     <Compile Include="Device\QuantaLogAPI\Command\QuantaAPI.cs" />
     <Compile Include="Device\QuantaLogAPI\Function_DataUpload.cs" />
     <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
+    <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTest_Debug.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTestRGB.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\SubTask\SubTaskOpticalTest.cs" />
     <Compile Include="Logic\1.Task\OpticalTest\TaskOpticalTest.cs" />

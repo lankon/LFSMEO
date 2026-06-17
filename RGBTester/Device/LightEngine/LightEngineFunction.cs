@@ -158,14 +158,14 @@ namespace RGBTester.Device
             if (LEA.SetLed_AllColorVoltage(side, values))
             {
                 if (values.Length == 4)
-                    Tool.SaveLogToFile($"Set {s_side} All Color DAC = R:{values[0]} G:{values[1]} B:{values[2]} B2:{values[3]}");
+                    Tool.SaveLogToFile($"Set {s_side} All Color Voltage = R:{values[0]} G:{values[1]} B:{values[2]} B2:{values[3]}");
                 else
-                    Tool.SaveLogToFile($"Set {s_side} All Color DAC = R:{values[0]} G:{values[1]} B:{values[2]}");
+                    Tool.SaveLogToFile($"Set {s_side} All Color Voltage = R:{values[0]} G:{values[1]} B:{values[2]}");
                 return true;
             }
             else
             {
-                Tool.SaveLogToFile($"Set {s_side} All Color DAC fail");
+                Tool.SaveLogToFile($"Set {s_side} All Color Voltage fail");
                 return false;
             }
         }
