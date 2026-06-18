@@ -40,6 +40,7 @@ namespace RGBTester.UI
             toolTip1.SetToolTip(Btn_LogIn, "LogIn");
             toolTip1.SetToolTip(Btn_Recipe, "Recipe");
             toolTip1.SetToolTip(Btn_YieldReport, "Yield Report");
+            toolTip1.SetToolTip(Btn_HistoryLog, "History Log");
         }
         private void InitialForm()
         {
@@ -187,6 +188,15 @@ namespace RGBTester.UI
             Tool.HideElementOnPanel(Scope.MainPanel);
             Tool.SetForm(Scope.MainPanel, yield);
             yield.Show();
+        }
+
+        private void Btn_HistoryLog_Click(object sender, EventArgs e)
+        {
+            var historyLog = ServiceProvider.GetRequiredService<F_HistoryLog>();
+
+            Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.SetForm(Scope.MainPanel, historyLog);
+            historyLog.Show();
         }
     }
 }

@@ -245,6 +245,12 @@
     <Compile Include="UI\F_FunctionTester.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\F_HistoryLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_HistoryLog.Designer.cs">
+      <DependentUpon>F_HistoryLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\F_FunctionTester.designer.cs">
       <DependentUpon>F_FunctionTester.cs</DependentUpon>
     </Compile>
@@ -358,6 +364,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_FunctionTester.resx">
       <DependentUpon>F_FunctionTester.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_HistoryLog.resx">
+      <DependentUpon>F_HistoryLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_OpticalTest.resx">
       <DependentUpon>F_OpticalTest.cs</DependentUpon>

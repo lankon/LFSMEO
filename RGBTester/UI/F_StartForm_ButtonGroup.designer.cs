@@ -40,6 +40,7 @@ namespace RGBTester.UI
             this.Btn_NextPnlPart1 = new System.Windows.Forms.Button();
             this.Btn_ParameterSetting = new System.Windows.Forms.Button();
             this.Pnl_Part2 = new System.Windows.Forms.Panel();
+            this.Btn_HistoryLog = new System.Windows.Forms.Button();
             this.Btn_PreviousPnlPart2 = new System.Windows.Forms.Button();
             this.Btn_NextPnlPart2 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -142,12 +143,24 @@ namespace RGBTester.UI
             // 
             // Pnl_Part2
             // 
+            this.Pnl_Part2.Controls.Add(this.Btn_HistoryLog);
             this.Pnl_Part2.Controls.Add(this.Btn_PreviousPnlPart2);
             this.Pnl_Part2.Controls.Add(this.Btn_NextPnlPart2);
             this.Pnl_Part2.Location = new System.Drawing.Point(12, 144);
             this.Pnl_Part2.Name = "Pnl_Part2";
             this.Pnl_Part2.Size = new System.Drawing.Size(1180, 65);
             this.Pnl_Part2.TabIndex = 34;
+            // 
+            // Btn_HistoryLog
+            // 
+            this.Btn_HistoryLog.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_HistoryLog.Location = new System.Drawing.Point(25, 5);
+            this.Btn_HistoryLog.Name = "Btn_HistoryLog";
+            this.Btn_HistoryLog.Size = new System.Drawing.Size(60, 60);
+            this.Btn_HistoryLog.TabIndex = 35;
+            this.Btn_HistoryLog.Text = "Log";
+            this.Btn_HistoryLog.UseVisualStyleBackColor = true;
+            this.Btn_HistoryLog.Click += new System.EventHandler(this.Btn_HistoryLog_Click);
             // 
             // Btn_PreviousPnlPart2
             // 
@@ -213,5 +226,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Button Btn_Recipe;
         private System.Windows.Forms.Button Btn_DAQ_Chart;
         private System.Windows.Forms.Button Btn_YieldReport;
+        private System.Windows.Forms.Button Btn_HistoryLog;
     }
 }

@@ -40,6 +40,7 @@ namespace RGBTester
             services.AddSingleton<IF_ProgressBar, F_ProgressBar>();
             services.AddSingleton<F_DAQ_Chart>();
             services.AddSingleton<IF_ElectricalSetting, F_ElectricalSetting>();
+            services.AddSingleton<F_HistoryLog>();
 
             //[Form]
             //退出Form後即close掉,要用再new
