@@ -67,7 +67,8 @@ namespace LFSMEO
             "NONE",
             "ProbeTester",
             "RGBTester",
-            "BurnInTester"});
+            "BurnInTester",
+            "DETester"});
             this.Cmbx_MachineType.Location = new System.Drawing.Point(163, 3);
             this.Cmbx_MachineType.Name = "Cmbx_MachineType";
             this.Cmbx_MachineType.Size = new System.Drawing.Size(155, 28);

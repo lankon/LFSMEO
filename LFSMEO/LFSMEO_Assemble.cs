@@ -39,6 +39,7 @@ using UserPrivilege.Logic;
 using RGBTester;
 using ProbeTester;
 using BurnInTester;
+using DETester;
 
 namespace LFSMEO
 {
@@ -48,6 +49,7 @@ namespace LFSMEO
 
         public Form BuildAndGetMainForm()
         {
+            //[新增機型]
             switch (Scope.MachineType)
             {
                 case EMachineType.ProbeTester:
@@ -56,6 +58,8 @@ namespace LFSMEO
                     return host.Services.GetRequiredService<RGBTester.UI.F_MainForm>();
                 case EMachineType.BurnInTester:
                     return host.Services.GetRequiredService<BurnInTester.UI.F_MainForm>();
+                case EMachineType.DETester:
+                    return host.Services.GetRequiredService<DETester.UI.F_MainForm>();
                 default:
                     return host.Services.GetRequiredService<F_SelectMachine>();
             }
@@ -144,6 +148,9 @@ namespace LFSMEO
                     services.AddBurnInTesterServices();
                     AppIcon = Properties.Resources.BurnInTester1;
                     AppName = "BurnInTester";
+                    break;
+                case EMachineType.DETester:
+                    services.AddDETesterServices();
                     break;
                 default:
                     services.AddSingleton<F_SelectMachine>();
