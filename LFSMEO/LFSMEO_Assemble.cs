@@ -29,6 +29,7 @@ using Device_VirtualLight;
 using Device_Hikvision;
 using Device_VirtualCamera;
 using Device_Spectrum_Virtual;
+using Device_MLO;
 
 //[Tool]
 using UserPrivilege.Base;
@@ -107,6 +108,7 @@ namespace LFSMEO
             services.AddSingleton<ILightControl, VirtualLight>();
             services.AddSingleton<ICamera, Hikvision>();
             services.AddSingleton<ICamera, VirtualCamera>();
+            services.AddSingleton<ICamera, MLO>();
             services.AddSingleton<IChillerControl>(Klxz);
 
             //[Form]

@@ -88,6 +88,10 @@ namespace DETester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
+            IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
+
+            function_Camera.Initial_All_Camera();
+
             //GC.Collect();
 
             //using (OpenFileDialog ofd = new OpenFileDialog())
@@ -116,6 +120,8 @@ namespace DETester.UI
         private void button8_Click(object sender, EventArgs e)
         {
             
+
+
 
             //// 訂閱中介層的影像事件
             //function_Camera.OnImageUpdated += (s, fe) =>
