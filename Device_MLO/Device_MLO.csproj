@@ -55,10 +55,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="python312.dll">
+    <Content Include="python312.dll" />
+    <Content Include="PythonScripts\Quanta_Interface.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Quanta_Interface.py" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
