@@ -154,7 +154,7 @@ namespace RGBTester.Device
 
             string command;
             if (passs == false)
-                command = $"-m UpdateToSMTDB -p {sn} BFT FAIL {CalibrationData}##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan} {line} {op_id}";
+                command = $"-m UpdateToSMTDB -p {sn} BFT {infomation.Split(',')[0]} {CalibrationData}##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan} {line} {op_id}";
             else
                 command = $"-m UpdateToSMTDB -p {sn} BFT PASS {CalibrationData}##FixtureID={fixture_id}##Program_ver={program_id}##Testplan_ver={test_plan} {line} {op_id}";
 

@@ -366,11 +366,11 @@ namespace RGBTester.Logic
                                                             data["G_HCM"].CalCurrent, data["G_HCM"].Dev,
                                                             data["B_HCM"].CalCurrent, data["B_HCM"].Dev);
 
-                        //if (!res)
-                        //{
-                        //    Scope.TestFail = true;
-                        //    RGBfunc.FailReasonFlag.IsSlopeCalculateCurrentErr = true;
-                        //}
+                        if (!res)
+                        {
+                            Scope.TestFail = true;
+                            RGBfunc.FailReasonFlag.IsSlopeCalculateCurrentErr = true;
+                        }
 
                         string copy_path = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath);
                         string copy_path1 = ApplicationSetting.Get_String_Recipe<eF_ParameterSetting>((int)eF_ParameterSetting.TxtBx_TestFileCopyPath1);

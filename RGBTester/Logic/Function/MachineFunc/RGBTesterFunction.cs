@@ -49,6 +49,21 @@ namespace RGBTester.Logic
             public bool IsBlueLuminousErr = false;
             public bool IsBlue2LuminousErr = false;
 
+            public enum ERROR_CODE
+            {
+                NONE,
+                SLOPE,
+                _0TEMP,
+                _00V6V,
+                _0V1V2,
+                _0LUMR,
+                _0LUMG,
+                _0LUMB,
+                LUMB2,
+                CLAMP,
+                SLPCC,
+            }
+
             public void ResetAllFlag()
             {
                 IsSlopeErr = false;
@@ -116,9 +131,34 @@ namespace RGBTester.Logic
 
                 return res;
             }
+
+            public ERROR_CODE UploadErrorCode()
+            {
+                if(IsSlopeErr)
+                    return ERROR_CODE.SLOPE;
+                else if(IsTemperatureErr)
+                    return ERROR_CODE._0TEMP;
+                else if(IsVoltageErr_6V)
+                    return ERROR_CODE._00V6V;
+                else if(IsVoltageErr_1V2)
+                    return ERROR_CODE._0V1V2;
+                else if(IsRedLuminousErr)
+                    return ERROR_CODE._0LUMR;
+                else if(IsGreenLuminousErr)
+                    return ERROR_CODE._0LUMG;
+                else if(IsBlueLuminousErr)
+                    return ERROR_CODE._0LUMB;
+                else if(IsBlue2LuminousErr)
+                    return ERROR_CODE.LUMB2;
+                else if(IsSlopeCalculateCurrentErr)
+                    return ERROR_CODE.CLAMP;
+                else if(IsClampingErr)
+                    return ERROR_CODE.SLPCC;
+                else
+                    return ERROR_CODE.NONE;
+            }
         }
 
-        
         public void Set_LED_Rigester()
         {
             LEA = ServiceProvider.GetRequiredService<IFunction_LightEngine>();

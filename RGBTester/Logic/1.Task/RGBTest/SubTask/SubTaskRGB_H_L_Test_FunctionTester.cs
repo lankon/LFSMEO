@@ -97,6 +97,8 @@ namespace RGBTester.Logic
         private int RepeatTime = 1;                     //取樣平均次數
         private int Period_DAQ_Count = 0;               //一個週期內DAQ取樣次數
         private double LED_Duty = 1;                    //LED Duty(硬體)
+        private double LCM_ZeroDACValue = 0;            //DAC = 0時電流數值
+        private double HCM_ZeroDACValue = 0;            //DAC = 0時電流數值
         private byte Side;                              //LED Board通訊指令(硬體)_Side
         private byte Color;                             //LED Board通訊指令(硬體)_Color
         private long CycleTime;                         //每筆DAC花費時間
@@ -120,11 +122,15 @@ namespace RGBTester.Logic
             NONE,
             INITIAL,
 
+            SELECT_TEST_MODE,
+
+            CAL_LCM_ZERO_DAC_VALUE,
             SET_DAC_LOW,
             GET_ADC_LOW,
             CALCULATE_LOW,
             RESET_LED_BOARD_LOW,
 
+            CAL_HCM_ZERO_DAC_VALUE,
             SET_DAC_HIGH,
             GET_ADC_HIGH,
             CALCULATE_HIGH,
@@ -520,14 +526,20 @@ namespace RGBTester.Logic
             double vf = sum_Vf / RepeatTime;
             testerData.Vf.Add(vf);
 
-            double rfb = 0;
+            double rfb = 0, zero_offset = 0;
             if (mode == "LCM")
+            {
+                zero_offset = LCM_ZeroDACValue;
                 rfb = RGBfunc.HardwareParam.Rfb_LCM;
+            }
             else
+            {
+                zero_offset = HCM_ZeroDACValue;
                 rfb = RGBfunc.HardwareParam.Rfb_HCM;
-
+            }
+                
             double iLed = sum_Iled / RepeatTime / rfb / RGBfunc.HardwareParam.LED_SigMag;
-            testerData.Iled.Add(iLed);
+            testerData.Iled.Add(iLed - zero_offset);
 
             return true;
         }
@@ -593,17 +605,23 @@ namespace RGBTester.Logic
                     {
                         Preset();
 
-                        if(OnlyHeighMode)
+                        Transition(WORK.SELECT_TEST_MODE);
+                    }
+                    break;
+
+                case WORK.SELECT_TEST_MODE:
+                    {
+                        if (OnlyHeighMode)
                         {
-                            if(!Deps.LightEngine.SetLed_CurrentMode("HCM"))
+                            if (!Deps.LightEngine.SetLed_CurrentMode("HCM"))
                             {
                                 StatusBox.ShowMessage("HDMI Board Set HCM Fail");
                                 Transition(WORK.ABORT);
                             }
                             else
-                                Transition(WORK.SET_DAC_HIGH);
+                                Transition(WORK.CAL_HCM_ZERO_DAC_VALUE);
 
-                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_HIGH.ToString());
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CAL_HCM_ZERO_DAC_VALUE.ToString());
                         }
                         else
                         {
@@ -613,14 +631,30 @@ namespace RGBTester.Logic
                                 Transition(WORK.ABORT);
                             }
                             else
-                                Transition(WORK.SET_DAC_LOW);
+                                Transition(WORK.CAL_LCM_ZERO_DAC_VALUE);
 
-                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.SET_DAC_LOW.ToString());
+                            Tool.SaveLogToFile($"[Task]({TaskName})" + WORK.CAL_LCM_ZERO_DAC_VALUE.ToString());
                         }
                     }
                     break;
 
                 #region Low
+                case WORK.CAL_LCM_ZERO_DAC_VALUE:
+                    {
+                        if (!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
+                        {
+                            StatusBox.ShowMessage("HDMI Board Cmd Fail");
+                            Transition(WORK.ABORT);
+                        }
+
+                        Thread.Sleep(200);  //等待DAC穩定
+
+                        var avgData = PeriodAvgValueCalculate("LCM");
+                        LCM_ZeroDACValue = avgData.Avg_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_LCM / RGBfunc.HardwareParam.LED_SigMag;
+                    
+                        Transition(WORK.SET_DAC_LOW);
+                    }
+                    break;
                 case WORK.SET_DAC_LOW:
                     {
                         UpdateProgressBar(qDAC_L, TotalState_L);
@@ -754,12 +788,28 @@ namespace RGBTester.Logic
                                 Transition(WORK.ABORT);
                             }
                             else
-                                Transition(WORK.SET_DAC_HIGH);
+                                Transition(WORK.CAL_HCM_ZERO_DAC_VALUE);
                         }
                     }
                     break;
                 #endregion
                 #region High
+                case WORK.CAL_HCM_ZERO_DAC_VALUE:
+                    {
+                        if (!Deps.LightEngine.SetLed_DAC(Color, Side, 0))
+                        {
+                            StatusBox.ShowMessage("HDMI Board Cmd Fail");
+                            Transition(WORK.ABORT);
+                        }
+
+                        Thread.Sleep(200);  //等待DAC穩定
+
+                        var avgData = PeriodAvgValueCalculate("HCM");
+                        HCM_ZeroDACValue = avgData.Avg_Iled / RepeatTime / RGBfunc.HardwareParam.Rfb_HCM / RGBfunc.HardwareParam.LED_SigMag;
+                    
+                        Transition(WORK.SET_DAC_HIGH);
+                    }
+                    break;
                 case WORK.SET_DAC_HIGH:
                     {
                         UpdateProgressBar(qDAC_H, TotalState_H);
