@@ -420,23 +420,23 @@ namespace RGBTester.Logic
         }
         private void CheckLumCondition(double test_current, double lum)
         {
-            if(TestColor == "R" && Math.Abs(test_current - 50) < 0.001 && 
-              (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RLight_LL) || 
-               lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_RLight_UL)))
+            if (TestColor == "R" && Math.Abs(test_current - 50) < 0.001 && 
+              (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSettingRecipe>((int)eF_OpticalSettingRecipe.TxtBx_RLight_LL) || 
+               lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSettingRecipe>((int)eF_OpticalSettingRecipe.TxtBx_RLight_UL)))
             {
                 RGBFunc.FailReasonFlag.IsRedLuminousErr = true;
                 Tool.SaveLogToFile($"{TestColor} Luminous Out of Range");
             }
             else if (TestColor == "G" && Math.Abs(test_current - 80) < 0.001 &&
-                    (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GLight_LL) ||
-                     lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_GLight_UL)))
+                    (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSettingRecipe>((int)eF_OpticalSettingRecipe.TxtBx_GLight_LL) ||
+                     lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSettingRecipe>((int)eF_OpticalSettingRecipe.TxtBx_GLight_UL)))
             {
                 RGBFunc.FailReasonFlag.IsGreenLuminousErr = true;
                 Tool.SaveLogToFile($"{TestColor} Luminous Out of Range");
             }
             else if ((TestColor == "B" || TestColor == "B2") && Math.Abs(test_current - 50) < 0.001 &&
-                     (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BLight_LL) ||
-                      lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSetting>((int)eF_OpticalSetting.TxtBx_BLight_UL)))
+                     (lum < ApplicationSetting.Get_Double_Recipe<eF_OpticalSettingRecipe>((int)eF_OpticalSettingRecipe.TxtBx_BLight_LL) ||
+                      lum > ApplicationSetting.Get_Double_Recipe<eF_OpticalSettingRecipe>((int)eF_OpticalSettingRecipe.TxtBx_BLight_UL)))
             {
                 if(TestColor == "B")
                     RGBFunc.FailReasonFlag.IsBlueLuminousErr = true;

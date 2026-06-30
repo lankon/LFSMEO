@@ -55,20 +55,20 @@ namespace RGBTester.UI
             ApplicationSetting.ReadAllRecipe<eF_OpticalSetting>();
             //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(recipe_name);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            ApplicationSetting.ReadAllRecipe<eF_OpticalSettingRecipe>(recipe_name);
         }
         private void UpdateEnumSettingToForm()
         {
             ApplicationSetting.UpdataRecipeToForm<eF_OpticalSetting>(this);
-            //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_OpticalSettingRecipe>(this);
         }
         private void SaveAllEnumSetting()
         {
             ApplicationSetting.SaveRecipeFromForm<eF_OpticalSetting>(this);
 
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
+            string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            ApplicationSetting.SaveRecipeFromForm<eF_OpticalSettingRecipe>(this, recipe_name);
         }
         private void UpdatePage()
         {
