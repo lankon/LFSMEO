@@ -144,23 +144,31 @@ namespace DeviceUI.Camera
                     if (DisplayPanels[realID].IsUpdating == true)   //UI還在更新,放棄更新畫面(丟禎) 
                         return;
 
+                    if (fe.Frame == null || !fe.Frame.TryAddRef())
+                        return;
+
                     DisplayPanels[realID].IsUpdating = true;
 
-                    Bitmap bmp = DisplayPanels[realID].CreateUniversalBitmap(
-                        fe.Width, fe.Height, fe.ImageData, fe.Format);
-
-                    this.BeginInvoke(new Action(() =>
+                    try
                     {
-                        try
+                        this.BeginInvoke(new Action(() =>
                         {
-                            DisplayPanels[realID].CurrentImage = bmp;
-                            DisplayPanels[realID].Update(); //呼叫UI立刻繪圖
-                        }
-                        finally
-                        {
-                            DisplayPanels[realID].IsUpdating = false;
-                        }
-                    }));
+                            try
+                            {
+                                DisplayPanels[realID].CurrentFrame = fe.Frame;
+                                DisplayPanels[realID].Update(); //呼叫UI立刻繪圖
+                            }
+                            finally
+                            {
+                                DisplayPanels[realID].IsUpdating = false;
+                            }
+                        }));
+                    }
+                    catch
+                    {
+                        fe.Frame.Dispose();
+                        DisplayPanels[realID].IsUpdating = false;
+                    }
                 };
                 i++;
             }

@@ -1,9 +1,11 @@
 ﻿using DeviceCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +28,7 @@ namespace DeviceFunction
         private List<ICamera> CameraList = new List<ICamera>();
         private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
         private Dictionary<int, CancellationTokenSource> _activeLiveTasks = new Dictionary<int, CancellationTokenSource>();
+        private readonly Dictionary<int, CameraFrameBufferPool> _framePools = new Dictionary<int, CameraFrameBufferPool>();
         public EventHandler<ImageReadyEventArgs>[] OnImageUpdates { get; private set; }
         
         enum WORK
@@ -112,7 +115,58 @@ namespace DeviceFunction
         }
         private void FireImageUpdate(int ccd, ImageReadyEventArgs e)
         {
-            OnImageUpdates[(int)ccd]?.Invoke(this, e);
+            EventHandler<ImageReadyEventArgs> handler = OnImageUpdates[(int)ccd];
+            if (handler == null)
+                return;
+
+            handler.Invoke(this, e);
+        }
+        private CameraFrameBufferPool GetFramePool(int ccd)
+        {
+            lock (_framePools)
+            {
+                if (!_framePools.TryGetValue(ccd, out CameraFrameBufferPool pool))
+                {
+                    pool = new CameraFrameBufferPool(ccd, 3);
+                    _framePools[ccd] = pool;
+                }
+
+                return pool;
+            }
+        }
+        private int GetBytesPerPixel(PixelFormat format)
+        {
+            switch (format)
+            {
+                case PixelFormat.Format8bppIndexed:
+                    return 1;
+                case PixelFormat.Format24bppRgb:
+                    return 3;
+                case PixelFormat.Format32bppArgb:
+                case PixelFormat.Format32bppRgb:
+                case PixelFormat.Format32bppPArgb:
+                    return 4;
+                default:
+                    return Math.Max(1, Image.GetPixelFormatSize(format) / 8);
+            }
+        }
+        private int GetAlignedStride(int width, PixelFormat format)
+        {
+            int bytesPerPixel = GetBytesPerPixel(format);
+            return ((width * bytesPerPixel + 3) / 4) * 4;
+        }
+        private void CopyImageToFrame(IntPtr source, CameraFrame frame)
+        {
+            int bytesPerPixel = GetBytesPerPixel(frame.Format);
+            int sourceStride = frame.Width * bytesPerPixel;
+            int copyBytes = Math.Min(sourceStride, frame.Stride);
+
+            for (int y = 0; y < frame.Height; y++)
+            {
+                IntPtr sourceRow = IntPtr.Add(source, y * sourceStride);
+                IntPtr destRow = IntPtr.Add(frame.ImageData, y * frame.Stride);
+                NativeMethods.CopyMemory(destRow, sourceRow, new UIntPtr((uint)copyBytes));
+            }
         }
         private void CameraLiveLoop(int ccdIndex, CancellationToken token)
         {
@@ -191,6 +245,82 @@ namespace DeviceFunction
             catch (Exception ex) { /* 錯誤處理 */ }
         }
         #endregion
+
+        private sealed class CameraFrameBufferPool
+        {
+            private readonly object _sync = new object();
+            private readonly FrameSlot[] _slots;
+            private readonly int _ccdIndex;
+
+            public CameraFrameBufferPool(int ccdIndex, int count)
+            {
+                _ccdIndex = ccdIndex;
+                _slots = new FrameSlot[count];
+
+                for (int i = 0; i < _slots.Length; i++)
+                    _slots[i] = new FrameSlot();
+            }
+
+            public CameraFrame TryRent(int width, int height, int stride, PixelFormat format)
+            {
+                lock (_sync)
+                {
+                    for (int i = 0; i < _slots.Length; i++)
+                    {
+                        FrameSlot slot = _slots[i];
+                        if (slot.InUse)
+                            continue;
+
+                        int requiredBytes = stride * height;
+                        if (slot.Buffer == IntPtr.Zero || slot.Capacity < requiredBytes)
+                        {
+                            if (slot.Buffer != IntPtr.Zero)
+                                Marshal.FreeHGlobal(slot.Buffer);
+
+                            slot.Buffer = Marshal.AllocHGlobal(requiredBytes);
+                            slot.Capacity = requiredBytes;
+                        }
+
+                        slot.InUse = true;
+                        slot.Frame = new CameraFrame(slot.Buffer, width, height, stride, format, _ccdIndex, Release);
+                        return slot.Frame;
+                    }
+                }
+
+                return null;
+            }
+
+            private void Release(CameraFrame frame)
+            {
+                lock (_sync)
+                {
+                    for (int i = 0; i < _slots.Length; i++)
+                    {
+                        FrameSlot slot = _slots[i];
+                        if (!object.ReferenceEquals(slot.Frame, frame))
+                            continue;
+
+                        slot.Frame = null;
+                        slot.InUse = false;
+                        return;
+                    }
+                }
+            }
+
+            private sealed class FrameSlot
+            {
+                public IntPtr Buffer = IntPtr.Zero;
+                public int Capacity = 0;
+                public bool InUse = false;
+                public CameraFrame Frame;
+            }
+        }
+
+        private static class NativeMethods
+        {
+            [DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory", SetLastError = false)]
+            public static extern void CopyMemory(IntPtr dest, IntPtr src, UIntPtr count);
+        }
 
         #region public function
         // [Initial]
@@ -344,16 +474,31 @@ namespace DeviceFunction
 
             if (ret == 0)
             {
-                ImageReadyEventArgs e = new ImageReadyEventArgs
-                {
-                    ImageData = image,
-                    Width = width,
-                    Height = height,
-                    Format = pixelFormat,
-                    CCD_Index = ccd
-                };
+                int stride = GetAlignedStride(width, pixelFormat);
+                CameraFrame frame = GetFramePool(ccd).TryRent(width, height, stride, pixelFormat);
+                if (frame == null)
+                    return true;
 
-                FireImageUpdate(ccd, e);
+                try
+                {
+                    CopyImageToFrame(image, frame);
+
+                    ImageReadyEventArgs e = new ImageReadyEventArgs
+                    {
+                        Frame = frame,
+                        ImageData = frame.ImageData,
+                        Width = frame.Width,
+                        Height = frame.Height,
+                        Format = frame.Format,
+                        CCD_Index = ccd
+                    };
+
+                    FireImageUpdate(ccd, e);
+                }
+                finally
+                {
+                    frame.Dispose();
+                }
 
                 return true;
             }
