@@ -5,96 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Drawing.Imaging;
-using System.Drawing;
-using System.Threading;
 
 namespace DeviceCore
 {
-    public sealed class CameraFrame : IDisposable
-    {
-        private readonly Action<CameraFrame> _releaseAction;
-        private int _refCount;
-        private int _disposed;
-
-        public CameraFrame(IntPtr imageData, int width, int height, int stride,
-                           PixelFormat format, int ccdIndex, Action<CameraFrame> releaseAction)
-        {
-            ImageData = imageData;
-            Width = width;
-            Height = height;
-            Stride = stride;
-            Format = format;
-            CCD_Index = ccdIndex;
-            _releaseAction = releaseAction;
-            _refCount = 1;
-        }
-
-        public IntPtr ImageData { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public int Stride { get; private set; }
-        public int CCD_Index { get; private set; }
-        public PixelFormat Format { get; private set; }
-
-        public bool TryAddRef()
-        {
-            while (true)
-            {
-                int current = Volatile.Read(ref _refCount);
-                if (current <= 0 || Volatile.Read(ref _disposed) != 0)
-                    return false;
-
-                if (Interlocked.CompareExchange(ref _refCount, current + 1, current) == current)
-                    return true;
-            }
-        }
-
-        public Bitmap CreateBitmapView()
-        {
-            Bitmap bmp = new Bitmap(Width, Height, Stride, Format, ImageData);
-
-            if (Format == PixelFormat.Format8bppIndexed)
-            {
-                ColorPalette palette = bmp.Palette;
-                for (int i = 0; i < 256; i++)
-                    palette.Entries[i] = Color.FromArgb(i, i, i);
-                bmp.Palette = palette;
-            }
-
-            return bmp;
-        }
-
-        public void Dispose()
-        {
-            while (true)
-            {
-                int current = Volatile.Read(ref _refCount);
-                if (current <= 0)
-                    return;
-
-                if (Interlocked.CompareExchange(ref _refCount, current - 1, current) != current)
-                    continue;
-
-                if (current == 1)
-                {
-                    Interlocked.Exchange(ref _disposed, 1);
-                    _releaseAction?.Invoke(this);
-                }
-
-                return;
-            }
-        }
-    }
-
-    public class ImageReadyEventArgs : EventArgs
-    {
-        public CameraFrame Frame { get; set; }
-        public IntPtr ImageData { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int CCD_Index { get; set; }
-        public PixelFormat Format { get; set; }
-    }
     public enum CCD_TYPE
     {         
         //Basler,
@@ -119,30 +32,116 @@ namespace DeviceCore
 
     public interface IFunction_Camera
     {
-        EventHandler<ImageReadyEventArgs>[] OnImageUpdates { get; } 
-
-        //[Initial]
-        int Initial_All_Camera();
-        void BindingCamera();
+        #region [Event]
+        /// <summary>
+        /// 訂閱指定 CCD 的影像更新事件。
+        /// </summary>
+        /// <param name="ccd">要訂閱的 CCD 編號。</param>
+        /// <param name="handler">當新影像準備完成時要呼叫的事件處理函式。</param>
         void Subscribe(int ccd, EventHandler<ImageReadyEventArgs> handler);
+        #endregion
 
-        // [Camera Grab]
+        #region [Initial]
+
+        /// <summary>
+        /// 初始化所有可用的相機裝置，並準備後續的相機綁定流程。
+        /// 通常應在程式啟動時呼叫一次。
+        /// </summary>
+        /// <returns>初始化成功時回傳 0；失敗時回傳實作定義的錯誤碼。</returns>
+        int Initial_All_Camera();
+
+        /// <summary>
+        /// 將設定檔中的 CCD 資訊對應到已連線的相機裝置清單。
+        /// 應在載入相機設定並完成裝置初始化後呼叫。
+        /// </summary>
+        void BindingCamera();
+
+        #endregion
+
+        #region [Camera Grab]
+
+        /// <summary>
+        /// 啟動指定 CCD 的取像流程。
+        /// </summary>
+        /// <param name="ccd">要啟動取像的 CCD 編號。</param>
+        /// <returns>取像啟動成功時回傳 true；否則回傳 false。</returns>
         bool StartGrab(int ccd);
-        bool StopGrab(int ccd);
 
-        // [Camera Trigger && LIVE]
+        /// <summary>
+        /// 停止指定 CCD 的取像流程。
+        /// </summary>
+        /// <param name="ccd">要停止取像的 CCD 編號。</param>
+        /// <returns>取像停止成功時回傳 true；否則回傳 false。</returns>
+        bool StopGrab(int ccd);
+        #endregion
+
+        #region [Camera Trigger && LIVE]
+
+        /// <summary>
+        /// 對指定 CCD 發送軟體觸發命令。
+        /// </summary>
+        /// <param name="ccd">要觸發的 CCD 編號。</param>
+        /// <returns>觸發命令成功時回傳 true；否則回傳 false。</returns>
         bool SoftTrigger(int ccd);
+
+        /// <summary>
+        /// 啟動指定 CCD 的 Live 連續取像。
+        /// Live 模式會持續觸發、取像，並送出影像更新事件。
+        /// </summary>
+        /// <param name="ccdIndex">要啟動 Live 的 CCD 編號。</param>
+        /// <returns>Live 啟動成功或已經在執行時回傳 true；否則回傳 false。</returns>
         bool StartLive(int ccdIndex);
+
+        /// <summary>
+        /// 停止指定 CCD 的 Live 連續取像。
+        /// </summary>
+        /// <param name="ccdIndex">要停止 Live 的 CCD 編號。</param>
+        /// <returns>Live 停止成功時回傳 true；否則回傳 false。</returns>
         bool StopLive(int ccdIndex);
+
+        /// <summary>
+        /// 暫停或恢復指定 CCD 的 Live 迴圈，不會完整停止取像流程。
+        /// </summary>
+        /// <param name="ccd">要暫停或恢復的 CCD 編號。</param>
+        /// <param name="is_pause">true 表示暫停 Live 更新；false 表示恢復 Live 更新。</param>
         void PauseLive(int ccd, bool is_pause);
 
-        // [Get Image]
+        #endregion
+
+        #region [Get Image]
+
+        /// <summary>
+        /// 從指定 CCD 取得一張影像，並透過影像更新事件送出。
+        /// 若為虛擬相機，<paramref name="image_path"/> 代表要載入的影像檔路徑。
+        /// </summary>
+        /// <param name="ccd">要取像的 CCD 編號。</param>
+        /// <param name="image_path">虛擬影像路徑，或由實作定義的影像來源路徑。</param>
+        /// <returns>影像取得並送出成功時回傳 true；否則回傳 false。</returns>
         bool GetImageDisplay(int ccd, string image_path);
 
-        //[Read&Save Axis Information]
-        void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters);
-        bool LoadCameraConfig(); 
-        IReadOnlyList<CAMERA_INFO> GetCameraConfig();
+        #endregion
 
+        #region [Read&Save Axis Information]
+
+        /// <summary>
+        /// 將相機設定參數儲存到指定設定檔。
+        /// </summary>
+        /// <param name="filePath">設定檔路徑。</param>
+        /// <param name="axisName">相機節點名稱，例如 Camera0 或 Camera1。</param>
+        /// <param name="parameters">要儲存的參數鍵值集合。</param>
+        void SaveCameraConfig(string filePath, string axisName, Dictionary<string, string> parameters);
+
+        /// <summary>
+        /// 從預設相機設定檔載入相機設定。
+        /// </summary>
+        /// <returns>設定載入成功時回傳 true；否則回傳 false。</returns>
+        bool LoadCameraConfig(); 
+
+        /// <summary>
+        /// 取得目前已載入的相機設定清單。
+        /// </summary>
+        /// <returns>依 CCD 編號排列的唯讀相機設定清單。</returns>
+        IReadOnlyList<CAMERA_INFO> GetCameraConfig();
+        #endregion
     }
 }

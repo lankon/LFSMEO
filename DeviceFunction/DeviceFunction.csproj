@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CameraFrame.cs" />
     <Compile Include="Function_IO_Card.cs" />
     <Compile Include="Function_Camera.cs" />
     <Compile Include="Function_LightControl.cs" />

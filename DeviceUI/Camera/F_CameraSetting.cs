@@ -137,7 +137,7 @@ namespace DeviceUI.Camera
 
             foreach (CameraDisplayPanel panel in DisplayPanels)
             {
-                Function_Camera.OnImageUpdates[i] += (s, fe) =>
+                Function_Camera.Subscribe(i, (s, fe) =>
                 {
                     int realID = fe.CCD_Index;
 
@@ -169,7 +169,7 @@ namespace DeviceUI.Camera
                         fe.Frame.Dispose();
                         DisplayPanels[realID].IsUpdating = false;
                     }
-                };
+                });
                 i++;
             }
         }

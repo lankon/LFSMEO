@@ -42,19 +42,19 @@ namespace DeviceUI.Camera
         private Point _endPoint;                        //滑鼠移動時的當前點
         private bool _isSelecting = false;              //是否正在拖拉矩形
         private readonly object _frameLock = new object();
-        private CameraFrame _currentFrame;              //目前 UI 持有的安全影像
+        private IImageFrame _currentFrame;              //目前 UI 持有的安全影像
         private IServiceProvider ServiceProvider;
         private IFunction_Camera FuncCamera;
 
         public Rectangle _selectedRect { get; private set; } // 最終選取的矩形區域
         public bool IsUpdating = false;                 //判斷UI Invoke是否還在更新
-        public CameraFrame CurrentFrame
+        public IImageFrame CurrentFrame
         {
             get => _currentFrame;
             set
             {
                 bool isFirstImage = false;
-                CameraFrame oldFrame = null;
+                IImageFrame oldFrame = null;
 
                 lock (_frameLock)
                 {
@@ -130,7 +130,7 @@ namespace DeviceUI.Camera
         {
             //將框選的螢幕矩形範圍推回實際影像的範圍
 
-            CameraFrame frame = null;
+            IImageFrame frame = null;
             lock (_frameLock)
             {
                 frame = _currentFrame;
@@ -144,7 +144,7 @@ namespace DeviceUI.Camera
 
             return new Rectangle(ix, iy, iw, ih);
         }
-        private CameraFrame AcquireCurrentFrame()
+        private IImageFrame AcquireCurrentFrame()
         {
             lock (_frameLock)
             {
@@ -156,6 +156,20 @@ namespace DeviceUI.Camera
 
                 return _currentFrame;
             }
+        }
+        private Bitmap CreateBitmapView(IImageFrame frame)
+        {
+            Bitmap bmp = new Bitmap(frame.Width, frame.Height, frame.Stride, frame.Format, frame.ImageData);
+
+            if (frame.Format == PixelFormat.Format8bppIndexed)
+            {
+                ColorPalette palette = bmp.Palette;
+                for (int i = 0; i < 256; i++)
+                    palette.Entries[i] = Color.FromArgb(i, i, i);
+                bmp.Palette = palette;
+            }
+
+            return bmp;
         }
         #endregion
 
@@ -301,13 +315,13 @@ namespace DeviceUI.Camera
         }
         public void SaveFullImage(string filePath)
         {
-            CameraFrame frame = AcquireCurrentFrame();
+            IImageFrame frame = AcquireCurrentFrame();
             if (frame == null)
                 return;
 
             try
             {
-                using (Bitmap bmp = frame.CreateBitmapView())
+                using (Bitmap bmp = CreateBitmapView(frame))
                     bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Bmp);
             }
             finally
@@ -322,13 +336,13 @@ namespace DeviceUI.Camera
 
             if (realRect.Width <= 0 || realRect.Height <= 0) return;
 
-            CameraFrame frame = AcquireCurrentFrame();
+            IImageFrame frame = AcquireCurrentFrame();
             if (frame == null)
                 return;
 
             try
             {
-                using (Bitmap bmp = frame.CreateBitmapView())
+                using (Bitmap bmp = CreateBitmapView(frame))
                 {
                     // 2. 從原始影像中裁切 (Clone) 出該區域
                     using (Bitmap roiImg = bmp.Clone(realRect, bmp.PixelFormat))
@@ -351,12 +365,12 @@ namespace DeviceUI.Camera
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 
-            CameraFrame frame = AcquireCurrentFrame();
+            IImageFrame frame = AcquireCurrentFrame();
             if (frame != null)
             {
                 try
                 {
-                    using (Bitmap bmp = frame.CreateBitmapView())
+                    using (Bitmap bmp = CreateBitmapView(frame))
                     {
                         g.TranslateTransform(_offset.X, _offset.Y);
                         g.ScaleTransform(_zoomScale, _zoomScale);
@@ -383,7 +397,7 @@ namespace DeviceUI.Camera
         {
             if (disposing)
             {
-                CameraFrame oldFrame = null;
+                IImageFrame oldFrame = null;
 
                 lock (_frameLock)
                 {
@@ -399,7 +413,7 @@ namespace DeviceUI.Camera
 
         private void CameraDisplayPanel_MouseWheel(object sender, MouseEventArgs e)
         {
-            CameraFrame frame = AcquireCurrentFrame();
+            IImageFrame frame = AcquireCurrentFrame();
             if (frame == null) return;
             frame.Dispose();
 

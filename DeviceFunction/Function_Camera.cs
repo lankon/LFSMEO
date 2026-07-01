@@ -24,12 +24,12 @@ namespace DeviceFunction
         #region parameter define
         private IEnumerable<ICamera> Camera;
         private int[] CCD_Info2List;
-        public bool[] PauseLiveFlag { get; set; }
+        private bool[] PauseLiveFlag { get; set; }
         private List<ICamera> CameraList = new List<ICamera>();
         private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
         private Dictionary<int, CancellationTokenSource> _activeLiveTasks = new Dictionary<int, CancellationTokenSource>();
         private readonly Dictionary<int, CameraFrameBufferPool> _framePools = new Dictionary<int, CameraFrameBufferPool>();
-        public EventHandler<ImageReadyEventArgs>[] OnImageUpdates { get; private set; }
+        private EventHandler<ImageReadyEventArgs>[] OnImageUpdates;
         
         enum WORK
         {
