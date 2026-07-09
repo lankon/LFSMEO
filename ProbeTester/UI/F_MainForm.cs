@@ -124,7 +124,7 @@ namespace ProbeTester.UI
         {
             Tool.HideElementOnPanel(Scope.MainPanel);
 
-            var startForm = ServiceProvider.GetRequiredService<F_DataCalculate>();
+            var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
 
             if(startForm is Form form)
             {

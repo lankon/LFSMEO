@@ -178,5 +178,21 @@ namespace ProbeTester.UI
                 UpdatePage();
             }
         }
+
+        private void Btn_Test_Click(object sender, EventArgs e)
+        {
+            RTCP_Controller rtcp_ctrl = new RTCP_Controller();
+
+            rtcp_ctrl.SetTCPOffset(100, 0, -100);
+
+            RTCP_Controller.RobotPose pos = new RTCP_Controller.RobotPose();
+
+            //rtcp_ctrl.CalculateRTCPTarget(new RTCP_Controller.RobotPose() { X = 0, Y = 0, Z = 0, Tz = 0, Tx = 0, Ty = 0 },1);
+            //pos = rtcp_ctrl.CalculateRTCPTarget_LocalX(new RTCP_Controller.RobotPose() { X = 0, Y = 0, Z = 0, Tz = 0, Tx = 0, Ty = 0 }, 10);
+            //pos = rtcp_ctrl.CalculateLocalTranslationTarget(new RTCP_Controller.RobotPose() { X = 0, Y = 0, Z = 0, Tz = 0, Tx = 0, Ty = 0 }, -100, 0, 0);
+
+            int aa = 0;
+        
+        }
     }
 }

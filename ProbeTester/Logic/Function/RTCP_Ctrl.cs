@@ -16,6 +16,7 @@ namespace ProbeTester.Logic
 
         #region parameter define
         private double _dx, _dy, _dz;
+        private double _fixedPitchY_deg = 225.0; // 固定的 Y 軸俯仰角度 (Degree)
         public struct RobotPose
         {
             public double X;
@@ -123,14 +124,27 @@ namespace ProbeTester.Logic
                 { 0, 0,              0,             1 }
             });
         }
+        private Matrix<double> CreateLocalTranslation(double delta_x, double delta_y, double delta_z)
+        {
+            return DenseMatrix.OfArray(new double[,] {
+                { 1, 0, 0, delta_x },
+                { 0, 1, 0, delta_y },
+                { 0, 0, 1, delta_z },
+                { 0, 0, 0, 1       }
+            });
+        }
+        private double RoundPoseValue(double value)
+        {
+            return Math.Round(value, 3, MidpointRounding.AwayFromZero);
+        }
         private RobotPose ExtractPoseFromMatrix(Matrix<double> T)
         {
             RobotPose pose = new RobotPose();
 
             // 1. 萃取 XYZ 平移量 (矩陣的第 4 欄，索引為 3)
-            pose.X = T[0, 3];
-            pose.Y = T[1, 3];
-            pose.Z = T[2, 3];
+            pose.X = RoundPoseValue(T[0, 3]);
+            pose.Y = RoundPoseValue(T[1, 3]);
+            pose.Z = RoundPoseValue(T[2, 3]);
 
             // 2. 萃取旋轉角度 (解析 3x3 旋轉矩陣區塊)
             // 根據 Rz * Rx * Ry 的推導結果：
@@ -159,9 +173,9 @@ namespace ProbeTester.Logic
             }
 
             // 將弧度轉回度數 (Degree)
-            pose.Tx = tx_rad * 180.0 / Math.PI;
-            pose.Ty = ty_rad * 180.0 / Math.PI;
-            pose.Tz = tz_rad * 180.0 / Math.PI;
+            pose.Tx = RoundPoseValue(tx_rad * 180.0 / Math.PI);
+            pose.Ty = RoundPoseValue(ty_rad * 180.0 / Math.PI);
+            pose.Tz = RoundPoseValue(tz_rad * 180.0 / Math.PI);
 
             return pose;
         }
@@ -218,6 +232,13 @@ namespace ProbeTester.Logic
             return toolOffset;
         }
 
+        public void SetTCPOffset(double dx, double dy, double dz)
+        {
+            _dx = dx;
+            _dy = dy;
+            _dz = dz;
+        }
+
         /// <summary>
         /// 執行 RTCP 核心演算：給定當下姿態與想轉的角度，算出 6 軸該去的新位置
         /// </summary>
@@ -226,7 +247,7 @@ namespace ProbeTester.Logic
         /// <returns>計算後 6 軸應該前往的全新目標位置 (Target Pose)</returns>
         public RobotPose CalculateRTCPTarget(RobotPose currentPose, double theta_deg)
         {
-            var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, 45);
+            var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, _fixedPitchY_deg);
             
             var T_base_flange = GetHomogeneousMatrix(currentPose);
             
@@ -246,7 +267,7 @@ namespace ProbeTester.Logic
         public RobotPose CalculateRTCPTarget_LocalX(RobotPose currentPose, double theta_deg)
         {
             // Step 1: 工具偏移矩陣 (與之前完全相同)
-            var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, 45);
+            var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, _fixedPitchY_deg);
 
             // Step 2: 待測物絕對初始狀態 (與之前完全相同)
             var T_base_flange = GetHomogeneousMatrix(currentPose);
@@ -260,6 +281,29 @@ namespace ProbeTester.Logic
             var T_flange_new = T_tcp_new * T_flange_tcp.Inverse();
 
             // Step 5: 逆向運動學求解 (與之前完全相同)
+            RobotPose targetPose = ExtractPoseFromMatrix(T_flange_new);
+
+            return targetPose;
+        }
+
+        public RobotPose CalculateLocalTranslationTarget(RobotPose currentPose, double delta_x, double delta_y, double delta_z)
+        {
+            // Step 1: 工具偏移矩陣
+            var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, _fixedPitchY_deg);
+
+            // Step 2: 待測物絕對初始狀態 
+            var T_base_flange = GetHomogeneousMatrix(currentPose);
+            var T_tcp_initial = T_base_flange * T_flange_tcp;
+
+            // Step 3: 套用局部平移指令 (🚀 這裡改成平移矩陣！)
+            var Trans_local = CreateLocalTranslation(delta_x, delta_y, delta_z);
+            var T_tcp_new = T_tcp_initial * Trans_local; // 右乘代表沿著局部坐標系移動
+
+            // Step 4: 反推法蘭新位置 
+            var T_flange_new = T_tcp_new * T_flange_tcp.Inverse();
+
+            // Step 5: 逆向運動學求解 
+            // 注意：因為純平移不改變姿態，所以解出來的 Tz, Tx, Ty 理論上會和原本一樣，只有 X, Y, Z 會變
             RobotPose targetPose = ExtractPoseFromMatrix(T_flange_new);
 
             return targetPose;

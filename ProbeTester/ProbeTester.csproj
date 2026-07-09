@@ -126,7 +126,7 @@
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\Function\DataFilter.cs" />
     <Compile Include="Logic\Function\ProbeTesterFunction.cs" />
-    <Compile Include="Logic\Function\TCPCalibrationSolver.cs" />
+    <Compile Include="Logic\Function\RTCP_Ctrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProbeTesterAssemble.cs" />
     <Compile Include="ProbeTesterMachine.cs" />
