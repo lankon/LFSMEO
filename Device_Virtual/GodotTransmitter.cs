@@ -22,12 +22,12 @@ namespace Device_Virtual
             _udpClient = new UdpClient();
         }
 
-        public int SendAxisDataWithTime(string axisName, double targetValue, double timeSeconds)
+        public int SendAxisDataWithTime(string axisName, double targetValue, double time_s)
         {
             try
             {
                 // 格式化為 "X,50.0,2.5"
-                string message = $"{axisName.ToUpper().Trim()},{targetValue:F3},{timeSeconds:F3}";
+                string message = $"{axisName.ToUpper().Trim()},{targetValue:F3},{time_s:F3}";
                 byte[] data = Encoding.UTF8.GetBytes(message);
 
                 // 非同步送出，完全不阻塞主程式流程

@@ -196,7 +196,7 @@ namespace DeviceFunction
                                 break;
                             }
                                 
-                            if(Tool.CheckTimeOverSec(delay, 1)/* && Get_Motion_Complete(axis) ==true*/)
+                            if(Tool.CheckTimeOverSec(delay, 1)/* && Get_Motion_Complete(axis) ==true*/) //到達極限後停止1秒
                             {
                                 res = DML[DML2Axis[axis]].RelativeSMove(DML_INFO[axis].DEV_NO,
                                                                             DML_INFO[axis].HOME_OFFSET_1ST,
