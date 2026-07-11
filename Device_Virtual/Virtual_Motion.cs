@@ -26,8 +26,8 @@ namespace Device_Virtual
         }
 
         #region parameter define
-        private bool UseGodotEngine = false;                                                    //是否使用Godot Engine模擬運動
-        private bool PassSimulationTime = true;                                                 //是否跳過模擬運動,直接到達目標位置
+        private bool UseGodotEngine = true;                                                    //是否使用Godot Engine模擬運動
+        private bool PassSimulationTime = false;                                                 //是否跳過模擬運動,直接到達目標位置
         private Dictionary<int, AXIS_INFO> AxisInfoMap = new Dictionary<int, AXIS_INFO>();
         private Dictionary<int, double> CurrentPosition = new Dictionary<int, double>();        //當前位置(mm)
         private Dictionary<int, double> MoveTime = new Dictionary<int, double>();               //模擬運動時間(ms)

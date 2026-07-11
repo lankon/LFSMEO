@@ -104,16 +104,6 @@ namespace ProbeTester.Logic
                 {  0,             0, 0,             1  }
             });
         }
-        private Matrix<double> CreateLocalRotationZ(double theta_deg)
-        {
-            double rad = theta_deg * Math.PI / 180.0;
-            return DenseMatrix.OfArray(new double[,] {
-                { Math.Cos(rad), -Math.Sin(rad), 0, 0 },
-                { Math.Sin(rad),  Math.Cos(rad), 0, 0 },
-                { 0,              0,             1, 0 },
-                { 0,              0,             0, 1 }
-            });
-        }
         private Matrix<double> CreateLocalRotationX(double theta_deg)
         {
             double rad = theta_deg * Math.PI / 180.0;
@@ -122,6 +112,26 @@ namespace ProbeTester.Logic
                 { 0, Math.Cos(rad), -Math.Sin(rad), 0 },
                 { 0, Math.Sin(rad),  Math.Cos(rad), 0 },
                 { 0, 0,              0,             1 }
+            });
+        }
+        private Matrix<double> CreateLocalRotationY(double theta_deg)
+        {
+            double rad = theta_deg * Math.PI / 180.0;
+            return DenseMatrix.OfArray(new double[,] {
+                {  Math.Cos(rad), 0, Math.Sin(rad), 0 },
+                {  0,             1, 0,             0 },
+                { -Math.Sin(rad), 0, Math.Cos(rad), 0 },
+                {  0,             0, 0,             1 }
+            });
+        }
+        private Matrix<double> CreateLocalRotationZ(double theta_deg)
+        {
+            double rad = theta_deg * Math.PI / 180.0;
+            return DenseMatrix.OfArray(new double[,] {
+                { Math.Cos(rad), -Math.Sin(rad), 0, 0 },
+                { Math.Sin(rad),  Math.Cos(rad), 0, 0 },
+                { 0,              0,             1, 0 },
+                { 0,              0,             0, 1 }
             });
         }
         private Matrix<double> CreateLocalTranslation(double delta_x, double delta_y, double delta_z)
@@ -141,12 +151,12 @@ namespace ProbeTester.Logic
         {
             RobotPose pose = new RobotPose();
 
-            // 1. 萃取 XYZ 平移量 (矩陣的第 4 欄，索引為 3)
+            // 萃取 XYZ 平移量 (矩陣的第 4 欄，索引為 3)
             pose.X = RoundPoseValue(T[0, 3]);
             pose.Y = RoundPoseValue(T[1, 3]);
             pose.Z = RoundPoseValue(T[2, 3]);
 
-            // 2. 萃取旋轉角度 (解析 3x3 旋轉矩陣區塊)
+            // 萃取旋轉角度 (解析 3x3 旋轉矩陣區塊)
             // 根據 Rz * Rx * Ry 的推導結果：
             // T[2,1] = sin(Tx)
             // T[2,0] = -cos(Tx)sin(Ty)
@@ -239,48 +249,26 @@ namespace ProbeTester.Logic
             _dz = dz;
         }
 
-        /// <summary>
-        /// 執行 RTCP 核心演算：給定當下姿態與想轉的角度，算出 6 軸該去的新位置
-        /// </summary>
-        /// <param name="currentPose">當前機台 6 軸的絕對位置</param>
-        /// <param name="theta_deg">待測物想要繞著「局部 Z 軸 (法向量)」自轉的角度</param>
-        /// <returns>計算後 6 軸應該前往的全新目標位置 (Target Pose)</returns>
-        public RobotPose CalculateRTCPTarget(RobotPose currentPose, double theta_deg)
+        public RobotPose CalculateRTCPTarget(RobotPose currentPose, double tx_deg, double ty_deg, double tz_deg)
         {
-            var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, _fixedPitchY_deg);
-            
-            var T_base_flange = GetHomogeneousMatrix(currentPose);
-            
-            var T_tcp_initial = T_base_flange * T_flange_tcp;
-
-            var R_local_z = CreateLocalRotationZ(theta_deg);
-
-            var T_tcp_new = T_tcp_initial * R_local_z;
-
-            var T_flange_new = T_tcp_new * T_flange_tcp.Inverse();
-
-            RobotPose targetPose = ExtractPoseFromMatrix(T_flange_new);
-
-            return targetPose;
-        }
-
-        public RobotPose CalculateRTCPTarget_LocalX(RobotPose currentPose, double theta_deg)
-        {
-            // Step 1: 工具偏移矩陣 (與之前完全相同)
+            // 工具偏移矩陣
             var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, _fixedPitchY_deg);
 
-            // Step 2: 待測物絕對初始狀態 (與之前完全相同)
+            // 待測物絕對初始狀態
             var T_base_flange = GetHomogeneousMatrix(currentPose);
             var T_tcp_initial = T_base_flange * T_flange_tcp;
 
-            // Step 3: 套用局部 X 軸旋轉指令 (🚀 唯一改變的地方！)
-            var R_local_x = CreateLocalRotationX(theta_deg);
-            var T_tcp_new = T_tcp_initial * R_local_x; // 右乘代表依據局部坐標系旋轉
+            // 套用局部 XYZ 旋轉指令，順序沿用機構推導的 Rz * Rx * Ry
+            var R_local_x = CreateLocalRotationX(tx_deg);
+            var R_local_y = CreateLocalRotationY(ty_deg);
+            var R_local_z = CreateLocalRotationZ(tz_deg);
+            var R_local = R_local_z * R_local_x * R_local_y;
+            var T_tcp_new = T_tcp_initial * R_local;
 
-            // Step 4: 反推法蘭新位置 (與之前完全相同)
+            // 反推法蘭新位置
             var T_flange_new = T_tcp_new * T_flange_tcp.Inverse();
 
-            // Step 5: 逆向運動學求解 (與之前完全相同)
+            // 逆向運動學求解
             RobotPose targetPose = ExtractPoseFromMatrix(T_flange_new);
 
             return targetPose;
@@ -288,22 +276,21 @@ namespace ProbeTester.Logic
 
         public RobotPose CalculateLocalTranslationTarget(RobotPose currentPose, double delta_x, double delta_y, double delta_z)
         {
-            // Step 1: 工具偏移矩陣
+            // 工具偏移矩陣
             var T_flange_tcp = CreateToolMatrix(_dx, _dy, _dz, _fixedPitchY_deg);
 
-            // Step 2: 待測物絕對初始狀態 
+            // 待測物初始狀態 
             var T_base_flange = GetHomogeneousMatrix(currentPose);
             var T_tcp_initial = T_base_flange * T_flange_tcp;
 
-            // Step 3: 套用局部平移指令 (🚀 這裡改成平移矩陣！)
+            // 套用局部平移指令
             var Trans_local = CreateLocalTranslation(delta_x, delta_y, delta_z);
-            var T_tcp_new = T_tcp_initial * Trans_local; // 右乘代表沿著局部坐標系移動
+            var T_tcp_new = T_tcp_initial * Trans_local;
 
-            // Step 4: 反推法蘭新位置 
+            // 反推法蘭新位置 
             var T_flange_new = T_tcp_new * T_flange_tcp.Inverse();
 
-            // Step 5: 逆向運動學求解 
-            // 注意：因為純平移不改變姿態，所以解出來的 Tz, Tx, Ty 理論上會和原本一樣，只有 X, Y, Z 會變
+            // 逆向運動學求解 
             RobotPose targetPose = ExtractPoseFromMatrix(T_flange_new);
 
             return targetPose;
