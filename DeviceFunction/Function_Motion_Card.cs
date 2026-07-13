@@ -610,7 +610,7 @@ namespace DeviceFunction
 
             return res;
         }
-        public bool PTP_Move(int axis , double pos, string mode = "Abs", MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL)
+        public bool PTP_Move(int axis , double pos, MOVE_MODE mode = MOVE_MODE.ABS, MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL)
         {
             byte line = (byte)DML_INFO[axis].LINE_NO;
             byte dev_no = (byte)DML_INFO[axis].DEV_NO;
@@ -645,12 +645,12 @@ namespace DeviceFunction
             //DML[DML2Axis[axis]].SetMotionConfig(DML_INFO[axis], axis);
 
             int res = 0;
-            if (mode == "Abs")
+            if (mode == MOVE_MODE.ABS)
             {
                 res = DML[DML2Axis[axis]].AbsoluteSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
                 Tool.SaveLogToFile($"[Action] 軸:{axis}({DML_INFO[axis].AXIS_NANE})=>{pos}");
             }
-            else if(mode == "Rel")
+            else if(mode == MOVE_MODE.REL)
             {
                 res = DML[DML2Axis[axis]].RelativeSMove(dev_no, pos, velocity_max, velocity_start, acc, sfac, dec, 0);
 

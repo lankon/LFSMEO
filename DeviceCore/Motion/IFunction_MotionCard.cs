@@ -12,6 +12,11 @@ namespace DeviceCore
         SLOW,
         NORMAL,
     }
+    public enum MOVE_MODE
+    {
+        ABS,
+        REL,
+    }
     public enum SINGLE_MOVE_MODE
     {
         INDEX,
@@ -59,7 +64,7 @@ namespace DeviceCore
         
         // [Move Function]
         bool Get_Motion_Complete(int axis);
-        bool PTP_Move(int axis, double pos, string mode = "Abs", MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL);
+        bool PTP_Move(int axis, double pos, MOVE_MODE mode = MOVE_MODE.ABS, MOVE_VELOCITY_MODE velocityMode = MOVE_VELOCITY_MODE.NORMAL);
         bool SingleMove(int axis, int dir, double pos);
         bool StopAxisMove(int axis);
 

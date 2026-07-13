@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
-
-using ToolFunction;
 using ProbeTester.Base;
+using ToolFunction;
 
 namespace ProbeTester.Logic
 {
     #region Task
-    public class TaskInitial : IBaseTask<TaskInitial.WORK>
+    public class Task_MLO : IBaseTask<Task_MLO.WORK>
     {
-        public TaskInitial(IBaseTaskDependence dependencies,
+        public Task_MLO(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -32,34 +24,39 @@ namespace ProbeTester.Logic
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
+        // FitTech SingleTestType is centralized here as a local MLO test selector.
+        private MLO_TEST_TYPE TestType = MLO_TEST_TYPE.GotoMLOPos;
+
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
         ProbeTesterFunction ProbeTesterFunc;
+
+        private enum MLO_TEST_TYPE
+        {
+            None,
+            GotoMLOPos,
+            Goto3DTiltPos,
+            GotoDESidePACCDPos,
+            SidePAFindFeature_Left,
+            SidePAFindFeature_Right,
+            DE3DTiltProcessing,
+            DESidePACCDFindCenterProcessing,
+        }
+
         public enum WORK
         {
             NONE,
             INITIAL,
 
-            GO_HOME_ALL,
-            WAIT_GO_HOME_ALL,
+            DO_SUBTASK,
+            WAIT_SUBTASK,
 
-            GO_HOME_Z,
-            WAIT_GO_HOME_Z,
-
-            GO_HOME_XYA,
-            WAIT_GO_HOME_XYA,
-
-            IDLE,
-
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
+            DO_PROCESSINGTASK,
+            WAIT_PROCESSINGTASK,
 
             END,
 
@@ -99,7 +96,7 @@ namespace ProbeTester.Logic
         /// 確認Task狀態
         /// </summary>
         /// <param name="check"></param>
-        private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS, 
+        private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS,
                                                     WORK PAUSE = WORK.PAUSE,
                                                     WORK ABORT = WORK.ABORT,
                                                     WORK FAIL = WORK.FAIL)
@@ -108,6 +105,7 @@ namespace ProbeTester.Logic
             {
                 case TASK_STATUS.SUCCESS:
                     {
+                        SetSubTaskProcessing(false);
                         Transition(SUCCESS);
                     }
                     break;
@@ -121,6 +119,7 @@ namespace ProbeTester.Logic
                     break;
                 case TASK_STATUS.ABORT:
                     {
+                        SetSubTaskProcessing(false);
                         Transition(ABORT);
                     }
                     break;
@@ -131,28 +130,32 @@ namespace ProbeTester.Logic
                     break;
                 case TASK_STATUS.FAIL:
                     {
+                        SetSubTaskProcessing(false);
                         Transition(FAIL);
                     }
                     break;
             }
-        }
-        
-        private void ResetTimeCount(out int tick)
-        {
-            tick = Environment.TickCount;
-        }
-        private bool CheckTimeOverSec(int tick, int time)
-        {
-            var time_count = Environment.TickCount - tick;
-            bool res = time_count > time * 1000;
-
-            return res;
         }
 
         private void Preset()
         {
             ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
             Axis = ProbeTesterFunc.Axis_HardwareParam;
+        }
+
+        private bool IsProcessingTaskAction()
+        {
+            bool res = false;
+
+            switch (TestType)
+            {
+                case MLO_TEST_TYPE.DESidePACCDFindCenterProcessing:
+                case MLO_TEST_TYPE.DE3DTiltProcessing:
+                    res = true;
+                    break;
+            }
+
+            return res;
         }
         #endregion
 
@@ -188,7 +191,6 @@ namespace ProbeTester.Logic
 
             if (GetSubTaskProcessing()) //判斷是否有SubTask執行
                 SubTask.GoToPause();
-
         }
         #endregion
 
@@ -196,75 +198,62 @@ namespace ProbeTester.Logic
         {
             if (task_command == TASK_STATUS.ABORT)   //人員傳入ABORT命令
                 GoToCaseAbortState(GetPauseState());
-            else if(task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
+            else if (task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
                 GoToCaseConitinueState();
-                
+
             switch (State)
             {
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.GO_HOME_ALL);
+
+                        if (IsProcessingTaskAction())
+                            Transition(WORK.DO_PROCESSINGTASK);
+                        else
+                            Transition(WORK.DO_SUBTASK);
                     }
                     break;
 
-                case WORK.GO_HOME_ALL:
+                case WORK.DO_SUBTASK:
                     {
-                        Deps.DML.GoHome(Axis.AxisX);
-                        Deps.DML.GoHome(Axis.AxisY);
-                        Deps.DML.GoHome(Axis.AxisZ);
-                        Deps.DML.GoHome(Axis.AxisRX);
-                        Deps.DML.GoHome(Axis.AxisRY);
-                        Deps.DML.GoHome(Axis.AxisRZ);
-
-                        Transition(WORK.WAIT_GO_HOME_ALL);
-                    }
-                    break;
-                case WORK.WAIT_GO_HOME_ALL:
-                    {
-                        if (Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY) &&
-                            Deps.DML.Get_Home_Complete(Axis.AxisZ) && Deps.DML.Get_Home_Complete(Axis.AxisRX) &&
-                            Deps.DML.Get_Home_Complete(Axis.AxisRY) && Deps.DML.Get_Home_Complete(Axis.AxisRZ))
+                        SubTask = null;
+                        switch (TestType)
                         {
-                            Transition(WORK.SUCCESS);
+                            case MLO_TEST_TYPE.GotoMLOPos:
+                                SubTask = new SubTaskGotoMLOPos(Deps, F_StateControl);
+                                break;
+
+                            default:
+                                Tool.SaveLogToFile($"{TaskName} unsupported MLO test type: {TestType}", level: "INF");
+                                Transition(WORK.SUCCESS);
+                                break;
+                        }
+
+                        if (SubTask != null)
+                        {
+                            SetSubTaskProcessing(true);
+                            Transition(WORK.WAIT_SUBTASK);
                         }
                     }
                     break;
+                case WORK.WAIT_SUBTASK:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        CheckResult(check);
+                    }
+                    break;
 
-                //case WORK.GO_HOME_Z:
-                //    {
-                //       Deps.DML.GoHome(Axis.AxisZ);
-                //        Transition(WORK.WAIT_GO_HOME_Z);
-                //    }
-                //    break;
-                //case WORK.WAIT_GO_HOME_Z:
-                //    {
-                //        if(Deps.DML.Get_Home_Complete(Axis.AxisZ))
-                //        {
-                //            Transition(WORK.GO_HOME_XYA);
-                //        }
-                //    }
-                //    break;
-
-                //case WORK.GO_HOME_XYA:
-                //    {
-                //        Deps.DML.GoHome(Axis.AxisX);
-                //        Deps.DML.GoHome(Axis.AxisY);
-                //        //Deps.DML.GoHome(Axis.AxisA);
-
-                //        Transition(WORK.WAIT_GO_HOME_XYA);
-                //    }
-                //    break;
-                //case WORK.WAIT_GO_HOME_XYA:
-                //    {
-                //        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY)/* &&
-                //           Deps.DML.Get_Home_Complete(Axis.AxisA)*/)
-                //        {
-                //            Transition(WORK.SUCCESS);
-                //        }
-                //    }
-                //    break;
-
+                case WORK.DO_PROCESSINGTASK:
+                    {
+                        Tool.SaveLogToFile($"{TaskName} processing task is not migrated in 10.MLO scope: {TestType}", level: "INF");
+                        Transition(WORK.SUCCESS);
+                    }
+                    break;
+                case WORK.WAIT_PROCESSINGTASK:
+                    {
+                        Transition(WORK.SUCCESS);
+                    }
+                    break;
 
                 case WORK.SUCCESS:
                     {
@@ -285,7 +274,6 @@ namespace ProbeTester.Logic
                 case WORK.ABORT:
                     {
                         SetStatus(TASK_STATUS.ABORT);
-                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -299,7 +287,6 @@ namespace ProbeTester.Logic
                     break;
                 case WORK.END:
                     {
-                        
                         SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
@@ -307,5 +294,4 @@ namespace ProbeTester.Logic
         }
     }
     #endregion
- 
 }

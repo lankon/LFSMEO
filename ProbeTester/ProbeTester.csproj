@@ -117,6 +117,8 @@
     <Compile Include="Base\Scope.cs" />
     <Compile Include="IProbeTesterMachine.cs" />
     <Compile Include="Logic\0.Thread\MainTask.cs" />
+    <Compile Include="Logic\1.Task\MLO\SubTask\SubTaskGotoMLOPos.cs" />
+    <Compile Include="Logic\1.Task\MLO\Task_MLO.cs" />
     <Compile Include="Logic\1.Task\PTPA\SubTask\SubTaskCalibrationUpCCD.cs" />
     <Compile Include="Logic\1.Task\PTPA\SubTask\SubTaskGoToUpCCDFocusPos.cs" />
     <Compile Include="Logic\1.Task\PTPA\Task_PTPA.cs" />

@@ -199,7 +199,7 @@ namespace DeviceFunction
             Tool.ResetTimeCount(out CycleTime);
             bool Terminate = false;
 
-            bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 50.0, "Abs", MOVE_VELOCITY_MODE.FAST);
+            bool res = Function_MotionCard.PTP_Move(GetCurrentBtnNum(), 50.0, MOVE_MODE.ABS, MOVE_VELOCITY_MODE.FAST);
             
             while(!Terminate)
             {

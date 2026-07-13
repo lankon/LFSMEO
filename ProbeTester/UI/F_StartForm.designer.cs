@@ -62,6 +62,7 @@ namespace ProbeTester.UI
             this.button10 = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.Btn_Test = new System.Windows.Forms.Button();
+            this.Btn_Calibration = new System.Windows.Forms.Button();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -439,11 +440,22 @@ namespace ProbeTester.UI
             this.Btn_Test.UseVisualStyleBackColor = true;
             this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
+            // Btn_Calibration
+            // 
+            this.Btn_Calibration.Location = new System.Drawing.Point(863, 507);
+            this.Btn_Calibration.Name = "Btn_Calibration";
+            this.Btn_Calibration.Size = new System.Drawing.Size(142, 57);
+            this.Btn_Calibration.TabIndex = 9;
+            this.Btn_Calibration.Text = "Calibration";
+            this.Btn_Calibration.UseVisualStyleBackColor = true;
+            this.Btn_Calibration.Click += new System.EventHandler(this.Btn_Calibration_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_Calibration);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel4);
@@ -503,5 +515,6 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button Btn_Test;
+        private System.Windows.Forms.Button Btn_Calibration;
     }
 }

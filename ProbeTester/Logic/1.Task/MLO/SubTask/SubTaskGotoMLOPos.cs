@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows.Forms;
+using DeviceCore;
 using Microsoft.Extensions.DependencyInjection;
-
-using ToolFunction;
 using ProbeTester.Base;
+using ToolFunction;
 
 namespace ProbeTester.Logic
 {
     #region Task
-    public class TaskInitial : IBaseTask<TaskInitial.WORK>
+    public class SubTaskGotoMLOPos : IBaseTask<SubTaskGotoMLOPos.WORK>
     {
-        public TaskInitial(IBaseTaskDependence dependencies,
+        public SubTaskGotoMLOPos(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -32,34 +25,51 @@ namespace ProbeTester.Logic
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
-        private IF_BaseTask SubTask;                  //子流程
+        // External FitTech settings are centralized here.
+        private bool IsLeft = true;
+
+        private int AxisNestX = 0;
+        private int AxisNestY = 0;
+        private int AxisNestZ = 0;
+        private int AxisNestA = 0;
+        private int AxisNestTX = 0;
+        private int AxisNestTY = 0;
+
+        private double NestSafePosX = 0.0;
+
+        private double NestYFeaturePos = 0.0;
+        private double NestYSidePAMLOOffset = 0.0;
+        private double NestZFeaturePos = 0.0;
+        private double NestZSidePAMLOOffset = 0.0;
+        private double NestAMLOPos = 0.0;
+        private double NestTxMLOPos = 0.0;
+        private double NestTyMLOPos = 0.0;
+
+        private double LeftNestYCenterFeatureOffset = 0.0;
+        private double LeftNestZCenterFeatureOffset = 0.0;
+        private double RightNestYCenterFeatureOffset = 0.0;
+        private double RightNestZCenterFeatureOffset = 0.0;
+
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
         ProbeTesterFunction ProbeTesterFunc;
+
         public enum WORK
         {
             NONE,
             INITIAL,
 
-            GO_HOME_ALL,
-            WAIT_GO_HOME_ALL,
+            GOTO_SAFE_NEST_X,
+            WAIT_GOTO_SAFE_NEST_X,
 
-            GO_HOME_Z,
-            WAIT_GO_HOME_Z,
+            GOTO_NEST_POS,
+            WAIT_GOTO_NEST_POS,
 
-            GO_HOME_XYA,
-            WAIT_GO_HOME_XYA,
-
-            IDLE,
-
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
+            GOTO_NEST_X_WORK_POS,
+            WAIT_GOTO_NEST_X_WORK_POS,
 
             END,
 
@@ -99,7 +109,7 @@ namespace ProbeTester.Logic
         /// 確認Task狀態
         /// </summary>
         /// <param name="check"></param>
-        private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS, 
+        private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS,
                                                     WORK PAUSE = WORK.PAUSE,
                                                     WORK ABORT = WORK.ABORT,
                                                     WORK FAIL = WORK.FAIL)
@@ -136,24 +146,25 @@ namespace ProbeTester.Logic
                     break;
             }
         }
-        
-        private void ResetTimeCount(out int tick)
-        {
-            tick = Environment.TickCount;
-        }
-        private bool CheckTimeOverSec(int tick, int time)
-        {
-            var time_count = Environment.TickCount - tick;
-            bool res = time_count > time * 1000;
-
-            return res;
-        }
 
         private void Preset()
         {
             ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
             Axis = ProbeTesterFunc.Axis_HardwareParam;
+
+            SetDefaultAxis();
         }
+
+        private void SetDefaultAxis()
+        {
+            AxisNestX = Axis.AxisX;
+            AxisNestY = Axis.AxisY;
+            AxisNestZ = Axis.AxisZ;
+            AxisNestA = Axis.AxisA;
+            AxisNestTX = Axis.AxisX;
+            AxisNestTY = Axis.AxisY;
+        }
+
         #endregion
 
         #region public function
@@ -186,9 +197,6 @@ namespace ProbeTester.Logic
                     break;
             }
 
-            if (GetSubTaskProcessing()) //判斷是否有SubTask執行
-                SubTask.GoToPause();
-
         }
         #endregion
 
@@ -196,75 +204,91 @@ namespace ProbeTester.Logic
         {
             if (task_command == TASK_STATUS.ABORT)   //人員傳入ABORT命令
                 GoToCaseAbortState(GetPauseState());
-            else if(task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
+            else if (task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
                 GoToCaseConitinueState();
-                
+
             switch (State)
             {
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.GO_HOME_ALL);
+                        Transition(WORK.GOTO_SAFE_NEST_X);
                     }
                     break;
 
-                case WORK.GO_HOME_ALL:
+                case WORK.GOTO_SAFE_NEST_X:
                     {
-                        Deps.DML.GoHome(Axis.AxisX);
-                        Deps.DML.GoHome(Axis.AxisY);
-                        Deps.DML.GoHome(Axis.AxisZ);
-                        Deps.DML.GoHome(Axis.AxisRX);
-                        Deps.DML.GoHome(Axis.AxisRY);
-                        Deps.DML.GoHome(Axis.AxisRZ);
-
-                        Transition(WORK.WAIT_GO_HOME_ALL);
-                    }
-                    break;
-                case WORK.WAIT_GO_HOME_ALL:
-                    {
-                        if (Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY) &&
-                            Deps.DML.Get_Home_Complete(Axis.AxisZ) && Deps.DML.Get_Home_Complete(Axis.AxisRX) &&
-                            Deps.DML.Get_Home_Complete(Axis.AxisRY) && Deps.DML.Get_Home_Complete(Axis.AxisRZ))
+                        if (Deps.DML.Get_Motion_Complete(AxisNestX))
                         {
-                            Transition(WORK.SUCCESS);
+                            Deps.DML.PTP_Move(AxisNestX, NestSafePosX, MOVE_MODE.ABS);
+                            Transition(WORK.WAIT_GOTO_SAFE_NEST_X);
+                        }
+                    }
+                    break;
+                case WORK.WAIT_GOTO_SAFE_NEST_X:
+                    {
+                        if (Deps.DML.Get_Motion_Complete(AxisNestX))
+                            Transition(WORK.GOTO_NEST_POS);
+                    }
+                    break;
+
+                case WORK.GOTO_NEST_POS:
+                    {
+                        if (Deps.DML.Get_Motion_Complete(AxisNestY) && Deps.DML.Get_Motion_Complete(AxisNestZ) &&
+                            Deps.DML.Get_Motion_Complete(AxisNestA) && Deps.DML.Get_Motion_Complete(AxisNestTX) &&
+                            Deps.DML.Get_Motion_Complete(AxisNestTY))
+                        {
+                            double center_feature_offset_y, center_feature_offset_z;
+                            if (IsLeft)
+                            {
+                                center_feature_offset_y = LeftNestYCenterFeatureOffset;
+                                center_feature_offset_z = LeftNestZCenterFeatureOffset;
+                            }
+                            else
+                            {
+                                center_feature_offset_y = RightNestYCenterFeatureOffset;
+                                center_feature_offset_z = RightNestZCenterFeatureOffset;
+                            }
+
+                            double nest_y = NestYFeaturePos + center_feature_offset_y + NestYSidePAMLOOffset;
+                            double nest_z = NestZFeaturePos + center_feature_offset_z + NestZSidePAMLOOffset;
+
+                            Deps.DML.PTP_Move(AxisNestY, nest_y, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestZ, nest_z, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestA, NestAMLOPos, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestTX, NestTxMLOPos, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestTY, NestTyMLOPos, MOVE_MODE.ABS);
+
+                            Transition(WORK.WAIT_GOTO_NEST_POS);
+                        }
+                    }
+                    break;
+                case WORK.WAIT_GOTO_NEST_POS:
+                    {
+                        if (Deps.DML.Get_Motion_Complete(AxisNestY) && Deps.DML.Get_Motion_Complete(AxisNestZ) &&
+                            Deps.DML.Get_Motion_Complete(AxisNestA) && Deps.DML.Get_Motion_Complete(AxisNestTX) &&
+                            Deps.DML.Get_Motion_Complete(AxisNestTY))
+                        {
+                            Transition(WORK.GOTO_NEST_X_WORK_POS);
                         }
                     }
                     break;
 
-                //case WORK.GO_HOME_Z:
-                //    {
-                //       Deps.DML.GoHome(Axis.AxisZ);
-                //        Transition(WORK.WAIT_GO_HOME_Z);
-                //    }
-                //    break;
-                //case WORK.WAIT_GO_HOME_Z:
-                //    {
-                //        if(Deps.DML.Get_Home_Complete(Axis.AxisZ))
-                //        {
-                //            Transition(WORK.GO_HOME_XYA);
-                //        }
-                //    }
-                //    break;
-
-                //case WORK.GO_HOME_XYA:
-                //    {
-                //        Deps.DML.GoHome(Axis.AxisX);
-                //        Deps.DML.GoHome(Axis.AxisY);
-                //        //Deps.DML.GoHome(Axis.AxisA);
-
-                //        Transition(WORK.WAIT_GO_HOME_XYA);
-                //    }
-                //    break;
-                //case WORK.WAIT_GO_HOME_XYA:
-                //    {
-                //        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY)/* &&
-                //           Deps.DML.Get_Home_Complete(Axis.AxisA)*/)
-                //        {
-                //            Transition(WORK.SUCCESS);
-                //        }
-                //    }
-                //    break;
-
+                case WORK.GOTO_NEST_X_WORK_POS:
+                    {
+                        if (Deps.DML.Get_Motion_Complete(AxisNestX))
+                        {
+                            // FitTech source keeps the NestX work-position move commented out.
+                            Transition(WORK.WAIT_GOTO_NEST_X_WORK_POS);
+                        }
+                    }
+                    break;
+                case WORK.WAIT_GOTO_NEST_X_WORK_POS:
+                    {
+                        if (Deps.DML.Get_Motion_Complete(AxisNestX))
+                            Transition(WORK.SUCCESS);
+                    }
+                    break;
 
                 case WORK.SUCCESS:
                     {
@@ -285,7 +309,6 @@ namespace ProbeTester.Logic
                 case WORK.ABORT:
                     {
                         SetStatus(TASK_STATUS.ABORT);
-                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -299,7 +322,6 @@ namespace ProbeTester.Logic
                     break;
                 case WORK.END:
                     {
-                        
                         SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
@@ -307,5 +329,4 @@ namespace ProbeTester.Logic
         }
     }
     #endregion
- 
 }
