@@ -19,15 +19,21 @@ namespace Device_Virtual
     {
         public Virtual_Motion()
         {
+            if(UseGodotEngine)
+            {
+                GodotTransmitter = new GodotUdpTransmitter();
+            }
         }
 
         #region parameter define
-        private bool PassSimulationTime = true;                                                 //是否跳過模擬運動,直接到達目標位置
+        private bool UseGodotEngine = true;                                                    //是否使用Godot Engine模擬運動
+        private bool PassSimulationTime = false;                                                 //是否跳過模擬運動,直接到達目標位置
         private Dictionary<int, AXIS_INFO> AxisInfoMap = new Dictionary<int, AXIS_INFO>();
         private Dictionary<int, double> CurrentPosition = new Dictionary<int, double>();        //當前位置(mm)
         private Dictionary<int, double> MoveTime = new Dictionary<int, double>();               //模擬運動時間(ms)
         private Dictionary<int, long> MoveTimer = new Dictionary<int, long>();                  //模擬運動計時器(ms)
         private Dictionary<int, bool> CM_Stop = new Dictionary<int, bool>();                    //連續移動停止旗標
+        private GodotUdpTransmitter GodotTransmitter;
 
         enum VIRTUAL_MOTION_IO
         {
@@ -218,9 +224,14 @@ namespace Device_Virtual
                 time = 0;
 
             CurrentPosition[axis] = CurrentPosition[axis] + position;
+            
+            if(UseGodotEngine)
+                GodotTransmitter.SendAxisDataWithTime(axis.ToString(), CurrentPosition[axis], time / 1000);
+
             MoveTime[axis] = time;
             Tool.ResetTimeCount(out long startTicks);
             MoveTimer[axis] = startTicks;
+
 
             return 0;
         }
@@ -234,6 +245,10 @@ namespace Device_Virtual
                 time = 0;
 
             CurrentPosition[axis] = position;
+
+            if (UseGodotEngine)
+                GodotTransmitter.SendAxisDataWithTime(axis.ToString(), CurrentPosition[axis], time / 1000);
+
             MoveTime[axis] = time;
             Tool.ResetTimeCount(out long startTicks);
             MoveTimer[axis] = startTicks;
@@ -242,40 +257,40 @@ namespace Device_Virtual
         }
         public int ContinuousMove(int axis, int dir, double acc, double dec, double velocity_max)
         {
-            //觸發後撞到極限才會停止,先給初始化流程使用
-            
             int ret = 0;
 
             Tool.ResetTimeCount(out long startTicks);
             CM_Stop[axis] = false;
+            double delay_time = 30;
 
             Thread moveThread = new Thread(() =>
             {
                 while (!CM_Stop[axis])
                 {
-                    if (Tool.GetTime(startTicks, time: "s") > 5)
+                    if (Tool.GetTime(startTicks, time: "s") > 10)
+                    {
+                        ret = -1;
                         break;
-
-                    double time = Tool.GetTime(startTicks, time: "s");
-
-                    //if (PassSimulationTime == true)
-                    //    time = 5;
+                    }
 
                     if (dir == 1)    //負向
-                        CurrentPosition[axis] = CurrentPosition[axis] - time * velocity_max;
+                        CurrentPosition[axis] = CurrentPosition[axis] - delay_time / 1000 * velocity_max;
                     else
-                        CurrentPosition[axis] = CurrentPosition[axis] + time * velocity_max;
+                        CurrentPosition[axis] = CurrentPosition[axis] + delay_time / 1000 * velocity_max;
 
-                    Thread.Sleep(100);
+                    MoveTime[axis] = delay_time;
+                    Tool.ResetTimeCount(out long startTicks1);
+                    MoveTimer[axis] = startTicks1;
+
+                    if (UseGodotEngine)
+                        GodotTransmitter.SendAxisDataWithTime(axis.ToString(), CurrentPosition[axis], delay_time / 1000);
+
+                    Thread.Sleep((int)delay_time);
                 }
             });
 
             moveThread.IsBackground = true;
             moveThread.Start();
-
-            acc = TransferToPulse(acc, axis);
-            dec = TransferToPulse(dec, axis);
-            velocity_max = TransferToPulse(velocity_max, axis);
 
             return ret;
         }

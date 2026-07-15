@@ -1,65 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows.Forms;
+using DeviceCore;
 using Microsoft.Extensions.DependencyInjection;
-
-using ToolFunction;
 using ProbeTester.Base;
+using ToolFunction;
 
 namespace ProbeTester.Logic
 {
     #region Task
-    public class TaskInitial : IBaseTask<TaskInitial.WORK>
+    public class Task_UnLoadNest : IBaseTask<Task_UnLoadNest.WORK>
     {
-        public TaskInitial(IBaseTaskDependence dependencies,
+        public Task_UnLoadNest(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
         {
             TaskName = this.GetType().Name;
-            State = WORK.INITIAL;
+            State = WORK.START;
 
             switch (set_state)
             {
                 default:
-                    State = WORK.INITIAL;
+                    State = WORK.START;
                     break;
             }
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
 
             F_StateControl = f_StateControl;
-
         }
 
         #region parameter
-        private IF_BaseTask SubTask;                  //子流程
+        private long wait_timer = 0;
+        private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
         ProbeTesterFunction ProbeTesterFunc;
+
         public enum WORK
         {
             NONE,
-            INITIAL,
+            START,
+            PRESET,
 
-            GO_HOME_ALL,
-            WAIT_GO_HOME_ALL,
-
-            GO_HOME_Z,
-            WAIT_GO_HOME_Z,
-
-            GO_HOME_XYA,
-            WAIT_GO_HOME_XYA,
-
-            IDLE,
-
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
+            UNLOAD_NEST,
+            WAIT_UNLOAD_NEST,
 
             END,
 
@@ -73,9 +55,25 @@ namespace ProbeTester.Logic
         #endregion
 
         #region private function
+        bool PresetLoop()
+        {
+            ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
+            Axis = ProbeTesterFunc.Axis_HardwareParam;
+
+            DoReStretchIO();
+
+            return true;
+        }
+
+        private void DoReStretchIO()
+        {
+            Deps.DIOL.SetOutputStatus(EIOName.SideCCDLightStretch, false);
+            Deps.DIOL.SetOutputStatus(EIOName.SideCCDLightReStretch, true);
+        }
+
         protected override void Transition(WORK target)
         {
-            if (target != State) //狀態有變化時紀錄
+            if (target != State)
             {
                 Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
                 F_StateControl.UpdateTask($"({TaskName})\n" + target.ToString());
@@ -83,23 +81,20 @@ namespace ProbeTester.Logic
 
             State = target;
         }
+
         protected override WORK AbortState(WORK target)
         {
             WORK target_work = WORK.NONE;
 
             switch (target)
             {
-                //case WORK.RUNNING_2: target_work = WORK.RUNNING_ABORT; break;
                 default: target_work = WORK.ABORT; break;
             }
 
             return target_work;
         }
-        /// <summary>
-        /// 確認Task狀態
-        /// </summary>
-        /// <param name="check"></param>
-        private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS, 
+
+        private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS,
                                                     WORK PAUSE = WORK.PAUSE,
                                                     WORK ABORT = WORK.ABORT,
                                                     WORK FAIL = WORK.FAIL)
@@ -108,19 +103,21 @@ namespace ProbeTester.Logic
             {
                 case TASK_STATUS.SUCCESS:
                     {
+                        SetSubTaskProcessing(false);
                         Transition(SUCCESS);
                     }
                     break;
                 case TASK_STATUS.PAUSE:
                     {
-                        SetStatus(TASK_STATUS.PAUSE);   //設定目前Task狀態,讓MainTask知道Task狀態
-                        SetPauseState(State);           //記錄目前暫停的case
-                        SetNextState(State);            //設定使用者按繼續後要回到的case
+                        SetStatus(TASK_STATUS.PAUSE);
+                        SetPauseState(State);
+                        SetNextState(State);
                         Transition(PAUSE);
                     }
                     break;
                 case TASK_STATUS.ABORT:
                     {
+                        SetSubTaskProcessing(false);
                         Transition(ABORT);
                     }
                     break;
@@ -131,28 +128,11 @@ namespace ProbeTester.Logic
                     break;
                 case TASK_STATUS.FAIL:
                     {
+                        SetSubTaskProcessing(false);
                         Transition(FAIL);
                     }
                     break;
             }
-        }
-        
-        private void ResetTimeCount(out int tick)
-        {
-            tick = Environment.TickCount;
-        }
-        private bool CheckTimeOverSec(int tick, int time)
-        {
-            var time_count = Environment.TickCount - tick;
-            bool res = time_count > time * 1000;
-
-            return res;
-        }
-
-        private void Preset()
-        {
-            ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
-            Axis = ProbeTesterFunc.Axis_HardwareParam;
         }
         #endregion
 
@@ -168,13 +148,9 @@ namespace ProbeTester.Logic
 
             return res;
         }
+
         public override void GoToPause()
         {
-            //執行暫停後可根據State選擇操作者使用狀態
-            //ABORT_CONTINUE
-            //ABORT
-            //CONTINUE
-            //讓使用者選擇
             SetPauseState(State);
 
             switch (State)
@@ -186,85 +162,59 @@ namespace ProbeTester.Logic
                     break;
             }
 
-            if (GetSubTaskProcessing()) //判斷是否有SubTask執行
+            if (GetSubTaskProcessing())
                 SubTask.GoToPause();
-
         }
         #endregion
 
         protected override void RunLoop(TASK_STATUS task_command)
         {
-            if (task_command == TASK_STATUS.ABORT)   //人員傳入ABORT命令
+            if (task_command == TASK_STATUS.ABORT)
                 GoToCaseAbortState(GetPauseState());
-            else if(task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
+            else if (task_command == TASK_STATUS.CONTINUE)
                 GoToCaseConitinueState();
-                
+
             switch (State)
             {
-                case WORK.INITIAL:
+                case WORK.START:
                     {
-                        Preset();
-                        Transition(WORK.GO_HOME_ALL);
+                        Transition(WORK.PRESET);
                     }
                     break;
 
-                case WORK.GO_HOME_ALL:
+                case WORK.PRESET:
                     {
-                        Deps.DML.GoHome(Axis.AxisX);
-                        Deps.DML.GoHome(Axis.AxisY);
-                        Deps.DML.GoHome(Axis.AxisZ);
-                        Deps.DML.GoHome(Axis.AxisRX);
-                        Deps.DML.GoHome(Axis.AxisRY);
-                        Deps.DML.GoHome(Axis.AxisRZ);
-
-                        Transition(WORK.WAIT_GO_HOME_ALL);
+                        PresetLoop();
+                        Tool.ResetTimeCount(out wait_timer);
+                        Transition(WORK.UNLOAD_NEST);
                     }
                     break;
-                case WORK.WAIT_GO_HOME_ALL:
+
+                #region UNLOAD_NEST
+                case WORK.UNLOAD_NEST:
                     {
-                        if (Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY) &&
-                            Deps.DML.Get_Home_Complete(Axis.AxisZ) && Deps.DML.Get_Home_Complete(Axis.AxisRX) &&
-                            Deps.DML.Get_Home_Complete(Axis.AxisRY) && Deps.DML.Get_Home_Complete(Axis.AxisRZ))
+                        if (Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor))
                         {
-                            Transition(WORK.SUCCESS);
+                            SubTask = new SubTask_UnLoadNest_DETester(Deps, F_StateControl);
+                            SetSubTaskProcessing(true);
+                            Transition(WORK.WAIT_UNLOAD_NEST);
+                        }
+                        else if (!Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor) && Tool.GetTime(wait_timer, "s") > 5)
+                        {
+                            Tool.SaveLogToFile("Cylinder is not retracted.", level: "ERR");
+                            Transition(WORK.END);
+                            break;
                         }
                     }
                     break;
+                case WORK.WAIT_UNLOAD_NEST:
+                    {
+                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
 
-                //case WORK.GO_HOME_Z:
-                //    {
-                //       Deps.DML.GoHome(Axis.AxisZ);
-                //        Transition(WORK.WAIT_GO_HOME_Z);
-                //    }
-                //    break;
-                //case WORK.WAIT_GO_HOME_Z:
-                //    {
-                //        if(Deps.DML.Get_Home_Complete(Axis.AxisZ))
-                //        {
-                //            Transition(WORK.GO_HOME_XYA);
-                //        }
-                //    }
-                //    break;
-
-                //case WORK.GO_HOME_XYA:
-                //    {
-                //        Deps.DML.GoHome(Axis.AxisX);
-                //        Deps.DML.GoHome(Axis.AxisY);
-                //        //Deps.DML.GoHome(Axis.AxisA);
-
-                //        Transition(WORK.WAIT_GO_HOME_XYA);
-                //    }
-                //    break;
-                //case WORK.WAIT_GO_HOME_XYA:
-                //    {
-                //        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY)/* &&
-                //           Deps.DML.Get_Home_Complete(Axis.AxisA)*/)
-                //        {
-                //            Transition(WORK.SUCCESS);
-                //        }
-                //    }
-                //    break;
-
+                        CheckResult(check, SUCCESS: WORK.SUCCESS);
+                    }
+                    break;
+                #endregion
 
                 case WORK.SUCCESS:
                     {
@@ -285,7 +235,6 @@ namespace ProbeTester.Logic
                 case WORK.ABORT:
                     {
                         SetStatus(TASK_STATUS.ABORT);
-                        //SaveHistoryCurrentState(WORK.ABORT);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -299,7 +248,6 @@ namespace ProbeTester.Logic
                     break;
                 case WORK.END:
                     {
-                        
                         SetStatus(TASK_STATUS.SUCCESS);
                     }
                     break;
@@ -307,5 +255,4 @@ namespace ProbeTester.Logic
         }
     }
     #endregion
- 
 }

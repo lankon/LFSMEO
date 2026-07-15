@@ -78,9 +78,16 @@ namespace DeviceCore
         SafePos_Sensor,
         GoToSafePos,
         Vacuum,
+        NestVacuumValue,
+        ILLJigVacuumValue,
+
+        SideCCDLightInSensor,
         #endregion
 
         #region Output
+        SideCCDLightStretch,
+        SideCCDLightReStretch,
+
         SphereUp,
         SphereDown,
         Sphere_LR,
