@@ -6,7 +6,7 @@
 		<Item type="Fixed">Shopflow Calibration資料修改</Item>
 		<Item type="Fixed">Shopflow ErrorCode</Item>
 		<Item type="Fixed">將Slope計算判斷打開</Item>
-		<Item type="Fixed">將流明上下限設定隨Recipe變更</Item>
+		<Item type="Fixed">將流明上下限設定隨Recipe變更</Item> 
 	</Release>
 	<Release version="1.26.6.2" date="2026-06-17">
 		<Item type="Fixed">平均光性計算時未清空List</Item>
