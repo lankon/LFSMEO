@@ -92,8 +92,8 @@ namespace RGBTester.Logic._RGBTesterDataFile
             str.Add($"0x040C,led2_slope_mA_cnt_h,LED2_slope_for_high_res,mA/DACstep,{data_slope["G_Slope_HCM"]:F4}");
             str.Add($"0x0410,led3_offset_mA_h,LED3_offset_for_high_res,mA,{data_offset["B_Offset_HCM"]:F4}");
             str.Add($"0x0414,led3_slope_mA_cnt_h,LED3_slope_for_high_res,mA/DACstep,{data_slope["B_Slope_HCM"]:F4}");
-            str.Add($",led4_offset_mA_h,LED4_offset_for_high_res,mA,{data_offset["B2_Offset_HCM"]:F4}");
-            str.Add($",led4_slope_mA_cnt_h,LED4_slope_for_high_res,mA/DACstep,{data_slope["B2_Slope_HCM"]:F4}");
+            str.Add($"0x0418,led4_offset_mA_h,LED4_offset_for_high_res,mA,{data_offset["B2_Offset_HCM"]:F4}");
+            str.Add($"0x041C,led4_slope_mA_cnt_h,LED4_slope_for_high_res,mA/DACstep,{data_slope["B2_Slope_HCM"]:F4}");
 
             // [Low Current Mode]
             str.Add($"0x0420,led1_offset_mA_l,LED1_offset_for_low_res,mA,{data_offset["R_Offset_LCM"]:F4}");
@@ -102,8 +102,8 @@ namespace RGBTester.Logic._RGBTesterDataFile
             str.Add($"0x042C,led2_slope_mA_cnt_l,LED2_slope_for_low_res,mA/DACstep,{data_slope["G_Slope_LCM"]:F4}");
             str.Add($"0x0430,led3_offset_mA_l,LED3_offset_for_low_res,mA,{data_offset["B_Offset_LCM"]:F4}");
             str.Add($"0x0434,led3_slope_mA_cnt_l,LED3_slope_for_low_res,mA/DACstep,{data_slope["B_Slope_LCM"]:F4}");
-            str.Add($",led4_offset_mA_l,LED4_offset_for_low_res,mA,{data_offset["B2_Offset_LCM"]:F4}");
-            str.Add($",led4_slope_mA_cnt_l,LED4_slope_for_low_res,mA/DACstep,{data_slope["B2_Slope_LCM"]:F4}");
+            str.Add($"0x0438,led4_offset_mA_l,LED4_offset_for_low_res,mA,{data_offset["B2_Offset_LCM"]:F4}");
+            str.Add($"0x043C,led4_slope_mA_cnt_l,LED4_slope_for_low_res,mA/DACstep,{data_slope["B2_Slope_LCM"]:F4}");
 
             return str;
         }

@@ -73,6 +73,7 @@ namespace RGBTester.UI
             this.TxtBx_GreenWavelengthGain = new System.Windows.Forms.TextBox();
             this.TxtBx_BlueWavelengthGain = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.label26 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -89,10 +90,9 @@ namespace RGBTester.UI
             this.TxtBx_BLight_UL = new System.Windows.Forms.TextBox();
             this.TxtBx_BLight_LL = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.label27 = new System.Windows.Forms.Label();
             this.TxtBx_PauseTime = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_CalibrationData)).BeginInit();
             this.TbLy_Button.SuspendLayout();
@@ -612,6 +612,18 @@ namespace RGBTester.UI
             this.tableLayoutPanel3.Size = new System.Drawing.Size(640, 179);
             this.tableLayoutPanel3.TabIndex = 37;
             // 
+            // label26
+            // 
+            this.label26.BackColor = System.Drawing.Color.Silver;
+            this.tableLayoutPanel3.SetColumnSpan(this.label26, 4);
+            this.label26.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label26.Location = new System.Drawing.Point(6, 3);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(628, 20);
+            this.label26.TabIndex = 48;
+            this.label26.Text = "Luminous Condition";
+            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label23
             // 
             this.label23.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -704,6 +716,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_RLight_UL
             // 
+            this.TxtBx_RLight_UL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.TxtBx_RLight_UL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.TxtBx_RLight_UL.Location = new System.Drawing.Point(241, 67);
             this.TxtBx_RLight_UL.Name = "TxtBx_RLight_UL";
@@ -712,6 +725,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_GLight_UL
             // 
+            this.TxtBx_GLight_UL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.TxtBx_GLight_UL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.TxtBx_GLight_UL.Location = new System.Drawing.Point(241, 105);
             this.TxtBx_GLight_UL.Name = "TxtBx_GLight_UL";
@@ -720,6 +734,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_RLight_LL
             // 
+            this.TxtBx_RLight_LL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.TxtBx_RLight_LL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.TxtBx_RLight_LL.Location = new System.Drawing.Point(459, 67);
             this.TxtBx_RLight_LL.Name = "TxtBx_RLight_LL";
@@ -728,6 +743,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_GLight_LL
             // 
+            this.TxtBx_GLight_LL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.TxtBx_GLight_LL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.TxtBx_GLight_LL.Location = new System.Drawing.Point(459, 105);
             this.TxtBx_GLight_LL.Name = "TxtBx_GLight_LL";
@@ -736,6 +752,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_BLight_UL
             // 
+            this.TxtBx_BLight_UL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.TxtBx_BLight_UL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.TxtBx_BLight_UL.Location = new System.Drawing.Point(241, 143);
             this.TxtBx_BLight_UL.Name = "TxtBx_BLight_UL";
@@ -744,6 +761,7 @@ namespace RGBTester.UI
             // 
             // TxtBx_BLight_LL
             // 
+            this.TxtBx_BLight_LL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(230)))));
             this.TxtBx_BLight_LL.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.TxtBx_BLight_LL.Location = new System.Drawing.Point(459, 143);
             this.TxtBx_BLight_LL.Name = "TxtBx_BLight_LL";
@@ -759,18 +777,6 @@ namespace RGBTester.UI
             this.label18.TabIndex = 34;
             this.label18.Text = "50";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label26
-            // 
-            this.label26.BackColor = System.Drawing.Color.Silver;
-            this.tableLayoutPanel3.SetColumnSpan(this.label26, 4);
-            this.label26.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label26.Location = new System.Drawing.Point(6, 3);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(628, 20);
-            this.label26.TabIndex = 48;
-            this.label26.Text = "Luminous Condition";
-            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel4
             // 
@@ -788,6 +794,14 @@ namespace RGBTester.UI
             this.tableLayoutPanel4.Size = new System.Drawing.Size(640, 79);
             this.tableLayoutPanel4.TabIndex = 38;
             // 
+            // TxtBx_PauseTime
+            // 
+            this.TxtBx_PauseTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_PauseTime.Location = new System.Drawing.Point(213, 6);
+            this.TxtBx_PauseTime.Name = "TxtBx_PauseTime";
+            this.TxtBx_PauseTime.Size = new System.Drawing.Size(421, 29);
+            this.TxtBx_PauseTime.TabIndex = 35;
+            // 
             // label27
             // 
             this.label27.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -797,14 +811,6 @@ namespace RGBTester.UI
             this.label27.TabIndex = 30;
             this.label27.Text = "Pause before testing(s)";
             this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_PauseTime
-            // 
-            this.TxtBx_PauseTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_PauseTime.Location = new System.Drawing.Point(213, 6);
-            this.TxtBx_PauseTime.Name = "TxtBx_PauseTime";
-            this.TxtBx_PauseTime.Size = new System.Drawing.Size(421, 29);
-            this.TxtBx_PauseTime.TabIndex = 35;
             // 
             // F_OpticalSetting
             // 

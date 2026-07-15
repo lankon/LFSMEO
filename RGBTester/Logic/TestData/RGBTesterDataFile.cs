@@ -223,10 +223,14 @@ namespace RGBTester.Logic
                 WriteFile(calibration[i], describe);
             }
 
-            WriteFile($"0x0440,,Serial Number,,{sn}", describe);
+            string sn_command = $"0x0440,SN,Serial_Number,NA,{sn}";
+            WriteFile(sn_command, describe);    //新增SN,NA會連同Phase1也修改
 
             if (ModuleType == eModuleType.Function_Test)
+            {
+                calibration.Add(sn_command);
                 UploadData.InputMessage(calibration, "");
+            }
 
             return true;
         }

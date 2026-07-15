@@ -273,15 +273,17 @@ namespace RGBTester.Logic
                 case WORK.SUCCESS:
                     {
                         string test_result = "";
+                        var fail_reason = RGBfunc.FailReasonFlag;
 
-                        if (RGBfunc.FailReasonFlag.IsTestFail() == false)
+                        if (fail_reason.IsTestFail() == false)
                         {
                             StatusBox.ShowMessage("Test PASS", "PASS");
                             test_result = "PASS";
                         }
                         else
                         {
-                            test_result = "FAIL";
+                            RGBTesterFunction.TestFailReasonFlag.ERROR_CODE error_code = fail_reason.UploadErrorCode();
+                            test_result = error_code.ToString().Replace("_0", "0");
                         }
 
                         if (!WriteFile.UploadData.UpdateResult(test_result))

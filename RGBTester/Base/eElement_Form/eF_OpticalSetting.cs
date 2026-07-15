@@ -24,6 +24,11 @@ namespace RGBTester.Base
         TxtBx_GreenWavelengthGain,
         TxtBx_BlueWavelengthGain,
 
+        TxtBx_PauseTime,
+    }
+
+    public enum eF_OpticalSettingRecipe
+    {
         TxtBx_RLight_UL,
         TxtBx_GLight_UL,
         TxtBx_BLight_UL,
@@ -31,14 +36,6 @@ namespace RGBTester.Base
         TxtBx_RLight_LL,
         TxtBx_GLight_LL,
         TxtBx_BLight_LL,
-
-        TxtBx_PauseTime,
-
-        TxtBx_Voltage_6V_UL,
-        TxtBx_Voltage_6V_LL,
-        TxtBx_Voltage_1V2_UL,
-        TxtBx_Voltage_1V2_LL,
-
     }
 }
 
