@@ -6,20 +6,20 @@ using ToolFunction;
 namespace ProbeTester.Logic
 {
     #region Task
-    public class SubTaskGotoMLOPos : IBaseTask<SubTaskGotoMLOPos.WORK>
+    public class SubTask_GotoMLOPos_DETester : IBaseTask<SubTask_GotoMLOPos_DETester.WORK>
     {
-        public SubTaskGotoMLOPos(IBaseTaskDependence dependencies,
+        public SubTask_GotoMLOPos_DETester(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
         {
             TaskName = this.GetType().Name;
-            State = WORK.INITIAL;
+            State = WORK.START;
 
             switch (set_state)
             {
                 default:
-                    State = WORK.INITIAL;
+                    State = WORK.START;
                     break;
             }
             Tool.SaveLogToFile($"{TaskName} Start", level: "INF");
@@ -28,31 +28,52 @@ namespace ProbeTester.Logic
         }
 
         #region parameter
-        // External FitTech settings are centralized here.
+        #region FitTech migration settings
+        // FitTech source: EPosSetting.TxtBx_DETilt_NestY_Result
+        private double NestY_FeaturePos = 0.0;
+        // FitTech source: EPosSetting.TxtBx_PA_MLO_OffsetY
+        private double NestY_SidePA_MLO_Offset = 0.0;
+        // FitTech source: EPosSetting.TxtBx_DETilt_NestZ_Result
+        private double NestZ_FeaturePos = 0.0;
+        // FitTech source: EPosSetting.TxtBx_PA_MLO_OffsetZ
+        private double NestZ_SidePA_MLO_Offset = 0.0;
+        // FitTech source: EPosSetting.TxtBx_3DProfile_A_Result
+        private double NestA_MLO_Pos = 0.0;
+        // FitTech source: EPosSetting.TxtBx_DETilt_NestTX_Result
+        private double NestTx_MLO_Pos = 0.0;
+        // FitTech source: EPosSetting.TxtBx_3DProfile_Ty_Result
+        private double NestTy_MLO_Pos = 0.0;
+
+        // FitTech source: Side_PA_Left_DE_Center_Pos_NestY - Side_PA_Left_DE_Feature_Pos_NestY
+        private double Left_NestY_CenterFeatureOffset = 0.0;
+        // FitTech source: Side_PA_Left_DE_Center_Pos_NestZ - Side_PA_Left_DE_Feature_Pos_NestZ
+        private double Left_NestZ_CenterFeatureOffset = 0.0;
+        // FitTech source: Side_PA_Right_DE_Center_Pos_NestY - Side_PA_Right_DE_Feature_Pos_NestY
+        private double Right_NestY_CenterFeatureOffset = 0.0;
+        // FitTech source: Side_PA_Right_DE_Center_Pos_NestZ - Side_PA_Right_DE_Feature_Pos_NestZ
+        private double Right_NestZ_CenterFeatureOffset = 0.0;
+
+        // FitTech source: GControls.Tag[EWorkFlow_DETester.Cmbx_MakeSide].Ivalue == 0
         private bool IsLeft = true;
 
+        // FitTech source: EPosSetting.TxtBx_NestXSafePos
+        private double NestSafePos_X = 0.0;
+
+        // FitTech source: DIOL.input(EIO.SafePosition)
+        private EIOName SafePositionSensor = EIOName.SafePos_Sensor;
+        private int SafePositionTimeoutSec = 5;
+        #endregion
+
+        #region axis mapping
         private int AxisNestX = 0;
         private int AxisNestY = 0;
         private int AxisNestZ = 0;
         private int AxisNestA = 0;
         private int AxisNestTX = 0;
         private int AxisNestTY = 0;
+        #endregion
 
-        private double NestSafePosX = 0.0;
-
-        private double NestYFeaturePos = 0.0;
-        private double NestYSidePAMLOOffset = 0.0;
-        private double NestZFeaturePos = 0.0;
-        private double NestZSidePAMLOOffset = 0.0;
-        private double NestAMLOPos = 0.0;
-        private double NestTxMLOPos = 0.0;
-        private double NestTyMLOPos = 0.0;
-
-        private double LeftNestYCenterFeatureOffset = 0.0;
-        private double LeftNestZCenterFeatureOffset = 0.0;
-        private double RightNestYCenterFeatureOffset = 0.0;
-        private double RightNestZCenterFeatureOffset = 0.0;
-
+        private long delay = 0;
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
         ProbeTesterFunction ProbeTesterFunc;
@@ -60,7 +81,7 @@ namespace ProbeTester.Logic
         public enum WORK
         {
             NONE,
-            INITIAL,
+            START,
 
             GOTO_SAFE_NEST_X,
             WAIT_GOTO_SAFE_NEST_X,
@@ -85,7 +106,7 @@ namespace ProbeTester.Logic
         #region private function
         protected override void Transition(WORK target)
         {
-            if (target != State) //狀態有變化時紀錄
+            if (target != State)
             {
                 Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
                 F_StateControl.UpdateTask($"({TaskName})\n" + target.ToString());
@@ -93,58 +114,17 @@ namespace ProbeTester.Logic
 
             State = target;
         }
+
         protected override WORK AbortState(WORK target)
         {
             WORK target_work = WORK.NONE;
 
             switch (target)
             {
-                //case WORK.RUNNING_2: target_work = WORK.RUNNING_ABORT; break;
                 default: target_work = WORK.ABORT; break;
             }
 
             return target_work;
-        }
-        /// <summary>
-        /// 確認Task狀態
-        /// </summary>
-        /// <param name="check"></param>
-        private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS,
-                                                    WORK PAUSE = WORK.PAUSE,
-                                                    WORK ABORT = WORK.ABORT,
-                                                    WORK FAIL = WORK.FAIL)
-        {
-            switch (check)
-            {
-                case TASK_STATUS.SUCCESS:
-                    {
-                        Transition(SUCCESS);
-                    }
-                    break;
-                case TASK_STATUS.PAUSE:
-                    {
-                        SetStatus(TASK_STATUS.PAUSE);   //設定目前Task狀態,讓MainTask知道Task狀態
-                        SetPauseState(State);           //記錄目前暫停的case
-                        SetNextState(State);            //設定使用者按繼續後要回到的case
-                        Transition(PAUSE);
-                    }
-                    break;
-                case TASK_STATUS.ABORT:
-                    {
-                        Transition(ABORT);
-                    }
-                    break;
-                case TASK_STATUS.CONTINUE:
-                    {
-
-                    }
-                    break;
-                case TASK_STATUS.FAIL:
-                    {
-                        Transition(FAIL);
-                    }
-                    break;
-            }
         }
 
         private void Preset()
@@ -160,11 +140,10 @@ namespace ProbeTester.Logic
             AxisNestX = Axis.AxisX;
             AxisNestY = Axis.AxisY;
             AxisNestZ = Axis.AxisZ;
-            AxisNestA = Axis.AxisA;
-            AxisNestTX = Axis.AxisX;
-            AxisNestTY = Axis.AxisY;
+            AxisNestA = Axis.AxisRX;
+            AxisNestTX = Axis.AxisRY;
+            AxisNestTY = Axis.AxisRZ;
         }
-
         #endregion
 
         #region public function
@@ -179,13 +158,9 @@ namespace ProbeTester.Logic
 
             return res;
         }
+
         public override void GoToPause()
         {
-            //執行暫停後可根據State選擇操作者使用狀態
-            //ABORT_CONTINUE
-            //ABORT
-            //CONTINUE
-            //讓使用者選擇
             SetPauseState(State);
 
             switch (State)
@@ -196,20 +171,19 @@ namespace ProbeTester.Logic
                     }
                     break;
             }
-
         }
         #endregion
 
         protected override void RunLoop(TASK_STATUS task_command)
         {
-            if (task_command == TASK_STATUS.ABORT)   //人員傳入ABORT命令
+            if (task_command == TASK_STATUS.ABORT)
                 GoToCaseAbortState(GetPauseState());
-            else if (task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
+            else if (task_command == TASK_STATUS.CONTINUE)
                 GoToCaseConitinueState();
 
             switch (State)
             {
-                case WORK.INITIAL:
+                case WORK.START:
                     {
                         Preset();
                         Transition(WORK.GOTO_SAFE_NEST_X);
@@ -220,15 +194,23 @@ namespace ProbeTester.Logic
                     {
                         if (Deps.DML.Get_Motion_Complete(AxisNestX))
                         {
-                            Deps.DML.PTP_Move(AxisNestX, NestSafePosX, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestX, NestSafePos_X, MOVE_MODE.ABS);
+                            Tool.ResetTimeCount(out delay);
                             Transition(WORK.WAIT_GOTO_SAFE_NEST_X);
                         }
                     }
                     break;
+
                 case WORK.WAIT_GOTO_SAFE_NEST_X:
                     {
-                        if (Deps.DML.Get_Motion_Complete(AxisNestX))
+                        if (Deps.DML.Get_Motion_Complete(AxisNestX) && Deps.DIOL.GetInputStatus(SafePositionSensor))
                             Transition(WORK.GOTO_NEST_POS);
+                        else if (Tool.GetTime(delay, "s") > SafePositionTimeoutSec && !Deps.DIOL.GetInputStatus(SafePositionSensor))
+                        {
+                            Tool.SaveLogToFile("X axis did not reach safe position.", level: "ERR");
+                            Transition(WORK.END);
+                            break;
+                        }
                     }
                     break;
 
@@ -241,23 +223,23 @@ namespace ProbeTester.Logic
                             double center_feature_offset_y, center_feature_offset_z;
                             if (IsLeft)
                             {
-                                center_feature_offset_y = LeftNestYCenterFeatureOffset;
-                                center_feature_offset_z = LeftNestZCenterFeatureOffset;
+                                center_feature_offset_y = Left_NestY_CenterFeatureOffset;
+                                center_feature_offset_z = Left_NestZ_CenterFeatureOffset;
                             }
                             else
                             {
-                                center_feature_offset_y = RightNestYCenterFeatureOffset;
-                                center_feature_offset_z = RightNestZCenterFeatureOffset;
+                                center_feature_offset_y = Right_NestY_CenterFeatureOffset;
+                                center_feature_offset_z = Right_NestZ_CenterFeatureOffset;
                             }
 
-                            double nest_y = NestYFeaturePos + center_feature_offset_y + NestYSidePAMLOOffset;
-                            double nest_z = NestZFeaturePos + center_feature_offset_z + NestZSidePAMLOOffset;
+                            double nest_y = NestY_FeaturePos + center_feature_offset_y + NestY_SidePA_MLO_Offset;
+                            double nest_z = NestZ_FeaturePos + center_feature_offset_z + NestZ_SidePA_MLO_Offset;
 
                             Deps.DML.PTP_Move(AxisNestY, nest_y, MOVE_MODE.ABS);
                             Deps.DML.PTP_Move(AxisNestZ, nest_z, MOVE_MODE.ABS);
-                            Deps.DML.PTP_Move(AxisNestA, NestAMLOPos, MOVE_MODE.ABS);
-                            Deps.DML.PTP_Move(AxisNestTX, NestTxMLOPos, MOVE_MODE.ABS);
-                            Deps.DML.PTP_Move(AxisNestTY, NestTyMLOPos, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestA, NestA_MLO_Pos, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestTX, NestTx_MLO_Pos, MOVE_MODE.ABS);
+                            Deps.DML.PTP_Move(AxisNestTY, NestTy_MLO_Pos, MOVE_MODE.ABS);
 
                             Transition(WORK.WAIT_GOTO_NEST_POS);
                         }
@@ -279,6 +261,7 @@ namespace ProbeTester.Logic
                         if (Deps.DML.Get_Motion_Complete(AxisNestX))
                         {
                             // FitTech source keeps the NestX work-position move commented out.
+
                             Transition(WORK.WAIT_GOTO_NEST_X_WORK_POS);
                         }
                     }
@@ -286,7 +269,9 @@ namespace ProbeTester.Logic
                 case WORK.WAIT_GOTO_NEST_X_WORK_POS:
                     {
                         if (Deps.DML.Get_Motion_Complete(AxisNestX))
+                        {
                             Transition(WORK.SUCCESS);
+                        }
                     }
                     break;
 

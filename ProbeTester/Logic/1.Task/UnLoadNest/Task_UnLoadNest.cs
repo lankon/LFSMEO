@@ -1,16 +1,14 @@
+using DeviceCore;
 using Microsoft.Extensions.DependencyInjection;
-
-using ToolFunction;
-
 using ProbeTester.Base;
-
+using ToolFunction;
 
 namespace ProbeTester.Logic
 {
     #region Task
-    public class Task_MLO : IBaseTask<Task_MLO.WORK>
+    public class Task_UnLoadNest : IBaseTask<Task_UnLoadNest.WORK>
     {
-        public Task_MLO(IBaseTaskDependence dependencies,
+        public Task_UnLoadNest(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -30,6 +28,7 @@ namespace ProbeTester.Logic
         }
 
         #region parameter
+        private long wait_timer = 0;
         private IF_BaseTask SubTask;
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
@@ -39,9 +38,10 @@ namespace ProbeTester.Logic
         {
             NONE,
             START,
+            PRESET,
 
-            GOTO_MLO_POSITION,
-            WAIT_GOTO_MLO_POSITION,
+            UNLOAD_NEST,
+            WAIT_UNLOAD_NEST,
 
             END,
 
@@ -60,7 +60,15 @@ namespace ProbeTester.Logic
             ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
             Axis = ProbeTesterFunc.Axis_HardwareParam;
 
+            DoReStretchIO();
+
             return true;
+        }
+
+        private void DoReStretchIO()
+        {
+            Deps.DIOL.SetOutputStatus(EIOName.SideCCDLightStretch, false);
+            Deps.DIOL.SetOutputStatus(EIOName.SideCCDLightReStretch, true);
         }
 
         protected override void Transition(WORK target)
@@ -168,29 +176,38 @@ namespace ProbeTester.Logic
 
             switch (State)
             {
-                #region START
                 case WORK.START:
                     {
-                        if (!PresetLoop())
+                        Transition(WORK.PRESET);
+                    }
+                    break;
+
+                case WORK.PRESET:
+                    {
+                        PresetLoop();
+                        Tool.ResetTimeCount(out wait_timer);
+                        Transition(WORK.UNLOAD_NEST);
+                    }
+                    break;
+
+                #region UNLOAD_NEST
+                case WORK.UNLOAD_NEST:
+                    {
+                        if (Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor))
                         {
-                            Transition(WORK.FAIL);
+                            SubTask = new SubTask_UnLoadNest_DETester(Deps, F_StateControl);
+                            SetSubTaskProcessing(true);
+                            Transition(WORK.WAIT_UNLOAD_NEST);
+                        }
+                        else if (!Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor) && Tool.GetTime(wait_timer, "s") > 5)
+                        {
+                            Tool.SaveLogToFile("Cylinder is not retracted.", level: "ERR");
+                            Transition(WORK.END);
                             break;
                         }
-
-                        Transition(WORK.GOTO_MLO_POSITION);
                     }
                     break;
-                #endregion
-
-                #region GOTO_MLO_POSITION
-                case WORK.GOTO_MLO_POSITION:
-                    {
-                        SubTask = new SubTask_GotoMLOPos_DETester(Deps, F_StateControl);
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_GOTO_MLO_POSITION);
-                    }
-                    break;
-                case WORK.WAIT_GOTO_MLO_POSITION:
+                case WORK.WAIT_UNLOAD_NEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
 

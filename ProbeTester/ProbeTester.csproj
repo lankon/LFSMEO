@@ -117,8 +117,13 @@
     <Compile Include="Base\Scope.cs" />
     <Compile Include="IProbeTesterMachine.cs" />
     <Compile Include="Logic\0.Thread\MainTask.cs" />
-    <Compile Include="Logic\1.Task\MLO\SubTask\SubTaskGotoMLOPos.cs" />
+    <Compile Include="Logic\1.Task\Init\Task_MotionInitialize_DETester.cs" />
+    <Compile Include="Logic\1.Task\LoadNest\SubTask\SubTask_LoadNest_DETester.cs" />
+    <Compile Include="Logic\1.Task\LoadNest\Task_LoadNest.cs" />
+    <Compile Include="Logic\1.Task\MLO\SubTask\SubTask_GotoMLOPos_DETester.cs" />
     <Compile Include="Logic\1.Task\MLO\Task_MLO.cs" />
+    <Compile Include="Logic\1.Task\UnLoadNest\SubTask\SubTask_UnLoadNest_DETester.cs" />
+    <Compile Include="Logic\1.Task\UnLoadNest\Task_UnLoadNest.cs" />
     <Compile Include="Logic\1.Task\PTPA\SubTask\SubTaskCalibrationUpCCD.cs" />
     <Compile Include="Logic\1.Task\PTPA\SubTask\SubTaskGoToUpCCDFocusPos.cs" />
     <Compile Include="Logic\1.Task\PTPA\Task_PTPA.cs" />

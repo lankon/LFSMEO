@@ -1,16 +1,14 @@
+using DeviceCore;
 using Microsoft.Extensions.DependencyInjection;
-
-using ToolFunction;
-
 using ProbeTester.Base;
-
+using ToolFunction;
 
 namespace ProbeTester.Logic
 {
     #region Task
-    public class Task_MLO : IBaseTask<Task_MLO.WORK>
+    public class Task_LoadNest : IBaseTask<Task_LoadNest.WORK>
     {
-        public Task_MLO(IBaseTaskDependence dependencies,
+        public Task_LoadNest(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
@@ -30,18 +28,21 @@ namespace ProbeTester.Logic
         }
 
         #region parameter
-        private IF_BaseTask SubTask;
+        private long wait_timer = 0;
+        private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
         ProbeTesterFunction.AxisHardwareParam Axis;
         ProbeTesterFunction ProbeTesterFunc;
+
 
         public enum WORK
         {
             NONE,
             START,
+            PRESET,
 
-            GOTO_MLO_POSITION,
-            WAIT_GOTO_MLO_POSITION,
+            LOAD_NEST,
+            WAIT_LOAD_NEST,
 
             END,
 
@@ -57,15 +58,16 @@ namespace ProbeTester.Logic
         #region private function
         bool PresetLoop()
         {
-            ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
-            Axis = ProbeTesterFunc.Axis_HardwareParam;
-
             return true;
         }
-
+        private void DoReStretchIO()
+        {
+            Deps.DIOL.SetOutputStatus(EIOName.SideCCDLightStretch, false);
+            Deps.DIOL.SetOutputStatus(EIOName.SideCCDLightReStretch, true);
+        }
         protected override void Transition(WORK target)
         {
-            if (target != State)
+            if (target != State) //狀態有變化時紀錄
             {
                 Tool.SaveLogToFile($"[Task]({TaskName})" + target.ToString());
                 F_StateControl.UpdateTask($"({TaskName})\n" + target.ToString());
@@ -73,19 +75,22 @@ namespace ProbeTester.Logic
 
             State = target;
         }
-
         protected override WORK AbortState(WORK target)
         {
             WORK target_work = WORK.NONE;
 
             switch (target)
             {
+                //case WORK.RUNNING_2: target_work = WORK.RUNNING_ABORT; break;
                 default: target_work = WORK.ABORT; break;
             }
 
             return target_work;
         }
-
+        /// <summary>
+        /// 確認Task狀態
+        /// </summary>
+        /// <param name="check"></param>
         private void CheckResult(TASK_STATUS check, WORK SUCCESS = WORK.SUCCESS,
                                                     WORK PAUSE = WORK.PAUSE,
                                                     WORK ABORT = WORK.ABORT,
@@ -101,9 +106,9 @@ namespace ProbeTester.Logic
                     break;
                 case TASK_STATUS.PAUSE:
                     {
-                        SetStatus(TASK_STATUS.PAUSE);
-                        SetPauseState(State);
-                        SetNextState(State);
+                        SetStatus(TASK_STATUS.PAUSE);   //設定目前Task狀態,讓MainTask知道Task狀態
+                        SetPauseState(State);           //記錄目前暫停的case
+                        SetNextState(State);            //設定使用者按繼續後要回到的case
                         Transition(PAUSE);
                     }
                     break;
@@ -140,9 +145,13 @@ namespace ProbeTester.Logic
 
             return res;
         }
-
         public override void GoToPause()
         {
+            //執行暫停後可根據State選擇操作者使用狀態
+            //ABORT_CONTINUE
+            //ABORT
+            //CONTINUE
+            //讓使用者選擇
             SetPauseState(State);
 
             switch (State)
@@ -154,46 +163,65 @@ namespace ProbeTester.Logic
                     break;
             }
 
-            if (GetSubTaskProcessing())
+            if (GetSubTaskProcessing()) //判斷是否有SubTask執行
                 SubTask.GoToPause();
         }
         #endregion
 
         protected override void RunLoop(TASK_STATUS task_command)
         {
-            if (task_command == TASK_STATUS.ABORT)
+            if (task_command == TASK_STATUS.ABORT)   //人員傳入ABORT命令
                 GoToCaseAbortState(GetPauseState());
-            else if (task_command == TASK_STATUS.CONTINUE)
+            else if (task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
                 GoToCaseConitinueState();
 
             switch (State)
             {
-                #region START
                 case WORK.START:
                     {
-                        if (!PresetLoop())
+                        Transition(WORK.PRESET);
+                        DoReStretchIO();
+                        Tool.ResetTimeCount(out wait_timer);
+                    }
+                    break;
+
+                case WORK.PRESET:
+                    {
+                        if (Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor))
                         {
-                            Transition(WORK.FAIL);
+                            PresetLoop();
+
+                            Transition(WORK.LOAD_NEST);
+                        }
+                        else if (!Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor) && Tool.GetTime(wait_timer, "s") > 5)
+                        {
+                            Tool.SaveLogToFile("汽缸尚未縮回", level: "ERR");
+                            Transition(WORK.END);
                             break;
                         }
-
-                        Transition(WORK.GOTO_MLO_POSITION);
                     }
                     break;
-                #endregion
 
-                #region GOTO_MLO_POSITION
-                case WORK.GOTO_MLO_POSITION:
+                #region LOAD_NEST
+                case WORK.LOAD_NEST:
                     {
-                        SubTask = new SubTask_GotoMLOPos_DETester(Deps, F_StateControl);
-                        SetSubTaskProcessing(true);
-                        Transition(WORK.WAIT_GOTO_MLO_POSITION);
+                        if (Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor))
+                        {
+                            SubTask = new SubTask_LoadNest_DETester(Deps, F_StateControl);
+                            SetSubTaskProcessing(true);
+                            Transition(WORK.WAIT_LOAD_NEST);
+                        }
+                        else if (!Deps.DIOL.GetInputStatus(EIOName.SideCCDLightInSensor) && Tool.GetTime(wait_timer, "s") > 5)
+                        {
+                            Tool.SaveLogToFile("汽缸尚未縮回", level: "ERR");
+                            Transition(WORK.END);
+                            break;
+                        }
                     }
                     break;
-                case WORK.WAIT_GOTO_MLO_POSITION:
+                case WORK.WAIT_LOAD_NEST:
                     {
                         TASK_STATUS check = SubTask.Run(GetStatusCommand());
-
                         CheckResult(check, SUCCESS: WORK.SUCCESS);
                     }
                     break;
