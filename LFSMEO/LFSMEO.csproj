@@ -221,6 +221,10 @@
       <Project>{6fc34b76-efaf-42f9-92da-5b7c85e40be5}</Project>
       <Name>BurnInTester</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DETester\DETester.csproj">
+      <Project>{6c72bd3c-ef9d-4cfc-8e6a-fec3c7bd55dd}</Project>
+      <Name>DETester</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>
@@ -244,6 +248,10 @@
     <ProjectReference Include="..\Device_Klzx\Device_Klzx.csproj">
       <Project>{9c7c95d6-1c0f-4aeb-90f3-047e24034952}</Project>
       <Name>Device_Klzx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Device_MLO\Device_MLO.csproj">
+      <Project>{8c36cf80-eb33-4da3-848d-717ebd8ac5fc}</Project>
+      <Name>Device_MLO</Name>
     </ProjectReference>
     <ProjectReference Include="..\Device_MN200\Device_MN200.csproj">
       <Project>{bfd18304-b910-4652-9208-384492b8ef81}</Project>
