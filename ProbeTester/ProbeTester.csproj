@@ -117,9 +117,13 @@
     <Compile Include="Base\Scope.cs" />
     <Compile Include="IProbeTesterMachine.cs" />
     <Compile Include="Logic\0.Thread\MainTask.cs" />
-    <Compile Include="Logic\1.Task\Init\Task_MotionInitialize_DETester.cs" />
-    <Compile Include="Logic\1.Task\LoadNest\SubTask\SubTask_LoadNest_DETester.cs" />
-    <Compile Include="Logic\1.Task\LoadNest\Task_LoadNest.cs" />
+    <Compile Include="Logic\1.Task\0.Init\Task_MotionInitialize_DETester.cs" />
+    <Compile Include="Logic\1.Task\1.LoadNest\SubTask\SubTask_LoadNest_DETester.cs" />
+    <Compile Include="Logic\1.Task\1.LoadNest\Task_LoadNest.cs" />
+    <Compile Include="Logic\1.Task\DEFindCenter\SubTask\SubTask_DEFindFeature.cs" />
+    <Compile Include="Logic\1.Task\DEFindCenter\SubTask\SubTask_DESidePACCDFindCenter_DETester.cs" />
+    <Compile Include="Logic\1.Task\DEFindCenter\SubTask\SubTask_GotoDESidePACCDPos_DETester.cs" />
+    <Compile Include="Logic\1.Task\DEFindCenter\Task_DESidePACCDFindCenter_DETester.cs" />
     <Compile Include="Logic\1.Task\MLO\SubTask\SubTask_GotoMLOPos_DETester.cs" />
     <Compile Include="Logic\1.Task\MLO\Task_MLO.cs" />
     <Compile Include="Logic\1.Task\UnLoadNest\SubTask\SubTask_UnLoadNest_DETester.cs" />
