@@ -75,7 +75,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device_TemeratureControl_Vi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchitectureChecker", "ArchitectureChecker\ArchitectureChecker.csproj", "{B62B9030-88E8-44BE-9FA4-761D9E908B1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DETester", "DETester\DETester.csproj", "{6C72BD3C-EF9D-4CFC-8E6A-FEC3C7BD55DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAMachine", "AAMachine\AAMachine.csproj", "{6C72BD3C-EF9D-4CFC-8E6A-FEC3C7BD55DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Device_MLO", "Device_MLO\Device_MLO.csproj", "{8C36CF80-EB33-4DA3-848D-717EBD8AC5FC}"
 EndProject

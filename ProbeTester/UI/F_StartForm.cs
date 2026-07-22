@@ -254,7 +254,7 @@ namespace ProbeTester.UI
             //                                                1, 0, 0);
 
             pos = rtcp.CalculateRTCPTargetByTcpLocalRotation(new BlackBoxRTCP_Controller.RobotPose() { X = cur_x, Y = cur_y, Z = cur_z, Tz = cur_tz, Tx = cur_tx, Ty = cur_ty },
-                                                            0, 0, 5);
+                                                            0.5, 0, 0);
 
             if(pos.Z >= 0)
                 Machine.DML.PTP_Move(2, pos.Z);

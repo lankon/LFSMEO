@@ -4,21 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LFSMEO
+namespace AAMachine.Base
 {
-    //[新增機型]
-    public enum EMachineType
+    public enum eF_Equipment_Setting
     {
-        NONE,
-        ProbeTester,
-        RGBTester,
-        BurnInTester,
-        AAMachine,
+        Cmbx_ShowFormName,
+        Cmbx_ElectricalModule,
+        Cmbx_OpticalModule,
     }
 
     public enum eMachineSetting
     {
+        //所有專案共用的enum名稱
+
         Cmbx_MachineType,
     }
-
 }

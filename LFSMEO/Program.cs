@@ -56,7 +56,7 @@ namespace LFSMEO
             else if(option == 3)
                 Scope.MachineType = EMachineType.BurnInTester;
             else if(option == 4)
-                Scope.MachineType = EMachineType.DETester;
+                Scope.MachineType = EMachineType.AAMachine;
 
             return Scope.MachineType;
         }

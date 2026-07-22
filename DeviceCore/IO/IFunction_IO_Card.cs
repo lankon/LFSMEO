@@ -82,11 +82,29 @@ namespace DeviceCore
         ILLJigVacuumValue,
 
         SideCCDLightInSensor,
+        UVLightInSensor,
+        PAMaskInSensor,
+        DispensingMaskInSensor,
+        GZSafetyPosition,
+        FZSafetyPosition,
+        TableZSafetyPosition,
+        EXSafetyPosition,
+        CCDX_SafePosition,
+        UpPA_SafePosition,
+        MirrorZ_SafePosition,
         #endregion
 
         #region Output
         SideCCDLightStretch,
         SideCCDLightReStretch,
+        UVLightStretch,
+        UVLightReStretch,
+        PAMaskStretch,
+        PAMaskReStretch,
+        DispensingMaskStretch,
+        DispensingMaskReStretch,
+        GlueCleanStretch,
+        GlueCleanReStretch,
 
         SphereUp,
         SphereDown,

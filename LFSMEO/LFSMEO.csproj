@@ -221,9 +221,9 @@
       <Project>{6fc34b76-efaf-42f9-92da-5b7c85e40be5}</Project>
       <Name>BurnInTester</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DETester\DETester.csproj">
+    <ProjectReference Include="..\AAMachine\AAMachine.csproj">
       <Project>{6c72bd3c-ef9d-4cfc-8e6a-fec3c7bd55dd}</Project>
-      <Name>DETester</Name>
+      <Name>AAMachine</Name>
     </ProjectReference>
     <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>

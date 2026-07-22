@@ -312,8 +312,6 @@ namespace ProbeTester.Logic
                     {
                         int[] axis = { NestX };
 
-                        string[] s_axis = { "Nest X" };
-
                         bool[] axisEnabled = { NestXEnabled };
 
                         WaitMultiAxisGoHome(axis, WORK.GO_HOME_NEST_Z_TX_TY_TZ);
@@ -326,8 +324,6 @@ namespace ProbeTester.Logic
                     {
                         int[] axis = { NestZ, NestTX, NestTY, NestA };
 
-                        string[] s_axis = { "Nest Z", "Nest TX", "Nest TY", "Nest A" };
-
                         bool[] axisEnabled = { NestZEnabled, NestTXEnabled, NestTYEnabled, NestAEnabled };
 
                         MultiAxisGoHome(axis, WORK.WAIT_GO_HOME_NEST_Z_TX_TY_TZ);
@@ -336,8 +332,6 @@ namespace ProbeTester.Logic
                 case WORK.WAIT_GO_HOME_NEST_Z_TX_TY_TZ:
                     {
                         int[] axis = { NestZ, NestTX, NestTY, NestA };
-
-                        string[] s_axis = { "Nest Z", "Nest TX", "Nest TY", "Nest A" };
 
                         bool[] axisEnabled = { NestZEnabled, NestTXEnabled, NestTYEnabled, NestAEnabled };
 
@@ -351,8 +345,6 @@ namespace ProbeTester.Logic
                     {
                         int[] axis = { NestY };
 
-                        string[] s_axis = { "Nest Y" };
-
                         bool[] axisEnabled = { NestYEnabled };
 
                         MultiAxisGoHome(axis, WORK.WAIT_GO_HOME_NEST_Y);
@@ -361,8 +353,6 @@ namespace ProbeTester.Logic
                 case WORK.WAIT_GO_HOME_NEST_Y:
                     {
                         int[] axis = { NestY };
-
-                        string[] s_axis = { "Nest Y" };
 
                         bool[] axisEnabled = { NestYEnabled };
 

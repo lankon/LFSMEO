@@ -40,7 +40,7 @@ using UserPrivilege.Logic;
 using RGBTester;
 using ProbeTester;
 using BurnInTester;
-using DETester;
+using AAMachine;
 
 namespace LFSMEO
 {
@@ -59,8 +59,8 @@ namespace LFSMEO
                     return host.Services.GetRequiredService<RGBTester.UI.F_MainForm>();
                 case EMachineType.BurnInTester:
                     return host.Services.GetRequiredService<BurnInTester.UI.F_MainForm>();
-                case EMachineType.DETester:
-                    return host.Services.GetRequiredService<DETester.UI.F_MainForm>();
+                case EMachineType.AAMachine:
+                    return host.Services.GetRequiredService<AAMachine.UI.F_MainForm>();
                 default:
                     return host.Services.GetRequiredService<F_SelectMachine>();
             }
@@ -151,8 +151,8 @@ namespace LFSMEO
                     AppIcon = Properties.Resources.BurnInTester1;
                     AppName = "BurnInTester";
                     break;
-                case EMachineType.DETester:
-                    services.AddDETesterServices();
+                case EMachineType.AAMachine:
+                    services.AddAAMachineServices();
                     break;
                 default:
                     services.AddSingleton<F_SelectMachine>();
