@@ -16,6 +16,8 @@ namespace DeviceCore
 
         int SetTriggerMode(EConfocalTriggerSource mode);
 
+        int SoftwareTrigger();
+
         int GetValue(ref double Value);
     }
 }

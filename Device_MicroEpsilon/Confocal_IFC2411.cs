@@ -36,7 +36,6 @@ namespace Device_MicroEpsilon
         }
         #endregion
 
-
         public int Connect()
         {
             sensor = new MEDAQLib(SensorName);
@@ -78,6 +77,11 @@ namespace Device_MicroEpsilon
             ERR_CODE res;
 
             res = sensor.SetIntExecSCmd("Clear_Buffers", "SP_AllDevices", SensorIndex);
+
+            // 設定觸發後測試數量
+            res = sensor.SetParameterInt("SP_TriggerCount", 50);
+            res = sensor.ExecSCmd("Set_TriggerCount");
+
             res = sensor.SetParameterInt("SP_TriggerSource", trigger_source);
             res = sensor.ExecSCmd("Set_TriggerSource");
 
@@ -96,24 +100,43 @@ namespace Device_MicroEpsilon
             sensor = null;
         }
 
+        public int SoftwareTrigger()
+        {
+            if (!IsConnected())
+                return (int)ERR_CODE.ERR_NOT_FOUND;
+
+            ERR_CODE res = sensor.ExecSCmd("Software_Trigger");
+
+            if (res != ERR_CODE.ERR_NOERROR)
+                return (int)res;
+
+            return (int)ERR_CODE.ERR_NOERROR;
+        }
+
         public int GetValue(ref double Value)
         {
-            if (!IsConnected()) 
+            if (!IsConnected())
                 return (int)ERR_CODE.ERR_NOT_FOUND;
 
             ERR_CODE res;
 
+            // 取得資料組成數量
+            int valuesPerFrame = 0;
+            res = sensor.ExecSCmd("Get_TransmittedDataInfo");
+            res = sensor.GetParameterInt("IA_ValuesPerFrame", ref valuesPerFrame);
+            if (res != ERR_CODE.ERR_NOERROR)
+                return (int)res;
+
+            // 取得可用資料數量
             int available_data_count = 0;
-
             res = sensor.DataAvail(ref available_data_count);
-
             if (res != ERR_CODE.ERR_NOERROR || available_data_count <= 0)
                 return (int)res;
 
+            // 取得資料
             int[] raw_data = new int[available_data_count];
             double[] scaled_data = new double[available_data_count];
             int read = 0;
-
             res = sensor.TransferData(raw_data, scaled_data, available_data_count, ref read);
 
             if (res != ERR_CODE.ERR_NOERROR)
@@ -121,7 +144,30 @@ namespace Device_MicroEpsilon
 
             try
             {
-                Value = scaled_data[read - 1];
+                // read:實際讀取到的資料數量
+                if (read <= 0)
+                    return (int)ERR_CODE.ERR_NO_SENSORDATA_AVAILABLE;
+
+                if (valuesPerFrame == 3)
+                {
+                    double sum = 0;
+                    int count = 0;
+
+                    for (int i = 2; i < read; i += valuesPerFrame)
+                    {
+                        sum += scaled_data[i];
+                        count++;
+                    }
+
+                    if (count <= 0)
+                        return (int)ERR_CODE.ERR_NO_SENSORDATA_AVAILABLE;
+
+                    Value = sum / count;
+                }
+                else
+                {
+                    Value = scaled_data[read - 1];
+                }
             }
             catch
             {

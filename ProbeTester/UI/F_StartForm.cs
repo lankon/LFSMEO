@@ -18,7 +18,8 @@ using DeviceCore;
 using ProbeTester.Base;
 using ProbeTester.Logic;
 
-using Device_MicroEpsilon;  // 違規用法_測試用
+using Device_MicroEpsilon;
+using System.Threading;  // 違規用法_測試用
 
 namespace ProbeTester.UI
 {
@@ -343,8 +344,12 @@ namespace ProbeTester.UI
             confocal.Connect();
             confocal.SetTriggerMode(EConfocalTriggerSource.Software);
 
+            confocal.SoftwareTrigger();
             double value1 = 0;
-            confocal.GetValue(ref value1);
+
+            Thread.Sleep(50);
+
+            confocal.GetValue(ref value1).ToString();
 
         }
     }
