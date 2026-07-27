@@ -63,6 +63,7 @@ namespace ProbeTester.UI
             this.panel6 = new System.Windows.Forms.Panel();
             this.Btn_Test = new System.Windows.Forms.Button();
             this.Btn_Calibration = new System.Windows.Forms.Button();
+            this.Btn_TestConfocal = new System.Windows.Forms.Button();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -450,11 +451,22 @@ namespace ProbeTester.UI
             this.Btn_Calibration.UseVisualStyleBackColor = true;
             this.Btn_Calibration.Click += new System.EventHandler(this.Btn_Calibration_Click);
             // 
+            // Btn_TestConfocal
+            // 
+            this.Btn_TestConfocal.Location = new System.Drawing.Point(863, 428);
+            this.Btn_TestConfocal.Name = "Btn_TestConfocal";
+            this.Btn_TestConfocal.Size = new System.Drawing.Size(142, 58);
+            this.Btn_TestConfocal.TabIndex = 10;
+            this.Btn_TestConfocal.Text = "Test_Confocal";
+            this.Btn_TestConfocal.UseVisualStyleBackColor = true;
+            this.Btn_TestConfocal.Click += new System.EventHandler(this.Btn_TestConfocal_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_TestConfocal);
             this.Controls.Add(this.Btn_Calibration);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel6);
@@ -516,5 +528,6 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Button Btn_Calibration;
+        private System.Windows.Forms.Button Btn_TestConfocal;
     }
 }

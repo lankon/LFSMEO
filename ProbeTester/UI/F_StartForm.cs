@@ -18,6 +18,8 @@ using DeviceCore;
 using ProbeTester.Base;
 using ProbeTester.Logic;
 
+using Device_MicroEpsilon;  // 違規用法_測試用
+
 namespace ProbeTester.UI
 {
     public partial class F_StartForm : Form
@@ -330,6 +332,19 @@ namespace ProbeTester.UI
             //Console.WriteLine($"Cx (懸臂X向誤差): {center.X:F4} mm");
             //Console.WriteLine($"Cy (懸臂Y向誤差): {center.Y:F4} mm");
 
+
+        }
+
+        private void Btn_TestConfocal_Click(object sender, EventArgs e)
+        {
+            // 違規用法_測試用，請勿在正式程式中使用
+            Confocal_IFC2411 confocal = new Confocal_IFC2411("IFC2411", "COM8");
+
+            confocal.Connect();
+            confocal.SetTriggerMode(EConfocalTriggerSource.Software);
+
+            double value1 = 0;
+            confocal.GetValue(ref value1);
 
         }
     }

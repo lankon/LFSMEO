@@ -216,6 +216,10 @@
       <Project>{78fcbdd7-f840-449e-9a6f-4f86889db2a7}</Project>
       <Name>DeviceUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_MicroEpsilon\Device_MicroEpsilon.csproj">
+      <Project>{c916026e-9781-4772-84e6-c8bcc6af7dcc}</Project>
+      <Name>Device_MicroEpsilon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
       <Name>ToolFunction</Name>

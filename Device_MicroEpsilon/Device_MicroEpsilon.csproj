@@ -1,18 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{984A1DB1-08F4-4BFD-8FCE-B78C97BBB83F}</ProjectGuid>
+    <ProjectGuid>{C916026E-9781-4772-84E6-C8BCC6AF7DCC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DeviceCore</RootNamespace>
-    <AssemblyName>DeviceCore</AssemblyName>
+    <RootNamespace>Device_MicroEpsilon</RootNamespace>
+    <AssemblyName>Device_MicroEpsilon</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,9 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MEDAQLib.NET, Version=5.6.1.414, Culture=neutral, PublicKeyToken=5e32bc1c5c8cdc60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\MEDAQLib.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,36 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Camera\eF_CameraSetting.cs" />
-    <Compile Include="Camera\IF_CameraButton.cs" />
-    <Compile Include="Camera\IF_CameraSetting.cs" />
-    <Compile Include="Camera\ICameraDisplayPanel.cs" />
-    <Compile Include="Camera\IFunction_Camera.cs" />
-    <Compile Include="Camera\ICamera.cs" />
-    <Compile Include="Confocal\IConfocal.cs" />
-    <Compile Include="LightControl\IFunction_LightControl.cs" />
-    <Compile Include="LightControl\IF_LightControl.cs" />
-    <Compile Include="LightControl\ILightControl.cs" />
-    <Compile Include="Spectrometer\IFunction_Spectrometer.cs" />
-    <Compile Include="Spectrometer\IF_Spectrometer.cs" />
-    <Compile Include="Spectrometer\ISpectrometer.cs" />
-    <Compile Include="IO\IF_IO_Card.cs" />
-    <Compile Include="IO\IIOCardVirtual.cs" />
-    <Compile Include="Motion\eMotionSetting.cs" />
-    <Compile Include="IChillerControl.cs" />
-    <Compile Include="IO\IFunction_IO_Card.cs" />
-    <Compile Include="Motion\IFunction_MotionCard.cs" />
-    <Compile Include="IO\IIOCard.cs" />
-    <Compile Include="Motion\IF_AxisButton.cs" />
-    <Compile Include="Motion\IF_AxisSetting.cs" />
-    <Compile Include="Motion\IF_MotionSetting.cs" />
-    <Compile Include="Motion\IMotionCard.cs" />
+    <Compile Include="Confocal_IFC2411.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemperatureControl\ITemperature.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <Content Include="MEDAQLib.NET.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
+      <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
+      <Name>DeviceCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
