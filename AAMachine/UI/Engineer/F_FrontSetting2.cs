@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using AAMachine.Base;
 using ToolFunction;
 
 namespace AAMachine.UI
@@ -41,23 +42,15 @@ namespace AAMachine.UI
         }
         private void ReadAllEnumSetting()
         {
-            //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
-            //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
-
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(recipe_name);
+            ApplicationSetting.ReadAllRecipe<eF_FrontSetting2>();
         }
         private void UpdateEnumSettingToForm()
         {
-            //ApplicationSetting.UpdataRecipeToForm<eF_StartForm>(this);
-            //ApplicationSetting.UpdataRecipeToForm<eF_StartFormRecipe>(this);
+            ApplicationSetting.UpdataRecipeToForm<eF_FrontSetting2>(this);
         }
         private void SaveAllEnumSetting()
         {
-            //ApplicationSetting.SaveRecipeFromForm<eF_StartForm>(this);
-
-            //string recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_CurRecipeName);
-            //ApplicationSetting.SaveRecipeFromForm<eF_StartFormRecipe>(this, recipe_name);
+            ApplicationSetting.SaveRecipeFromForm<eF_FrontSetting2>(this);
         }
         private void UpdatePage()
         {

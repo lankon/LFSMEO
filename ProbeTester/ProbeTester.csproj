@@ -36,6 +36,10 @@
     <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="Matrox.MatroxImagingLibrary, Version=10.60.776.10123, Culture=neutral, PublicKeyToken=5a83d419d44a9d98, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Logic\Function\Matrox.MatroxImagingLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.10\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -136,6 +140,8 @@
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\Function\DataFilter.cs" />
+    <Compile Include="Logic\Function\HousingFindConer.cs" />
+    <Compile Include="Logic\Function\MirrorFindCenter.cs" />
     <Compile Include="Logic\Function\ProbeTesterFunction.cs" />
     <Compile Include="Logic\Function\RTCP_Ctrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -225,7 +231,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Logic\Function\Matrox.MatroxImagingLibrary.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Serilog.4.3.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.3.0\build\Serilog.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

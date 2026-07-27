@@ -63,6 +63,8 @@ namespace ProbeTester.UI
             this.panel6 = new System.Windows.Forms.Panel();
             this.Btn_Test = new System.Windows.Forms.Button();
             this.Btn_Calibration = new System.Windows.Forms.Button();
+            this.Btn_MILTest = new System.Windows.Forms.Button();
+            this.PicBox_FinderResult = new System.Windows.Forms.PictureBox();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -73,6 +75,7 @@ namespace ProbeTester.UI
             ((System.ComponentModel.ISupportInitialize)(this.PicBx_Mapping)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PicBox_FinderResult)).BeginInit();
             this.SuspendLayout();
             // 
             // Pnl_CCD
@@ -424,9 +427,9 @@ namespace ProbeTester.UI
             // 
             this.panel6.Controls.Add(this.panel5);
             this.panel6.Controls.Add(this.panel2);
-            this.panel6.Location = new System.Drawing.Point(1061, 74);
+            this.panel6.Location = new System.Drawing.Point(990, 41);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(759, 519);
+            this.panel6.Size = new System.Drawing.Size(759, 120);
             this.panel6.TabIndex = 7;
             this.panel6.Visible = false;
             // 
@@ -450,11 +453,31 @@ namespace ProbeTester.UI
             this.Btn_Calibration.UseVisualStyleBackColor = true;
             this.Btn_Calibration.Click += new System.EventHandler(this.Btn_Calibration_Click);
             // 
+            // Btn_MILTest
+            // 
+            this.Btn_MILTest.Location = new System.Drawing.Point(893, 261);
+            this.Btn_MILTest.Name = "Btn_MILTest";
+            this.Btn_MILTest.Size = new System.Drawing.Size(123, 77);
+            this.Btn_MILTest.TabIndex = 10;
+            this.Btn_MILTest.Text = "MIL Test";
+            this.Btn_MILTest.UseVisualStyleBackColor = true;
+            this.Btn_MILTest.Click += new System.EventHandler(this.Btn_MILTest_Click);
+            // 
+            // PicBox_FinderResult
+            // 
+            this.PicBox_FinderResult.Location = new System.Drawing.Point(1195, 198);
+            this.PicBox_FinderResult.Name = "PicBox_FinderResult";
+            this.PicBox_FinderResult.Size = new System.Drawing.Size(567, 505);
+            this.PicBox_FinderResult.TabIndex = 11;
+            this.PicBox_FinderResult.TabStop = false;
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.PicBox_FinderResult);
+            this.Controls.Add(this.Btn_MILTest);
             this.Controls.Add(this.Btn_Calibration);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel6);
@@ -477,6 +500,7 @@ namespace ProbeTester.UI
             ((System.ComponentModel.ISupportInitialize)(this.PicBx_Mapping)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PicBox_FinderResult)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -516,5 +540,7 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Button Btn_Calibration;
+        private System.Windows.Forms.Button Btn_MILTest;
+        private System.Windows.Forms.PictureBox PicBox_FinderResult;
     }
 }

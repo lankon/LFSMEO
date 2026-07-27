@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -254,7 +255,7 @@ namespace ProbeTester.UI
             //                                                1, 0, 0);
 
             pos = rtcp.CalculateRTCPTargetByTcpLocalRotation(new BlackBoxRTCP_Controller.RobotPose() { X = cur_x, Y = cur_y, Z = cur_z, Tz = cur_tz, Tx = cur_tx, Ty = cur_ty },
-                                                            0.5, 0, 0);
+                                                            0, 5, 0);
 
             if(pos.Z >= 0)
                 Machine.DML.PTP_Move(2, pos.Z);
@@ -331,6 +332,58 @@ namespace ProbeTester.UI
             //Console.WriteLine($"Cy (懸臂Y向誤差): {center.Y:F4} mm");
 
 
+        }
+
+        private void Btn_MILTest_Click(object sender, EventArgs e)
+        {
+            string imageFile = "C:\\Users\\leo_li\\Desktop\\housing.bmp";
+
+            using (HousingFindConer finder = new HousingFindConer())
+            {
+                HousingFindConer.FindCenterResult result = finder.Find(imageFile);
+                ShowFinderResult(imageFile, result);
+            }
+
+            //MirrorFindCenter finder = new MirrorFindCenter();
+
+            //finder.Find("C:\\Users\\leo_li\\Desktop\\mirro_OK.bmp");
+        }
+
+        private void ShowFinderResult(string imageFile, HousingFindConer.FindCenterResult result)
+        {
+            Bitmap resultImage;
+
+            using (Image sourceImage = Image.FromFile(imageFile))
+            {
+                resultImage = new Bitmap(sourceImage);
+            }
+
+            if (result.Found)
+            {
+                using (Graphics graphics = Graphics.FromImage(resultImage))
+                using (Pen markerPen = new Pen(Color.Red, 6.0f))
+                using (Brush markerBrush = new SolidBrush(Color.Red))
+                using (Font markerFont = new Font("Arial", 36.0f, FontStyle.Bold))
+                using (Brush textBrush = new SolidBrush(Color.Yellow))
+                {
+                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    float x = (float)result.CenterX;
+                    float y = (float)result.CenterY;
+                    float radius = 18.0f;
+                    float crossLength = 70.0f;
+
+                    graphics.DrawLine(markerPen, x - crossLength, y, x + crossLength, y);
+                    graphics.DrawLine(markerPen, x, y - crossLength, x, y + crossLength);
+                    graphics.FillEllipse(markerBrush, x - radius, y - radius, radius * 2.0f, radius * 2.0f);
+                    graphics.DrawString($"X={result.CenterX:F2}, Y={result.CenterY:F2}", markerFont, textBrush, x + 30.0f, y + 30.0f);
+                }
+            }
+
+            Image oldImage = PicBox_FinderResult.Image;
+            PicBox_FinderResult.SizeMode = PictureBoxSizeMode.Zoom;
+            PicBox_FinderResult.Image = resultImage;
+            oldImage?.Dispose();
         }
     }
 }

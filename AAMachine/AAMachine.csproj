@@ -86,6 +86,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\eElement_Form\eF_Equipment_Setting.cs" />
+    <Compile Include="Base\eElement_Form\eF_FrontSetting.cs" />
+    <Compile Include="Base\eElement_Form\eF_FrontSetting2.cs" />
     <Compile Include="Base\IBaseMainTask.cs" />
     <Compile Include="Base\IBaseTask.cs" />
     <Compile Include="Base\Scope.cs" />
