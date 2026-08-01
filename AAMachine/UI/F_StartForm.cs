@@ -15,6 +15,9 @@ using ToolFunction;
 using DeviceCore;
 using AAMachine.Base;
 using AAMachine.Logic;
+using Matrox.MatroxImagingLibrary;
+using AAMachine.Device.QuantaMeasureAPI.Z23A;
+using AAMachine.Device.QuantaMeasureAPI.Base;      // 違規用法
 
 
 namespace AAMachine.UI
@@ -183,6 +186,44 @@ namespace AAMachine.UI
             {
                 UpdatePage();
             }
+        }
+
+        private void Btn_TestZ23A_API_Click(object sender, EventArgs e)
+        {
+            MIL_ID milApp = MIL.M_NULL;
+            MIL_ID milSys = MIL.M_NULL;
+            MIL_ID milImage = MIL.M_NULL;
+
+            MIL.MappAlloc(MIL.M_NULL, MIL.M_DEFAULT, ref milApp);
+            MIL.MsysAlloc(milApp, MIL.M_SYSTEM_HOST, MIL.M_DEFAULT, MIL.M_DEFAULT, ref milSys);
+
+            MIL.MbufImport(
+                @"D:\0.桌面雜物\Uniformity_W.tiff",
+                MIL.M_DEFAULT,
+                MIL.M_RESTORE,
+                milSys,
+                ref milImage
+            );
+
+            Z23A_MirrorAA_API_Command Z23A_API = new Z23A_MirrorAA_API_Command();
+            MeasureImageInfo res = Z23A_API.ConvertMilImageToImageInfo(milImage);
+
+            Z23A_API.Initial();
+            UniformityResultInfo info = Z23A_API.GetUniformity(res, TestSide.Left, new PointF(6958, 4922), 28.01027058, 204.248366, 22222);
+
+
+            (double,double) center = Z23A_API.GetLightSpotGravityCenter(info.IntensityMap, 0.0);
+
+            Z23A_API.SaveRawImage(res, "D:\\abcd");
+
+            MIL.MbufFree(milImage);
+            MIL.MsysFree(milSys);
+            MIL.MappFree(milApp);
+
+
+            //Z23A_MirrorAA_API_Command Z23A_API = new Z23A_MirrorAA_API_Command();
+            //Z23A_API.Test();
+
         }
     }
 }

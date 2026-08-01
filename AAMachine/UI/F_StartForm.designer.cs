@@ -61,6 +61,7 @@ namespace AAMachine.UI
             this.panel5 = new System.Windows.Forms.Panel();
             this.button10 = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.Btn_TestZ23A_API = new System.Windows.Forms.Button();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -428,11 +429,22 @@ namespace AAMachine.UI
             this.panel6.TabIndex = 7;
             this.panel6.Visible = false;
             // 
+            // Btn_TestZ23A_API
+            // 
+            this.Btn_TestZ23A_API.Location = new System.Drawing.Point(871, 428);
+            this.Btn_TestZ23A_API.Name = "Btn_TestZ23A_API";
+            this.Btn_TestZ23A_API.Size = new System.Drawing.Size(145, 73);
+            this.Btn_TestZ23A_API.TabIndex = 8;
+            this.Btn_TestZ23A_API.Text = "Z23A API Test";
+            this.Btn_TestZ23A_API.UseVisualStyleBackColor = true;
+            this.Btn_TestZ23A_API.Click += new System.EventHandler(this.Btn_TestZ23A_API_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_TestZ23A_API);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
@@ -490,5 +502,6 @@ namespace AAMachine.UI
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Button Btn_TestZ23A_API;
     }
 }

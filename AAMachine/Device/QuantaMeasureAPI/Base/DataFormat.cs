@@ -13,6 +13,12 @@ namespace AAMachine.Device.QuantaMeasureAPI.Base
         Gray32
     }
 
+    public enum TestSide
+    {
+        Left,
+        Right,
+    }
+
     public class MeasureImageInfo
     {
         public byte[] Data { get; set; }
@@ -20,5 +26,14 @@ namespace AAMachine.Device.QuantaMeasureAPI.Base
         public int Height { get; set; }
         public int Channels { get; set; }
         public MeasurePixelFormat Format { get; set; }
+    }
+
+    public class UniformityResultInfo
+    {
+        public double Away;
+
+        public double MaxMin;
+
+        public double[,] IntensityMap;
     }
 }

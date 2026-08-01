@@ -1,0 +1,486 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Matrox.MatroxImagingLibrary;
+using Z23A_MirrorAA_API;
+using AAMachine.Device.QuantaMeasureAPI.Base;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+
+namespace AAMachine.Device.QuantaMeasureAPI.Z23A
+{
+    public class Z23A_MirrorAA_API_Command
+    {
+        public Z23A_MirrorAA_API_Command()
+        {
+            api = new Z23A_MirrorAA();
+        }
+
+        #region parameter define
+        Z23A_MirrorAA api;
+        #endregion
+
+        #region private function
+        private PixelFormat ConvertPixelFormat(MeasurePixelFormat format)
+        {
+            switch (format)
+            {
+                case MeasurePixelFormat.Gray8:
+                    return PixelFormat.Gray8;
+                case MeasurePixelFormat.Gray16:
+                    return PixelFormat.Gray16;
+                case MeasurePixelFormat.Gray32:
+                    return PixelFormat.Gray32;
+                default:
+                    return PixelFormat.Gray8;
+            }
+        }
+
+        
+
+        /// <summary>
+        /// 影像排列方式RGBRGBRGB，檢查RGB三個通道是否相同
+        /// </summary>
+        private bool IsRgbChannelsSame(byte[] rgbData)
+        {
+            for (int i = 0; i < rgbData.Length; i += 3)
+            {
+                byte r = rgbData[i];
+                byte g = rgbData[i + 1];
+                byte b = rgbData[i + 2];
+
+                if (r != g || g != b)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 影像排列方式RRRR...GGGG...BBBB，檢查RGB三個通道是否相同
+        /// </summary>
+        private bool IsPlanarRgbChannelsSame(byte[] data, int width, int height)
+        {
+            int pixelCount = width * height;
+            int gOffset = pixelCount;
+            int bOffset = pixelCount * 2;
+
+            for (int i = 0; i < pixelCount; i++)
+            {
+                byte r = data[i];
+                byte g = data[gOffset + i];
+                byte b = data[bOffset + i];
+
+                if (r != g || g != b)
+                    return false;
+            }
+
+            return true;
+        }
+
+        private byte[] ConvertRgb24ToGray8(byte[] rgbData)
+        {
+            byte[] grayData = new byte[rgbData.Length / 3];
+
+            for (int i = 0, j = 0; i < rgbData.Length; i += 3, j++)
+                grayData[j] = rgbData[i];
+
+            return grayData;
+        }
+        #endregion
+
+        #region public function
+        public MeasureImageInfo ConvertMilImageToImageInfo(MIL_ID milImage)
+        {
+            // 取得影像資訊
+            MIL_INT width = 0;
+            MIL_INT height = 0;
+            MIL_INT channels = 0;
+            MIL_INT type = 0;
+
+            MIL.MbufInquire(milImage, MIL.M_SIZE_X, ref width);
+            MIL.MbufInquire(milImage, MIL.M_SIZE_Y, ref height);
+            MIL.MbufInquire(milImage, MIL.M_SIZE_BAND, ref channels);
+            MIL.MbufInquire(milImage, MIL.M_TYPE, ref type);
+
+            int pixelCount = checked((int)(width * height * channels));
+
+            if (type == MIL.M_UNSIGNED + 8 && channels == 1)
+            {
+                byte[] data = new byte[pixelCount];
+                MIL.MbufGet(milImage, data);
+
+                return new MeasureImageInfo
+                {
+                    Data = data,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = MeasurePixelFormat.Gray8
+                };
+            }
+
+            if (type == MIL.M_UNSIGNED + 8 && channels == 3)
+            {
+                byte[] rgbData = new byte[pixelCount];
+                MIL.MbufGet(milImage, rgbData);
+
+                if (IsPlanarRgbChannelsSame(rgbData, (int)width, (int)height) == false)
+                    throw new NotSupportedException("RGB image channels are not the same. Only grayscale RGB24 images can be converted to Gray8.");
+
+                // 分別取得RGB通道的子影像
+                MIL_ID childR = MIL.M_NULL;
+                MIL_ID childG = MIL.M_NULL;
+                MIL_ID childB = MIL.M_NULL;
+
+                MIL.MbufChildColor(milImage, MIL.M_RED, ref childR);
+                MIL.MbufChildColor(milImage, MIL.M_GREEN, ref childG);
+                MIL.MbufChildColor(milImage, MIL.M_BLUE, ref childB);
+
+                byte[] r = new byte[width * height];
+                byte[] g = new byte[width * height];
+                byte[] b = new byte[width * height];
+
+                MIL.MbufGet(childR, r);
+                MIL.MbufGet(childG, g);
+                MIL.MbufGet(childB, b);
+
+                return new MeasureImageInfo
+                {
+                    Data = r,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = MeasurePixelFormat.Gray8
+                };
+            }
+
+            if (type == MIL.M_UNSIGNED + 16 && channels == 1)
+            {
+                ushort[] data16 = new ushort[pixelCount];
+                MIL.MbufGet(milImage, data16);
+
+                byte[] data = new byte[data16.Length * sizeof(ushort)];
+                Buffer.BlockCopy(data16, 0, data, 0, data.Length);
+
+                return new MeasureImageInfo
+                {
+                    Data = data,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = MeasurePixelFormat.Gray16
+                };
+            }
+
+            if (type == MIL.M_UNSIGNED + 32 && channels == 1)
+            {
+                uint[] data32 = new uint[pixelCount];
+                MIL.MbufGet(milImage, data32);
+
+                byte[] data = new byte[data32.Length * sizeof(uint)];
+                Buffer.BlockCopy(data32, 0, data, 0, data.Length);
+
+                return new MeasureImageInfo
+                {
+                    Data = data,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = MeasurePixelFormat.Gray32
+                };
+            }
+
+            throw new NotSupportedException($"Unsupported MIL image format. Type: {type}, Channels: {channels}.");
+        }
+
+        public ImageInfo ConvertMilImageToImageInfo1(MIL_ID milImage)
+        {
+            // 取得影像資訊
+            MIL_INT width = 0;
+            MIL_INT height = 0;
+            MIL_INT channels = 0;
+            MIL_INT type = 0;
+
+            MIL.MbufInquire(milImage, MIL.M_SIZE_X, ref width);
+            MIL.MbufInquire(milImage, MIL.M_SIZE_Y, ref height);
+            MIL.MbufInquire(milImage, MIL.M_SIZE_BAND, ref channels);
+            MIL.MbufInquire(milImage, MIL.M_TYPE, ref type);
+
+            int pixelCount = checked((int)(width * height * channels));
+
+            if (type == MIL.M_UNSIGNED + 8 && channels == 1)
+            {
+                byte[] data = new byte[pixelCount];
+                MIL.MbufGet(milImage, data);
+
+                return new ImageInfo
+                {
+                    Data = data,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = PixelFormat.Gray8
+                };
+            }
+
+            if (type == MIL.M_UNSIGNED + 8 && channels == 3)
+            {
+                byte[] rgbData = new byte[pixelCount];
+                MIL.MbufGet(milImage, rgbData);
+
+                if (IsPlanarRgbChannelsSame(rgbData, (int)width, (int)height) == false)
+                    throw new NotSupportedException("RGB image channels are not the same. Only grayscale RGB24 images can be converted to Gray8.");
+
+                // 分別取得RGB通道的子影像
+                MIL_ID childR = MIL.M_NULL;
+                MIL_ID childG = MIL.M_NULL;
+                MIL_ID childB = MIL.M_NULL;
+
+                MIL.MbufChildColor(milImage, MIL.M_RED, ref childR);
+                MIL.MbufChildColor(milImage, MIL.M_GREEN, ref childG);
+                MIL.MbufChildColor(milImage, MIL.M_BLUE, ref childB);
+
+                byte[] r = new byte[width * height];
+                byte[] g = new byte[width * height];
+                byte[] b = new byte[width * height];
+
+                MIL.MbufGet(childR, r);
+                MIL.MbufGet(childG, g);
+                MIL.MbufGet(childB, b);
+
+                return new ImageInfo
+                {
+                    Data = r,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = PixelFormat.Gray8
+                };
+            }
+
+            if (type == MIL.M_UNSIGNED + 16 && channels == 1)
+            {
+                ushort[] data16 = new ushort[pixelCount];
+                MIL.MbufGet(milImage, data16);
+
+                byte[] data = new byte[data16.Length * sizeof(ushort)];
+                Buffer.BlockCopy(data16, 0, data, 0, data.Length);
+
+                return new ImageInfo
+                {
+                    Data = data,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = PixelFormat.Gray16
+                };
+            }
+
+            if (type == MIL.M_UNSIGNED + 32 && channels == 1)
+            {
+                uint[] data32 = new uint[pixelCount];
+                MIL.MbufGet(milImage, data32);
+
+                byte[] data = new byte[data32.Length * sizeof(uint)];
+                Buffer.BlockCopy(data32, 0, data, 0, data.Length);
+
+                return new ImageInfo
+                {
+                    Data = data,
+                    Width = (int)width,
+                    Height = (int)height,
+                    Channels = 1,
+                    Format = PixelFormat.Gray32
+                };
+            }
+
+            throw new NotSupportedException($"Unsupported MIL image format. Type: {type}, Channels: {channels}.");
+        }
+
+        public int SaveRawImage(MeasureImageInfo image, string save_path)
+        {
+            ImageInfo apiImage = new ImageInfo
+            {
+                Data = image.Data,
+                Width = image.Width,
+                Height = image.Height,
+                Channels = image.Channels,
+                Format = ConvertPixelFormat(image.Format)
+            };
+
+            api.SaveRawImage(apiImage, save_path);
+
+            return 0;
+        }
+
+        public void Initial()
+        {
+            api.Initial();
+
+            api.ShowLogMessage += (msg) =>
+            {
+                Console.WriteLine($"[Z23A_MirrorAA_API_Command] {msg}");
+            };
+        }
+
+        // 光學測試項目演算法
+        public UniformityResultInfo GetUniformity(MeasureImageInfo image, 
+                                                    TestSide side, PointF boresightPx, 
+                                                    double rotation, double cameraPPD, 
+                                                    double expT, string processFolder = "")
+        {
+            ImageInfo apiImage = new ImageInfo
+            {
+                Data = image.Data,
+                Width = image.Width,
+                Height = image.Height,
+                Channels = image.Channels,
+                Format = ConvertPixelFormat(image.Format)
+            };
+
+            Side api_side;
+
+            if (side == TestSide.Left)
+                api_side = Side.Left;
+            else
+                api_side = Side.Right;
+
+            UniformityResult res = null;
+
+            try
+            {
+                res = api.GetUniformity(apiImage, api_side, boresightPx, rotation, cameraPPD, processFolder, expT);
+            }
+            catch (Exception ex)
+            {
+                //throw new Exception($"GetUniformity failed: {ex.Message}");
+            }
+
+            UniformityResultInfo info = new UniformityResultInfo
+            {
+                Away = res.Away,
+                MaxMin = res.MaxMin,
+                IntensityMap = res.IntensityMap
+            };
+
+            return info;
+        }
+
+        // 輔助函式
+        public void SaveLigtSpotMapToCsv(double[,] lightMap, string filePath)
+        {
+            int rows = lightMap.GetLength(0);
+            int cols = lightMap.GetLength(1);
+            var lines = new List<string>();
+            for (int row = 0; row < rows; row++)
+            {
+                var values = new List<string>();
+                for (int col = 0; col < cols; col++)
+                {
+                    values.Add(lightMap[row, col].ToString(CultureInfo.InvariantCulture));
+                }
+                lines.Add(string.Join(",", values));
+            }
+            File.WriteAllLines(filePath, lines);
+        }
+
+        public (double CenterX, double CneterY) GetLightSpotGravityCenter(double[,] lightMap, double threshold = 0.05)
+        {
+            int rows = lightMap.GetLength(0);
+            int cols = lightMap.GetLength(1);
+
+            double max = double.MinValue;
+
+            // 找到最大值    
+            for (int y = 0; y < rows; y++)
+            {
+                for (int x = 0; x < cols; x++)
+                {
+                    if (lightMap[y, x] > max)
+                        max = lightMap[y, x];
+                }
+            }
+
+            double sumI = 0;
+            double sumX = 0;
+            double sumY = 0;
+
+            for (int y = 0; y < rows; y++)
+            {
+                for (int x = 0; x < cols; x++)
+                {
+                    double intensity = lightMap[y, x];
+
+                    if (intensity < threshold)
+                        continue;
+
+                    sumI += intensity;
+                    sumX += x * intensity;
+                    sumY += y * intensity;
+                }
+            }
+
+            if (sumI <= 0)
+                return (double.NaN, double.NaN);
+
+            return (sumX / sumI, sumY / sumI);
+        }
+
+
+
+        public void Test()
+        {
+            MIL_ID milApp = MIL.M_NULL;
+            MIL_ID milSys = MIL.M_NULL;
+            MIL_ID milImage = MIL.M_NULL;
+
+
+            MIL.MappAlloc(MIL.M_NULL, MIL.M_DEFAULT, ref milApp);
+            MIL.MsysAlloc(milApp, MIL.M_SYSTEM_HOST, MIL.M_DEFAULT, MIL.M_DEFAULT, ref milSys);
+
+            MIL.MbufImport(
+                @"D:\0.桌面雜物\Uniformity_W.tiff",
+                MIL.M_DEFAULT,
+                MIL.M_RESTORE,
+                milSys,
+                ref milImage
+            );
+
+            var image = ConvertMilImageToImageInfo1(milImage);
+
+            Z23A_MirrorAA api = new Z23A_MirrorAA();
+            api.Initial();
+            api.SaveRawImage(image, "D:\\abcd123");
+            var result = api.GetUniformity(image, Side.Left, new PointF(7020, 5028), -27.5, 204.248366, "D:\\abcd123456", 22222);
+
+            double[,] map = result.IntensityMap;
+
+            int rows = map.GetLength(0);
+            int cols = map.GetLength(1);
+
+            var lines = new List<string>();
+
+            for (int row = 0; row < rows; row++)
+            {
+                var values = new List<string>();
+
+                for (int col = 0; col < cols; col++)
+                {
+                    values.Add(map[row, col].ToString(CultureInfo.InvariantCulture));
+                }
+
+                lines.Add(string.Join(",", values));
+            }
+
+            File.WriteAllLines(@"D:\uniformity.csv", lines);
+
+
+        }
+        #endregion
+    }
+}
