@@ -62,6 +62,9 @@ namespace AAMachine.UI
             this.button10 = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.Btn_TestZ23A_API = new System.Windows.Forms.Button();
+            this.Btn_RolloffTest = new System.Windows.Forms.Button();
+            this.Btn_SequentialContrastTest = new System.Windows.Forms.Button();
+            this.Btn_CallMemoryMonitor = new System.Windows.Forms.Button();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -431,19 +434,52 @@ namespace AAMachine.UI
             // 
             // Btn_TestZ23A_API
             // 
-            this.Btn_TestZ23A_API.Location = new System.Drawing.Point(871, 428);
+            this.Btn_TestZ23A_API.Location = new System.Drawing.Point(1301, 651);
             this.Btn_TestZ23A_API.Name = "Btn_TestZ23A_API";
             this.Btn_TestZ23A_API.Size = new System.Drawing.Size(145, 73);
             this.Btn_TestZ23A_API.TabIndex = 8;
-            this.Btn_TestZ23A_API.Text = "Z23A API Test";
+            this.Btn_TestZ23A_API.Text = "Uniformity Test";
             this.Btn_TestZ23A_API.UseVisualStyleBackColor = true;
             this.Btn_TestZ23A_API.Click += new System.EventHandler(this.Btn_TestZ23A_API_Click);
+            // 
+            // Btn_RolloffTest
+            // 
+            this.Btn_RolloffTest.Location = new System.Drawing.Point(1301, 730);
+            this.Btn_RolloffTest.Name = "Btn_RolloffTest";
+            this.Btn_RolloffTest.Size = new System.Drawing.Size(145, 73);
+            this.Btn_RolloffTest.TabIndex = 9;
+            this.Btn_RolloffTest.Text = "Rolloff Test";
+            this.Btn_RolloffTest.UseVisualStyleBackColor = true;
+            this.Btn_RolloffTest.Click += new System.EventHandler(this.Btn_RolloffTest_Click);
+            // 
+            // Btn_SequentialContrastTest
+            // 
+            this.Btn_SequentialContrastTest.Location = new System.Drawing.Point(1301, 809);
+            this.Btn_SequentialContrastTest.Name = "Btn_SequentialContrastTest";
+            this.Btn_SequentialContrastTest.Size = new System.Drawing.Size(145, 73);
+            this.Btn_SequentialContrastTest.TabIndex = 10;
+            this.Btn_SequentialContrastTest.Text = "Sequential Contrast Test";
+            this.Btn_SequentialContrastTest.UseVisualStyleBackColor = true;
+            this.Btn_SequentialContrastTest.Click += new System.EventHandler(this.Btn_SequentialContrastTest_Click);
+            // 
+            // Btn_CallMemoryMonitor
+            // 
+            this.Btn_CallMemoryMonitor.Location = new System.Drawing.Point(1470, 651);
+            this.Btn_CallMemoryMonitor.Name = "Btn_CallMemoryMonitor";
+            this.Btn_CallMemoryMonitor.Size = new System.Drawing.Size(145, 73);
+            this.Btn_CallMemoryMonitor.TabIndex = 11;
+            this.Btn_CallMemoryMonitor.Text = "Memory Monitor";
+            this.Btn_CallMemoryMonitor.UseVisualStyleBackColor = true;
+            this.Btn_CallMemoryMonitor.Click += new System.EventHandler(this.Btn_CallMemoryMonitor_Click);
             // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_CallMemoryMonitor);
+            this.Controls.Add(this.Btn_SequentialContrastTest);
+            this.Controls.Add(this.Btn_RolloffTest);
             this.Controls.Add(this.Btn_TestZ23A_API);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel4);
@@ -503,5 +539,8 @@ namespace AAMachine.UI
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button Btn_TestZ23A_API;
+        private System.Windows.Forms.Button Btn_RolloffTest;
+        private System.Windows.Forms.Button Btn_SequentialContrastTest;
+        private System.Windows.Forms.Button Btn_CallMemoryMonitor;
     }
 }

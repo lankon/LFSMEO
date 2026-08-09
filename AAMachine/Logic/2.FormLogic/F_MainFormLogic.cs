@@ -63,7 +63,7 @@ namespace AAMachine.Logic
             Initial_IO_Function();
             Initial_Motion_Function();
             Initial_Light_Function();
-            Initial_Camera_Function();
+            //Initial_Camera_Function();
         }
 
         public void ReadAllSetting()

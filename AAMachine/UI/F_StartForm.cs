@@ -188,6 +188,8 @@ namespace AAMachine.UI
             }
         }
 
+        Z23A_MirrorAA_API_Command Z23A_API = new Z23A_MirrorAA_API_Command();
+
         private void Btn_TestZ23A_API_Click(object sender, EventArgs e)
         {
             MIL_ID milApp = MIL.M_NULL;
@@ -204,26 +206,170 @@ namespace AAMachine.UI
                 milSys,
                 ref milImage
             );
-
-            Z23A_MirrorAA_API_Command Z23A_API = new Z23A_MirrorAA_API_Command();
+            
             MeasureImageInfo res = Z23A_API.ConvertMilImageToImageInfo(milImage);
 
-            Z23A_API.Initial();
-            UniformityResultInfo info = Z23A_API.GetUniformity(res, TestSide.Left, new PointF(6958, 4922), 28.01027058, 204.248366, 22222);
+            //long time;
+            //int spend_time;
+            
+            //Tool.ResetTimeCount(out time);
+            //UniformityResultInfo info = Z23A_API.GetUniformity(res, TestSide.Left, new PointF(6958, 4922), 28.01027058, 204.248366, 22222);
+            //spend_time = Tool.GetTime(time);
+            //Console.WriteLine($"GetUniformity spend time: {spend_time} ms");
 
+            ////(double,double) center = Z23A_API.GetLightSpotGravityCenter(info.IntensityMap, 0.0);
 
-            (double,double) center = Z23A_API.GetLightSpotGravityCenter(info.IntensityMap, 0.0);
-
-            Z23A_API.SaveRawImage(res, "D:\\abcd");
+            //Z23A_API.SaveRawImage(res, "D:\\abcd");
 
             MIL.MbufFree(milImage);
             MIL.MsysFree(milSys);
             MIL.MappFree(milApp);
 
+            GC.Collect();
 
-            //Z23A_MirrorAA_API_Command Z23A_API = new Z23A_MirrorAA_API_Command();
-            //Z23A_API.Test();
+            Console.WriteLine(GC.GetTotalMemory(false));
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            Console.WriteLine(GC.GetTotalMemory(true));
 
+        }
+
+        private void Btn_RolloffTest_Click(object sender, EventArgs e)
+        {
+            MIL_ID milApp = MIL.M_NULL;
+            MIL_ID milSys = MIL.M_NULL;
+            MIL_ID milImage = MIL.M_NULL;
+
+            MIL.MappAlloc(MIL.M_NULL, MIL.M_DEFAULT, ref milApp);
+            MIL.MsysAlloc(milApp, MIL.M_SYSTEM_HOST, MIL.M_DEFAULT, MIL.M_DEFAULT, ref milSys);
+
+            MIL.MbufImport(
+                @"D:\0.桌面雜物\Uniformity_W.tiff",
+                MIL.M_DEFAULT,
+                MIL.M_RESTORE,
+                milSys,
+                ref milImage
+            );
+
+            MeasureImageInfo res = Z23A_API.ConvertMilImageToImageInfo(milImage);
+
+            long time;
+            int spend_time;
+
+            Tool.ResetTimeCount(out time);
+            RollOffResultInfo result = Z23A_API.GetBrightnessRolloff(res, TestSide.Left, new PointF(6958, 4922), 28.01027058, 204.248366);
+            spend_time = Tool.GetTime(time);
+            Console.WriteLine($"GetBrightnessRolloff spend time: {spend_time} ms");
+
+            MIL.MbufFree(milImage);
+            MIL.MsysFree(milSys);
+            MIL.MappFree(milApp);
+
+            GC.Collect();
+        }
+
+        private void CalculateSequentialContrast(List<PointF> nine_pos)
+        {
+            MIL_ID milApp = MIL.M_NULL;
+            MIL_ID milSys = MIL.M_NULL;
+            MIL_ID milImage = MIL.M_NULL;
+            MIL_ID milImageDark = MIL.M_NULL;
+
+            try
+            {
+                MIL.MappAlloc(MIL.M_NULL, MIL.M_DEFAULT, ref milApp);
+                MIL.MsysAlloc(milApp, MIL.M_SYSTEM_HOST, MIL.M_DEFAULT, MIL.M_DEFAULT, ref milSys);
+
+                MIL.MbufImport(
+                    @"D:\0.桌面雜物\SequentialContrast_R.tiff",
+                    MIL.M_DEFAULT,
+                    MIL.M_RESTORE,
+                    milSys,
+                    ref milImage
+                );
+
+                MIL.MbufImport(
+                    @"D:\0.桌面雜物\SequentialContrast_R_BK.tiff",
+                    MIL.M_DEFAULT,
+                    MIL.M_RESTORE,
+                    milSys,
+                    ref milImageDark
+                );
+
+                MeasureImageInfo res = Z23A_API.ConvertMilImageToImageInfo(milImage);
+                MeasureImageInfo res_dark = Z23A_API.ConvertMilImageToImageInfo(milImageDark);
+
+                long time;
+                int spend_time;
+
+                Tool.ResetTimeCount(out time);
+                ContrastResultInfo result = Z23A_API.GetSequentialContrast(res, res_dark, TestSide.Left, new PointF(6958, 4922), 28.01027058, 204.248366, nine_pos,
+                                                                            22222, 6911042);
+                spend_time = Tool.GetTime(time);
+                Console.WriteLine($"GetSequentialContrast spend time: {spend_time} ms");
+            }
+            finally
+            {
+                if (milImage != MIL.M_NULL) MIL.MbufFree(milImage);
+                if (milImageDark != MIL.M_NULL) MIL.MbufFree(milImageDark);
+                if (milSys != MIL.M_NULL) MIL.MsysFree(milSys);
+                if (milApp != MIL.M_NULL) MIL.MappFree(milApp);
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        private void Btn_SequentialContrastTest_Click(object sender, EventArgs e)
+        {
+            MIL_ID milApp = MIL.M_NULL;
+            MIL_ID milSys = MIL.M_NULL;
+            MIL_ID milImage = MIL.M_NULL;
+            List<PointF> result_9point = null;
+
+            try
+            {
+                MIL.MappAlloc(MIL.M_NULL, MIL.M_DEFAULT, ref milApp);
+                MIL.MsysAlloc(milApp, MIL.M_SYSTEM_HOST, MIL.M_DEFAULT, MIL.M_DEFAULT, ref milSys);
+
+                MIL.MbufImport(
+                    @"D:\0.桌面雜物\9Points_W.tiff",
+                    MIL.M_DEFAULT,
+                    MIL.M_RESTORE,
+                    milSys,
+                    ref milImage
+                );
+
+                MeasureImageInfo res = Z23A_API.ConvertMilImageToImageInfo(milImage);
+
+                long time;
+                int spend_time;
+
+                Tool.ResetTimeCount(out time);
+                result_9point = Z23A_API.GetNinePtsPosition(res, TestSide.Left, new PointF(6958, 4922), 28.01027058, 204.248366);
+                spend_time = Tool.GetTime(time);
+                Console.WriteLine($"GetNinePtsPosition spend time: {spend_time} ms");
+            }
+            finally
+            {
+                if (milImage != MIL.M_NULL) MIL.MbufFree(milImage);
+                if (milSys != MIL.M_NULL) MIL.MsysFree(milSys);
+                if (milApp != MIL.M_NULL) MIL.MappFree(milApp);
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+
+            if (result_9point != null)
+                CalculateSequentialContrast(result_9point);
+
+        }
+
+        private void Btn_CallMemoryMonitor_Click(object sender, EventArgs e)
+        {
+            Tool.F_Monitor f_Monitor = new Tool.F_Monitor();
+            f_Monitor.Show();
         }
     }
 }

@@ -36,4 +36,18 @@ namespace AAMachine.Device.QuantaMeasureAPI.Base
 
         public double[,] IntensityMap;
     }
+
+    public class RollOffResultInfo
+    {
+        public double ZoneB { get; set; }
+
+        public double ZoneC { get; set; }
+    }
+
+    public class ContrastResultInfo
+    {
+        public double InField { get; set; }
+
+        public double[] NinePoints { get; set; }
+    }
 }
