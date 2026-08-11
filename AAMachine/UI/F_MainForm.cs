@@ -108,7 +108,8 @@ namespace AAMachine.UI
         {
             Tool.HideElementOnPanel(Scope.MainPanel);
 
-            var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
+            //var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
+            var startForm = ServiceProvider.GetRequiredService<F_ImageProcessing>();
 
             if (startForm is Form form)
             {
