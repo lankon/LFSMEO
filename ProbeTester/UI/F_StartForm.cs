@@ -385,5 +385,97 @@ namespace ProbeTester.UI
             PicBox_FinderResult.Image = resultImage;
             oldImage?.Dispose();
         }
+
+        private void RTCP_AxisMove(double Rx = 0, double Ry = 0, double Rz = 0, string mode = "Rotate")
+        {
+            var rtcp = new BlackBoxRTCP_Controller();
+
+            var result = rtcp.Fit(new[]
+            {
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 0,     Y = 0,     Z = 0,     Tx = 0,  Ty = 0,  Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 0,     Y = 1.8,   Z = -0.4,  Tx = 5,  Ty = 0,  Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 0,     Y = -1.75, Z = 0.6,   Tx = -5, Ty = 0,  Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = -2.54, Y = 0,     Z = 0.05,  Tx = 0,  Ty = 5,  Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 2.5,   Y = 0,     Z = 0.2,   Tx = 0,  Ty = -5, Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 0.68,  Y = 0.04,  Z = 0.1,   Tx = 0,  Ty = 0,  Tz = 5  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = -0.63, Y = 0.04,  Z = 0.04,  Tx = 0,  Ty = 0,  Tz = -5 },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = -2.51, Y = 1.82,  Z = -0.28, Tx = 5,  Ty = 5,  Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 2.55,  Y = 1.8,   Z = -0.1,  Tx = 5,  Ty = -5, Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = -2.51, Y = -1.76, Z = 0.63,  Tx = -5, Ty = 5,  Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 2.55,  Y = -1.75, Z = 0.78,  Tx = -5, Ty = -5, Tz = 0  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = 0.52,  Y = 1.84,  Z = -0.3,  Tx = 5,  Ty = 0,  Tz = 5  },
+                new BlackBoxRTCP_Controller.CalibrationSample { Group = "A", X = -0.84, Y = -1.74, Z = 0.58,  Tx = -5, Ty = 0,  Tz = -5 },
+            });
+
+            Console.WriteLine($"BlackBox RTCP Fit RMS={result.RmsError:F4} mm, Max={result.MaxError:F4} mm");
+            Console.WriteLine($"A=({result.A[0]:F4}, {result.A[1]:F4}, {result.A[2]:F4})");
+            Console.WriteLine($"B=({result.B[0]:F4}, {result.B[1]:F4}, {result.B[2]:F4})");
+            Console.WriteLine($"C=({result.C[0]:F4}, {result.C[1]:F4}, {result.C[2]:F4})");
+
+            double cur_x = Machine.DML.GetPosition(0);
+            double cur_y = Machine.DML.GetPosition(1);
+            double cur_z = Machine.DML.GetPosition(2);
+            double cur_tx = Machine.DML.GetPosition(3);
+            double cur_ty = Machine.DML.GetPosition(4);
+            double cur_tz = Machine.DML.GetPosition(5);
+
+            BlackBoxRTCP_Controller.RobotPose pos = new BlackBoxRTCP_Controller.RobotPose();
+
+
+            if(mode == "Rotate")
+            {
+                pos = rtcp.CalculateRTCPTargetByTcpLocalRotation(new BlackBoxRTCP_Controller.RobotPose() { X = cur_x, Y = cur_y, Z = cur_z, Tz = cur_tz, Tx = cur_tx, Ty = cur_ty },
+                                                             Rx, Ry, Rz);
+            }
+            else
+            {
+                pos = rtcp.CalculateTargetByTcpLocalXYZ(new BlackBoxRTCP_Controller.RobotPose() { X = cur_x, Y = cur_y, Z = cur_z, Tz = cur_tz, Tx = cur_tx, Ty = cur_ty },
+                                                        Rx, Ry, Rz);
+            }
+
+            Machine.DML.PTP_Move(0, pos.X);
+            Machine.DML.PTP_Move(1, pos.Y);
+            Machine.DML.PTP_Move(2, pos.Z);
+
+            Machine.DML.PTP_Move(3, pos.Tx);
+            Machine.DML.PTP_Move(4, pos.Ty);
+            Machine.DML.PTP_Move(5, pos.Tz);
+        }
+        
+        private void Btn_MoveX_P_Click(object sender, EventArgs e)
+        {
+            double num =  Tool.StringToDouble(TxtBx_X.Text);
+            RTCP_AxisMove(Rx: num, mode:"X");
+        }
+
+        private void Btn_MoveX_N_Click(object sender, EventArgs e)
+        {
+            double num = Tool.StringToDouble(TxtBx_X.Text) * -1;
+            RTCP_AxisMove(Rx: num, mode: "X");
+        }
+
+        private void Btn_MoveY_P_Click(object sender, EventArgs e)
+        {
+            double num = Tool.StringToDouble(TxtBx_Y.Text);
+            RTCP_AxisMove(Ry: num, mode: "Y");
+        }
+
+        private void Btn_MoveY_N_Click(object sender, EventArgs e)
+        {
+            double num = Tool.StringToDouble(TxtBx_Y.Text) * -1;
+            RTCP_AxisMove(Ry: num, mode: "Y");
+        }
+
+        private void Btn_MoveZ_P_Click(object sender, EventArgs e)
+        {
+            double num = Tool.StringToDouble(TxtBx_Z.Text);
+            RTCP_AxisMove(Rz: num, mode: "Z");
+        }
+
+        private void Btn_MoveZ_N_Click(object sender, EventArgs e)
+        {
+            double num = Tool.StringToDouble(TxtBx_Z.Text) * -1;
+            RTCP_AxisMove(Rz: num, mode: "Z");
+        }
     }
 }
