@@ -632,6 +632,4 @@ namespace AAMachine.Logic.ImageMethod
         }
         #endregion
     }
-
-
 }

@@ -247,7 +247,7 @@ namespace AAMachine.UI
             CaptureLineProfile.LineProfileResult profile,
             CaptureLineProfile.LineProfileSegment segment)
         {
-            MIL.MgraClear(_milGraphicContext, _milGraphicList);
+            //MIL.MgraClear(_milGraphicContext, _milGraphicList);
 
             MIL.MgraColor(_milGraphicContext, MIL.M_COLOR_YELLOW);
             MIL.MgraLine(
@@ -319,7 +319,7 @@ namespace AAMachine.UI
             EnsureMilResources();
 
             MIL.MbufImport(
-                @"D:\0.桌面雜物\MirrorAA_InProcess\AA_02_22222_20260804T190544_Ty.png",
+                @"D:\0.桌面雜物\MirrorAA_InProcess\AA_06_22222_20260804T190723_Tx.png",
                 MIL.M_DEFAULT,
                 MIL.M_RESTORE,
                 _milSys,
@@ -334,17 +334,24 @@ namespace AAMachine.UI
                                                                     length: 11000,
                                                                     angleDeg: -28);
 
+            var profile_y = captureLineProfile.CaptureByCenterAngle(_milImage,
+                                                                    centerX: 6948,
+                                                                    centerY: 4922,
+                                                                    length: 11000,
+                                                                    angleDeg: -118);
+
 
             double value =  captureLineProfile.GetAutoCrossingValue(profile, 0.5);
 
 
             string errorMessage;
             var segment = captureLineProfile.FindOuterSegmentAboveValue(profile, value, out errorMessage);
+            var segment_y = captureLineProfile.FindOuterSegmentAboveValue(profile_y, value, out errorMessage);
 
-            if (segment != null)
+            if (segment != null && segment_y != null)
             {
                 TxtBx_CenterX.Text = segment.CenterX.ToString("F2");
-                TxtBx_CenterY.Text = segment.CenterY.ToString("F2");
+                TxtBx_CenterY.Text = segment_y.CenterY.ToString("F2");
             }
             else
             {
@@ -353,7 +360,10 @@ namespace AAMachine.UI
                 MessageBox.Show(errorMessage, "Line Profile", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+            MIL.MgraClear(_milGraphicContext, _milGraphicList);
+
             DrawLineProfileOverlay(profile, segment);
+            DrawLineProfileOverlay(profile_y, segment_y);
             DisplayImageOnResultPanel(_milDisplayImage);
         }
     }
