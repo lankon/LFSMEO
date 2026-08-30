@@ -1,13 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 using Matrox.MatroxImagingLibrary;
 
 namespace AAMachine.Logic.ImageMethod
 {
-    public class FindHousingFeature : IDisposable
+    public class Find45MirrorFeature : IDisposable
     {
-        public FindHousingFeature()
+        public Find45MirrorFeature()
         {
             InitializeLocalMilSystem();
         }
@@ -37,7 +38,7 @@ namespace AAMachine.Logic.ImageMethod
 
             public bool Success = false;
         }
-        public double BinarizeThreshold { get; set; } = 90.0;  // Threshold value for the binarization operation
+        public double BinarizeThreshold { get; set; } = 125.0;  // Threshold value for the binarization operation
         public int CloseIterations { get; set; } = 6;       // Number of iterations for the morphological close operation
         public double MinBlobArea { get; set; } = 1000;     // Minimum area of the blob to be considered as a valid feature
         public class FindCenterResult
@@ -118,7 +119,7 @@ namespace AAMachine.Logic.ImageMethod
 
                 MIL.MmeasSetMarker(EdgeMeasMarker, MIL.M_SEARCH_REGION_INPUT_UNITS, MIL.M_PIXEL, MIL.M_NULL);
                 MIL.MmeasSetMarker(EdgeMeasMarker, MIL.M_BOX_ANGLE_REFERENCE, MIL.M_BOX_CENTER, MIL.M_NULL);
-                MIL.MmeasSetMarker(EdgeMeasMarker, MIL.M_BOX_SIZE, 85.000000477075, 312.0);
+                MIL.MmeasSetMarker(EdgeMeasMarker, MIL.M_BOX_SIZE, 352.267606632194, 460.0);
                 MIL.MmeasSetMarker(EdgeMeasMarker, MIL.M_BOX_CENTER, centerX, centerY);
                 MIL.MmeasSetMarker(EdgeMeasMarker, MIL.M_BOX_ANGLE, angle, MIL.M_NULL);
 
@@ -218,7 +219,7 @@ namespace AAMachine.Logic.ImageMethod
         private void ThrowIfDisposed()
         {
             if (disposed)
-                throw new ObjectDisposedException(nameof(FindHousingFeature));
+                throw new ObjectDisposedException(nameof(Find45MirrorFeature));
         }
 
         private void SafeMilBufFree(ref MIL_ID buffer)
@@ -253,7 +254,7 @@ namespace AAMachine.Logic.ImageMethod
         #endregion
 
         #region public function
-        public EdgeResult Find(byte[] source, int width, int height)
+        public List<EdgeResult> Find(byte[] source, int width, int height)
         {
             ThrowIfDisposed();
 
@@ -275,7 +276,7 @@ namespace AAMachine.Logic.ImageMethod
             }
         }
 
-        public EdgeResult Find(string sourceFile)
+        public List<EdgeResult> Find(string sourceFile)
         {
             ThrowIfDisposed();
 
@@ -299,7 +300,7 @@ namespace AAMachine.Logic.ImageMethod
             }
         }
 
-        public EdgeResult Find(MIL_ID image)
+        public List<EdgeResult> Find(MIL_ID image)
         {
             ThrowIfDisposed();
 
@@ -307,57 +308,74 @@ namespace AAMachine.Logic.ImageMethod
                 throw new ArgumentException("Source image is null.", nameof(image));
 
             MIL_ID binarizeDestination = MIL.M_NULL;
-            MIL_ID closeDestination = MIL.M_NULL;
-            MIL_ID blobContext = MIL.M_NULL;
-            MIL_ID blobResult = MIL.M_NULL;
+            //MIL_ID closeDestination = MIL.M_NULL;
+            //MIL_ID blobContext = MIL.M_NULL;
+            //MIL_ID blobResult = MIL.M_NULL;
 
             try
             {
                 // Blob Calculate
                 binarizeDestination = CloneImageBuffer(image);
-                closeDestination = CloneImageBuffer(binarizeDestination);
+                //closeDestination = CloneImageBuffer(binarizeDestination);
 
-                MIL.MblobAlloc(localMilSystem, MIL.M_DEFAULT, MIL.M_DEFAULT, ref blobContext);
-                MIL.MblobControl(blobContext, MIL.M_BOX, MIL.M_ENABLE);
-                MIL.MblobControl(blobContext, MIL.M_CENTER_OF_GRAVITY, MIL.M_ENABLE);
-                MIL.MblobAllocResult(localMilSystem, MIL.M_DEFAULT, MIL.M_DEFAULT, ref blobResult);
+                //MIL.MblobAlloc(localMilSystem, MIL.M_DEFAULT, MIL.M_DEFAULT, ref blobContext);
+                //MIL.MblobControl(blobContext, MIL.M_BOX, MIL.M_ENABLE);
+                //MIL.MblobControl(blobContext, MIL.M_CENTER_OF_GRAVITY, MIL.M_ENABLE);
+                //MIL.MblobAllocResult(localMilSystem, MIL.M_DEFAULT, MIL.M_DEFAULT, ref blobResult);
 
                 MIL.MimBinarize(image, binarizeDestination, MIL.M_FIXED + MIL.M_GREATER, BinarizeThreshold, MIL.M_NULL);
-                MIL.MimClose(binarizeDestination, closeDestination, CloseIterations, MIL.M_GRAYSCALE);
-                MIL.MblobCalculate(blobContext, closeDestination, MIL.M_NULL, blobResult);
+                //MIL.MimClose(binarizeDestination, closeDestination, CloseIterations, MIL.M_GRAYSCALE);
+                //MIL.MblobCalculate(blobContext, closeDestination, MIL.M_NULL, blobResult);
 
-                if (MinBlobArea > 0.0)
-                    MIL.MblobSelect(blobResult, MIL.M_DELETE, MIL.M_AREA, MIL.M_LESS, MinBlobArea, MIL.M_NULL);
+                //if (MinBlobArea > 0.0)
+                //    MIL.MblobSelect(blobResult, MIL.M_DELETE, MIL.M_AREA, MIL.M_LESS, MinBlobArea, MIL.M_NULL);
 
-                var blob_res = CalculateBlobResult(blobResult);
+                //var blob_res = CalculateBlobResult(blobResult);
 
                 // Calculate Edge
                 double score = 0.1;
-                EdgeResult bestEdgeResult = new EdgeResult();
+                EdgeResult bestEdgeResult_bottom = new EdgeResult();
                 for (int i = -10; i<= 10; i++)
                 {
                     double angle = i * 0.1;
-                    EdgeResult edge_res = CalculateEdgeResult(closeDestination, blob_res.CenterX + 25, blob_res.CenterY, angle);
+                    EdgeResult edge_res = CalculateEdgeResult(binarizeDestination, 1164, 1452, 90 + angle);
                     
                     if(edge_res.Score > score)
                     {
                         score = edge_res.Score;
-                        bestEdgeResult = edge_res;
+                        bestEdgeResult_bottom = edge_res;
                     }
                 }
+
+                score = 0.1;
+                EdgeResult bestEdgeResult_left = new EdgeResult();
+                for (int i = -10; i <= 10; i++)
+                {
+                    double angle = i * 0.1;
+                    EdgeResult edge_res = CalculateEdgeResult(binarizeDestination, 340, 776, angle);
+
+                    if (edge_res.Score > score)
+                    {
+                        score = edge_res.Score;
+                        bestEdgeResult_left = edge_res;
+                    }
+                }
+
+                List<EdgeResult> bestEdgeResult = new List<EdgeResult>();
+                bestEdgeResult.Add(bestEdgeResult_left);
+                bestEdgeResult.Add(bestEdgeResult_bottom);
                 
                 return bestEdgeResult;
-                
             }
             finally
             {
-                if (blobResult != MIL.M_NULL)
-                    MIL.MblobFree(blobResult);
+                //if (blobResult != MIL.M_NULL)
+                //    MIL.MblobFree(blobResult);
 
-                if (blobContext != MIL.M_NULL)
-                    MIL.MblobFree(blobContext);
+                //if (blobContext != MIL.M_NULL)
+                //    MIL.MblobFree(blobContext);
 
-                SafeMilBufFree(ref closeDestination);
+                //SafeMilBufFree(ref closestination);
                 SafeMilBufFree(ref binarizeDestination);
             }
         }

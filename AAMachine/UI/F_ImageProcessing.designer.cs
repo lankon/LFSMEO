@@ -34,6 +34,7 @@ namespace AAMachine.UI
             this.TxtBx_CenterX = new System.Windows.Forms.TextBox();
             this.TxtBx_CenterY = new System.Windows.Forms.TextBox();
             this.Btn_FindHousing = new System.Windows.Forms.Button();
+            this.Btn_Find45Mirror = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Btn_CaptureLineProfile
@@ -79,11 +80,23 @@ namespace AAMachine.UI
             this.Btn_FindHousing.UseVisualStyleBackColor = true;
             this.Btn_FindHousing.Click += new System.EventHandler(this.Btn_FindHousing_Click);
             // 
+            // Btn_Find45Mirror
+            // 
+            this.Btn_Find45Mirror.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Find45Mirror.Location = new System.Drawing.Point(739, 653);
+            this.Btn_Find45Mirror.Name = "Btn_Find45Mirror";
+            this.Btn_Find45Mirror.Size = new System.Drawing.Size(146, 62);
+            this.Btn_Find45Mirror.TabIndex = 5;
+            this.Btn_Find45Mirror.Text = "Find 45Mirror";
+            this.Btn_Find45Mirror.UseVisualStyleBackColor = true;
+            this.Btn_Find45Mirror.Click += new System.EventHandler(this.Btn_Find45Mirror_Click);
+            // 
             // F_ImageProcessing
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_Find45Mirror);
             this.Controls.Add(this.Btn_FindHousing);
             this.Controls.Add(this.TxtBx_CenterY);
             this.Controls.Add(this.TxtBx_CenterX);
@@ -106,5 +119,6 @@ namespace AAMachine.UI
         private System.Windows.Forms.TextBox TxtBx_CenterX;
         private System.Windows.Forms.TextBox TxtBx_CenterY;
         private System.Windows.Forms.Button Btn_FindHousing;
+        private System.Windows.Forms.Button Btn_Find45Mirror;
     }
 }

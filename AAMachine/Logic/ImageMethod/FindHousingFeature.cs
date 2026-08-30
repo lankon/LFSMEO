@@ -12,20 +12,10 @@ namespace AAMachine.Logic.ImageMethod
             InitializeLocalMilSystem();
         }
 
-        public FindHousingFeature(MIL_ID milSystem)
-        {
-            if (milSystem == MIL.M_NULL)
-                throw new ArgumentException("MIL system is null.", nameof(milSystem));
-
-            localMilSystem = milSystem;
-            ownsMilSystem = false;
-        }
-
         #region parameter define
         private MIL_ID localMilApplication = MIL.M_NULL;
         private MIL_ID localMilSystem = MIL.M_NULL;
         private bool disposed;
-        private bool ownsMilSystem = true;
         private class BlobResult
         {
             public double CenterX { get; set; } = 0.0;
@@ -439,9 +429,7 @@ namespace AAMachine.Logic.ImageMethod
         {
             if (disposed) return;
 
-            if (ownsMilSystem)
-                ReleaseLocalMilSystem();
-
+            ReleaseLocalMilSystem();
             disposed = true;
 
             GC.SuppressFinalize(this);

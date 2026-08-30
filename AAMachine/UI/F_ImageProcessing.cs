@@ -350,6 +350,29 @@ namespace AAMachine.UI
 
             DrawCross(targetX, targetY, 30, MIL.M_COLOR_GREEN);
         }
+
+        private void Draw45MirrorEdgeOverlay(List<Find45MirrorFeature.EdgeResult> edges)
+        {
+            if (edges == null)
+                return;
+
+            foreach (Find45MirrorFeature.EdgeResult edge in edges)
+            {
+                if (edge == null || !edge.Success)
+                    continue;
+
+                MIL.MgraColor(_milGraphicContext, MIL.M_COLOR_RED);
+                MIL.MgraLine(
+                    _milGraphicContext,
+                    _milGraphicList,
+                    edge.StartX,
+                    edge.StartY,
+                    edge.EndX,
+                    edge.EndY);
+
+                DrawCross(edge.PositionX, edge.PositionY, 30);
+            }
+        }
         #endregion
 
         #region public function
@@ -460,7 +483,7 @@ namespace AAMachine.UI
 
                 _milDisplayImage = CreateDisplayImage(_milImage);
 
-                using (FindHousingFeature finder = new FindHousingFeature(_milSys))
+                using (FindHousingFeature finder = new FindHousingFeature())
                 {
                     FindHousingFeature.EdgeResult res = finder.Find(_milImage);
 
@@ -478,6 +501,58 @@ namespace AAMachine.UI
                         TxtBx_CenterX.Text = "";
                         TxtBx_CenterY.Text = "";
                         MessageBox.Show("Edge not found.", "Find Housing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            finally
+            {
+                if (_milImage != MIL.M_NULL)
+                {
+                    MIL.MbufFree(_milImage);
+                    _milImage = MIL.M_NULL;
+                }
+            }
+        }
+
+        private void Btn_Find45Mirror_Click(object sender, EventArgs e)
+        {
+            ReleaseMilResources();
+            EnsureMilResources();
+
+            try
+            {
+                MIL.MbufImport(
+                    @"C:\Users\leo_li\Desktop\上PA看Housing_環光100軸光70.png",
+                    MIL.M_DEFAULT,
+                    MIL.M_RESTORE,
+                    _milSys,
+                    ref _milImage
+                );
+
+                _milDisplayImage = CreateDisplayImage(_milImage);
+
+                using (Find45MirrorFeature finder = new Find45MirrorFeature())
+                {
+                    List<Find45MirrorFeature.EdgeResult> results = finder.Find(_milImage);
+
+                    MIL.MgraClear(_milGraphicContext, _milGraphicList);
+                    Draw45MirrorEdgeOverlay(results);
+                    DisplayImageOnResultPanel(_milDisplayImage);
+
+                    Find45MirrorFeature.EdgeResult firstResult = results == null
+                        ? null
+                        : results.FirstOrDefault(result => result != null && result.Success);
+
+                    if (firstResult != null)
+                    {
+                        TxtBx_CenterX.Text = firstResult.PositionX.ToString("F2");
+                        TxtBx_CenterY.Text = firstResult.PositionY.ToString("F2");
+                    }
+                    else
+                    {
+                        TxtBx_CenterX.Text = "";
+                        TxtBx_CenterY.Text = "";
+                        MessageBox.Show("45 Mirror edge not found.", "Find 45Mirror", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }

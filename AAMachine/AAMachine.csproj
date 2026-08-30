@@ -130,6 +130,7 @@
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\ImageMethod\CaptureLineProfile.cs" />
+    <Compile Include="Logic\ImageMethod\Find45MirrorFeature.cs" />
     <Compile Include="Logic\ImageMethod\FindHousingFeature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Engineer\F_FrontSetting2.cs">
