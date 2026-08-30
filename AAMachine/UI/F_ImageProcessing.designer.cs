@@ -33,6 +33,7 @@ namespace AAMachine.UI
             this.Pnl_ImageResult = new System.Windows.Forms.Panel();
             this.TxtBx_CenterX = new System.Windows.Forms.TextBox();
             this.TxtBx_CenterY = new System.Windows.Forms.TextBox();
+            this.Btn_FindHousing = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Btn_CaptureLineProfile
@@ -67,11 +68,23 @@ namespace AAMachine.UI
             this.TxtBx_CenterY.Size = new System.Drawing.Size(146, 22);
             this.TxtBx_CenterY.TabIndex = 3;
             // 
+            // Btn_FindHousing
+            // 
+            this.Btn_FindHousing.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_FindHousing.Location = new System.Drawing.Point(739, 576);
+            this.Btn_FindHousing.Name = "Btn_FindHousing";
+            this.Btn_FindHousing.Size = new System.Drawing.Size(146, 62);
+            this.Btn_FindHousing.TabIndex = 4;
+            this.Btn_FindHousing.Text = "Find Housing";
+            this.Btn_FindHousing.UseVisualStyleBackColor = true;
+            this.Btn_FindHousing.Click += new System.EventHandler(this.Btn_FindHousing_Click);
+            // 
             // F_ImageProcessing
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_FindHousing);
             this.Controls.Add(this.TxtBx_CenterY);
             this.Controls.Add(this.TxtBx_CenterX);
             this.Controls.Add(this.Pnl_ImageResult);
@@ -92,5 +105,6 @@ namespace AAMachine.UI
         private System.Windows.Forms.Panel Pnl_ImageResult;
         private System.Windows.Forms.TextBox TxtBx_CenterX;
         private System.Windows.Forms.TextBox TxtBx_CenterY;
+        private System.Windows.Forms.Button Btn_FindHousing;
     }
 }

@@ -19,6 +19,7 @@ namespace AAMachine.UI
         public F_ImageProcessing()
         {
             InitializeComponent();
+            this.FormClosed += F_ImageProcessing_FormClosed;
 
             InitialForm();
         }
@@ -31,6 +32,9 @@ namespace AAMachine.UI
         private MIL_ID _milDisplayImage = MIL.M_NULL;
         private MIL_ID _milGraphicContext = MIL.M_NULL;
         private MIL_ID _milGraphicList = MIL.M_NULL;
+        private double HousingTargetOffsetAlongEdge { get; set; } = 1030.0;
+        private double HousingTargetOffsetNormalToEdge { get; set; } = -900.0;
+        private double HousingTargetLineLength { get; set; } = 500.0;
         #endregion
 
         #region private function
@@ -104,6 +108,9 @@ namespace AAMachine.UI
 
         private void ReleaseMilResources()
         {
+            if (_milDisplay != MIL.M_NULL)
+                MIL.MdispSelect(_milDisplay, MIL.M_NULL);
+
             if (_milGraphicList != MIL.M_NULL)
             {
                 MIL.MgraFree(_milGraphicList);
@@ -275,9 +282,73 @@ namespace AAMachine.UI
 
         private void DrawCross(double centerX, double centerY, double size)
         {
-            MIL.MgraColor(_milGraphicContext, MIL.M_COLOR_GREEN);
+            DrawCross(centerX, centerY, size, MIL.M_COLOR_GREEN);
+        }
+
+        private void DrawCross(double centerX, double centerY, double size, double color)
+        {
+            MIL.MgraColor(_milGraphicContext, color);
             MIL.MgraLine(_milGraphicContext, _milGraphicList, centerX - size, centerY, centerX + size, centerY);
             MIL.MgraLine(_milGraphicContext, _milGraphicList, centerX, centerY - size, centerX, centerY + size);
+        }
+
+        private void DrawHousingEdgeOverlay(FindHousingFeature.EdgeResult edge)
+        {
+            if (edge == null || !edge.Success)
+                return;
+
+            MIL.MgraColor(_milGraphicContext, MIL.M_COLOR_RED);
+            MIL.MgraLine(
+                _milGraphicContext,
+                _milGraphicList,
+                edge.StartX,
+                edge.StartY,
+                edge.EndX,
+                edge.EndY);
+
+            DrawCross(edge.PositionX, edge.PositionY, 30);
+            DrawDerivedHousingTarget(edge);
+        }
+
+        private void DrawDerivedHousingTarget(FindHousingFeature.EdgeResult edge)
+        {
+            double edgeDx = edge.EndX - edge.StartX;
+            double edgeDy = edge.EndY - edge.StartY;
+            double edgeLength = Math.Sqrt(edgeDx * edgeDx + edgeDy * edgeDy);
+
+            if (edgeLength <= 0.0)
+                return;
+
+            double edgeUnitX = edgeDx / edgeLength;
+            double edgeUnitY = edgeDy / edgeLength;
+            double normalUnitX = -edgeUnitY;
+            double normalUnitY = edgeUnitX;
+
+            double targetX = edge.PositionX
+                + HousingTargetOffsetAlongEdge * edgeUnitX
+                + HousingTargetOffsetNormalToEdge * normalUnitX;
+
+            double targetY = edge.PositionY
+                + HousingTargetOffsetAlongEdge * edgeUnitY
+                + HousingTargetOffsetNormalToEdge * normalUnitY;
+
+            double halfLineLength = HousingTargetLineLength / 2.0;
+
+            double lineStartX = targetX - halfLineLength * normalUnitX;
+            double lineStartY = targetY - halfLineLength * normalUnitY;
+            double lineEndX = targetX + halfLineLength * normalUnitX;
+            double lineEndY = targetY + halfLineLength * normalUnitY;
+
+            MIL.MgraColor(_milGraphicContext, MIL.M_COLOR_RED);
+            MIL.MgraLine(
+                _milGraphicContext,
+                _milGraphicList,
+                lineStartX,
+                lineStartY,
+                lineEndX,
+                lineEndY);
+
+            DrawCross(targetX, targetY, 30, MIL.M_COLOR_GREEN);
         }
         #endregion
 
@@ -309,6 +380,11 @@ namespace AAMachine.UI
         private void F_SampleFull_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void F_ImageProcessing_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ReleaseMilResources();
         }
 
         private void Btn_CaptureLineProfile_Click(object sender, EventArgs e)
@@ -365,6 +441,54 @@ namespace AAMachine.UI
             DrawLineProfileOverlay(profile, segment);
             DrawLineProfileOverlay(profile_y, segment_y);
             DisplayImageOnResultPanel(_milDisplayImage);
+        }
+
+        private void Btn_FindHousing_Click(object sender, EventArgs e)
+        {
+            ReleaseMilResources();
+            EnsureMilResources();
+
+            try
+            {
+                MIL.MbufImport(
+                    @"C:\Users\leo_li\Desktop\上PA看Housing_環光100軸光70.png",
+                    MIL.M_DEFAULT,
+                    MIL.M_RESTORE,
+                    _milSys,
+                    ref _milImage
+                );
+
+                _milDisplayImage = CreateDisplayImage(_milImage);
+
+                using (FindHousingFeature finder = new FindHousingFeature(_milSys))
+                {
+                    FindHousingFeature.EdgeResult res = finder.Find(_milImage);
+
+                    MIL.MgraClear(_milGraphicContext, _milGraphicList);
+                    DrawHousingEdgeOverlay(res);
+                    DisplayImageOnResultPanel(_milDisplayImage);
+
+                    if (res.Success)
+                    {
+                        TxtBx_CenterX.Text = res.PositionX.ToString("F2");
+                        TxtBx_CenterY.Text = res.PositionY.ToString("F2");
+                    }
+                    else
+                    {
+                        TxtBx_CenterX.Text = "";
+                        TxtBx_CenterY.Text = "";
+                        MessageBox.Show("Edge not found.", "Find Housing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            finally
+            {
+                if (_milImage != MIL.M_NULL)
+                {
+                    MIL.MbufFree(_milImage);
+                    _milImage = MIL.M_NULL;
+                }
+            }
         }
     }
 }
