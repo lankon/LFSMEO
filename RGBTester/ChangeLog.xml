@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
-
+	<Release version="1.26.9.1" date="2026-09-07">
+		<Item type="Fixed">修正CLAMP,SLPCC ErrorCode問題</Item>
+		<Item type="Fixed">PASS/FAIL分檔問題</Item>
+		<Item type="Fixed">光性Recipe參數初始參數讀取</Item>
+	</Release>
 	<Release version="1.26.6.3" date="2026-06-30">
 		<Item type="Fixed">ILed全部測試值扣除DAC=0時的數值</Item>
 		<Item type="Fixed">Shopflow Calibration資料修改</Item>

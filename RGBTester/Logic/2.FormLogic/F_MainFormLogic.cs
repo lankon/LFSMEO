@@ -100,7 +100,9 @@ namespace RGBTester.Logic
 
             //[Read Recipe]
             ApplicationSetting.ReadAllRecipe<eF_OpticalTestRecipe>(cur_recipe_name);
-
+            ApplicationSetting.ReadAllRecipe<eF_OpticalSettingRecipe>(cur_recipe_name);
+            ApplicationSetting.ReadAllRecipe<eF_ParameterSettingRecipe>(cur_recipe_name);
+            ApplicationSetting.ReadAllRecipe<eF_StartFormRecipe>(cur_recipe_name);
         }
 
         public void ShowStartForm()

@@ -34,7 +34,7 @@ namespace RGBTester.Logic
 
             StreamWriter file = Tool.CreateFile(fileName, ".csv", false);
 
-            // Ttitle
+            // Title
             Tool.WriteFile(file, "Station,SN,TestDate,TestTime,CycleTime(ms),UserName,DirLogName,Current(mA),Luminous Flux(lm),Power(mW),Wavelength(λd),LED Temperature(℃),IntegralTime(ms)");
             // TestData
             for(int i=0; i< result.Currentpoint.Count; i++)
@@ -47,13 +47,33 @@ namespace RGBTester.Logic
             string p1 = copy_path.Length > 0 ? copy_path[0] : "";
             string p2 = copy_path.Length > 1 ? copy_path[1] : "";
 
-            string pass_fail = "";
+            string pass_fail = "PASS";
             if (RGBfunc.GetModuleType() == eModuleType.Function_Test)
             {
-                if (RGBfunc.FailReasonFlag.IsTestFail() == true)
-                    pass_fail = "FAIL";
-                else
-                    pass_fail = "PASS";
+                bool isCurrentColorFail = false;
+
+                if (result.TestColor == "R")
+                {
+                    isCurrentColorFail =
+                        RGBfunc.FailReasonFlag.IsRedLuminousErr;
+                }
+                else if (result.TestColor == "G")
+                {
+                    isCurrentColorFail =
+                        RGBfunc.FailReasonFlag.IsGreenLuminousErr;
+                }
+                else if (result.TestColor == "B")
+                {
+                    isCurrentColorFail =
+                        RGBfunc.FailReasonFlag.IsBlueLuminousErr;
+                }
+                else if (result.TestColor == "B2")
+                {
+                    isCurrentColorFail =
+                        RGBfunc.FailReasonFlag.IsBlue2LuminousErr;
+                }
+
+                pass_fail = isCurrentColorFail ? "FAIL" : "PASS";
             }
 
             if (p1 != "" || p2 != "")
