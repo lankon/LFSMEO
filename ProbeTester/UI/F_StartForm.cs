@@ -20,6 +20,8 @@ using ProbeTester.Logic;
 
 using Device_MicroEpsilon;
 using System.Threading;  // 違規用法_測試用
+using MILX_ImageFunction;  // 違規用法_測試用
+using Matrox.MatroxImagingLibrary;  // 違規用法_測試用
 
 namespace ProbeTester.UI
 {
@@ -351,6 +353,363 @@ namespace ProbeTester.UI
 
             confocal.GetValue(ref value1).ToString();
 
+        }
+
+        private void Btn_MILTest_Click(object sender, EventArgs e)
+        {
+            using (MilVisionTool func = new MilVisionTool())
+            {
+                MIL_ID source_img = func.ImportImage("D:\\Test\\正CCD_環光100軸光100.png");
+                MIL_ID draw_img = func.ImportImage("D:\\Test\\正CCD_環光100軸光100.png");
+                MIL_ID draw_res_img = MIL.M_NULL;
+
+                // 影像前處理
+                source_img = func.BinaryImage(source_img, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.DOMINANT_AND_GREATER });
+                source_img = func.OpenImage(source_img, new MilVisionTool.OpenParameters { Iteration = 3 });
+                source_img = func.CloseImage(source_img, new MilVisionTool.CloseParameters { Iteration = 3 });
+                func.ExportImage(source_img, "D:\\Test\\PreImage.bmp", MIL.M_BMP);
+
+                #region Blob定位初始位置
+                MilVisionTool.BlobDetectionResult blob_result;
+                blob_result = func.BlobDetect(source_img, new MilVisionTool.BlobDetectParameters
+                {
+                    EnableAreaFilter = true,
+                    AreaFilter = MilVisionTool.BlobAreaFilter.IN_RANGE,
+                    FilterOperater = MilVisionTool.FilterOperater.INCLUDE_ONLY,
+                    MinArea = 30000,
+                    MaxArea = 50000,
+
+                    SaveResultImage = true,
+                    SavePath = "D:\\Test\\BlobResult.bmp"
+                });
+
+                int BlobIndex1 = -1, BlobIndex2 = -1;    
+                for(int i=0; i < blob_result.BlobCount; i++)
+                {
+                    // Blob1:{911,1468}, Blob2:{892,1482}初始位置
+                    
+                    if (Math.Abs(blob_result.Blobs[i].CenterX - 911) < 50 &&
+                        Math.Abs(blob_result.Blobs[i].CenterY - 892) < 50)
+                        BlobIndex1 = i;
+
+                    if (Math.Abs(blob_result.Blobs[i].CenterX - 1468) < 50 &&
+                        Math.Abs(blob_result.Blobs[i].CenterY - 1482) < 50)
+                        BlobIndex2 = i;
+                }
+
+                if (BlobIndex1 == -1 || BlobIndex2 == -1)
+                    return; // 找不到目標Blob，直接返回
+                #endregion
+
+                #region 搜尋正CCD Housing位置
+                double score = 0.001;
+                MilVisionTool.EdgeResult bestEdgeResult = new MilVisionTool.EdgeResult();
+                for (int i = -20; i <= 20; i++)
+                {
+                    double angle = i * 0.1;
+                    MilVisionTool.EdgeResult edge_res = func.EdgeDetect(source_img, new MilVisionTool.EdgeDetectParameters
+                                                        {
+                                                            BoxCenterX = (blob_result.Blobs[BlobIndex1].CenterX + blob_result.Blobs[BlobIndex2].CenterX)/2 + 146,   // offset:146
+                                                            BoxCenterY = (blob_result.Blobs[BlobIndex1].CenterY + blob_result.Blobs[BlobIndex2].CenterY) / 2 - 134, // offset:134
+                                                            BoxAngle = 42.82 + angle,
+                                                            BoxWidth = 190,
+                                                            BoxHeight = 1070,
+                                                            Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
+                                                        });
+
+                    if (edge_res.Score > score)
+                    {
+                        score = edge_res.Score;
+                        bestEdgeResult = edge_res;
+                    }
+                }
+
+                if(Math.Abs(score - 0.001) <= 0.0000001)
+                    return; // 找不到最佳邊緣，直接返回
+
+                draw_res_img = func.DrawLine(draw_img, draw_res_img, new MilVisionTool.DrawLineParameters
+                {
+                    StartX = (int)bestEdgeResult.StartX,
+                    StartY = (int)bestEdgeResult.StartY,
+                    EndX = (int)bestEdgeResult.EndX,
+                    EndY = (int)bestEdgeResult.EndY,
+                    SavePath = "D:\\Test\\Housing"
+                });
+                #endregion
+
+                #region 搜尋正CCD Mirror位置
+                score = 0.001;
+                bestEdgeResult = new MilVisionTool.EdgeResult();
+                for (int i = -20; i <= 20; i++)
+                {
+                    double angle = i * 0.1;
+                    double centerX = (blob_result.Blobs[BlobIndex1].CenterX + blob_result.Blobs[BlobIndex2].CenterX) / 2 + 325;
+                    double centerY = (blob_result.Blobs[BlobIndex1].CenterY + blob_result.Blobs[BlobIndex2].CenterY) / 2 - 369;
+
+                    MilVisionTool.EdgeResult edge_res = func.EdgeDetect(source_img, new MilVisionTool.EdgeDetectParameters
+                    {
+                        BoxCenterX = (blob_result.Blobs[BlobIndex1].CenterX + blob_result.Blobs[BlobIndex2].CenterX) / 2 + 325, // offset:146
+                        BoxCenterY = (blob_result.Blobs[BlobIndex1].CenterY + blob_result.Blobs[BlobIndex2].CenterY) / 2 - 369, // offset:134
+                        BoxAngle = 224.14 + angle,
+                        BoxWidth = 455,
+                        BoxHeight = 1070,
+                        Polarity = MilVisionTool.EdgePolarity.NEGATIVE_EDGE,
+                    });
+
+                    if (edge_res.Score > score)
+                    {
+                        score = edge_res.Score;
+                        bestEdgeResult = edge_res;
+                    }
+                }
+
+                if (Math.Abs(score - 0.001) <= 0.0000001)
+                    return; // 找不到最佳邊緣，直接返回
+
+                draw_res_img = func.DrawLine(draw_res_img, draw_res_img, new MilVisionTool.DrawLineParameters
+                {
+                    StartX = (int)bestEdgeResult.StartX,
+                    StartY = (int)bestEdgeResult.StartY,
+                    EndX = (int)bestEdgeResult.EndX,
+                    EndY = (int)bestEdgeResult.EndY,
+                    SavePath = "D:\\Test\\Mirror"
+                });
+                #endregion
+
+                func.SafeMilBufFree(ref source_img);
+                func.SafeMilBufFree(ref draw_img);
+                func.SafeMilBufFree(ref draw_res_img);
+            }
+        }
+
+        private void Btn_45Test_Click(object sender, EventArgs e)
+        {
+            for(int k=1; k<9; k++)
+            {
+                using (MilVisionTool func = new MilVisionTool())
+                {
+                    string image_path = $"C:\\Users\\leo_li\\Desktop\\45度CCD\\Housing Mirror XY Position_{k}.bmp";
+                    MIL_ID draw_img = func.ImportImage(image_path);
+                    MIL_ID draw_res_img = MIL.M_NULL;
+                    MilVisionTool.EdgeResult bestEdgeResult;
+
+                    #region 搜尋Left Mirror位置
+                    MIL_ID source_img_l = func.ImportImage(image_path);
+                    func.BinaryImage(source_img_l, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.FIX_AND_GREATER, ThresholdValue = 128 });
+                    func.CloseImage(source_img_l, new MilVisionTool.CloseParameters { Iteration = 5 });
+                    func.ExportImage(source_img_l, "D:\\Test\\LeftMirrorPreImage.bmp", MIL.M_BMP);
+
+                    MilVisionTool.EdgeDetectParameters leftMirrorSearch = new MilVisionTool.EdgeDetectParameters
+                    {
+                        BoxCenterX = 341,
+                        BoxCenterY = 764,
+                        BoxAngle = 0,
+                        BoxWidth = 150,
+                        BoxHeight = 900,
+                        Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
+                    };
+                    bestEdgeResult = FindBestEdge(func, source_img_l, leftMirrorSearch);
+
+                    if (!bestEdgeResult.Success)
+                        return; // 找不到最佳邊緣，直接返回
+
+                    draw_res_img = func.DrawLine(draw_img, draw_res_img, new MilVisionTool.DrawLineParameters
+                    {
+                        StartX = (int)bestEdgeResult.StartX,
+                        StartY = (int)bestEdgeResult.StartY,
+                        EndX = (int)bestEdgeResult.EndX,
+                        EndY = (int)bestEdgeResult.EndY,
+                        //SavePath = $"D:\\Test\\LeftMirror_{k}"
+                    });
+                    #endregion
+
+                    #region 搜尋Down Mirror位置
+                    MIL_ID source_img_d = func.ImportImage(image_path);
+                    func.BinaryImage(source_img_d, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 70 });
+                    func.CloseImage(source_img_d, new MilVisionTool.CloseParameters { Iteration = 5 });
+                    func.ExportImage(source_img_d, "D:\\Test\\DownMirrorPreImage.bmp", MIL.M_BMP);
+
+                    MilVisionTool.EdgeDetectParameters mirrorSearch = new MilVisionTool.EdgeDetectParameters
+                    {
+                        BoxCenterX = 1168,
+                        BoxCenterY = 1448,
+                        BoxAngle = 89.99,
+                        BoxWidth = 143,
+                        BoxHeight = 687,
+                        Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
+                    };
+                    bestEdgeResult = FindBestEdge(func, source_img_d, mirrorSearch);
+
+                    if (!bestEdgeResult.Success)
+                        return; // 找不到最佳邊緣，直接返回
+
+                    draw_res_img = func.DrawLine(draw_res_img, draw_res_img, new MilVisionTool.DrawLineParameters
+                    {
+                        StartX = (int)bestEdgeResult.StartX,
+                        StartY = (int)bestEdgeResult.StartY,
+                        EndX = (int)bestEdgeResult.EndX,
+                        EndY = (int)bestEdgeResult.EndY,
+                        //SavePath = $"D:\\Test\\Result_{k}"
+                    });
+                    #endregion
+
+                    #region 搜尋Left Housing位置
+                    MIL_ID source_img_h_l = func.ImportImage(image_path);
+                    MIL_ID source_img_h_l_crop = MIL.M_NULL;
+                    func.CropImage(source_img_h_l, ref source_img_h_l_crop, 0, 447, 2434, 598);
+                    source_img_h_l_crop = func.BinaryImage(source_img_h_l_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 60 });
+                    source_img_h_l_crop = func.CloseImage(source_img_h_l_crop, new MilVisionTool.CloseParameters { Iteration = 4 });
+                    func.ExportImage(source_img_h_l_crop, $"D:\\Test\\LeftHousingPreImage_{k}.bmp", MIL.M_BMP);
+
+                    #region Blob定位初始位置
+                    MilVisionTool.BlobDetectionResult blob_result;
+                    blob_result = func.BlobDetect(source_img_h_l_crop, new MilVisionTool.BlobDetectParameters
+                    {
+                        EnableAreaFilter = true,
+                        AreaFilter = MilVisionTool.BlobAreaFilter.IN_RANGE,
+                        FilterOperater = MilVisionTool.FilterOperater.INCLUDE_ONLY,
+                        MinArea = 40000,
+                        MaxArea = 60000,
+
+                        SaveResultImage = true,
+                        SavePath = $"D:\\Test\\BlobResult_{k}.bmp"
+                    });
+
+                    int BlobIndex1 = -1;
+                    for (int i = 0; i < blob_result.BlobCount; i++)
+                    {
+
+                        if (Math.Abs(blob_result.Blobs[i].CenterX - 199) < 150 &&
+                            Math.Abs(blob_result.Blobs[i].CenterY - 317) < 50)
+                            BlobIndex1 = i;
+                    }
+
+                    if (BlobIndex1 == -1)
+                        return; // 找不到目標Blob，直接返回
+
+                    MilVisionTool.EdgeDetectParameters housingLeftSearch = new MilVisionTool.EdgeDetectParameters
+                    {
+                        BoxCenterX = blob_result.Blobs[BlobIndex1].CenterX,
+                        BoxCenterY = blob_result.Blobs[BlobIndex1].CenterY,
+                        BoxAngle = 0,
+                        BoxWidth = 208,
+                        BoxHeight = 368,
+                        Polarity = MilVisionTool.EdgePolarity.NEGATIVE_EDGE,
+                    };
+                    bestEdgeResult = FindBestEdge(func, source_img_h_l_crop, housingLeftSearch);
+
+                    draw_res_img = func.DrawLine(draw_res_img, draw_res_img, new MilVisionTool.DrawLineParameters
+                    {
+                        StartX = (int)bestEdgeResult.StartX,
+                        StartY = (int)bestEdgeResult.StartY + 447,
+                        EndX = (int)bestEdgeResult.EndX,
+                        EndY = (int)bestEdgeResult.EndY + 447,
+                        SavePath = $"D:\\Test\\LeftHosuingResult_{k}"
+                    });
+                    #endregion
+                    #endregion
+
+                    #region 搜尋Down Housing位置
+                    MIL_ID source_img_h_d = func.ImportImage(image_path);
+                    MIL_ID source_img_h_d_crop = MIL.M_NULL;
+                    func.CropImage(source_img_h_d, ref source_img_h_d_crop, 10, 1630, 2432, 412);
+                    func.BinaryImage(source_img_h_d_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 80 });
+                    func.CloseImage(source_img_h_d_crop, new MilVisionTool.CloseParameters { Iteration = 5 });
+                    func.ExportImage(source_img_h_d_crop, "D:\\Test\\DownHousingPreImage.bmp", MIL.M_BMP);
+
+                    MilVisionTool.EdgeDetectParameters housingDownSearch = new MilVisionTool.EdgeDetectParameters
+                    {
+                        BoxCenterX = 1170,
+                        BoxCenterY = 137,
+                        BoxAngle = 269.7,
+                        BoxWidth = 235,
+                        BoxHeight = 680,
+                        Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
+                    };
+                    bestEdgeResult = FindBestEdge(func, source_img_h_d_crop, housingDownSearch);
+
+                    if (!bestEdgeResult.Success)
+                        return; // 找不到最佳邊緣，直接返回
+
+                    draw_res_img = func.DrawLine(draw_res_img, draw_res_img, new MilVisionTool.DrawLineParameters
+                    {
+                        StartX = (int)bestEdgeResult.StartX + 10,
+                        StartY = (int)bestEdgeResult.StartY + 1630,
+                        EndX = (int)bestEdgeResult.EndX + 10,
+                        EndY = (int)bestEdgeResult.EndY + 1630,
+                        SavePath = $"D:\\Test\\Result_{k}"
+                    });
+                    #endregion
+
+                    func.SafeMilBufFree(ref source_img_l);
+                    func.SafeMilBufFree(ref source_img_d);
+
+                    func.SafeMilBufFree(ref source_img_h_l);
+                    func.SafeMilBufFree(ref source_img_h_l_crop);
+
+                    func.SafeMilBufFree(ref source_img_h_d);
+                    func.SafeMilBufFree(ref source_img_h_d_crop);
+
+                    func.SafeMilBufFree(ref draw_img);
+                    func.SafeMilBufFree(ref draw_res_img);
+                    
+                }
+
+                GC.Collect();
+            }
+            
+            
+        }
+
+        private MilVisionTool.EdgeResult FindBestEdge(
+            MilVisionTool func,
+            MIL_ID source_img,
+            MilVisionTool.EdgeDetectParameters searchParam,
+            double angleStart = -2.0,
+            double angleEnd = 2.0,
+            double angleStep = 0.1,
+            double minScore = 0.01)
+        {
+            if (func == null || source_img == MIL.M_NULL || searchParam == null || angleStep <= 0)
+                return new MilVisionTool.EdgeResult();
+
+            double score = minScore;
+            MilVisionTool.EdgeResult bestEdgeResult = new MilVisionTool.EdgeResult();
+
+            for (double angle = angleStart; angle <= angleEnd; angle += angleStep)
+            {
+                MilVisionTool.EdgeResult edge_res = func.EdgeDetect(source_img, new MilVisionTool.EdgeDetectParameters
+                {
+                    BoxCenterX = searchParam.BoxCenterX,
+                    BoxCenterY = searchParam.BoxCenterY,
+                    BoxAngle = NormalizeAngle(searchParam.BoxAngle + angle),
+                    BoxWidth = searchParam.BoxWidth,
+                    BoxHeight = searchParam.BoxHeight,
+                    Polarity = searchParam.Polarity,
+                });
+
+                if (edge_res.Score > score)
+                {
+                    score = edge_res.Score;
+                    bestEdgeResult = edge_res;
+                }
+            }
+
+            if(bestEdgeResult.Score < 0.01)
+                bestEdgeResult.Success = false;
+
+            return bestEdgeResult;
+        }
+
+        private double NormalizeAngle(double angle)
+        {
+            while (angle < 0.0)
+                angle += 360.0;
+
+            while (angle >= 360.0)
+                angle -= 360.0;
+
+            return angle;
         }
     }
 }

@@ -36,6 +36,9 @@
     <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="Matrox.MatroxImagingLibrary">
+      <HintPath>..\MILX_ImageFunction\Matrox.MatroxImagingLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.10\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -219,6 +222,10 @@
     <ProjectReference Include="..\Device_MicroEpsilon\Device_MicroEpsilon.csproj">
       <Project>{c916026e-9781-4772-84e6-c8bcc6af7dcc}</Project>
       <Name>Device_MicroEpsilon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MILX_ImageFunction\MILX_ImageFunction.csproj">
+      <Project>{1045f6af-bd00-4c1a-a6ac-a667b7670fa1}</Project>
+      <Name>MILX_ImageFunction</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
