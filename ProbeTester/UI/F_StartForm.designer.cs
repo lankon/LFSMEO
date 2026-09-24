@@ -64,6 +64,8 @@ namespace ProbeTester.UI
             this.Btn_Test = new System.Windows.Forms.Button();
             this.Btn_Calibration = new System.Windows.Forms.Button();
             this.Btn_TestConfocal = new System.Windows.Forms.Button();
+            this.Btn_MILTest = new System.Windows.Forms.Button();
+            this.Btn_45Test = new System.Windows.Forms.Button();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -461,11 +463,33 @@ namespace ProbeTester.UI
             this.Btn_TestConfocal.UseVisualStyleBackColor = true;
             this.Btn_TestConfocal.Click += new System.EventHandler(this.Btn_TestConfocal_Click);
             // 
+            // Btn_MILTest
+            // 
+            this.Btn_MILTest.Location = new System.Drawing.Point(863, 633);
+            this.Btn_MILTest.Name = "Btn_MILTest";
+            this.Btn_MILTest.Size = new System.Drawing.Size(142, 58);
+            this.Btn_MILTest.TabIndex = 11;
+            this.Btn_MILTest.Text = "MIL Test";
+            this.Btn_MILTest.UseVisualStyleBackColor = true;
+            this.Btn_MILTest.Click += new System.EventHandler(this.Btn_MILTest_Click);
+            // 
+            // Btn_45Test
+            // 
+            this.Btn_45Test.Location = new System.Drawing.Point(1011, 633);
+            this.Btn_45Test.Name = "Btn_45Test";
+            this.Btn_45Test.Size = new System.Drawing.Size(142, 58);
+            this.Btn_45Test.TabIndex = 12;
+            this.Btn_45Test.Text = "45度CCD Test";
+            this.Btn_45Test.UseVisualStyleBackColor = true;
+            this.Btn_45Test.Click += new System.EventHandler(this.Btn_45Test_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_45Test);
+            this.Controls.Add(this.Btn_MILTest);
             this.Controls.Add(this.Btn_TestConfocal);
             this.Controls.Add(this.Btn_Calibration);
             this.Controls.Add(this.Btn_Test);
@@ -529,5 +553,7 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Button Btn_Calibration;
         private System.Windows.Forms.Button Btn_TestConfocal;
+        private System.Windows.Forms.Button Btn_MILTest;
+        private System.Windows.Forms.Button Btn_45Test;
     }
 }
