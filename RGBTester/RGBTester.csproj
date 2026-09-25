@@ -353,6 +353,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Engineer\F_OpticalSetting.zh-TW.resx">
+      <DependentUpon>F_OpticalSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Engineer\F_UploadDataSetting.resx">
       <DependentUpon>F_UploadDataSetting.cs</DependentUpon>
     </EmbeddedResource>
@@ -360,6 +363,9 @@
       <DependentUpon>F_OpticalSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_DAQ_Chart.resx">
+      <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_DAQ_Chart.zh-TW.resx">
       <DependentUpon>F_DAQ_Chart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_FunctionTester.resx">

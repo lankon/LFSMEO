@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,6 +18,8 @@ namespace LFSMEO
         [STAThread]
         static void Main()
         {
+            SetCulture setCulture = new SetCulture();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -56,6 +60,23 @@ namespace LFSMEO
                 Scope.MachineType = EMachineType.BurnInTester;
 
             return Scope.MachineType;
+        }
+    }
+
+    public class SetCulture
+    {
+        public SetCulture()
+        {
+            SetCultureInfo("");
+        }
+
+        public void SetCultureInfo(string cultureName)
+        {
+            var culture = new CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
     }
 }
