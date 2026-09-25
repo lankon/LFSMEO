@@ -17,15 +17,22 @@ namespace Device_Virtual
             _Param.CardType = 1;
             _Param.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
             _Param.Output_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
+
+            if (UseGodotEngine)
+            {
+                GodotTransmitter = new GodotUdpTransmitter();
+            }
         }
 
         #region parameter define
-        Queue<double>[,] AI_Virtual;    //紀錄[DevNo,Port]對應的AI訊號
+        private bool UseGodotEngine = true;     //是否使用Godot Engine模擬運動
+        Queue<double>[,] AI_Virtual;            //紀錄[DevNo,Port]對應的AI訊號
         private List<IORule> IO_Rules = new List<IORule>();
         Device_Parameter _Param = new Device_Parameter();
         private int lineMaxCount = 5;
         private int devMaxCount = 2;
         private int portMaxCount = 16;
+        private GodotUdpTransmitter GodotTransmitter;
 
         struct Device_Parameter
         {
@@ -103,6 +110,9 @@ namespace Device_Virtual
 
             // 將多維座標轉成唯一 OutputAddress（你可根據專案需求自訂算法）
             int outputAddress = GetAddress(lineNo, devNo, port);
+
+            if (UseGodotEngine)
+                GodotTransmitter.SendIO(outputAddress, truefalse);
 
             // 檢查規則並觸發對應 Input       
             foreach (var rule in IO_Rules)
