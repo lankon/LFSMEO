@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DeviceCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -40,6 +41,26 @@ namespace Device_Virtual
                 return -1;  // 發送失敗
             }
 
+        }
+
+        public int SendIO(int port, bool status)
+        {
+            try
+            {
+                // 格式化為 "X,50.0,2.5"
+                string sStatus = status == true ? "true" : "false";
+                string message = $"IO,{port},{sStatus}";
+                byte[] data = Encoding.UTF8.GetBytes(message);
+
+                // 非同步送出，完全不阻塞主程式流程
+                _udpClient.SendAsync(data, data.Length, _targetIp, _targetPort);
+
+                return 0;
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
         public void Dispose()

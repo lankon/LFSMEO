@@ -151,9 +151,9 @@ namespace RGBTester.Logic
                 else if(IsBlue2LuminousErr)
                     return ERROR_CODE.LUMB2;
                 else if(IsSlopeCalculateCurrentErr)
-                    return ERROR_CODE.CLAMP;
-                else if(IsClampingErr)
                     return ERROR_CODE.SLPCC;
+                else if(IsClampingErr)
+                    return ERROR_CODE.CLAMP;
                 else
                     return ERROR_CODE.NONE;
             }
