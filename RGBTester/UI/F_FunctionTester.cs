@@ -163,15 +163,23 @@ namespace RGBTester.UI
 
         private void Btn_StartTest_Click(object sender, EventArgs e)
         {
-            if (Control.ModifierKeys == Keys.Control || UserPrivilege.AtLeastOEM())
+            if(TxtBx_SerialNumber.Text.Trim() == "")
+            {
+                MessageBox.Show("Please input Serial Number.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+                
+            if ((Control.ModifierKeys == Keys.Control || UserPrivilege.AtLeastOEM()))
             {
                 SaveAllEnumSetting();
                 ReadAllEnumSetting();
 
                 int res = FunctionTesterLogic.StartFunctionTest();
 
-                if(res == -1)
+                if (res == -1)
                     MessageBox.Show("Upload System No Connent", "Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
+             
+                TxtBx_SerialNumber.Text = "";
             }
             else
             {

@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
+	<Release version="1.26.9.2" date="2026-09-29">
+		<Item type="Fixed">Calibration由_res改成_current</Item>
+		<Item type="Fixed">測試後reset SN</Item>
+	</Release>
 	<Release version="1.26.9.1" date="2026-09-07">
 		<Item type="Fixed">修正CLAMP,SLPCC ErrorCode問題</Item>
 		<Item type="Fixed">PASS/FAIL分檔問題</Item>
