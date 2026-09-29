@@ -64,13 +64,16 @@ namespace ProbeTester.UI
             this.Btn_Test = new System.Windows.Forms.Button();
             this.Btn_Calibration = new System.Windows.Forms.Button();
             this.Btn_TestConfocal = new System.Windows.Forms.Button();
-            this.Btn_MILTest = new System.Windows.Forms.Button();
             this.Btn_45Test = new System.Windows.Forms.Button();
-            this.Btn_MILTest = new System.Windows.Forms.Button();
             this.PicBox_FinderResult = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.Btn_MoveX_P = new System.Windows.Forms.Button();
+            this.TxtBx_TZ = new System.Windows.Forms.TextBox();
+            this.TxtBx_TY = new System.Windows.Forms.TextBox();
+            this.TxtBx_TX = new System.Windows.Forms.TextBox();
+            this.TxtBx_Z = new System.Windows.Forms.TextBox();
+            this.TxtBx_Y = new System.Windows.Forms.TextBox();
             this.Btn_MoveX_N = new System.Windows.Forms.Button();
+            this.Btn_MoveX_P = new System.Windows.Forms.Button();
             this.Btn_MoveY_P = new System.Windows.Forms.Button();
             this.Btn_MoveY_N = new System.Windows.Forms.Button();
             this.Btn_MoveZ_N = new System.Windows.Forms.Button();
@@ -82,11 +85,6 @@ namespace ProbeTester.UI
             this.Btn_MoveTY_P = new System.Windows.Forms.Button();
             this.Btn_MoveTZ_P = new System.Windows.Forms.Button();
             this.TxtBx_X = new System.Windows.Forms.TextBox();
-            this.TxtBx_Y = new System.Windows.Forms.TextBox();
-            this.TxtBx_Z = new System.Windows.Forms.TextBox();
-            this.TxtBx_TX = new System.Windows.Forms.TextBox();
-            this.TxtBx_TY = new System.Windows.Forms.TextBox();
-            this.TxtBx_TZ = new System.Windows.Forms.TextBox();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -452,7 +450,7 @@ namespace ProbeTester.UI
             this.panel6.Controls.Add(this.panel2);
             this.panel6.Location = new System.Drawing.Point(990, 41);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(759, 120);
+            this.panel6.Size = new System.Drawing.Size(759, 134);
             this.panel6.TabIndex = 7;
             this.panel6.Visible = false;
             // 
@@ -486,16 +484,6 @@ namespace ProbeTester.UI
             this.Btn_TestConfocal.UseVisualStyleBackColor = true;
             this.Btn_TestConfocal.Click += new System.EventHandler(this.Btn_TestConfocal_Click);
             // 
-            // Btn_MILTest
-            // 
-            this.Btn_MILTest.Location = new System.Drawing.Point(863, 633);
-            this.Btn_MILTest.Name = "Btn_MILTest";
-            this.Btn_MILTest.Size = new System.Drawing.Size(142, 58);
-            this.Btn_MILTest.TabIndex = 11;
-            this.Btn_MILTest.Text = "MIL Test";
-            this.Btn_MILTest.UseVisualStyleBackColor = true;
-            this.Btn_MILTest.Click += new System.EventHandler(this.Btn_MILTest_Click);
-            // 
             // Btn_45Test
             // 
             this.Btn_45Test.Location = new System.Drawing.Point(1011, 633);
@@ -504,17 +492,6 @@ namespace ProbeTester.UI
             this.Btn_45Test.TabIndex = 12;
             this.Btn_45Test.Text = "45度CCD Test";
             this.Btn_45Test.UseVisualStyleBackColor = true;
-            this.Btn_45Test.Click += new System.EventHandler(this.Btn_45Test_Click);
-            // 
-            // Btn_MILTest
-            // 
-            this.Btn_MILTest.Location = new System.Drawing.Point(893, 261);
-            this.Btn_MILTest.Name = "Btn_MILTest";
-            this.Btn_MILTest.Size = new System.Drawing.Size(123, 77);
-            this.Btn_MILTest.TabIndex = 10;
-            this.Btn_MILTest.Text = "MIL Test";
-            this.Btn_MILTest.UseVisualStyleBackColor = true;
-            this.Btn_MILTest.Click += new System.EventHandler(this.Btn_MILTest_Click);
             // 
             // PicBox_FinderResult
             // 
@@ -561,15 +538,45 @@ namespace ProbeTester.UI
             this.tableLayoutPanel3.Size = new System.Drawing.Size(304, 217);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
-            // Btn_MoveX_P
+            // TxtBx_TZ
             // 
-            this.Btn_MoveX_P.Location = new System.Drawing.Point(205, 4);
-            this.Btn_MoveX_P.Name = "Btn_MoveX_P";
-            this.Btn_MoveX_P.Size = new System.Drawing.Size(95, 29);
-            this.Btn_MoveX_P.TabIndex = 0;
-            this.Btn_MoveX_P.Text = "X";
-            this.Btn_MoveX_P.UseVisualStyleBackColor = true;
-            this.Btn_MoveX_P.Click += new System.EventHandler(this.Btn_MoveX_P_Click);
+            this.TxtBx_TZ.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_TZ.Location = new System.Drawing.Point(104, 184);
+            this.TxtBx_TZ.Name = "TxtBx_TZ";
+            this.TxtBx_TZ.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_TZ.TabIndex = 17;
+            // 
+            // TxtBx_TY
+            // 
+            this.TxtBx_TY.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_TY.Location = new System.Drawing.Point(104, 148);
+            this.TxtBx_TY.Name = "TxtBx_TY";
+            this.TxtBx_TY.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_TY.TabIndex = 16;
+            // 
+            // TxtBx_TX
+            // 
+            this.TxtBx_TX.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_TX.Location = new System.Drawing.Point(104, 112);
+            this.TxtBx_TX.Name = "TxtBx_TX";
+            this.TxtBx_TX.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_TX.TabIndex = 15;
+            // 
+            // TxtBx_Z
+            // 
+            this.TxtBx_Z.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Z.Location = new System.Drawing.Point(104, 76);
+            this.TxtBx_Z.Name = "TxtBx_Z";
+            this.TxtBx_Z.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_Z.TabIndex = 14;
+            // 
+            // TxtBx_Y
+            // 
+            this.TxtBx_Y.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Y.Location = new System.Drawing.Point(104, 40);
+            this.TxtBx_Y.Name = "TxtBx_Y";
+            this.TxtBx_Y.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_Y.TabIndex = 13;
             // 
             // Btn_MoveX_N
             // 
@@ -579,7 +586,15 @@ namespace ProbeTester.UI
             this.Btn_MoveX_N.TabIndex = 1;
             this.Btn_MoveX_N.Text = "X";
             this.Btn_MoveX_N.UseVisualStyleBackColor = true;
-            this.Btn_MoveX_N.Click += new System.EventHandler(this.Btn_MoveX_N_Click);
+            // 
+            // Btn_MoveX_P
+            // 
+            this.Btn_MoveX_P.Location = new System.Drawing.Point(205, 4);
+            this.Btn_MoveX_P.Name = "Btn_MoveX_P";
+            this.Btn_MoveX_P.Size = new System.Drawing.Size(95, 29);
+            this.Btn_MoveX_P.TabIndex = 0;
+            this.Btn_MoveX_P.Text = "X";
+            this.Btn_MoveX_P.UseVisualStyleBackColor = true;
             // 
             // Btn_MoveY_P
             // 
@@ -589,7 +604,6 @@ namespace ProbeTester.UI
             this.Btn_MoveY_P.TabIndex = 2;
             this.Btn_MoveY_P.Text = "Y";
             this.Btn_MoveY_P.UseVisualStyleBackColor = true;
-            this.Btn_MoveY_P.Click += new System.EventHandler(this.Btn_MoveY_P_Click);
             // 
             // Btn_MoveY_N
             // 
@@ -599,7 +613,6 @@ namespace ProbeTester.UI
             this.Btn_MoveY_N.TabIndex = 3;
             this.Btn_MoveY_N.Text = "Y";
             this.Btn_MoveY_N.UseVisualStyleBackColor = true;
-            this.Btn_MoveY_N.Click += new System.EventHandler(this.Btn_MoveY_N_Click);
             // 
             // Btn_MoveZ_N
             // 
@@ -609,7 +622,6 @@ namespace ProbeTester.UI
             this.Btn_MoveZ_N.TabIndex = 4;
             this.Btn_MoveZ_N.Text = "Z";
             this.Btn_MoveZ_N.UseVisualStyleBackColor = true;
-            this.Btn_MoveZ_N.Click += new System.EventHandler(this.Btn_MoveZ_N_Click);
             // 
             // Btn_MoveTX_N
             // 
@@ -646,7 +658,6 @@ namespace ProbeTester.UI
             this.Btn_MoveZ_P.TabIndex = 8;
             this.Btn_MoveZ_P.Text = "Z";
             this.Btn_MoveZ_P.UseVisualStyleBackColor = true;
-            this.Btn_MoveZ_P.Click += new System.EventHandler(this.Btn_MoveZ_P_Click);
             // 
             // Btn_MoveTX_P
             // 
@@ -683,57 +694,15 @@ namespace ProbeTester.UI
             this.TxtBx_X.Size = new System.Drawing.Size(94, 29);
             this.TxtBx_X.TabIndex = 12;
             // 
-            // TxtBx_Y
-            // 
-            this.TxtBx_Y.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Y.Location = new System.Drawing.Point(104, 40);
-            this.TxtBx_Y.Name = "TxtBx_Y";
-            this.TxtBx_Y.Size = new System.Drawing.Size(94, 29);
-            this.TxtBx_Y.TabIndex = 13;
-            // 
-            // TxtBx_Z
-            // 
-            this.TxtBx_Z.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_Z.Location = new System.Drawing.Point(104, 76);
-            this.TxtBx_Z.Name = "TxtBx_Z";
-            this.TxtBx_Z.Size = new System.Drawing.Size(94, 29);
-            this.TxtBx_Z.TabIndex = 14;
-            // 
-            // TxtBx_TX
-            // 
-            this.TxtBx_TX.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_TX.Location = new System.Drawing.Point(104, 112);
-            this.TxtBx_TX.Name = "TxtBx_TX";
-            this.TxtBx_TX.Size = new System.Drawing.Size(94, 29);
-            this.TxtBx_TX.TabIndex = 15;
-            // 
-            // TxtBx_TY
-            // 
-            this.TxtBx_TY.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_TY.Location = new System.Drawing.Point(104, 148);
-            this.TxtBx_TY.Name = "TxtBx_TY";
-            this.TxtBx_TY.Size = new System.Drawing.Size(94, 29);
-            this.TxtBx_TY.TabIndex = 16;
-            // 
-            // TxtBx_TZ
-            // 
-            this.TxtBx_TZ.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_TZ.Location = new System.Drawing.Point(104, 184);
-            this.TxtBx_TZ.Name = "TxtBx_TZ";
-            this.TxtBx_TZ.Size = new System.Drawing.Size(94, 29);
-            this.TxtBx_TZ.TabIndex = 17;
-            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
             this.Controls.Add(this.Btn_45Test);
-            this.Controls.Add(this.Btn_MILTest);
             this.Controls.Add(this.Btn_TestConfocal);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.PicBox_FinderResult);
-            this.Controls.Add(this.Btn_MILTest);
             this.Controls.Add(this.Btn_Calibration);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel6);
@@ -799,9 +768,7 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Button Btn_Calibration;
         private System.Windows.Forms.Button Btn_TestConfocal;
-        private System.Windows.Forms.Button Btn_MILTest;
         private System.Windows.Forms.Button Btn_45Test;
-        private System.Windows.Forms.Button Btn_MILTest;
         private System.Windows.Forms.PictureBox PicBox_FinderResult;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button Btn_MoveX_N;
