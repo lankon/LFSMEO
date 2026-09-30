@@ -66,7 +66,7 @@ namespace AAMachine.UI
             Labl_Version.Text = MainFormLogic.GetVersion();
 
             //先觸發執行用
-            //ServiceProvider.GetRequiredService<IBaseMainTask>();
+            ServiceProvider.GetRequiredService<IBaseMainTask>();
             //ServiceProvider.GetRequiredService<IF_StatusBox>();
         }
         private void CreateDynamicElement()
@@ -108,8 +108,8 @@ namespace AAMachine.UI
         {
             Tool.HideElementOnPanel(Scope.MainPanel);
 
-            //var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
-            var startForm = ServiceProvider.GetRequiredService<F_ImageProcessing>();
+            var startForm = ServiceProvider.GetRequiredService<F_StartForm>();
+            //var startForm = ServiceProvider.GetRequiredService<F_ImageProcessing>();
 
             if (startForm is Form form)
             {
@@ -117,9 +117,9 @@ namespace AAMachine.UI
                 form.Show();
             }
 
-            //var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
-            //Tool.SetForm(Scope.UpButtonPanel, group);
-            //group.Show();
+            var group = ServiceProvider.GetRequiredService<F_StartForm_ButtonGroup>();
+            Tool.SetForm(Scope.UpButtonPanel, group);
+            group.Show();
         }
         #endregion
 

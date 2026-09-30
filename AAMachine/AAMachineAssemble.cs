@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AAMachine.Base;
 using AAMachine.UI;
 using AAMachine.Logic;
+using AAMachine.MachineFunction;
 
 namespace AAMachine
 {
@@ -24,7 +25,7 @@ namespace AAMachine
             //services.AddSingleton<ILightEngineFunction, LightEngineFunction>();
 
             //[Thread]
-            //services.AddSingleton<IBaseMainTask, MainTask>();
+            services.AddSingleton<IBaseMainTask, MainTask>();
             //services.AddSingleton<IBaseMainTaskMulti, MainTaskMulti>();
             services.AddSingleton<IBaseTaskDependence, BaseTaskDependence>();
             services.AddTransient<Task_MotionInitialize_MirrorAA>();
@@ -33,6 +34,7 @@ namespace AAMachine
             services.AddSingleton<F_MainForm>();
             services.AddSingleton<F_StartForm>();
             services.AddSingleton<F_ImageProcessing>();
+            services.AddSingleton<F_StartForm_ButtonGroup>();
             //services.AddSingleton<F_DataCalculate>();
             //services.AddSingleton<F_Recipe>();
             //services.AddSingleton<F_DAQ_SamplingTest>();
@@ -42,10 +44,10 @@ namespace AAMachine
 
             //[Form]
             //退出Form後即close掉,要用再new
-            //services.AddTransient<F_OEM_Setting>();
+            services.AddTransient<F_OEM_Setting>();
             //services.AddTransient<F_Equipment_Setting>();
             //services.AddSingleton<IF_ParameterSetting, F_ParameterSetting>();
-            //services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
+            services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
@@ -54,6 +56,7 @@ namespace AAMachine
             //services.AddSingleton<F_DAQ_ChartLogic>();
 
             //[Logic]
+            services.AddSingleton<MachineFunc>();
             //services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             //services.AddSingleton<ProbeTesterFunction>();
             //services.AddSingleton<TestResultDataBase>();

@@ -91,9 +91,22 @@ namespace AAMachine.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
+            try
+            {
+                var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
+                MainTask.SetTask<Task_MotionInitialize_MirrorAA>();
+                MainTask.Run();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
 
-            function_Camera.Initial_All_Camera();
+
+
+            //IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
+
+            //function_Camera.Initial_All_Camera();
 
             //GC.Collect();
 

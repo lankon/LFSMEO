@@ -1,14 +1,15 @@
-﻿using DeviceCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
+using DeviceCore;
+using AAMachine.MachineFunction;
 
 namespace AAMachine.Logic
 {
@@ -18,11 +19,13 @@ namespace AAMachine.Logic
         {
             ProbeTesterMachine = probeTesterMachine;
             ServiceProvider = serviceProvider;
+            Func = ServiceProvider.GetRequiredService<MachineFunc>();
         }
 
         #region parameter define
         IAAMachineMachine ProbeTesterMachine;
         IServiceProvider ServiceProvider;
+        MachineFunc Func;
         #endregion
 
         #region private function
@@ -39,6 +42,7 @@ namespace AAMachine.Logic
             Tool.SaveLogToFile("Load Motion Config");
             ProbeTesterMachine.DML.LoadAxisConfig();
             ProbeTesterMachine.DML.BindingAxis();
+            Func.Axis.SetAxisDefine();
         }
         private void Initial_Light_Function()
         {

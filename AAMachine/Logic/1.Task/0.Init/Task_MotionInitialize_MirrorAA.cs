@@ -1,7 +1,10 @@
-using AAMachine.Base;
-using DeviceCore;
 using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
+
+using DeviceCore;
 using ToolFunction;
+using AAMachine.Base;
+using AAMachine.MachineFunction;
 
 namespace AAMachine.Logic
 {
@@ -9,6 +12,7 @@ namespace AAMachine.Logic
     public class Task_MotionInitialize_MirrorAA : IBaseTask<Task_MotionInitialize_MirrorAA.WORK>
     {
         public Task_MotionInitialize_MirrorAA(IBaseTaskDependence dependencies,
+            IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
         {
@@ -26,6 +30,7 @@ namespace AAMachine.Logic
         }
 
         #region parameter
+        MachineFunc func;
         #region FitTech migration settings
         // FitTech source: EIO.*
         private EIOName UVLightStretch = EIOName.UVLightStretch;
@@ -221,19 +226,19 @@ namespace AAMachine.Logic
 
         private void SetIOStatus()
         {
-            Deps.DIOL.SetOutputStatus(UVLightStretch, false);
-            Deps.DIOL.SetOutputStatus(SideCCDLightStretch, false);
-            Deps.DIOL.SetOutputStatus(PAMaskStretch, false);
-            Deps.DIOL.SetOutputStatus(DispensingMaskStretch, false);
-            Deps.DIOL.SetOutputStatus(GlueCleanReStretch, false);
+            //Deps.DIOL.SetOutputStatus(UVLightStretch, false);
+            //Deps.DIOL.SetOutputStatus(SideCCDLightStretch, false);
+            //Deps.DIOL.SetOutputStatus(PAMaskStretch, false);
+            //Deps.DIOL.SetOutputStatus(DispensingMaskStretch, false);
+            //Deps.DIOL.SetOutputStatus(GlueCleanReStretch, false);
 
-            Thread.Sleep(50);
+            //Thread.Sleep(50);
 
-            Deps.DIOL.SetOutputStatus(UVLightReStretch, true);
-            Deps.DIOL.SetOutputStatus(SideCCDLightReStretch, true);
-            Deps.DIOL.SetOutputStatus(PAMaskReStretch, true);
-            Deps.DIOL.SetOutputStatus(DispensingMaskReStretch, true);
-            Deps.DIOL.SetOutputStatus(GlueCleanStretch, true);
+            //Deps.DIOL.SetOutputStatus(UVLightReStretch, true);
+            //Deps.DIOL.SetOutputStatus(SideCCDLightReStretch, true);
+            //Deps.DIOL.SetOutputStatus(PAMaskReStretch, true);
+            //Deps.DIOL.SetOutputStatus(DispensingMaskReStretch, true);
+            //Deps.DIOL.SetOutputStatus(GlueCleanStretch, true);
         }
 
         protected override void Transition(WORK target)
@@ -296,17 +301,24 @@ namespace AAMachine.Logic
                 #region START
                 case WORK.START:
                     {
+                        MachineFunc func = Deps.ServiceProvider.GetRequiredService<MachineFunc>();
+
+                       
+
+
                         SetIOStatus();
 
-                        if (!Deps.DIOL.GetInputStatus(UVLightInSensor) ||
-                           !Deps.DIOL.GetInputStatus(SideCCDLightInSensor) ||
-                           !Deps.DIOL.GetInputStatus(PAMaskInSensor) ||
-                           !Deps.DIOL.GetInputStatus(DispensingMaskInSensor))
-                        {
-                            Tool.SaveLogToFile("Cylinder is not retracted.", level: "ERR");
-                            Transition(WORK.END);
-                            break;
-                        }
+                        
+
+                        //if (!Deps.DIOL.GetInputStatus(UVLightInSensor) ||
+                        //   !Deps.DIOL.GetInputStatus(SideCCDLightInSensor) ||
+                        //   !Deps.DIOL.GetInputStatus(PAMaskInSensor) ||
+                        //   !Deps.DIOL.GetInputStatus(DispensingMaskInSensor))
+                        //{
+                        //    Tool.SaveLogToFile("Cylinder is not retracted.", level: "ERR");
+                        //    Transition(WORK.END);
+                        //    break;
+                        //}
 
                         Transition(WORK.CHECK_POWER);
                     }
@@ -354,9 +366,10 @@ namespace AAMachine.Logic
                 #region GO_HOME_NEST_Mirror_TOOL_Z
                 case WORK.GO_HOME_NEST_Mirror_TOOL_Z:
                     {
-                        int[] axis = { MirrorAA_Z, UpPA_Z, TableZ, FrontCCD, DownPA, DownCCDY };
+                        int[] axis = { func.Axis.Axis_X, func.Axis.Axis_Y, func.Axis.Axis_Z/*, FrontCCD, DownPA, DownCCDY */};
 
-                        MultiAxisGoHome(axis, WORK.WAIT_GO_HOME_NEST_Mirror_TOOL_Z);
+                        //MultiAxisGoHome(axis, WORK.WAIT_GO_HOME_NEST_Mirror_TOOL_Z);
+                        Transition(WORK.SUCCESS);
                     }
                     break;
                 case WORK.WAIT_GO_HOME_NEST_Mirror_TOOL_Z:
@@ -387,7 +400,7 @@ namespace AAMachine.Logic
                     break;
                 case WORK.WAIT_GO_HOME_Nest_X:
                     {
-                        int[] axis = { NestX };
+                        int[] axis = { func.Axis.Axis_X };
 
                         WaitMultiAxisGoHome(axis, WORK.GO_HOME_Mirror_Nest);
                     }
