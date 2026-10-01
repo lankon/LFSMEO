@@ -284,6 +284,7 @@ namespace DeviceUI.IO
                                             (byte)IOList[e.RowIndex].Title_LineNum,
                                             (byte)IOList[e.RowIndex].Title_DevNum,
                                             (byte)IOList[e.RowIndex].Title_IO_Num,
+                                            e.RowIndex,
                                             false);
                 }
                 else
@@ -296,6 +297,7 @@ namespace DeviceUI.IO
                                             (byte)IOList[e.RowIndex].Title_LineNum,
                                             (byte)IOList[e.RowIndex].Title_DevNum,
                                             (byte)IOList[e.RowIndex].Title_IO_Num,
+                                            e.RowIndex,
                                             true);
                 }
 

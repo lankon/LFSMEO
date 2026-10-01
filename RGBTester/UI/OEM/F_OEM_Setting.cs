@@ -144,24 +144,6 @@ namespace RGBTester.UI
                 if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                     spec_form.ShowFormName(true);
             }
-
-
-
-            //var spec = ServiceProvider.GetRequiredService<IFunction_Spectrometer>();
-            //spec.Initial_All_Spectrometer();
-
-            //float[] spectrum = null;
-            //spectrum = spec.GetSpectrumOneShot(100);
-
-            //if (spectrum == null)
-            //    return;
-
-            //StreamWriter file = Tool.CreateFile("\\Result\\spectrum", ".csv", false);
-            //for (int i = 0; i < spectrum.Length; i++)
-            //{
-            //    Tool.WriteFile(file, spectrum[i].ToString());
-            //}
-            //Tool.CloseFile(file);
         }
 
         private void Btn_Light_Click(object sender, EventArgs e)

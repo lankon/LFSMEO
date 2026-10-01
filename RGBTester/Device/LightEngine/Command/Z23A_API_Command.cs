@@ -30,12 +30,18 @@ namespace RGBTester.Device
         public byte LED_G_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_G;
 
         public byte LED_B_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_B;
+        
+        public byte LED_B2_LSB { get; private set; } = (byte)Z23A_FW.Color.COLOR_B2;        //需要修改成API定義
 
         public byte LED_RGB_MSB { get; private set; } = 0x00;       //沒有用到
 
         public byte LED_RightSide{ get; private set; } = 0x79;      //Z23A沒有左右邊,但流程需要,所以給一個區分左右邊的值      
 
         public byte LED_LeftSide { get; private set; } = 0x80;      //Z23A沒有左右邊,但流程需要,所以給一個區分左右邊的值
+        #endregion
+
+        #region private function
+
         #endregion
 
         #region public function
@@ -72,7 +78,7 @@ namespace RGBTester.Device
             if(IsInitial == false) return false;
             
             Z23A_FW.Color color = Z23A_FW.Color.COLOR_ALL;
-            int value_R = 0, value_G = 0, value_B = 0;
+            int value_R = 0, value_G = 0, value_B = 0, value_B2 = 0;
 
             if (value > 1023)   //硬體限制最大1023
                 value = 1023;
@@ -92,8 +98,12 @@ namespace RGBTester.Device
                 color = Z23A_FW.Color.COLOR_B;
                 value_B = value;
             }
+            else if(rgb == LED_B2_LSB)
+            {
+                value_B2 = value;
+            }
                 
-            int[] set_value = new int[] { value_R, value_G, value_B };
+            int[] set_value = new int[] { value_R, value_G, value_B, value_B2 };
 
              Z23A_FW.Error_Code res = api.RAA491901_Set_DAC_Value(Z23A_FW.Color.COLOR_ALL, set_value);
 
@@ -102,21 +112,28 @@ namespace RGBTester.Device
             else
                 return false;
         }
-        public bool SetLed_AllColorDAC(byte side, int value_r, int value_g, int value_b)
+
+        public bool SetLed_AllColorDAC(byte side, params int[] values)
         {
-            if (IsInitial == false) return false;
+            if (IsInitial == false) 
+                return false;
 
-            Z23A_FW.Color color = Z23A_FW.Color.COLOR_ALL;
-            int value_R = value_r, value_G = value_g, value_B = value_b;
+            if(values == null || values.Length < 3)
+                return false;
 
-            if (value_R > 1023)   //硬體限制最大1023
-                value_R = 1023;
-            if (value_G > 1023)   //硬體限制最大1023
-                value_G = 1023;
-            if (value_B > 1023)   //硬體限制最大1023
-                value_B = 1023;
+            int value_R = Math.Min(values[0], 1023);
+            int value_G = Math.Min(values[1], 1023);
+            int value_B = Math.Min(values[2], 1023);
 
-            int[] set_value = new int[] { value_R, value_G, value_B };
+            int[] set_value;
+
+            if (values.Length >= 4)
+            {
+                int value_B2 = Math.Min(values[3], 1023);
+                set_value = new int[] { value_R, value_G, value_B, value_B2 };
+            }
+            else
+                set_value = new int[] { value_R, value_G, value_B };
 
             Z23A_FW.Error_Code res = api.RAA491901_Set_DAC_Value(Z23A_FW.Color.COLOR_ALL, set_value);
 
@@ -125,7 +142,6 @@ namespace RGBTester.Device
             else
                 return false;
         }
-
         public bool SetLed_CurrentMode(string mode)
         {
             if (IsInitial == false) return false;
@@ -169,7 +185,6 @@ namespace RGBTester.Device
             else
                 return error;
         }
-
         public bool ResetLED()
         {
             Z23A_FW.Error_Code res = api.RAA491901_Set_Startup_State(Z23A_FW.RAA_State.DISABLE_STATE);
@@ -204,10 +219,41 @@ namespace RGBTester.Device
             else
                 return false;
         }
-        #endregion
 
-        #region private function
+        public bool SetLed_AllColorVoltage(byte side, params double[] values)
+        {
+            if (IsInitial == false)
+                return false;
 
+            if (values == null || values.Length < 1)
+                return false;
+
+            double voltage = Math.Min(values[0], 5.5);
+
+            //int value_R = Math.Min(values[0], 1023);
+            //int value_G = Math.Min(values[1], 1023);
+            //int value_B = Math.Min(values[2], 1023);
+
+            //int[] set_value;
+
+            //if (values.Length >= 4)
+            //{
+            //    int value_B2 = Math.Min(values[3], 1023);
+            //    set_value = new int[] { value_R, value_G, value_B, value_B2 };
+            //}
+            //else
+            //    set_value = new int[] { value_R, value_G, value_B };
+
+            //目前需要全部設一樣
+            double[]  set_value = new double[] { voltage, voltage, voltage};
+
+            Z23A_FW.Error_Code res = api.MAX77675_Set_Target_Voltage(Z23A_FW.Color.COLOR_ALL, values);
+
+            if (res == Z23A_FW.Error_Code.STATUS_OK)
+                return true;
+            else
+                return false;
+        }
         #endregion
     }
 }

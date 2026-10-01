@@ -1,0 +1,40 @@
+{
+  "Rules": [
+    {
+      "Id": "HARDWARE-A001",
+      "Severity": "error",
+      "Description": "Hardware layer must not depend on Machine application layer.",
+      "Include": [
+        "DeviceUI/**/*.cs",
+		"DeviceFunction/**/*.cs",
+		"DeviceUI/**/*.cs"
+      ],
+      "Exclude": [],
+      "Forbidden": [
+        "using RGBTester",
+		"using ProbeTester",
+		"using BurnInTester",
+		"using LFSMEO",
+		"RGBTester",
+		"ProbeTester",
+		"BurnInTester",
+		"LFSMEO"
+      ]
+    },
+    {
+      "Id": "HARDWARE-A002",
+      "Severity": "warning",
+      "Description": "Hardware layer should not depend on FTClient customer selection.",
+      "Include": [
+        "Device/Camera/**/*.cs"
+      ],
+      "Exclude": [],
+      "Forbidden": [
+        "using FTClient",
+        "FTClient.",
+        "ELDClient",
+        "LDClient."
+      ]
+    }
+  ]
+}

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GodotTransmitter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Virtual_Motion.cs" />
     <Compile Include="Virtual_IO.cs" />

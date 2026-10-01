@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,14 +18,31 @@ namespace LFSMEO
         [STAThread]
         static void Main()
         {
+            SetCulture setCulture = new SetCulture();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            CatchException();
             GetMachineType();
             LFSMEO_Assemble assemble = new LFSMEO_Assemble();
             Form main_form = assemble.BuildAndGetMainForm();
 
             Application.Run(main_form);
+        }
+
+        static void CatchException()
+        {
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += (s, e) =>
+            {
+                Tool.SaveExceptionToFile(e.Exception, "UI Thread Unhandled Exception");
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                Tool.SaveExceptionToFile(e.ExceptionObject as Exception, "Unhandled Exception");
+            };
         }
 
         static EMachineType GetMachineType()
@@ -41,6 +60,23 @@ namespace LFSMEO
                 Scope.MachineType = EMachineType.BurnInTester;
 
             return Scope.MachineType;
+        }
+    }
+
+    public class SetCulture
+    {
+        public SetCulture()
+        {
+            SetCultureInfo("");
+        }
+
+        public void SetCultureInfo(string cultureName)
+        {
+            var culture = new CultureInfo(cultureName);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
     }
 }

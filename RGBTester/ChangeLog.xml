@@ -1,8 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Changelog>
-
+	<Release version="1.26.9.2" date="2026-09-29">
+		<Item type="Fixed">Calibration由_res改成_current</Item>
+		<Item type="Fixed">測試後reset SN</Item>
+	</Release>
+	<Release version="1.26.9.1" date="2026-09-07">
+		<Item type="Fixed">修正CLAMP,SLPCC ErrorCode問題</Item>
+		<Item type="Fixed">PASS/FAIL分檔問題</Item>
+		<Item type="Fixed">光性Recipe參數初始參數讀取</Item>
+	</Release>
+	<Release version="1.26.6.3" date="2026-06-30">
+		<Item type="Fixed">ILed全部測試值扣除DAC=0時的數值</Item>
+		<Item type="Fixed">Shopflow Calibration資料修改</Item>
+		<Item type="Fixed">Shopflow ErrorCode</Item>
+		<Item type="Fixed">將Slope計算判斷打開</Item>
+		<Item type="Fixed">將流明上下限設定隨Recipe變更</Item> 
+	</Release>
+	<Release version="1.26.6.2" date="2026-06-17">
+		<Item type="Fixed">平均光性計算時未清空List</Item>
+		<Item type="Fixed">修正輸出檔案到異常位置問題</Item>
+	</Release>
+	<Release version="1.26.6.1" date="2026-06-09">
+		<Item type="Added">新增FunctionTester</Item>
+		<Item type="Fixed">光性量測前休息</Item>
+		<Item type="Fixed">6V,1V2上下限設定</Item>
+		<Item type="Fixed">流明,Power,WL靜態Debug測試</Item>
+		<Item type="Fixed">流明計算可設定平均次數</Item>
+		<Item type="Fixed">紅光電流高於150mA後不列入斜率,Offset計算</Item>
+	</Release>
+	<Release version="1.26.5.1" date="2026-05-15">
+		<Item type="Fixed">修正PartTest功能選項為BurnIn時,全流程Calibration檔案為空問題</Item>
+	</Release>
 	<Release version="1.26.4.2" date="2026-04-13">
 		<Item type="Fixed">斜率計算電流誤差檢查</Item>
+		<Item type="Fixed">F_Recipe錯誤釋放記憶體</Item>
 	</Release>
 	<Release version="1.26.4.1" date="2026-04-01">
 		<Item type="Fixed">Clamping條件使用前後兩點差值來判斷</Item>

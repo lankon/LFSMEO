@@ -40,6 +40,7 @@ namespace RGBTester.UI
             toolTip1.SetToolTip(Btn_LogIn, "LogIn");
             toolTip1.SetToolTip(Btn_Recipe, "Recipe");
             toolTip1.SetToolTip(Btn_YieldReport, "Yield Report");
+            toolTip1.SetToolTip(Btn_HistoryLog, "History Log");
         }
         private void InitialForm()
         {
@@ -87,7 +88,7 @@ namespace RGBTester.UI
             bool oem = UserPrivilege.AtLeastOEM();
             bool eng = UserPrivilege.AtLeastEng();
 
-            Btn_DAQ_Chart.Visible = oem;
+            Btn_DAQ_Chart.Visible = eng;
             Btn_OEM_Setting.Enabled = oem;
             Btn_ParameterSetting.Enabled = eng;
         }
@@ -114,9 +115,9 @@ namespace RGBTester.UI
 
         private void Btn_ParameterSetting_Click(object sender, EventArgs e)
         {
-            var para_set = ServiceProvider.GetRequiredService<IF_ParameterSetting>();
+            var eng_set = ServiceProvider.GetRequiredService<F_EngineerSetting>();
 
-            if(para_set is Form form)
+            if(eng_set is Form form)
             {
                 Tool.HideElementOnPanel(Scope.MainPanel);
                 Tool.SetForm(Scope.MainPanel, form);
@@ -187,6 +188,15 @@ namespace RGBTester.UI
             Tool.HideElementOnPanel(Scope.MainPanel);
             Tool.SetForm(Scope.MainPanel, yield);
             yield.Show();
+        }
+
+        private void Btn_HistoryLog_Click(object sender, EventArgs e)
+        {
+            var historyLog = ServiceProvider.GetRequiredService<F_HistoryLog>();
+
+            Tool.HideElementOnPanel(Scope.MainPanel);
+            Tool.SetForm(Scope.MainPanel, historyLog);
+            historyLog.Show();
         }
     }
 }

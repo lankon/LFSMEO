@@ -41,5 +41,10 @@ namespace RGBTester.Base
         TxtBx_BurnInTime,
         TxtBx_BurnInRepeat,
         TxtBx_FailOverTemp,
+
+        TxtBx_Voltage_6V_UL,
+        TxtBx_Voltage_6V_LL,
+        TxtBx_Voltage_1V2_UL,
+        TxtBx_Voltage_1V2_LL,
     }
 }

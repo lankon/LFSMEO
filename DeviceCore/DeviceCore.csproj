@@ -49,6 +49,7 @@
     <Compile Include="Camera\ICameraDisplayPanel.cs" />
     <Compile Include="Camera\IFunction_Camera.cs" />
     <Compile Include="Camera\ICamera.cs" />
+    <Compile Include="Confocal\IConfocal.cs" />
     <Compile Include="LightControl\IFunction_LightControl.cs" />
     <Compile Include="LightControl\IF_LightControl.cs" />
     <Compile Include="LightControl\ILightControl.cs" />
@@ -70,12 +71,6 @@
     <Compile Include="TemperatureControl\IFunction_TemperatureControl.cs" />
     <Compile Include="TemperatureControl\IF_TemperatureControl.cs" />
     <Compile Include="TemperatureControl\ITemperature.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
-      <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
-      <Name>ToolFunction</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

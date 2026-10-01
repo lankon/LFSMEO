@@ -13,15 +13,12 @@ namespace Device_PCIS_DASK
         public Pcis_dask(string card_type)
         {
             if (card_type == "PCI_9111HR")
-            {
                 pCI_Parm.CardType = DASK64.PCI_9111HR;
-                pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
-            }
             else if (card_type == "PCI_9111DG")
-            {
                 pCI_Parm.CardType = DASK64.PCI_9111DG;
-                pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
-            }
+
+            pCI_Parm.Input_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
+            pCI_Parm.Output_Status = new bool[lineMaxCount, devMaxCount, portMaxCount];
         }
 
         #region parameter define
@@ -53,27 +50,34 @@ namespace Device_PCIS_DASK
 
         public bool Open()
         {
+            bool initial_success = false;
+
             try
             {
-                card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, 0); // 假設 CardType
+                for (ushort i =0; i<16; i++)
+                {
+                    card = (ushort)DASK64.Register_Card(pCI_Parm.CardType, i);
+
+                    short res = DASK64.GetCardType(i, out ushort _card);
+
+                    if(_card == pCI_Parm.CardType && (card >= 0 && card < 65000))
+                        initial_success = true;
+                }
             }
             catch
             {
                 return false;
             }
 
-            if (card < 0 || card > 65530)
-            {
-                Console.WriteLine("Register_IO_Card failed.");
+            if (!initial_success)
                 return false;
-            }
 
             return true;
         }
 
         public double GetAInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, string range = "")
         {
-            if (card < 0 || card > 65000)
+            if (devNo < 0 || devNo > 255)
                 return -1;
 
             ushort rawValue = 0;
@@ -85,8 +89,8 @@ namespace Device_PCIS_DASK
             else if (range == "+10V")
                 u_range = DASK64.AD_B_10_V;
 
-            DASK64.AI_ReadChannel((ushort)card, port, u_range, out rawValue);
-            DASK64.AI_VoltScale((ushort)card, u_range, (short)rawValue, out voltage);
+            DASK64.AI_ReadChannel((ushort)devNo, port, u_range, out rawValue);
+            DASK64.AI_VoltScale((ushort)devNo, u_range, (short)rawValue, out voltage);
 
             return voltage;
         }
@@ -95,7 +99,7 @@ namespace Device_PCIS_DASK
         public void UpdateInput(byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0)
         {
             //port:點位
-            DASK64.DI_ReadLine(lineNo, DASK64.P9111_CHANNEL_DI, port, out ushort state);
+            DASK64.DI_ReadLine(devNo, DASK64.P9111_CHANNEL_DI, port, out ushort state);
 
             if (state == 1)
                 pCI_Parm.Input_Status[lineNo, devNo, port] = true;
@@ -129,7 +133,7 @@ namespace Device_PCIS_DASK
                 if (lineNo < 0 || lineNo >= lineMaxCount)
                     return;
 
-                short err = DASK64.DO_ReadPort(cardNo, DASK64.P9111_CHANNEL_DO, out uint res);
+                short err = DASK64.DO_ReadPort(devNo, DASK64.P9111_CHANNEL_DO, out uint res);
 
                 if (err != DASK64.NoError)
                     return;
@@ -170,7 +174,7 @@ namespace Device_PCIS_DASK
                 if (lineNo < 0 || lineNo >= lineMaxCount)
                     return false;
 
-                if (DASK64.DO_WriteLine(cardNo, DASK64.P9111_CHANNEL_DO, port, intput) == DASK64.NoError)
+                if (DASK64.DO_WriteLine(devNo, DASK64.P9111_CHANNEL_DO, port, intput) == DASK64.NoError)
                     return true;
                 else
                     return false;

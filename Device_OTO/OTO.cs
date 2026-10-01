@@ -12,8 +12,9 @@ namespace Device_OTO
     public class OTO : ISpectrometer
     {
         #region parameter define
-        SpectrumData[] SD_Live;
-        Dictionary<string, int> DeviceIndex = new Dictionary<string, int>();
+        private SpectrumData[] SD_Live;
+        private Dictionary<string, int> DeviceIndex = new Dictionary<string, int>();
+        private int MaxIntensityValue = 65536;
         enum ERROR_CODE
         {
             STATUS_OK = 0,
@@ -29,6 +30,8 @@ namespace Device_OTO
             public ushort framesize;
             public uint Avg;
             public int Boxcar;
+
+            public float MaxIntensityValue;
 
             public uint integration_time;
             public string SerialNumber;
@@ -151,20 +154,31 @@ namespace Device_OTO
         private UInt32[] GetAvailableVidPidList()
         {
             uint bufferSize = 0;
-            UInt32[] vidPid;
-            unsafe
+            UInt32[] vidPid = null;
+
+            try
             {
-                Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, null);
-                if (bufferSize == 0) return null;
-
-                vidPid = new UInt32[bufferSize * 2];
-
-                fixed (UInt32* p = vidPid)
+                unsafe
                 {
-                    Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, p);
+                    Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, null);
+                    if (bufferSize == 0) return null;
+
+                    vidPid = new UInt32[bufferSize * 2];
+
+                    fixed (UInt32* p = vidPid)
+                    {
+                        Link_UAI.Link_UAI.UAI_SpectrometerGetDeviceList(ref bufferSize, p);
+                    }
                 }
             }
+            catch ( Exception ex)
+            {
+                int a = 0;
+            }
+
             return vidPid;
+
+
         }
         private int InitializeDeviceSettings(int index)
         {
@@ -207,13 +221,13 @@ namespace Device_OTO
         {
             try
             {
-                // 1. 取得設備 VID/PID 列表
+                // 取得設備 VID/PID 列表
                 var vidPidList = GetAvailableVidPidList();
                 
                 if (vidPidList == null) 
                     return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
 
-                // 2. 搜尋並嘗試開啟設備
+                // 搜尋並嘗試開啟設備
                 for (int j = 0; j < vidPidList.Length; j += 2)
                 {
                     uint vid = vidPidList[j];
@@ -229,7 +243,9 @@ namespace Device_OTO
                     {
                         if (Link_UAI.Link_UAI.UAI_SpectrometerOpen(i, ref SD_Live[i].DeviceHandle, vid, pid) == 0)
                         {
-                            // 3. 成功開啟後進行參數初始化
+                            SD_Live[i].MaxIntensityValue = 65536;
+
+                            //成功開啟後進行參數初始化
                             return InitializeDeviceSettings((int)i);
                         }
                     }
@@ -241,6 +257,17 @@ namespace Device_OTO
             { 
                 return (int)ERROR_CODE.ERROR_OPEN_DEVICE_FAIL;
             }
+        }
+        public double GetIntensityPercent(string sn)
+        {
+            int index = GetDeviceIndex(sn);
+
+            if (index == -1)
+                return 0.0; // 未找到對應的設備索引
+
+            double percent = SD_Live[index].Intensity.Max() / SD_Live[index].MaxIntensityValue * 100;
+
+            return percent;
         }
         public void BindingDeviceIndex(string serialNumber)
         {
@@ -276,6 +303,12 @@ namespace Device_OTO
 
             return SD_Live[index].Intensity;
         }
+        public float[] GetSpectrumRelativelyOneShot(string sn, uint integral_time, uint avg_time = 1)
+        {
+            float[] relative_power = GetSpectrumOneShot(sn, integral_time, avg_time);
+
+            return relative_power.Select(x => x / MaxIntensityValue * 100).ToArray();
+        }
         public float[] GetSpectrum(string sn, uint integral_time, uint avg_time = 1)
         {
             int index = GetDeviceIndex(sn);
@@ -291,6 +324,5 @@ namespace Device_OTO
 
             return SD_Live[index].Intensity;
         }
-
     }
 }

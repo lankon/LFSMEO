@@ -15,27 +15,17 @@ namespace RGBTester.Logic
         public double Offset { get; private set; } = 0;
         #endregion
 
-        #region public function
-        public LinearCurveFitting(int[] DACpoint, double[] current_point)
-        {
-            Mean_DAC_Point(DACpoint);
-            MeanCurrent(current_point);
-            CalculateSlope(DACpoint, current_point);
-            CalculateOffset();
-        }
-        #endregion
-
         #region private function
-        private void Mean_DAC_Point(int[] DACpoint)
+        private void Mean_DAC_Point(double[] DACpoint)
         {
-            long sum = 0;
+            double sum = 0;
 
             for (int i = 0; i < DACpoint.Length; i++)
             {
                 sum += DACpoint[i];
             }
 
-            mDAC = (double)sum / DACpoint.Length;
+            mDAC = sum / DACpoint.Length;
         }
 
         private void MeanCurrent(double[] current)
@@ -50,7 +40,7 @@ namespace RGBTester.Logic
             mCurrent = sum / current.Length;
         }
 
-        private double CalculateSlope(int[] DACpoint, double[] current_point)
+        private double CalculateSlope(double[] DACpoint, double[] current_point)
         {
             double covariance = CalculateCovariance(DACpoint, current_point);
             double variance = CalculateVariance(DACpoint);
@@ -69,7 +59,7 @@ namespace RGBTester.Logic
 
             return Offset;
         }
-        private double CalculateCovariance(int[] DACpoint, double[] current_point)
+        private double CalculateCovariance(double[] DACpoint, double[] current_point)
         {
             if (DACpoint.Length != current_point.Length)
                 return -99;
@@ -86,7 +76,7 @@ namespace RGBTester.Logic
             return M1;
         }
 
-        private double CalculateVariance(int[] DACpoint)
+        private double CalculateVariance(double[] DACpoint)
         {
             double M2 = 0;
 
@@ -96,6 +86,16 @@ namespace RGBTester.Logic
             }
 
             return M2;
+        }
+        #endregion
+
+        #region public function
+        public LinearCurveFitting(double[] DACpoint, double[] current_point)
+        {
+            Mean_DAC_Point(DACpoint);
+            MeanCurrent(current_point);
+            CalculateSlope(DACpoint, current_point);
+            CalculateOffset();
         }
         #endregion
     }

@@ -39,6 +39,11 @@ namespace ProbeTester.Logic
             public int AxisX = (int)AXIS_NAME.AXIS_X;
             public int AxisY = (int)AXIS_NAME.AXIS_Y;
             public int AxisZ = (int)AXIS_NAME.AXIS_Z;
+            public int AxisRX = (int)AXIS_NAME.AXIS_A;
+            public int AxisRY = (int)AXIS_NAME.AXIS_AX;
+            public int AxisRZ = (int)AXIS_NAME.AXIS_AY;
+
+
             public int AxisA = (int)AXIS_NAME.AXIS_A;
         }
 

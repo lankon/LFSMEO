@@ -48,6 +48,7 @@ namespace RGBTester.Logic
         private Queue<int> Test_R_DAC = new Queue<int>();       //Red測試用DAC值
         private Queue<int> Test_G_DAC = new Queue<int>();       //Green測試用DAC值
         private Queue<int> Test_B_DAC = new Queue<int>();       //Blue測試用DAC值
+        private Queue<int> Test_B2_DAC = new Queue<int>();       //Blue2測試用DAC值
         private Queue<string> Test_CurrentMode = new Queue<string>();   //測試用電流模式
         RGBTesterFunction RGBfunc;
         public enum WORK
@@ -198,7 +199,14 @@ namespace RGBTester.Logic
             SetDAC((int)eF_ParameterSettingRecipe.TxtBx_BurnInCurrent_B, Test_B_DAC,
                     RGBfunc.SlopeOffsetResult.B_Slope_HCM, RGBfunc.SlopeOffsetResult.B_Slope_LCM,
                     RGBfunc.SlopeOffsetResult.B_Offset_HCM, RGBfunc.SlopeOffsetResult.B_Offset_LCM);
-
+            
+            if(RGBfunc.GetModuleType() ==  eModuleType.Function_Test)
+            {
+                SetDAC((int)eF_ParameterSettingRecipe.TxtBx_BurnInCurrent_B, Test_B2_DAC,               //先暫時用Blue的電流設定
+                    RGBfunc.SlopeOffsetResult.B2_Slope_HCM, RGBfunc.SlopeOffsetResult.B2_Slope_LCM,
+                    RGBfunc.SlopeOffsetResult.B2_Offset_HCM, RGBfunc.SlopeOffsetResult.B2_Offset_LCM);
+            }
+            
             double current_R = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_BurnInCurrent_R);
             double current_G = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_BurnInCurrent_G);
             double current_B = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_BurnInCurrent_B);
@@ -214,13 +222,23 @@ namespace RGBTester.Logic
             double limit = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_FailOverTemp);
             if (temperature > limit)
             {
-                Scope.TestFail = true;
                 RGBfunc.FailReasonFlag.IsTemperatureErr = true;
                 Tool.SaveLogToFile($"Temperature = {temperature}°C,溫度過高", level: "WRN");
                 return false;
             }
 
             return true;
+        }
+        private bool TurnOffLed()
+        {
+            bool res = false;
+            
+            if (RGBfunc.GetModuleType() == eModuleType.IV_Calibration)
+                res = Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0);
+            else
+                res = Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0, 0);
+
+            return res;
         }
         #endregion
 
@@ -273,15 +291,11 @@ namespace RGBTester.Logic
                     {
                         Preset();
 
-                        string sn = "";
-                        if (TestType == "Left_BurnIn")
-                            sn = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Left_SN);
-                        else 
-                            sn = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)eF_StartForm.TxtBx_Right_SN);
+                        string sn = RGBfunc.SerialNumber;
                         Deps.File.WriteFile($"SN,{sn}", TestType);
                         Deps.File.WriteFile($"Temperature,TestTime", TestType);
 
-                        Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0);
+                        TurnOffLed();                      
 
                         Transition(WORK.INITIAL_SETTING);
                     }
@@ -301,9 +315,19 @@ namespace RGBTester.Logic
                             break;
                         }
 
-                        Deps.LightEngine.SetLed_AllColorDAC(Side, Test_R_DAC.Dequeue(),
-                                                                  Test_G_DAC.Dequeue(),
-                                                                  Test_B_DAC.Dequeue());
+                        if(RGBfunc.GetModuleType() == eModuleType.Function_Test)
+                        {
+                            Deps.LightEngine.SetLed_AllColorDAC(Side, Test_R_DAC.Dequeue(),
+                                                                        Test_G_DAC.Dequeue(),
+                                                                        Test_B_DAC.Dequeue(),
+                                                                        Test_B2_DAC.Dequeue());
+                        }
+                        else
+                        {
+                            Deps.LightEngine.SetLed_AllColorDAC(Side, Test_R_DAC.Dequeue(),
+                                                                        Test_G_DAC.Dequeue(),
+                                                                        Test_B_DAC.Dequeue());
+                        }
 
                         DelayTime = Tool.GetCurrentTickCount();
                         Transition(WORK.WAIT_BURN_IN_TIME);
@@ -317,7 +341,7 @@ namespace RGBTester.Logic
                             Deps.File.WriteFile($"{temperature},{DateTime.Now.ToString("HH:mm:ss")}", TestType);
                             if (!CheckTestTemperature(temperature))
                             {
-                                Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0);
+                                TurnOffLed();
                                 Transition(WORK.SUCCESS);
                                 break;
                             }
@@ -328,7 +352,7 @@ namespace RGBTester.Logic
                     break;
                 case WORK.SET_CURRENT_OFF:
                     {
-                        if(!Deps.LightEngine.SetLed_AllColorDAC(Side, 0, 0, 0))
+                        if(!TurnOffLed())
                         {
                             StatusBox.ShowMessage("HDMI Board Set DAC Fail");
                             Transition(WORK.ABORT);

@@ -44,7 +44,7 @@ namespace DeviceFunction
                             IO[k].UpdateInput(lineNo: info.IO_LineNo[i], devNo: info.IO_DevNo[i]);
                         }
                     }
-                    else if(IO[k].GetName() == "PCI_9111DG")
+                    else if(IO[k].GetName() == "PCI_9111DG" || IO[k].GetName() == "PCI_9111HR")
                     {
                         for (byte i = 0; i <= 15; i++)
                             IO[k].UpdateInput(port: i);
@@ -206,14 +206,17 @@ namespace DeviceFunction
 
             return false;
         }
-        public bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, bool truefalse = false)
+        public bool SetOutputStatus(EIOCardType CardType, byte cardNo = 0, byte lineNo = 0, byte devNo = 0, byte port = 0, int iList = 0, bool truefalse = false)
         {
             for (int i = 0; i < IO.Count; i++)
             {
                 if (IO[i].GetName() != CardType.ToString())
                     continue;
 
-                IO[i].SetOutputStatus(cardNo, lineNo, devNo, port, truefalse);
+                if (IO_List[iList].Title_Inverse == "True" || IO_List[iList].Title_Inverse == "true")
+                    return IO[i].SetOutputStatus(cardNo, lineNo, devNo, port, !truefalse);
+                else if (IO_List[iList].Title_Inverse == "False" || IO_List[iList].Title_Inverse == "false")
+                    return IO[i].SetOutputStatus(cardNo, lineNo, devNo, port, truefalse);
             }
 
             return true;
@@ -227,6 +230,8 @@ namespace DeviceFunction
                 Tool.SaveLogToFile($"Output:{name}不存在", level:"WRN");
                 return false;
             }
+
+            Tool.SaveLogToFile($"[Action] Output:{name}, Value:{truefalse}");
 
             byte cardNo = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
@@ -251,6 +256,12 @@ namespace DeviceFunction
         {
             ioListDict.TryGetValue(name.ToString(), out IOData iOData);
 
+            if (iOData == null)
+            {
+                Tool.SaveLogToFile($"未設定AnalogInput:{name}", level: "WRN");
+                return 0;
+            }
+
             byte cardNo = (byte)iOData.Title_CardNum;
             byte lineNo = (byte)iOData.Title_LineNum;
             byte devNo = (byte)iOData.Title_DevNum;
@@ -262,7 +273,7 @@ namespace DeviceFunction
                     continue;
 
                 if (IO[j] is IIOCardVirtual card_virtual)
-                    card_virtual.Add_AI_VirtualData(port, value);
+                    card_virtual.Add_AI_VirtualData(devNo, port, value);
             }
 
             return 0;

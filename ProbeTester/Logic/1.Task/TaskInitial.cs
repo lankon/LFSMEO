@@ -45,6 +45,9 @@ namespace ProbeTester.Logic
             NONE,
             INITIAL,
 
+            GO_HOME_ALL,
+            WAIT_GO_HOME_ALL,
+
             GO_HOME_Z,
             WAIT_GO_HOME_Z,
 
@@ -201,45 +204,68 @@ namespace ProbeTester.Logic
                 case WORK.INITIAL:
                     {
                         Preset();
-                        Transition(WORK.GO_HOME_Z);
+                        Transition(WORK.GO_HOME_ALL);
                     }
                     break;
 
-                case WORK.GO_HOME_Z:
-                    {
-                       Deps.DML.GoHome(Axis.AxisZ);
-                        Transition(WORK.WAIT_GO_HOME_Z);
-                    }
-                    break;
-                case WORK.WAIT_GO_HOME_Z:
-                    {
-                        if(Deps.DML.Get_Home_Complete(Axis.AxisZ))
-                        {
-                            Transition(WORK.GO_HOME_XYA);
-                        }
-                    }
-                    break;
-
-                case WORK.GO_HOME_XYA:
+                case WORK.GO_HOME_ALL:
                     {
                         Deps.DML.GoHome(Axis.AxisX);
                         Deps.DML.GoHome(Axis.AxisY);
-                        //Deps.DML.GoHome(Axis.AxisA);
+                        Deps.DML.GoHome(Axis.AxisZ);
+                        Deps.DML.GoHome(Axis.AxisRX);
+                        Deps.DML.GoHome(Axis.AxisRY);
+                        Deps.DML.GoHome(Axis.AxisRZ);
 
-                        Transition(WORK.WAIT_GO_HOME_XYA);
+                        Transition(WORK.WAIT_GO_HOME_ALL);
                     }
                     break;
-                case WORK.WAIT_GO_HOME_XYA:
+                case WORK.WAIT_GO_HOME_ALL:
                     {
-                        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY)/* &&
-                           Deps.DML.Get_Home_Complete(Axis.AxisA)*/)
+                        if (Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY) &&
+                            Deps.DML.Get_Home_Complete(Axis.AxisZ) && Deps.DML.Get_Home_Complete(Axis.AxisRX) &&
+                            Deps.DML.Get_Home_Complete(Axis.AxisRY) && Deps.DML.Get_Home_Complete(Axis.AxisRZ))
                         {
                             Transition(WORK.SUCCESS);
                         }
                     }
                     break;
-                
-                
+
+                //case WORK.GO_HOME_Z:
+                //    {
+                //       Deps.DML.GoHome(Axis.AxisZ);
+                //        Transition(WORK.WAIT_GO_HOME_Z);
+                //    }
+                //    break;
+                //case WORK.WAIT_GO_HOME_Z:
+                //    {
+                //        if(Deps.DML.Get_Home_Complete(Axis.AxisZ))
+                //        {
+                //            Transition(WORK.GO_HOME_XYA);
+                //        }
+                //    }
+                //    break;
+
+                //case WORK.GO_HOME_XYA:
+                //    {
+                //        Deps.DML.GoHome(Axis.AxisX);
+                //        Deps.DML.GoHome(Axis.AxisY);
+                //        //Deps.DML.GoHome(Axis.AxisA);
+
+                //        Transition(WORK.WAIT_GO_HOME_XYA);
+                //    }
+                //    break;
+                //case WORK.WAIT_GO_HOME_XYA:
+                //    {
+                //        if(Deps.DML.Get_Home_Complete(Axis.AxisX) && Deps.DML.Get_Home_Complete(Axis.AxisY)/* &&
+                //           Deps.DML.Get_Home_Complete(Axis.AxisA)*/)
+                //        {
+                //            Transition(WORK.SUCCESS);
+                //        }
+                //    }
+                //    break;
+
+
                 case WORK.SUCCESS:
                     {
                         SetStatus(TASK_STATUS.SUCCESS);

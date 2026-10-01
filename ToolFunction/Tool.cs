@@ -1,14 +1,17 @@
 ﻿using Serilog;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -167,7 +170,20 @@ namespace ToolFunction
                 default: log.Debug(Msg); break;
             }
         }
+        public static void SaveExceptionToFile(Exception ex, string msg = "")
+        {
+            string context =
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [ERR] {msg}\r\n" +
+                $"{ex}\r\n";
 
+            string folder = Path.Combine(Directory.GetCurrentDirectory(), "History");
+            Directory.CreateDirectory(folder);
+
+            string path = Path.Combine(folder, $"Exception_{DateTime.Now:yyyyMMdd}.log");
+            File.AppendAllText(path, context, Encoding.UTF8);
+
+            //SaveLogToFile($"{msg} {ex}", level: "ERR");
+        }
         public static void CloseLog()
         {
             Log.CloseAndFlush();
@@ -521,6 +537,35 @@ namespace ToolFunction
                 return DateTime.MinValue;
             }
         }
+
+        public static T GetControlByName<T>(Control container, string name) where T : Control
+        {
+            Control[] matches = container.Controls.Find(name, true);
+            if (matches.Length > 0 && matches[0] is T)
+            {
+                return (T)matches[0];
+            }
+            return null;
+        }
+
+        public static T StringToEnum<T>(string input) where T : struct, Enum
+        {
+            //如果是空字串，直接回傳預設值
+            if (string.IsNullOrEmpty(input))
+                return default(T);
+
+            //進行轉換
+            if (Enum.TryParse<T>(input, out T result))
+            {
+                return result;
+            }
+            else
+            {
+                //轉換失敗，輸出Log並回傳預設值
+                Tool.SaveLogToFile($"無法辨識的狀態字串:{input}，自動轉為預設值", level:"WRN");
+                return default(T);
+            }
+        }
     }
 
     /// <summary>
@@ -815,7 +860,7 @@ namespace ToolFunction
             private static extern uint GetGuiResources(IntPtr hProcess, uint uiFlags);
 
             private Label lblStatus;
-            private Timer updateTimer;
+            private System.Windows.Forms.Timer updateTimer;
 
             public F_Monitor()
             {
@@ -839,7 +884,7 @@ namespace ToolFunction
                 };
                 this.Controls.Add(lblStatus);
 
-                updateTimer = new Timer { Interval = 1000 };
+                updateTimer = new System.Windows.Forms.Timer { Interval = 1000 };
                 updateTimer.Tick += (s, e) => UpdateResources();
                 updateTimer.Start();
 
@@ -882,5 +927,71 @@ namespace ToolFunction
             }
         }
         #endregion
+    }
+
+    /// <summary>
+    /// LanguageHelper
+    /// </summary>
+    /// 
+    public static partial class Tool
+    {
+        public static class LanguageHelper
+        {
+            public enum Language
+            {
+                Default,
+                zh_TW,
+                en_US,
+            }
+
+            public static void ApplyLanguage(Form form, Language EcultureName)
+            {
+                string cultureName = EcultureName.ToString().Replace("_","-");
+
+                if (EcultureName == Language.Default)
+                    cultureName = "";
+
+                var culture = new CultureInfo(cultureName);
+
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+
+                var resources = new ComponentResourceManager(form.GetType());
+
+                ApplyControlResources(resources, form, culture);
+                resources.ApplyResources(form, "$this", culture);
+            }
+
+            private static void ApplyControlResources(ComponentResourceManager resources, Control parent, CultureInfo culture)
+            {
+                foreach (Control control in parent.Controls)
+                {
+                    resources.ApplyResources(control, control.Name, culture);
+
+                    if (control.ContextMenuStrip != null)
+                    {
+                        ApplyToolStripResources(resources, control.ContextMenuStrip.Items, culture);
+                    }
+
+                    if (control.HasChildren)
+                    {
+                        ApplyControlResources(resources, control, culture);
+                    }
+                }
+            }
+
+            private static void ApplyToolStripResources(ComponentResourceManager resources, ToolStripItemCollection items, CultureInfo culture)
+            {
+                foreach (ToolStripItem item in items)
+                {
+                    resources.ApplyResources(item, item.Name, culture);
+
+                    if (item is ToolStripDropDownItem dropDownItem)
+                    {
+                        ApplyToolStripResources(resources, dropDownItem.DropDownItems, culture);
+                    }
+                }
+            }
+        }
     }
 }

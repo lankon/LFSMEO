@@ -171,6 +171,7 @@ namespace UserPrivilege.UI
             else if(res == eUserLevel.ENG)
             {
                 Labl_LevelResult.Text = "ENG OK";
+                TxtBx_Password.Text = "";
                 Labl_LevelResult.ForeColor = Color.Blue;
             }
             else if (res == eUserLevel.OEM)

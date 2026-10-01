@@ -29,7 +29,8 @@ namespace RGBTester.Base
         IServiceProvider ServiceProvider { get; }
         IFunction_IO_Card DIOL { get; }
         IFunction_MotionCard DML { get; }
-        ILightEngineFunction LightEngine { get; }
+        IFunction_LightEngine LightEngine { get; }
+        IFunction_Spectrometer Spectrometer { get; }
         IWriteFile File { get; }
 
     }
@@ -38,18 +39,21 @@ namespace RGBTester.Base
         public IServiceProvider ServiceProvider { get; }
         public IFunction_IO_Card DIOL { get; }
         public IFunction_MotionCard DML { get; }
-        public ILightEngineFunction LightEngine { get; }
+        public IFunction_LightEngine LightEngine { get; }
+        public IFunction_Spectrometer Spectrometer { get; }
         public IWriteFile File { get; }
 
         public BaseTaskDependence(IServiceProvider serviceProvider,
                                   IFunction_IO_Card io, IFunction_MotionCard motion,
-                                  ILightEngineFunction command, IWriteFile file)
+                                  IFunction_LightEngine command, IFunction_Spectrometer spectrometer,
+                                  IWriteFile file)
         {
             DML = motion;
             DIOL = io;
             LightEngine = command;
             File = file;
             ServiceProvider = serviceProvider;
+            Spectrometer = spectrometer;
         }
     }
     public interface IF_BaseTask

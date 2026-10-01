@@ -15,10 +15,6 @@ namespace RGBTester
         IFunction_MotionCard DML { get; }
         IFunction_Spectrometer Spectrometer { get; }
         IFunction_LightControl Light { get; }
-
-
-
-        IChillerControl Chiller { get; }
-        IIOCard IOTest { get; }
+        IFunction_LightEngine LightEngine { get; }
     }
 }
