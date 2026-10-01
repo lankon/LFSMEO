@@ -88,7 +88,7 @@ namespace RGBTester.Logic
             IFunction_LightEngine lea = ServiceProvider.GetRequiredService<IFunction_LightEngine>();
             lea.Open();
 
-            RGBfunc.SerialNumber = ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_SerialNumber);
+            RGBfunc.SerialNumber = (ApplicationSetting.Get_String_Recipe<eF_FunctionTester>((int)eF_FunctionTester.TxtBx_SerialNumber) ?? string.Empty).Trim();
             RGBfunc.SetFunctionTestProcess(true);
 
             RGBTesterMachine.DIOL.Clear_AI_VirtualData();
