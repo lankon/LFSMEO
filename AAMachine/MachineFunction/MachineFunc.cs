@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using AAMachine.Base;
+using AAMachine.Base.Equipment_Setting;
+using ToolFunction;
 
 namespace AAMachine.MachineFunction
 {
@@ -25,7 +27,16 @@ namespace AAMachine.MachineFunction
         #region private function
         private void InitialObjects()
         {
-            Axis.Initial(Deps);
+            Axis.Initialize(this);
+        }
+        #endregion
+
+        #region public function
+        public eModuleType GetModuleType()
+        {
+            eModuleType moduleType = (eModuleType)ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ModuleType);
+        
+            return moduleType;
         }
         #endregion
     }

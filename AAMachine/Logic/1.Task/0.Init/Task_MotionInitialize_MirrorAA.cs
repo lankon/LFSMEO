@@ -301,15 +301,9 @@ namespace AAMachine.Logic
                 #region START
                 case WORK.START:
                     {
-                        MachineFunc func = Deps.ServiceProvider.GetRequiredService<MachineFunc>();
-
-                       
-
+                        func = Deps.ServiceProvider.GetRequiredService<MachineFunc>();
 
                         SetIOStatus();
-
-                        
-
                         //if (!Deps.DIOL.GetInputStatus(UVLightInSensor) ||
                         //   !Deps.DIOL.GetInputStatus(SideCCDLightInSensor) ||
                         //   !Deps.DIOL.GetInputStatus(PAMaskInSensor) ||
@@ -366,9 +360,12 @@ namespace AAMachine.Logic
                 #region GO_HOME_NEST_Mirror_TOOL_Z
                 case WORK.GO_HOME_NEST_Mirror_TOOL_Z:
                     {
-                        int[] axis = { func.Axis.Axis_X, func.Axis.Axis_Y, func.Axis.Axis_Z/*, FrontCCD, DownPA, DownCCDY */};
+                        int test = func.Axis.Axis_X;
 
-                        //MultiAxisGoHome(axis, WORK.WAIT_GO_HOME_NEST_Mirror_TOOL_Z);
+
+                        int[] axis = { func.Axis.Axis_X, func.Axis.Axis_Y/*, func.Axis.Axis_Z, FrontCCD, DownPA, DownCCDY */};
+
+                        MultiAxisGoHome(axis, WORK.WAIT_GO_HOME_NEST_Mirror_TOOL_Z);
                         Transition(WORK.SUCCESS);
                     }
                     break;

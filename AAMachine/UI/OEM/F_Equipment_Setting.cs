@@ -15,6 +15,13 @@ namespace AAMachine.UI
 {
     public partial class F_Equipment_Setting : Form
     {
+        public F_Equipment_Setting()
+        {
+            InitializeComponent();
+
+            InitialForm();
+        }
+
         #region parameter define
         #endregion
 
@@ -40,13 +47,6 @@ namespace AAMachine.UI
         #region public function
         
         #endregion
-
-        public F_Equipment_Setting()
-        {
-            InitializeComponent();
-
-            InitialForm();
-        }
 
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
         {

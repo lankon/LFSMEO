@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using DeviceCore;
 using AAMachine.Base;
+using AAMachine.Base.Equipment_Setting;
 
 namespace AAMachine.MachineFunction
 {
@@ -20,22 +21,28 @@ namespace AAMachine.MachineFunction
             public int Axis_TX { get; set; } = 4;
             public int Axis_TY { get; set; } = 5;
 
-            private IBaseTaskDependence Deps;
+            private MachineFunc _MachineFunc;
 
-            public void Initial(IBaseTaskDependence baseTaskDependence)
+            public void Initialize(MachineFunc func)
             {
-                Deps = baseTaskDependence;
+                _MachineFunc = func;
             }
 
             public void SetAxisDefine()
             {
                 // 要分辨機型
-                Axis_X = (int)AXIS_NAME.AXIS_X;
-                Axis_Y = (int)AXIS_NAME.AXIS_Y;
-                Axis_Z = (int)AXIS_NAME.AXIS_Z;
-                Axis_A = (int)AXIS_NAME.AXIS_A;
-                Axis_TX = (int)AXIS_NAME.AXIS_AX;
-                Axis_TY = (int)AXIS_NAME.AXIS_AY;
+
+                eModuleType type = _MachineFunc.GetModuleType();
+
+                if(type == eModuleType.MIRROR_AA)
+                {
+                    Axis_X = (int)AXIS_NAME.AXIS_X;
+                    Axis_Y = (int)AXIS_NAME.AXIS_Y;
+                    Axis_Z = (int)AXIS_NAME.AXIS_Z;
+                    Axis_A = (int)AXIS_NAME.AXIS_A;
+                    Axis_TX = (int)AXIS_NAME.AXIS_AX;
+                    Axis_TY = (int)AXIS_NAME.AXIS_AY;
+                }
             }
         }
     }
