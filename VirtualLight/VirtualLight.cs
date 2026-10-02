@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using ToolFunction;
 using DeviceCore;
 
 namespace Device_VirtualLight

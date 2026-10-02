@@ -11,8 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-using ToolFunction;
-
 namespace Device_Virtual
 {
     public class Virtual_Motion : IMotionCard
@@ -112,6 +110,28 @@ namespace Device_Virtual
             else
                 return T_total * 1000;  //ms
         }
+        public void ResetTimeCount(out long startTicks)
+        {
+            startTicks = Stopwatch.GetTimestamp();
+        }
+        public int GetTime(long startTicks, string time = "ms")
+        {
+            long endTicks = Stopwatch.GetTimestamp();
+            double tickFrequency = (double)Stopwatch.Frequency;
+
+            double us = (endTicks - startTicks) * 1_000_000.0 / tickFrequency;
+
+            double unit = 1;
+
+            switch (time)
+            {
+                case "s": unit = 0.000001; break;
+                case "ms": unit = 0.001; break;
+                case "us": unit = 1; break;
+            }
+
+            return (int)(us * unit);
+        }
         #endregion
 
         #region public function
@@ -168,7 +188,7 @@ namespace Device_Virtual
             if(PassSimulationTime == true)
                 return true;
             
-            if (Tool.GetTime(MoveTimer[devNo]) < MoveTime[devNo])
+            if (GetTime(MoveTimer[devNo]) < MoveTime[devNo])
                 return false;
             else
                 return true;
@@ -229,7 +249,7 @@ namespace Device_Virtual
                 GodotTransmitter.SendAxisDataWithTime(axis.ToString(), CurrentPosition[axis], time / 1000);
 
             MoveTime[axis] = time;
-            Tool.ResetTimeCount(out long startTicks);
+            ResetTimeCount(out long startTicks);
             MoveTimer[axis] = startTicks;
 
 
@@ -250,7 +270,7 @@ namespace Device_Virtual
                 GodotTransmitter.SendAxisDataWithTime(axis.ToString(), CurrentPosition[axis], time / 1000);
 
             MoveTime[axis] = time;
-            Tool.ResetTimeCount(out long startTicks);
+            ResetTimeCount(out long startTicks);
             MoveTimer[axis] = startTicks;
 
             return 0;
@@ -259,7 +279,7 @@ namespace Device_Virtual
         {
             int ret = 0;
 
-            Tool.ResetTimeCount(out long startTicks);
+            ResetTimeCount(out long startTicks);
             CM_Stop[axis] = false;
             double delay_time = 30;
 
@@ -267,7 +287,7 @@ namespace Device_Virtual
             {
                 while (!CM_Stop[axis])
                 {
-                    if (Tool.GetTime(startTicks, time: "s") > 10)
+                    if (GetTime(startTicks, time: "s") > 10)
                     {
                         ret = -1;
                         break;
@@ -279,7 +299,7 @@ namespace Device_Virtual
                         CurrentPosition[axis] = CurrentPosition[axis] + delay_time / 1000 * velocity_max;
 
                     MoveTime[axis] = delay_time;
-                    Tool.ResetTimeCount(out long startTicks1);
+                    ResetTimeCount(out long startTicks1);
                     MoveTimer[axis] = startTicks1;
 
                     if (UseGodotEngine)
