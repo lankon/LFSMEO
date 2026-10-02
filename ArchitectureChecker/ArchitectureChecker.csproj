@@ -87,6 +87,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="README.md" />
+    <None Include="Rules\BurnInTester.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Rules\DeviceCore.json" />
     <None Include="Rules\RGBTester.json" />
   </ItemGroup>

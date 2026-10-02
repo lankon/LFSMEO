@@ -1,0 +1,107 @@
+{
+  "Rules": [
+    {
+      "Id": "BURNIN-A001",
+      "Severity": "error",
+      "Description": "BurnInTester must not reference other application or test projects.",
+      "Include": [
+        "BurnInTester/**/*.csproj"
+      ],
+      "Exclude": [],
+      "Forbidden": [
+        "ArchitectureChecker.csproj",
+        "FunctionUnitTest.csproj",
+        "LFSMEO.csproj",
+        "ProbeTester.csproj",
+        "RGBTester.csproj",
+        "SampleCode.csproj",
+        "<Reference Include=\"ArchitectureChecker",
+        "<Reference Include=\"FunctionUnitTest",
+        "<Reference Include=\"LFSMEO",
+        "<Reference Include=\"ProbeTester",
+        "<Reference Include=\"RGBTester",
+        "<Reference Include=\"SampleCode",
+        "ArchitectureChecker.dll",
+        "FunctionUnitTest.dll",
+        "LFSMEO.dll",
+        "ProbeTester.dll",
+        "RGBTester.dll",
+        "SampleCode.dll"
+      ]
+    },
+    {
+      "Id": "BURNIN-A002",
+      "Severity": "error",
+      "Description": "BurnInTester must not reference concrete instrument driver, DeviceFunction, or DeviceUI projects.",
+      "Include": [
+        "BurnInTester/**/*.csproj"
+      ],
+      "Exclude": [],
+      "Forbidden": [
+        "Device_APS.csproj",
+        "Device_FTLight.csproj",
+        "DeviceFunction.csproj",
+        "Device_Guishan.csproj",
+        "Device_Hikvision.csproj",
+        "Device_Klzx.csproj",
+        "Device_MicroEpsilon.csproj",
+        "Device_MN200.csproj",
+        "Device_OTO.csproj",
+        "Device_PCIS_DASK.csproj",
+        "Device_Spectrum_Virtual.csproj",
+        "Device_TemeratureControl_Virtual.csproj",
+        "DeviceUI.csproj",
+        "Device_Virtual.csproj",
+        "Device_VirtualCamera.csproj",
+        "Device_VirtualLight.csproj",
+        "<Reference Include=\"Device_APS",
+        "<Reference Include=\"Device_FTLight",
+        "<Reference Include=\"DeviceFunction",
+        "<Reference Include=\"Device_Guishan",
+        "<Reference Include=\"Device_Hikvision",
+        "<Reference Include=\"Device_Klzx",
+        "<Reference Include=\"Device_MicroEpsilon",
+        "<Reference Include=\"Device_MN200",
+        "<Reference Include=\"Device_OTO",
+        "<Reference Include=\"Device_PCIS_DASK",
+        "<Reference Include=\"Device_Spectrum_Virtual",
+        "<Reference Include=\"Device_TemeratureControl_Virtual",
+        "<Reference Include=\"DeviceUI",
+        "<Reference Include=\"Device_Virtual",
+        "<Reference Include=\"Device_VirtualCamera",
+        "<Reference Include=\"Device_VirtualLight",
+        "Device_APS.dll",
+        "Device_FTLight.dll",
+        "DeviceFunction.dll",
+        "Device_Guishan.dll",
+        "Device_Hikvision.dll",
+        "Device_Klzx.dll",
+        "Device_MicroEpsilon.dll",
+        "Device_MN200.dll",
+        "Device_OTO.dll",
+        "Device_PCIS_DASK.dll",
+        "Device_Spectrum_Virtual.dll",
+        "Device_TemeratureControl_Virtual.dll",
+        "DeviceUI.dll",
+        "Device_Virtual.dll",
+        "Device_VirtualCamera.dll",
+        "Device_VirtualLight.dll"
+      ]
+    },
+    {
+      "Id": "BURNIN-A003",
+      "Severity": "error",
+      "Description": "BurnInTester Logic must not depend on UI or WinForms.",
+      "Include": [
+        "BurnInTester/Logic/**/*.cs"
+      ],
+      "Exclude": [],
+      "Forbidden": [
+        "using BurnInTester.UI",
+        "BurnInTester.UI.",
+        "using System.Windows.Forms",
+        "System.Windows.Forms."
+      ]
+    }
+  ]
+}
