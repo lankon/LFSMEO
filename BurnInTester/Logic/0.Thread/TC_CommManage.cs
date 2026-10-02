@@ -28,8 +28,8 @@ namespace BurnInTester.Logic
         IFunction_TemperatureControl Func_TC;
         private AgingInformation _AgingInformation;
         // 存放待發送的任務。ConcurrentQueue為執行緒安全,Queue為非執行緒安全
-        private ConcurrentQueue<ExecuteCommandTask> TaskQueue = new ConcurrentQueue<ExecuteCommandTask>();
-        private ConcurrentQueue<ExecuteCommandTask> MainTaskQueue = new ConcurrentQueue<ExecuteCommandTask>();
+        private ConcurrentQueue<ExecuteCommandTask> TaskQueue = new ConcurrentQueue<ExecuteCommandTask>();          // 存放優先度較低的命令 ex.Ask_PV
+        private ConcurrentQueue<ExecuteCommandTask> MainTaskQueue = new ConcurrentQueue<ExecuteCommandTask>();      // 存放優先度較高的命令 ex.Start,Stop
         private class ExecuteCommandTask
         {
             public Func<Task<string>> ExecutionFunc { get; set; }
@@ -40,24 +40,31 @@ namespace BurnInTester.Logic
         #region private function
         private async Task ProcessLoop()
         {
+            ExecuteCommandTask task;
+
             while (true)
             {
-                if (TaskQueue.TryDequeue(out var task))
+                if (MainTaskQueue.TryDequeue(out task))
                 {
-                    try
-                    {
-                        string result = await task.ExecutionFunc();     // 執行任務並等待結果
-                        task.CompletionSource.SetResult(result);        // 通知呼叫者拿到資料了
-                        await Task.Delay(30);                           // 每次執行完任務後休息一下，避免過度頻繁的通訊
-                    }
-                    catch (Exception ex)
-                    {
-                        task.CompletionSource.SetException(ex);
-                    }
+                }
+                else if (TaskQueue.TryDequeue(out task))
+                {
                 }
                 else
                 {
-                    await Task.Delay(30); // 隊列空的時候休息，避免 CPU 100%
+                    await Task.Delay(30);
+                    continue;
+                }
+
+                try
+                {
+                    string result = await task.ExecutionFunc();     // 執行任務並等待結果
+                    task.CompletionSource.SetResult(result);        // 通知呼叫者拿到資料了
+                    await Task.Delay(30);                           // 每次執行完任務後休息一下，避免過度頻繁的通訊
+                }
+                catch (Exception ex)
+                {
+                    task.CompletionSource.SetException(ex);
                 }
             }
         }
@@ -133,7 +140,6 @@ namespace BurnInTester.Logic
             try
             {
                 double[] temperature = new double[] { 0, 0, 0, 0 };
-                //!!!!!要處理MainAction
                 string result = await EnqueueMainAction(async () =>
                 {
                     Func_TC.Start(name, sv, cmd);
