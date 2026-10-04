@@ -11,7 +11,7 @@ using ToolFunction;
 
 namespace DeviceFunction
 {
-    public class Function_TemperatureControl : IFunction_TemperatureControl
+    public class Function_TemperatureControl : IFunction_TemperatureControl, IVirtualTemperatureSimulation
     {
         public Function_TemperatureControl(IEnumerable<ITemperatureControl> TC)
         {
@@ -45,6 +45,39 @@ namespace DeviceFunction
         #endregion
 
         #region public function
+        public bool TryGetSimulationSettings(ETemperatureControlName name, string channel, out bool manual, out double temperature)
+        {
+            manual = false;
+            temperature = 25;
+
+            if (TemperatureControlListDict == null)
+                return false;
+
+            var device = GetTargetDevice(name, out var data) as IVirtualTemperatureControl;
+
+            if (device == null)
+                return false;
+
+            // 回傳的tmperature為設定值
+            device.GetSimulationSettings(channel, out manual, out temperature);
+            return true;
+        }
+
+        public bool TrySetSimulation(ETemperatureControlName name, string channel, bool manual, double temperature)
+        {
+            if (TemperatureControlListDict == null || double.IsNaN(temperature) || double.IsInfinity(temperature) ||
+                temperature < 0 || temperature > 150) 
+                return false;
+
+            var device = GetTargetDevice(name, out var data) as IVirtualTemperatureControl;
+            
+            if (device == null) 
+                return false;
+
+            device.SetSimulation(channel, manual, temperature);
+
+            return true;
+        }
         public bool Initial_All_TemperatureControl()
         {
             TemperatureControlList.Clear();

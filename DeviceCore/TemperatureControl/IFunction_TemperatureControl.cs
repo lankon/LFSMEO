@@ -39,4 +39,10 @@ namespace DeviceCore
         bool Stop(ETemperatureControlName name, string cmd = "");               //停止控溫
         string[] GetAnswer(ETemperatureControlName name, string cmd = "");      //取得回覆訊息
     }
+
+    public interface IVirtualTemperatureSimulation
+    {
+        bool TryGetSimulationSettings(ETemperatureControlName name, string channel, out bool manual, out double temperature);
+        bool TrySetSimulation(ETemperatureControlName name, string channel, bool manual, double temperature);
+    }
 }

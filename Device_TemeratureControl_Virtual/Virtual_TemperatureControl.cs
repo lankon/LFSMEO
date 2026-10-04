@@ -8,13 +8,15 @@ using DeviceCore;
 
 namespace Device_TemeratureControl_Virtual
 {
-    public class Virtual_TemperatureControl : ITemperatureControl
+    public class Virtual_TemperatureControl : ITemperatureControl, IVirtualTemperatureControl
     {
 
         #region parameter define
-        private double CurrentTemperature = 25.0; // 預設溫度
-        private CMD_TYPE CMD = CMD_TYPE.None;
+        private string lastChannel = "";
         private string Comport;
+        private CMD_TYPE CMD = CMD_TYPE.None;
+        private readonly object sync = new object();
+        private readonly Dictionary<string, ChannelState> channels = new Dictionary<string, ChannelState>();
         private enum CMD_TYPE
         {
             None,
@@ -22,6 +24,22 @@ namespace Device_TemeratureControl_Virtual
             Start,
             Stop,
             Initialize
+        }
+        private class ChannelState
+        {
+            public double AutomaticTemperature = 25.0;
+            public double ManualTemperature = 25.0;
+            public bool Manual;
+        }
+        #endregion
+
+        #region private function
+        private ChannelState GetChannel(string cmd)
+        {
+            string key = (cmd ?? "").Trim();
+            if (!channels.TryGetValue(key, out var state))
+                channels[key] = state = new ChannelState();
+            return state;
         }
         #endregion
 
@@ -42,19 +60,29 @@ namespace Device_TemeratureControl_Virtual
 
         public int Start(double sv, string cmd = "")
         {
-            CurrentTemperature = sv;
-            CMD = CMD_TYPE.Start;
+            lock (sync)
+            {
+                GetChannel(cmd).AutomaticTemperature = sv;
+                CMD = CMD_TYPE.Start;
+            }
             return 0;
         }
         public int Stop(string cmd = "")
         {
-            CurrentTemperature = 25.0; // 停止控溫後回到預設溫度
-            CMD = CMD_TYPE.Stop;
+            lock (sync)
+            {
+                GetChannel(cmd).AutomaticTemperature = 25.0;
+                CMD = CMD_TYPE.Stop;
+            }
             return 0;
         }
         public int AskPV(string cmd = "")
         {
-            CMD = CMD_TYPE.AskPV;
+            lock (sync)
+            {
+                lastChannel = cmd;
+                CMD = CMD_TYPE.AskPV;
+            }
             return 0;
         }
 
@@ -68,12 +96,38 @@ namespace Device_TemeratureControl_Virtual
         }
         public int GetAnswer(out string[] answer, string cmd = "")
         {
-            if (CMD == CMD_TYPE.AskPV)
-                answer = new string[] { CurrentTemperature.ToString("F2"), "0", "0", "0", "0" };
-            else
-                answer = new string[] { "" };
+            lock (sync)
+            {
+                var state = GetChannel(string.IsNullOrEmpty(cmd) ? lastChannel : cmd);
+                double pv = state.Manual ? state.ManualTemperature : state.AutomaticTemperature;
+                if (CMD == CMD_TYPE.AskPV)
+                    answer = new string[] { pv.ToString("F2"), "0", "0", "0", "0" };
+                else
+                    answer = new string[] { "" };
+            }
 
             return 0;
+        }
+        public void SetSimulation(string channel, bool manual, double temperature)
+        {
+            if (double.IsNaN(temperature) || double.IsInfinity(temperature) || temperature < 0 || temperature > 150)
+                return;
+
+            lock (sync)
+            {
+                var state = GetChannel(channel);
+                state.Manual = manual;
+                state.ManualTemperature = temperature;
+            }
+        }
+        public void GetSimulationSettings(string channel, out bool manual, out double temperature)
+        {
+            lock (sync)
+            {
+                var state = GetChannel(channel);
+                manual = state.Manual;
+                temperature = state.ManualTemperature;
+            }
         }
         #endregion
     }

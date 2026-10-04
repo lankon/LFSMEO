@@ -38,4 +38,10 @@ namespace DeviceCore
         int Stop(string cmd = "");                  //停止控溫
         int GetAnswer(out string[] answer, string cmd = "");        //取得回傳指令
     }
+
+    public interface IVirtualTemperatureControl
+    {
+        void SetSimulation(string channel, bool manual, double temperature);
+        void GetSimulationSettings(string channel, out bool manual, out double temperature);
+    }
 }

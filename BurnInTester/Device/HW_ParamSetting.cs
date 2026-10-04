@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using DeviceCore;
+
 namespace BurnInTester.Device
 {
     public class HW_ParamSetting
     {
         public TemperatureControlBox TC_Box = new TemperatureControlBox();
+        public ETemperatureControlName TC1 = ETemperatureControlName.TC_1;
 
         
         public class TemperatureControlBox

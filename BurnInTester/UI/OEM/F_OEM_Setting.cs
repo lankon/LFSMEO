@@ -16,8 +16,6 @@ using DeviceCore;
 
 namespace BurnInTester.UI
 {
-    
-
     public partial class F_OEM_Setting : Form
     {
         public F_OEM_Setting(IServiceProvider serviceProvider)
@@ -126,6 +124,19 @@ namespace BurnInTester.UI
         private void button1_Click(object sender, EventArgs e)
         {
             GC.Collect();
+        }
+
+        private void Btn_VirtualTemperature_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                F_VirtualTemperature form = ServiceProvider.GetRequiredService<F_VirtualTemperature>();
+                form.Show();
+                form.BringToFront();
+            }
+            catch(Exception ex)
+            {
+            }
         }
     }
 }

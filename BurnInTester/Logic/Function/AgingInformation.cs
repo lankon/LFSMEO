@@ -13,6 +13,7 @@ using BurnInTester.Device;
 
 namespace BurnInTester.Logic
 {
+    // 用途：老化資訊資料容器＋設定檔存取
     public class AgingInformation
     {
         public AgingInformation(HW_ParamSetting hW_ParamSetting)

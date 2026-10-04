@@ -78,7 +78,7 @@ namespace BurnInTester.Logic
                             string command = HW_Param.TC_Box.BoxNum[MonitorBoxNum] + "," + HW_Param.TC_Box.ChNum[MonitorBoxNum];
                             
                             if(HW_Param.TC_Box.Use[MonitorBoxNum] == true)
-                                _ = CommManage.UpdateTemperature(ETemperatureControlName.TC_1, command, MonitorBoxNum);
+                                _ = CommManage.UpdateTemperature(HW_Param.TC1, command, MonitorBoxNum);
 
                             count++;
 
@@ -92,7 +92,7 @@ namespace BurnInTester.Logic
                         {
                             StartHeating = false;
                             string command = HW_Param.TC_Box.BoxNum[CommandBoxNum] + "," + HW_Param.TC_Box.ChNum[CommandBoxNum];
-                            _ = CommManage.Start(ETemperatureControlName.TC_1, SV, command, CommandBoxNum);
+                            _ = CommManage.Start(HW_Param.TC1, SV, command, CommandBoxNum);
                         }
                         break;
                     case WORK.STOP:

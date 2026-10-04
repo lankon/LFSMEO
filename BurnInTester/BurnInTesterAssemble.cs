@@ -52,6 +52,7 @@ namespace BurnInTester
             services.AddTransient<IF_Recipe, F_Recipe>();
             services.AddTransient<F_TestSetting>();
             services.AddTransient<F_TCtrlBoxTemperature>();
+            services.AddTransient<F_VirtualTemperature>();
             //services.AddTransient<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 
