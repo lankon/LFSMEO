@@ -24,11 +24,13 @@ namespace BurnInTester.Logic
         }
 
         #region parameter define
-        private int BoxCount = 0;       //老化箱數量
+        private int BoxCount = 0;                           // 老化箱數量
+        public int CurSelectBoxNo { get; set; } = 0;        // 目前選取老化箱編號
         private List<AGING_INFO> PARAM_INFO = new List<AGING_INFO>();
         public string AgingConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "AgingConfig.xml");
         public TemperatureInfo[] TemperatureInfos;
         private HW_ParamSetting _HW_ParamSetting;
+
 
         public struct  AGING_INFO
         {

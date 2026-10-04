@@ -56,6 +56,17 @@ namespace BurnInTester.UI
             indexNum--;
             Labl_BoxNum.Text = $"Box {indexNum / 4 + 1}-{indexNum % 4 + 1}";
         }
+        public void SetSelected(bool select)
+        {
+            if(select == true)
+            {
+                Labl_BoxNum.BackColor = Color.Gray;
+            }
+            else
+            {
+                Labl_BoxNum.BackColor = Color.Silver;
+            }
+        }
         #endregion
     }
 }

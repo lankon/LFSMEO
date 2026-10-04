@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BurnInTester.Base;
+using BurnInTester.Logic;
+using RecipeManage.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,24 +10,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using ToolFunction;
-using RecipeManage.Base;
-using BurnInTester.Base;
 
 namespace BurnInTester.UI
 {
     public partial class F_TestSetting : Form
     {
-        public F_TestSetting()
+        public F_TestSetting(AgingInformation agingInformation)
         {
             InitializeComponent();
 
             InitialForm();
+
+            _AgingInfo = agingInformation;
         }
 
         #region parameter define
-        string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+        private string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+        private AgingInformation _AgingInfo;
         #endregion
 
         #region private function
@@ -66,6 +69,10 @@ namespace BurnInTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
+
+            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo}.xml"; 
+            if (!Tool.DataGrid_DataLoad(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\{file_name}"))
+                Tool.SaveLogToFile("IO表讀取失敗");
         }
         private void LeavePage()
         {
@@ -99,16 +106,14 @@ namespace BurnInTester.UI
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
-
-            
-
-
-            Tool.DataGrid_DataSave(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\Box.xml");
+            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo}.xml";
+            Tool.DataGrid_DataSave(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\{file_name}");
         }
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
-            if (!Tool.DataGrid_DataLoad(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\Box.xml"))
+            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo}.xml";
+            if (!Tool.DataGrid_DataLoad(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\{file_name}"))
                 Tool.SaveLogToFile("IO表讀取失敗");
         }
 

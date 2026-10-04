@@ -50,11 +50,11 @@ namespace BurnInTester.Logic
 
         public int GetCurBoxNum()
         {
-            return CurBoxNum;
+            return AgingInformation.CurSelectBoxNo;
         }
         public void SetCurBoxNum(int box_num)
         {
-            CurBoxNum = box_num;
+            AgingInformation.CurSelectBoxNo = box_num;
         }
         public void SaveAgingParam()
         {

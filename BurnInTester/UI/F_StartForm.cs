@@ -34,6 +34,7 @@ namespace BurnInTester.UI
         private IServiceProvider ServiceProvider;
         private DieMap _DieMap = new DieMap();
         private F_StartFormLogic StartFormLogic;
+        UC_CtrlBoxStatus selectedCtrlBox;
         #endregion
 
         #region private function
@@ -174,16 +175,19 @@ namespace BurnInTester.UI
             SaveAllEnumSetting();
             ReadAllEnumSetting();
             
-            Control ctrl = sender as Control;
-
-            if (ctrl != null)
+            if (sender is UC_CtrlBoxStatus clickedCtrlBox)
             {
-                string name = ctrl.Name; // 取得元件名稱，例如 "CtrlBoxStatus1"
-                int boxNum = int.Parse(name.Replace("CtrlBoxStatus", "")); // 從名稱中提取數字部分
+                string name = clickedCtrlBox.Name;
+                int boxNum = int.Parse(name.Replace("CtrlBoxStatus", ""));
+
                 StartFormLogic.SaveAgingParam();
                 StartFormLogic.SetCurBoxNum(boxNum);
                 StartFormLogic.UpdateAgingParam();
                 UpdateEnumSettingToForm();
+
+                selectedCtrlBox?.SetSelected(false);
+                selectedCtrlBox = clickedCtrlBox;
+                selectedCtrlBox.SetSelected(true);
             }
         }
 
