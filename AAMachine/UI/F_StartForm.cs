@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
+using Matrox.MatroxImagingLibrary;
 
 using ToolFunction;
+using MILX_ImageFunction;
 
-using DeviceCore;
 using AAMachine.Base;
 using AAMachine.Logic;
-using Matrox.MatroxImagingLibrary;
 using AAMachine.Device.QuantaMeasureAPI.Z23A;
-using AAMachine.Device.QuantaMeasureAPI.Base;      // 違規用法
-
+using AAMachine.Device.QuantaMeasureAPI.Base;
+using AAMachine.Logic.ImageMethod;
 
 namespace AAMachine.UI
 {
@@ -383,6 +383,41 @@ namespace AAMachine.UI
         {
             Tool.F_Monitor f_Monitor = new Tool.F_Monitor();
             f_Monitor.Show();
+        }
+
+        private void Btn_Positive_CCD_Test_Click(object sender, EventArgs e)
+        {
+            FindPositiveMirrorHousing find = new FindPositiveMirrorHousing();
+            using (MilVisionTool func = new MilVisionTool())
+            {
+                MIL_ID source_img = MIL.M_NULL;
+                source_img = func.ImportImage($"D:\\ProcessingImage\\正CCD_環光100軸光100.png");
+                find.FindPositiveMirrorHousingEdge(source_img);
+                func.SafeMilBufFree(ref source_img);
+            }
+
+            bool res = find.Result.IsSuccess;
+            double distance = find.Result.MirrorHousingDistance;
+            double angle = find.Result.MirrorHousingSignedAngle;
+        }
+
+        private void Btn_45CCD_Test_Click(object sender, EventArgs e)
+        {
+            Find45MirrorHousing find = new Find45MirrorHousing();
+
+            using (MilVisionTool func = new MilVisionTool())
+            {
+                MIL_ID source_img = MIL.M_NULL;
+                source_img = func.ImportImage($"C:\\Users\\leo_li\\Desktop\\45度CCD\\Housing Mirror XY Position_{2}.bmp");
+                find.Find45MirrorHousingEdge(source_img);
+                func.SafeMilBufFree(ref source_img);
+            }
+
+            bool res = find.Result.IsSuccess;
+            double left_distance = find.Result.LeftMirrorHousingDistance;
+            double left_angle = find.Result.LeftMirrorHousingSignedAngle;
+            double down_distance = find.Result.DownMirrorHousingDistance;
+            double down_angle = find.Result.DownMirrorHousingSignedAngle;
         }
     }
 }

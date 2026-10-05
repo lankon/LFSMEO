@@ -133,7 +133,9 @@
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\ImageMethod\CaptureLineProfile.cs" />
     <Compile Include="Logic\ImageMethod\Find45MirrorFeature.cs" />
+    <Compile Include="Logic\ImageMethod\Find45MirrorHousing.cs" />
     <Compile Include="Logic\ImageMethod\FindHousingFeature.cs" />
+    <Compile Include="Logic\ImageMethod\FindPositiveMirrorHousing.cs" />
     <Compile Include="MachineFunction\MachineFunc.cs" />
     <Compile Include="MachineFunction\MachineFunc_AxisDefine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -202,6 +204,10 @@
     <ProjectReference Include="..\DeviceCore\DeviceCore.csproj">
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MILX_ImageFunction\MILX_ImageFunction.csproj">
+      <Project>{1045f6af-bd00-4c1a-a6ac-a667b7670fa1}</Project>
+      <Name>MILX_ImageFunction</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>

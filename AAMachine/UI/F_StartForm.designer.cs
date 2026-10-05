@@ -65,6 +65,8 @@ namespace AAMachine.UI
             this.Btn_RolloffTest = new System.Windows.Forms.Button();
             this.Btn_SequentialContrastTest = new System.Windows.Forms.Button();
             this.Btn_CallMemoryMonitor = new System.Windows.Forms.Button();
+            this.Btn_Positive_CCD_Test = new System.Windows.Forms.Button();
+            this.Btn_45CCD_Test = new System.Windows.Forms.Button();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -434,7 +436,7 @@ namespace AAMachine.UI
             // 
             // Btn_TestZ23A_API
             // 
-            this.Btn_TestZ23A_API.Location = new System.Drawing.Point(1301, 651);
+            this.Btn_TestZ23A_API.Location = new System.Drawing.Point(1208, 608);
             this.Btn_TestZ23A_API.Name = "Btn_TestZ23A_API";
             this.Btn_TestZ23A_API.Size = new System.Drawing.Size(145, 73);
             this.Btn_TestZ23A_API.TabIndex = 8;
@@ -444,7 +446,7 @@ namespace AAMachine.UI
             // 
             // Btn_RolloffTest
             // 
-            this.Btn_RolloffTest.Location = new System.Drawing.Point(1301, 730);
+            this.Btn_RolloffTest.Location = new System.Drawing.Point(1208, 687);
             this.Btn_RolloffTest.Name = "Btn_RolloffTest";
             this.Btn_RolloffTest.Size = new System.Drawing.Size(145, 73);
             this.Btn_RolloffTest.TabIndex = 9;
@@ -454,7 +456,7 @@ namespace AAMachine.UI
             // 
             // Btn_SequentialContrastTest
             // 
-            this.Btn_SequentialContrastTest.Location = new System.Drawing.Point(1301, 809);
+            this.Btn_SequentialContrastTest.Location = new System.Drawing.Point(1208, 766);
             this.Btn_SequentialContrastTest.Name = "Btn_SequentialContrastTest";
             this.Btn_SequentialContrastTest.Size = new System.Drawing.Size(145, 73);
             this.Btn_SequentialContrastTest.TabIndex = 10;
@@ -464,7 +466,7 @@ namespace AAMachine.UI
             // 
             // Btn_CallMemoryMonitor
             // 
-            this.Btn_CallMemoryMonitor.Location = new System.Drawing.Point(1470, 651);
+            this.Btn_CallMemoryMonitor.Location = new System.Drawing.Point(1377, 608);
             this.Btn_CallMemoryMonitor.Name = "Btn_CallMemoryMonitor";
             this.Btn_CallMemoryMonitor.Size = new System.Drawing.Size(145, 73);
             this.Btn_CallMemoryMonitor.TabIndex = 11;
@@ -472,11 +474,33 @@ namespace AAMachine.UI
             this.Btn_CallMemoryMonitor.UseVisualStyleBackColor = true;
             this.Btn_CallMemoryMonitor.Click += new System.EventHandler(this.Btn_CallMemoryMonitor_Click);
             // 
+            // Btn_Positive_CCD_Test
+            // 
+            this.Btn_Positive_CCD_Test.Location = new System.Drawing.Point(1208, 870);
+            this.Btn_Positive_CCD_Test.Name = "Btn_Positive_CCD_Test";
+            this.Btn_Positive_CCD_Test.Size = new System.Drawing.Size(145, 73);
+            this.Btn_Positive_CCD_Test.TabIndex = 12;
+            this.Btn_Positive_CCD_Test.Text = "Positive CCD Test";
+            this.Btn_Positive_CCD_Test.UseVisualStyleBackColor = true;
+            this.Btn_Positive_CCD_Test.Click += new System.EventHandler(this.Btn_Positive_CCD_Test_Click);
+            // 
+            // Btn_45CCD_Test
+            // 
+            this.Btn_45CCD_Test.Location = new System.Drawing.Point(1359, 870);
+            this.Btn_45CCD_Test.Name = "Btn_45CCD_Test";
+            this.Btn_45CCD_Test.Size = new System.Drawing.Size(145, 73);
+            this.Btn_45CCD_Test.TabIndex = 13;
+            this.Btn_45CCD_Test.Text = "45 CCD Test";
+            this.Btn_45CCD_Test.UseVisualStyleBackColor = true;
+            this.Btn_45CCD_Test.Click += new System.EventHandler(this.Btn_45CCD_Test_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.Btn_45CCD_Test);
+            this.Controls.Add(this.Btn_Positive_CCD_Test);
             this.Controls.Add(this.Btn_CallMemoryMonitor);
             this.Controls.Add(this.Btn_SequentialContrastTest);
             this.Controls.Add(this.Btn_RolloffTest);
@@ -542,5 +566,7 @@ namespace AAMachine.UI
         private System.Windows.Forms.Button Btn_RolloffTest;
         private System.Windows.Forms.Button Btn_SequentialContrastTest;
         private System.Windows.Forms.Button Btn_CallMemoryMonitor;
+        private System.Windows.Forms.Button Btn_Positive_CCD_Test;
+        private System.Windows.Forms.Button Btn_45CCD_Test;
     }
 }
