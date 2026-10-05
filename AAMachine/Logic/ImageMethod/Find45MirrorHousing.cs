@@ -13,7 +13,7 @@ namespace AAMachine.Logic.ImageMethod
     public class Find45MirrorHousing
     {
         #region parameter define
-        private string SavePath = "D:\\ProcessingImage\\0.45CCD_MirrorHousingResult\\";
+        public string SavePath = "D:\\ProcessingImage\\0.45CCD_MirrorHousingResult\\";
         public ResultInfo Result { get; } = new ResultInfo();
         #endregion
 

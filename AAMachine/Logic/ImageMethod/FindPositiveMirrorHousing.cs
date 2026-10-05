@@ -9,7 +9,7 @@ namespace AAMachine.Logic.ImageMethod
     public class FindPositiveMirrorHousing
     {
         #region parameter define
-        private string SavePath = "D:\\ProcessingImage\\0.PositiveCCD_MirrorHousingResult\\";
+        public string SavePath = "D:\\ProcessingImage\\0.PositiveCCD_MirrorHousingResult\\";
         public ResultInfo Result { get; } = new ResultInfo();
         #endregion
 

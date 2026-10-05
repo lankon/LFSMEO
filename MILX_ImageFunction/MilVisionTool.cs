@@ -163,6 +163,27 @@ namespace MILX_ImageFunction
             }
         }
 
+        public MIL_ID ByteToMil(byte[] source, int width, int height)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (width <= 0) throw new ArgumentOutOfRangeException(nameof(width));
+            if (height <= 0) throw new ArgumentOutOfRangeException(nameof(height));
+
+            MIL_ID image = MIL.M_NULL;
+
+            MIL.MbufAlloc2d(
+                localMilSystem,
+                width,
+                height,
+                8 + MIL.M_UNSIGNED,
+                MIL.M_IMAGE + MIL.M_PROC + MIL.M_DISP,
+                ref image);
+
+            MIL.MbufPut(image, source);
+
+            return image;
+        }
+
         public void SafeMilBufFree(ref MIL_ID buffer)
         {
             if (buffer == MIL.M_NULL) return;
