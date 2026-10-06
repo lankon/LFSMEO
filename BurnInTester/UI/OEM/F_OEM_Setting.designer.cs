@@ -38,6 +38,8 @@ namespace BurnInTester.UI
             this.Btn_VirtualTemperature = new System.Windows.Forms.Button();
             this.Lbl_VirtualTemperature = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.Btn_ResourceMonitor = new System.Windows.Forms.Button();
+            this.Lbl_ResourceMonitor = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,6 +84,8 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.Btn_VirtualTemperature, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.Lbl_VirtualTemperature, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_ResourceMonitor, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Lbl_ResourceMonitor, 3, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 40);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -131,7 +135,7 @@ namespace BurnInTester.UI
             this.Lbl_VirtualTemperature.Name = "Lbl_VirtualTemperature";
             this.Lbl_VirtualTemperature.Size = new System.Drawing.Size(124, 61);
             this.Lbl_VirtualTemperature.TabIndex = 45;
-            this.Lbl_VirtualTemperature.Text = "Virtual \r\nTemp Test";
+            this.Lbl_VirtualTemperature.Text = "Virtual \r\nTemperature";
             this.Lbl_VirtualTemperature.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // button1
@@ -143,9 +147,31 @@ namespace BurnInTester.UI
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
+            //
+            // Btn_ResourceMonitor
+            //
+            this.Btn_ResourceMonitor.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_ResourceMonitor.BackgroundImage")));
+            this.Btn_ResourceMonitor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_ResourceMonitor.Location = new System.Drawing.Point(420, 15);
+            this.Btn_ResourceMonitor.Margin = new System.Windows.Forms.Padding(30, 15, 30, 5);
+            this.Btn_ResourceMonitor.Name = "Btn_ResourceMonitor";
+            this.Btn_ResourceMonitor.Size = new System.Drawing.Size(70, 70);
+            this.Btn_ResourceMonitor.TabIndex = 46;
+            this.Btn_ResourceMonitor.UseVisualStyleBackColor = true;
+            this.Btn_ResourceMonitor.Click += new System.EventHandler(this.Btn_ResourceMonitor_Click);
+            //
+            // Lbl_ResourceMonitor
+            //
+            this.Lbl_ResourceMonitor.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Lbl_ResourceMonitor.Location = new System.Drawing.Point(393, 90);
+            this.Lbl_ResourceMonitor.Name = "Lbl_ResourceMonitor";
+            this.Lbl_ResourceMonitor.Size = new System.Drawing.Size(124, 61);
+            this.Lbl_ResourceMonitor.TabIndex = 47;
+            this.Lbl_ResourceMonitor.Text = "Resource\r\nMonitor";
+            this.Lbl_ResourceMonitor.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            //
             // F_OEM_Setting
-            // 
+            //
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
@@ -170,5 +196,7 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button Btn_VirtualTemperature;
         private System.Windows.Forms.Label Lbl_VirtualTemperature;
+        private System.Windows.Forms.Button Btn_ResourceMonitor;
+        private System.Windows.Forms.Label Lbl_ResourceMonitor;
     }
 }

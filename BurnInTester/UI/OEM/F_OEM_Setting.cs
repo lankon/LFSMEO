@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
-
 using ToolFunction;
 using BurnInTester.Base;
 using DeviceCore;
@@ -137,6 +136,12 @@ namespace BurnInTester.UI
             catch(Exception ex)
             {
             }
+        }
+
+        private void Btn_ResourceMonitor_Click(object sender, EventArgs e)
+        {
+            Tool.F_Monitor f_Monitor = new Tool.F_Monitor();
+            f_Monitor.Show();
         }
     }
 }

@@ -65,7 +65,7 @@ namespace BurnInTester.Logic
                         {
                             MonitorBoxNum = count % HW_Param.TC_Box._CtrlBoxNum;
                             if (HW_Param.TC_Box.Use[MonitorBoxNum] == true)
-                                await Task.Delay(100);  //Thread休息用,溫度更新太慢可縮短
+                                await Task.Delay(1);  //Thread休息用,溫度更新太慢可縮短
 
                             if (StartHeating == true)
                                 State = WORK.START;
@@ -106,6 +106,9 @@ namespace BurnInTester.Logic
         #region public function
         public void Start(double sv, string cmd = "", int box_num = 0)
         {
+            if (box_num == 0)
+                return;
+            
             SV = sv;
             CommandBoxNum = box_num;
             StartHeating = true;

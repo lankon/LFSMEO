@@ -145,17 +145,9 @@ namespace BurnInTester.UI
             }
         }
 
-        private void Btn_GetStats_Click(object sender, EventArgs e)
-        {
-            Tool.F_Monitor f_Monitor = new Tool.F_Monitor();
-            f_Monitor.Show();
-        }
-
-        
-
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-
+            StartFormLogic.StartTest();
         }
 
         private void Btn_TestSetting_Click(object sender, EventArgs e)

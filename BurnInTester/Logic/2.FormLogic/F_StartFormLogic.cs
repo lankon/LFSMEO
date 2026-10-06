@@ -18,16 +18,17 @@ namespace BurnInTester.Logic
     public class F_StartFormLogic
     {
         public F_StartFormLogic(IBurnInTesterMachine burnInTesterMachine , IServiceProvider serviceProvider,
-                                AgingInformation agingInformation)
+                                AgingInformation agingInformation, TC_Task tC_Task)
         {
             BurnInTesterMachine = burnInTesterMachine;
             ServiceProvider = serviceProvider;
             AgingInformation = agingInformation;
+            AgingTCTask = tC_Task;
         }
 
         #region parameter define
-        private int CurBoxNum = 1;
         private AgingInformation AgingInformation;
+        private TC_Task AgingTCTask;
         private IBurnInTesterMachine BurnInTesterMachine;
         private IServiceProvider ServiceProvider;
         private eF_StartForm[] AgingParam = new eF_StartForm[]
@@ -82,6 +83,12 @@ namespace BurnInTester.Logic
             // [Status]
             ApplicationSetting.SetRecipe<eF_StartForm>((int)eF_StartForm.TxtBx_RunnningTime, param[num].RunnningTime);
             ApplicationSetting.SetRecipe<eF_StartForm>((int)eF_StartForm.TxtBx_RemainingTime, param[num].RemainingTime);
+        }
+
+        public int StartTest()
+        {
+            AgingTCTask.Start(50, box_num: GetCurBoxNum());
+            return 0;
         }
 
 

@@ -24,7 +24,6 @@ namespace BurnInTester.Logic
         }
 
         #region parameter define
-        private int BoxCount = 0;                           // 老化箱數量
         public int CurSelectBoxNo { get; set; } = 0;        // 目前選取老化箱編號
         private List<AGING_INFO> PARAM_INFO = new List<AGING_INFO>();
         public string AgingConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "AgingConfig.xml");
@@ -41,11 +40,14 @@ namespace BurnInTester.Logic
             public string SerialNumber;         //序號
 
             // [Status]
-            public string RunnningTime;        //已運行時間
-            public string RemainingTime;       //剩餘時間
+            public string StartTime;            //啟動時間
+            public string RunnningTime;         //已運行時間
+            public string RemainingTime;        //剩餘時間
+            public string EndTime;              //結束時間
         }
         public class TemperatureInfo
         {
+            // 目前最新的溫度資訊
             private double[] PV = new double[5];
             private double[] SV = new double[5];
 
@@ -76,7 +78,7 @@ namespace BurnInTester.Logic
         #region private function
         private void InitialParameter()
         {
-            BoxCount = _HW_ParamSetting.TC_Box._CtrlBoxNum;
+            int BoxCount = _HW_ParamSetting.TC_Box._CtrlBoxNum;
 
             TemperatureInfos = new TemperatureInfo[BoxCount];
             for (int i = 0; i < BoxCount; i++)

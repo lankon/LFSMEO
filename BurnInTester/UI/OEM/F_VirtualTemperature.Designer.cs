@@ -46,6 +46,7 @@
             // 
             // layout
             // 
+            this.layout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.layout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.layout.ColumnCount = 1;
             this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -69,8 +70,9 @@
             // 
             // targetHeader
             // 
-            this.targetHeader.BackColor = System.Drawing.Color.Silver;
+            this.targetHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.targetHeader.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.targetHeader.ForeColor = System.Drawing.Color.Gold;
             this.targetHeader.Location = new System.Drawing.Point(17, 17);
             this.targetHeader.Margin = new System.Windows.Forms.Padding(0);
             this.targetHeader.Name = "targetHeader";
@@ -81,6 +83,7 @@
             // 
             // settingsLayout
             // 
+            this.settingsLayout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.settingsLayout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.settingsLayout.ColumnCount = 2;
             this.settingsLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
@@ -103,7 +106,9 @@
             // 
             // targetLabel
             // 
+            this.targetLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.targetLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.targetLabel.ForeColor = System.Drawing.Color.Gold;
             this.targetLabel.Location = new System.Drawing.Point(4, 1);
             this.targetLabel.Name = "targetLabel";
             this.targetLabel.Size = new System.Drawing.Size(134, 38);
@@ -113,8 +118,11 @@
             // 
             // Cmbx_BoxCh
             // 
+            this.Cmbx_BoxCh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.Cmbx_BoxCh.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Cmbx_BoxCh.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Cmbx_BoxCh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Cmbx_BoxCh.ForeColor = System.Drawing.Color.Gold;
             this.Cmbx_BoxCh.FormattingEnabled = true;
             this.Cmbx_BoxCh.Location = new System.Drawing.Point(150, 6);
             this.Cmbx_BoxCh.Margin = new System.Windows.Forms.Padding(8, 5, 8, 3);
@@ -125,7 +133,9 @@
             // 
             // modeLabel
             // 
+            this.modeLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.modeLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.modeLabel.ForeColor = System.Drawing.Color.Gold;
             this.modeLabel.Location = new System.Drawing.Point(4, 40);
             this.modeLabel.Name = "modeLabel";
             this.modeLabel.Size = new System.Drawing.Size(134, 34);
@@ -135,13 +145,16 @@
             // 
             // CkBx_Manual
             // 
+            this.CkBx_Manual.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.CkBx_Manual.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CkBx_Manual.ForeColor = System.Drawing.Color.Gold;
             this.CkBx_Manual.Location = new System.Drawing.Point(150, 40);
             this.CkBx_Manual.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.CkBx_Manual.Name = "CkBx_Manual";
             this.CkBx_Manual.Size = new System.Drawing.Size(489, 34);
             this.CkBx_Manual.TabIndex = 6;
             this.CkBx_Manual.Text = "Manual Simulation";
+            this.CkBx_Manual.UseVisualStyleBackColor = false;
             this.CkBx_Manual.CheckedChanged += new System.EventHandler(this.CkBx_Manual_CheckedChanged);
             // 
             // modeHint
@@ -149,7 +162,7 @@
             this.settingsLayout.SetColumnSpan(this.modeHint, 2);
             this.modeHint.Dock = System.Windows.Forms.DockStyle.Fill;
             this.modeHint.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.modeHint.ForeColor = System.Drawing.Color.DimGray;
+            this.modeHint.ForeColor = System.Drawing.Color.Gold;
             this.modeHint.Location = new System.Drawing.Point(4, 75);
             this.modeHint.Name = "modeHint";
             this.modeHint.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
@@ -160,8 +173,9 @@
             // 
             // temperatureHeader
             // 
-            this.temperatureHeader.BackColor = System.Drawing.Color.Silver;
+            this.temperatureHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.temperatureHeader.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.temperatureHeader.ForeColor = System.Drawing.Color.Gold;
             this.temperatureHeader.Location = new System.Drawing.Point(17, 171);
             this.temperatureHeader.Margin = new System.Windows.Forms.Padding(0);
             this.temperatureHeader.Name = "temperatureHeader";
@@ -172,6 +186,7 @@
             // 
             // temperatureLayout
             // 
+            this.temperatureLayout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.temperatureLayout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.temperatureLayout.ColumnCount = 2;
             this.temperatureLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
@@ -195,6 +210,7 @@
             // 
             this.TrackBar_Temperature.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.TrackBar_Temperature.AutoSize = false;
+            this.TrackBar_Temperature.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.temperatureLayout.SetColumnSpan(this.TrackBar_Temperature, 2);
             this.TrackBar_Temperature.Enabled = false;
             this.TrackBar_Temperature.LargeChange = 100;
@@ -210,6 +226,7 @@
             // 
             // rangeLayout
             // 
+            this.rangeLayout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.rangeLayout.ColumnCount = 2;
             this.temperatureLayout.SetColumnSpan(this.rangeLayout, 2);
             this.rangeLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -229,7 +246,7 @@
             // 
             this.minimumLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.minimumLabel.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.minimumLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.minimumLabel.ForeColor = System.Drawing.Color.Gold;
             this.minimumLabel.Location = new System.Drawing.Point(3, 0);
             this.minimumLabel.Name = "minimumLabel";
             this.minimumLabel.Size = new System.Drawing.Size(301, 24);
@@ -241,7 +258,7 @@
             // 
             this.maximumLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.maximumLabel.Font = new System.Drawing.Font("微軟正黑體", 10F);
-            this.maximumLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.maximumLabel.ForeColor = System.Drawing.Color.Gold;
             this.maximumLabel.Location = new System.Drawing.Point(310, 0);
             this.maximumLabel.Name = "maximumLabel";
             this.maximumLabel.Size = new System.Drawing.Size(301, 24);
@@ -251,7 +268,9 @@
             // 
             // temperatureLabel
             // 
+            this.temperatureLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.temperatureLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.temperatureLabel.ForeColor = System.Drawing.Color.Gold;
             this.temperatureLabel.Location = new System.Drawing.Point(4, 85);
             this.temperatureLabel.Name = "temperatureLabel";
             this.temperatureLabel.Size = new System.Drawing.Size(134, 46);
@@ -261,6 +280,7 @@
             // 
             // numericRow
             // 
+            this.numericRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.numericRow.Controls.Add(this.NumUpDn_Temperature);
             this.numericRow.Controls.Add(this.valueLabel);
             this.numericRow.Location = new System.Drawing.Point(150, 85);
@@ -273,9 +293,11 @@
             // 
             // NumUpDn_Temperature
             // 
+            this.NumUpDn_Temperature.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.NumUpDn_Temperature.DecimalPlaces = 1;
             this.NumUpDn_Temperature.Enabled = false;
             this.NumUpDn_Temperature.Font = new System.Drawing.Font("微軟正黑體", 18F);
+            this.NumUpDn_Temperature.ForeColor = System.Drawing.Color.Gold;
             this.NumUpDn_Temperature.Increment = new decimal(new int[] {
             1,
             0,
@@ -301,6 +323,7 @@
             // 
             // valueLabel
             // 
+            this.valueLabel.ForeColor = System.Drawing.Color.Gold;
             this.valueLabel.Location = new System.Drawing.Point(160, 4);
             this.valueLabel.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.valueLabel.Name = "valueLabel";
@@ -311,6 +334,7 @@
             // 
             // buttonRow
             // 
+            this.buttonRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.buttonRow.Controls.Add(this.Btn_Reset);
             this.buttonRow.Controls.Add(this.Btn_ApplyAll);
             this.buttonRow.Location = new System.Drawing.Point(17, 349);
@@ -323,31 +347,43 @@
             // 
             // Btn_Reset
             // 
+            this.Btn_Reset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Btn_Reset.FlatAppearance.BorderColor = System.Drawing.Color.Gold;
+            this.Btn_Reset.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.Btn_Reset.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.Btn_Reset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Btn_Reset.ForeColor = System.Drawing.Color.Gold;
             this.Btn_Reset.Location = new System.Drawing.Point(3, 6);
             this.Btn_Reset.Margin = new System.Windows.Forms.Padding(3, 0, 12, 0);
             this.Btn_Reset.Name = "Btn_Reset";
             this.Btn_Reset.Size = new System.Drawing.Size(180, 42);
             this.Btn_Reset.TabIndex = 19;
             this.Btn_Reset.Text = "Reset to 25°C";
-            this.Btn_Reset.UseVisualStyleBackColor = true;
+            this.Btn_Reset.UseVisualStyleBackColor = false;
             this.Btn_Reset.Click += new System.EventHandler(this.Btn_Reset_Click);
             // 
             // Btn_ApplyAll
             // 
+            this.Btn_ApplyAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Btn_ApplyAll.FlatAppearance.BorderColor = System.Drawing.Color.Gold;
+            this.Btn_ApplyAll.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.Btn_ApplyAll.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.Btn_ApplyAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Btn_ApplyAll.ForeColor = System.Drawing.Color.Gold;
             this.Btn_ApplyAll.Location = new System.Drawing.Point(195, 6);
             this.Btn_ApplyAll.Margin = new System.Windows.Forms.Padding(0);
             this.Btn_ApplyAll.Name = "Btn_ApplyAll";
             this.Btn_ApplyAll.Size = new System.Drawing.Size(240, 42);
             this.Btn_ApplyAll.TabIndex = 20;
             this.Btn_ApplyAll.Text = "Apply to All Active Channels";
-            this.Btn_ApplyAll.UseVisualStyleBackColor = true;
+            this.Btn_ApplyAll.UseVisualStyleBackColor = false;
             this.Btn_ApplyAll.Click += new System.EventHandler(this.Btn_ApplyAll_Click);
             // 
             // F_VirtualTemperature
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.ClientSize = new System.Drawing.Size(682, 425);
             this.Controls.Add(this.layout);
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));

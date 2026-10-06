@@ -76,6 +76,7 @@ namespace BurnInTester.UI
             // Tm_UpdatePV
             // 
             this.Tm_UpdatePV.Enabled = true;
+            this.Tm_UpdatePV.Interval = 10;
             this.Tm_UpdatePV.Tick += new System.EventHandler(this.Tm_UpdatePV_Tick);
             // 
             // F_TCtrlBoxTemperature

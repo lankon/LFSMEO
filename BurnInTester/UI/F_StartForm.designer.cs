@@ -31,8 +31,6 @@ namespace BurnInTester.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.LyPnl_CtrlBoxStatus = new System.Windows.Forms.TableLayoutPanel();
-            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
-            this.Btn_GetStats = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
@@ -72,6 +70,11 @@ namespace BurnInTester.UI
             this.TxtBx_RespDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Pnl_Info = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.TxtBx_StartTime = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.TxtBx_EndTime = new System.Windows.Forms.TextBox();
+            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.LyPnl_CtrlBoxStatus.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -109,24 +112,6 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxStatus.Size = new System.Drawing.Size(653, 943);
             this.LyPnl_CtrlBoxStatus.TabIndex = 0;
             // 
-            // CtrlBoxStatus1
-            // 
-            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
-            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
-            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
-            this.CtrlBoxStatus1.TabIndex = 0;
-            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
-            // 
-            // Btn_GetStats
-            // 
-            this.Btn_GetStats.Location = new System.Drawing.Point(876, 8);
-            this.Btn_GetStats.Name = "Btn_GetStats";
-            this.Btn_GetStats.Size = new System.Drawing.Size(138, 60);
-            this.Btn_GetStats.TabIndex = 1;
-            this.Btn_GetStats.Text = "Btn_GetStats";
-            this.Btn_GetStats.UseVisualStyleBackColor = true;
-            this.Btn_GetStats.Click += new System.EventHandler(this.Btn_GetStats_Click);
-            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -145,19 +130,25 @@ namespace BurnInTester.UI
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_EndTime, 1, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label14, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_StartTime, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label10, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label7, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.TxtBx_RunnningTime, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.TxtBx_RemainingTime, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_RunnningTime, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_RemainingTime, 1, 3);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(514, 31);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowCount = 7;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(352, 304);
             this.tableLayoutPanel2.TabIndex = 10;
             // 
@@ -176,7 +167,7 @@ namespace BurnInTester.UI
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(6, 32);
+            this.label5.Location = new System.Drawing.Point(6, 70);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(165, 35);
             this.label5.TabIndex = 2;
@@ -186,7 +177,7 @@ namespace BurnInTester.UI
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(6, 70);
+            this.label6.Location = new System.Drawing.Point(6, 108);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(165, 35);
             this.label6.TabIndex = 0;
@@ -196,7 +187,7 @@ namespace BurnInTester.UI
             // TxtBx_RunnningTime
             // 
             this.TxtBx_RunnningTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_RunnningTime.Location = new System.Drawing.Point(180, 35);
+            this.TxtBx_RunnningTime.Location = new System.Drawing.Point(180, 73);
             this.TxtBx_RunnningTime.Name = "TxtBx_RunnningTime";
             this.TxtBx_RunnningTime.ReadOnly = true;
             this.TxtBx_RunnningTime.Size = new System.Drawing.Size(166, 29);
@@ -205,7 +196,7 @@ namespace BurnInTester.UI
             // TxtBx_RemainingTime
             // 
             this.TxtBx_RemainingTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_RemainingTime.Location = new System.Drawing.Point(180, 73);
+            this.TxtBx_RemainingTime.Location = new System.Drawing.Point(180, 111);
             this.TxtBx_RemainingTime.Name = "TxtBx_RemainingTime";
             this.TxtBx_RemainingTime.ReadOnly = true;
             this.TxtBx_RemainingTime.Size = new System.Drawing.Size(166, 29);
@@ -392,7 +383,6 @@ namespace BurnInTester.UI
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.Btn_Test_TC);
             this.panel3.Controls.Add(this.panel4);
-            this.panel3.Controls.Add(this.Btn_GetStats);
             this.panel3.Location = new System.Drawing.Point(680, 482);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1204, 473);
@@ -575,6 +565,52 @@ namespace BurnInTester.UI
             this.Pnl_Info.Size = new System.Drawing.Size(327, 468);
             this.Pnl_Info.TabIndex = 5;
             // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label10.Location = new System.Drawing.Point(6, 32);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(165, 35);
+            this.label10.TabIndex = 6;
+            this.label10.Text = "Start Time";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_StartTime
+            // 
+            this.TxtBx_StartTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_StartTime.Location = new System.Drawing.Point(180, 35);
+            this.TxtBx_StartTime.Name = "TxtBx_StartTime";
+            this.TxtBx_StartTime.ReadOnly = true;
+            this.TxtBx_StartTime.Size = new System.Drawing.Size(166, 29);
+            this.TxtBx_StartTime.TabIndex = 7;
+            // 
+            // label14
+            // 
+            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Location = new System.Drawing.Point(6, 146);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(165, 35);
+            this.label14.TabIndex = 8;
+            this.label14.Text = "End Time";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_EndTime
+            // 
+            this.TxtBx_EndTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_EndTime.Location = new System.Drawing.Point(180, 149);
+            this.TxtBx_EndTime.Name = "TxtBx_EndTime";
+            this.TxtBx_EndTime.ReadOnly = true;
+            this.TxtBx_EndTime.Size = new System.Drawing.Size(166, 29);
+            this.TxtBx_EndTime.TabIndex = 9;
+            // 
+            // CtrlBoxStatus1
+            // 
+            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
+            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
+            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
+            this.CtrlBoxStatus1.TabIndex = 0;
+            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -609,7 +645,6 @@ namespace BurnInTester.UI
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel LyPnl_CtrlBoxStatus;
-        private System.Windows.Forms.Button Btn_GetStats;
         private UC_CtrlBoxStatus CtrlBoxStatus1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
@@ -650,6 +685,10 @@ namespace BurnInTester.UI
         private System.Windows.Forms.TextBox TxtBx_SendDelay;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button Btn_Test_TC;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox TxtBx_StartTime;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox TxtBx_EndTime;
         //private UC_CtrlBoxStatus CtrlBoxStatus1;
     }
 }
