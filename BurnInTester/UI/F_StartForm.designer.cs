@@ -31,8 +31,13 @@ namespace BurnInTester.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.LyPnl_CtrlBoxStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_EndTime = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.TxtBx_StartTime = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -54,7 +59,13 @@ namespace BurnInTester.UI
             this.label1 = new System.Windows.Forms.Label();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.Btn_Test_TC = new System.Windows.Forms.Button();
+            this.Pnl_InformationSelector = new System.Windows.Forms.FlowLayoutPanel();
+            this.Chk_InfoTemperature = new System.Windows.Forms.CheckBox();
+            this.Chk_InfoVoltage = new System.Windows.Forms.CheckBox();
+            this.Chk_InfoCurrent = new System.Windows.Forms.CheckBox();
+            this.Chk_InfoPower = new System.Windows.Forms.CheckBox();
+            this.Chk_InfoAutoFollow = new System.Windows.Forms.CheckBox();
+            this.Labl_InformationLatest = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.Btn_Stop_TC = new System.Windows.Forms.Button();
@@ -70,17 +81,14 @@ namespace BurnInTester.UI
             this.TxtBx_RespDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Pnl_Info = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.TxtBx_StartTime = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.TxtBx_EndTime = new System.Windows.Forms.TextBox();
-            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
+            this.Plot_Information = new ScottPlot.FormsPlot();
             this.LyPnl_CtrlBoxStatus.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.Pnl_InformationSelector.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -111,6 +119,14 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxStatus.Size = new System.Drawing.Size(653, 943);
             this.LyPnl_CtrlBoxStatus.TabIndex = 0;
+            // 
+            // CtrlBoxStatus1
+            // 
+            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
+            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
+            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
+            this.CtrlBoxStatus1.TabIndex = 0;
+            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
             // 
             // panel1
             // 
@@ -151,6 +167,44 @@ namespace BurnInTester.UI
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(352, 304);
             this.tableLayoutPanel2.TabIndex = 10;
+            // 
+            // TxtBx_EndTime
+            // 
+            this.TxtBx_EndTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_EndTime.Location = new System.Drawing.Point(180, 149);
+            this.TxtBx_EndTime.Name = "TxtBx_EndTime";
+            this.TxtBx_EndTime.ReadOnly = true;
+            this.TxtBx_EndTime.Size = new System.Drawing.Size(166, 29);
+            this.TxtBx_EndTime.TabIndex = 9;
+            // 
+            // label14
+            // 
+            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Location = new System.Drawing.Point(6, 146);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(165, 35);
+            this.label14.TabIndex = 8;
+            this.label14.Text = "End Time";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_StartTime
+            // 
+            this.TxtBx_StartTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_StartTime.Location = new System.Drawing.Point(180, 35);
+            this.TxtBx_StartTime.Name = "TxtBx_StartTime";
+            this.TxtBx_StartTime.ReadOnly = true;
+            this.TxtBx_StartTime.Size = new System.Drawing.Size(166, 29);
+            this.TxtBx_StartTime.TabIndex = 7;
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label10.Location = new System.Drawing.Point(6, 32);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(165, 35);
+            this.label10.TabIndex = 6;
+            this.label10.Text = "Start Time";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label7
             // 
@@ -381,29 +435,129 @@ namespace BurnInTester.UI
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.Btn_Test_TC);
+            this.panel3.Controls.Add(this.Labl_InformationLatest);
+            this.panel3.Controls.Add(this.Pnl_InformationSelector);
+            this.panel3.Controls.Add(this.Plot_Information);
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Location = new System.Drawing.Point(680, 482);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1204, 473);
             this.panel3.TabIndex = 4;
             // 
-            // Btn_Test_TC
+            // Pnl_InformationSelector
             // 
-            this.Btn_Test_TC.Location = new System.Drawing.Point(648, 217);
-            this.Btn_Test_TC.Name = "Btn_Test_TC";
-            this.Btn_Test_TC.Size = new System.Drawing.Size(138, 60);
-            this.Btn_Test_TC.TabIndex = 5;
-            this.Btn_Test_TC.Text = "Test TC";
-            this.Btn_Test_TC.UseVisualStyleBackColor = true;
-            this.Btn_Test_TC.Click += new System.EventHandler(this.Btn_Test_TC_Click);
+            this.Pnl_InformationSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
+            this.Pnl_InformationSelector.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.Pnl_InformationSelector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Pnl_InformationSelector.Controls.Add(this.Chk_InfoTemperature);
+            this.Pnl_InformationSelector.Controls.Add(this.Chk_InfoVoltage);
+            this.Pnl_InformationSelector.Controls.Add(this.Chk_InfoCurrent);
+            this.Pnl_InformationSelector.Controls.Add(this.Chk_InfoPower);
+            this.Pnl_InformationSelector.Controls.Add(this.Chk_InfoAutoFollow);
+            this.Pnl_InformationSelector.Location = new System.Drawing.Point(3, 3);
+            this.Pnl_InformationSelector.Name = "Pnl_InformationSelector";
+            this.Pnl_InformationSelector.Padding = new System.Windows.Forms.Padding(10, 7, 10, 4);
+            this.Pnl_InformationSelector.Size = new System.Drawing.Size(806, 44);
+            this.Pnl_InformationSelector.TabIndex = 7;
+            this.Pnl_InformationSelector.WrapContents = false;
+            // 
+            // Chk_InfoTemperature
+            // 
+            this.Chk_InfoTemperature.AutoSize = false;
+            this.Chk_InfoTemperature.BackColor = System.Drawing.Color.Transparent;
+            this.Chk_InfoTemperature.Checked = true;
+            this.Chk_InfoTemperature.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.Chk_InfoTemperature.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Chk_InfoTemperature.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(85)))), ((int)(((byte)(35)))));
+            this.Chk_InfoTemperature.Location = new System.Drawing.Point(10, 7);
+            this.Chk_InfoTemperature.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
+            this.Chk_InfoTemperature.Name = "Chk_InfoTemperature";
+            this.Chk_InfoTemperature.Size = new System.Drawing.Size(112, 28);
+            this.Chk_InfoTemperature.TabIndex = 0;
+            this.Chk_InfoTemperature.Text = "溫度 °C";
+            this.Chk_InfoTemperature.UseVisualStyleBackColor = false;
+            // 
+            // Chk_InfoVoltage
+            // 
+            this.Chk_InfoVoltage.AutoSize = false;
+            this.Chk_InfoVoltage.BackColor = System.Drawing.Color.Transparent;
+            this.Chk_InfoVoltage.Checked = true;
+            this.Chk_InfoVoltage.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.Chk_InfoVoltage.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Chk_InfoVoltage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(92)))), ((int)(((byte)(175)))));
+            this.Chk_InfoVoltage.Location = new System.Drawing.Point(136, 7);
+            this.Chk_InfoVoltage.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
+            this.Chk_InfoVoltage.Name = "Chk_InfoVoltage";
+            this.Chk_InfoVoltage.Size = new System.Drawing.Size(112, 28);
+            this.Chk_InfoVoltage.TabIndex = 1;
+            this.Chk_InfoVoltage.Text = "電壓 V";
+            this.Chk_InfoVoltage.UseVisualStyleBackColor = false;
+            // 
+            // Chk_InfoCurrent
+            // 
+            this.Chk_InfoCurrent.AutoSize = false;
+            this.Chk_InfoCurrent.BackColor = System.Drawing.Color.Transparent;
+            this.Chk_InfoCurrent.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Chk_InfoCurrent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(135)))), ((int)(((byte)(75)))));
+            this.Chk_InfoCurrent.Location = new System.Drawing.Point(262, 7);
+            this.Chk_InfoCurrent.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
+            this.Chk_InfoCurrent.Name = "Chk_InfoCurrent";
+            this.Chk_InfoCurrent.Size = new System.Drawing.Size(112, 28);
+            this.Chk_InfoCurrent.TabIndex = 2;
+            this.Chk_InfoCurrent.Text = "電流 A";
+            this.Chk_InfoCurrent.UseVisualStyleBackColor = false;
+            // 
+            // Chk_InfoPower
+            // 
+            this.Chk_InfoPower.AutoSize = false;
+            this.Chk_InfoPower.BackColor = System.Drawing.Color.Transparent;
+            this.Chk_InfoPower.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Chk_InfoPower.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(75)))), ((int)(((byte)(155)))));
+            this.Chk_InfoPower.Location = new System.Drawing.Point(388, 7);
+            this.Chk_InfoPower.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
+            this.Chk_InfoPower.Name = "Chk_InfoPower";
+            this.Chk_InfoPower.Size = new System.Drawing.Size(112, 28);
+            this.Chk_InfoPower.TabIndex = 3;
+            this.Chk_InfoPower.Text = "功率 W";
+            this.Chk_InfoPower.UseVisualStyleBackColor = false;
+            // 
+            // Chk_InfoAutoFollow
+            // 
+            this.Chk_InfoAutoFollow.AutoSize = false;
+            this.Chk_InfoAutoFollow.BackColor = System.Drawing.Color.Transparent;
+            this.Chk_InfoAutoFollow.Checked = true;
+            this.Chk_InfoAutoFollow.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.Chk_InfoAutoFollow.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Chk_InfoAutoFollow.ForeColor = System.Drawing.Color.Black;
+            this.Chk_InfoAutoFollow.Location = new System.Drawing.Point(514, 7);
+            this.Chk_InfoAutoFollow.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
+            this.Chk_InfoAutoFollow.Name = "Chk_InfoAutoFollow";
+            this.Chk_InfoAutoFollow.Size = new System.Drawing.Size(126, 28);
+            this.Chk_InfoAutoFollow.TabIndex = 4;
+            this.Chk_InfoAutoFollow.Text = "自動追蹤";
+            this.Chk_InfoAutoFollow.UseVisualStyleBackColor = false;
+            // 
+            // Labl_InformationLatest
+            // 
+            this.Labl_InformationLatest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Labl_InformationLatest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.Labl_InformationLatest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_InformationLatest.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Labl_InformationLatest.ForeColor = System.Drawing.Color.Black;
+            this.Labl_InformationLatest.Location = new System.Drawing.Point(815, 322);
+            this.Labl_InformationLatest.Name = "Labl_InformationLatest";
+            this.Labl_InformationLatest.Padding = new System.Windows.Forms.Padding(18, 8, 8, 8);
+            this.Labl_InformationLatest.Size = new System.Drawing.Size(384, 147);
+            this.Labl_InformationLatest.TabIndex = 8;
+            this.Labl_InformationLatest.Text = "Latest\r\nNo data";
+            this.Labl_InformationLatest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.tableLayoutPanel4);
             this.panel4.Controls.Add(this.tableLayoutPanel3);
-            this.panel4.Location = new System.Drawing.Point(7, 154);
+            this.panel4.Location = new System.Drawing.Point(815, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(384, 314);
             this.panel4.TabIndex = 4;
@@ -565,51 +719,15 @@ namespace BurnInTester.UI
             this.Pnl_Info.Size = new System.Drawing.Size(327, 468);
             this.Pnl_Info.TabIndex = 5;
             // 
-            // label10
+            // Plot_Information
             // 
-            this.label10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label10.Location = new System.Drawing.Point(6, 32);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(165, 35);
-            this.label10.TabIndex = 6;
-            this.label10.Text = "Start Time";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_StartTime
-            // 
-            this.TxtBx_StartTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_StartTime.Location = new System.Drawing.Point(180, 35);
-            this.TxtBx_StartTime.Name = "TxtBx_StartTime";
-            this.TxtBx_StartTime.ReadOnly = true;
-            this.TxtBx_StartTime.Size = new System.Drawing.Size(166, 29);
-            this.TxtBx_StartTime.TabIndex = 7;
-            // 
-            // label14
-            // 
-            this.label14.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label14.Location = new System.Drawing.Point(6, 146);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(165, 35);
-            this.label14.TabIndex = 8;
-            this.label14.Text = "End Time";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TxtBx_EndTime
-            // 
-            this.TxtBx_EndTime.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.TxtBx_EndTime.Location = new System.Drawing.Point(180, 149);
-            this.TxtBx_EndTime.Name = "TxtBx_EndTime";
-            this.TxtBx_EndTime.ReadOnly = true;
-            this.TxtBx_EndTime.Size = new System.Drawing.Size(166, 29);
-            this.TxtBx_EndTime.TabIndex = 9;
-            // 
-            // CtrlBoxStatus1
-            // 
-            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
-            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
-            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
-            this.CtrlBoxStatus1.TabIndex = 0;
-            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
+            this.Plot_Information.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Plot_Information.Location = new System.Drawing.Point(3, 50);
+            this.Plot_Information.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Plot_Information.Name = "Plot_Information";
+            this.Plot_Information.Size = new System.Drawing.Size(806, 419);
+            this.Plot_Information.TabIndex = 6;
             // 
             // F_StartForm
             // 
@@ -632,6 +750,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.Pnl_InformationSelector.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -684,11 +803,18 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox TxtBx_SendDelay;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button Btn_Test_TC;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox TxtBx_StartTime;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox TxtBx_EndTime;
+        private ScottPlot.FormsPlot Plot_Information;
+        private System.Windows.Forms.FlowLayoutPanel Pnl_InformationSelector;
+        private System.Windows.Forms.CheckBox Chk_InfoTemperature;
+        private System.Windows.Forms.CheckBox Chk_InfoVoltage;
+        private System.Windows.Forms.CheckBox Chk_InfoCurrent;
+        private System.Windows.Forms.CheckBox Chk_InfoPower;
+        private System.Windows.Forms.CheckBox Chk_InfoAutoFollow;
+        private System.Windows.Forms.Label Labl_InformationLatest;
         //private UC_CtrlBoxStatus CtrlBoxStatus1;
     }
 }

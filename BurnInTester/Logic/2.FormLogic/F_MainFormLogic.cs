@@ -67,6 +67,8 @@ namespace BurnInTester.Logic
             f_TemperatureControl.Update_TC_List();
             BurnInTesterMachine.TC.Initial_All_TemperatureControl();
             Tool.SaveLogToFile("Load Temperature Control Config");
+            ServiceProvider.GetRequiredService<TC_Task>();
+            Tool.SaveLogToFile("Start TC Task");
         }
         #endregion
 
