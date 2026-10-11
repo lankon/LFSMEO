@@ -50,6 +50,7 @@ namespace BurnInTester.Logic
             // 目前最新的溫度資訊
             private double[] PV = new double[5];
             private double[] SV = new double[5];
+            private DateTime CurDateTime = DateTime.Now;
 
             public void UpdatePV(double[] newPV)
             {
@@ -57,6 +58,8 @@ namespace BurnInTester.Logic
 
                 for (int i = 0; i < length; i++)
                     PV[i] = newPV[i];
+
+                CurDateTime = DateTime.Now;
             }
             public void UpdateSV(double[] newSV)
             {
@@ -71,6 +74,10 @@ namespace BurnInTester.Logic
             public double[] GetSV()
             {
                 return SV;
+            }
+            public DateTime GetRecordTime()
+            {
+                return CurDateTime;
             }
         }
         #endregion

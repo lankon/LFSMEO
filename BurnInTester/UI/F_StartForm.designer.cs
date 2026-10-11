@@ -8,19 +8,6 @@ namespace BurnInTester.UI
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -59,13 +46,14 @@ namespace BurnInTester.UI
             this.label1 = new System.Windows.Forms.Label();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.Labl_InformationLatest = new System.Windows.Forms.Label();
             this.Pnl_InformationSelector = new System.Windows.Forms.FlowLayoutPanel();
             this.Chk_InfoTemperature = new System.Windows.Forms.CheckBox();
             this.Chk_InfoVoltage = new System.Windows.Forms.CheckBox();
             this.Chk_InfoCurrent = new System.Windows.Forms.CheckBox();
             this.Chk_InfoPower = new System.Windows.Forms.CheckBox();
             this.Chk_InfoAutoFollow = new System.Windows.Forms.CheckBox();
-            this.Labl_InformationLatest = new System.Windows.Forms.Label();
+            this.Plot_Information = new ScottPlot.FormsPlot();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.Btn_Stop_TC = new System.Windows.Forms.Button();
@@ -81,7 +69,6 @@ namespace BurnInTester.UI
             this.TxtBx_RespDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Pnl_Info = new System.Windows.Forms.Panel();
-            this.Plot_Information = new ScottPlot.FormsPlot();
             this.LyPnl_CtrlBoxStatus.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -444,9 +431,23 @@ namespace BurnInTester.UI
             this.panel3.Size = new System.Drawing.Size(1204, 473);
             this.panel3.TabIndex = 4;
             // 
+            // Labl_InformationLatest
+            // 
+            this.Labl_InformationLatest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Labl_InformationLatest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.Labl_InformationLatest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Labl_InformationLatest.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Labl_InformationLatest.ForeColor = System.Drawing.Color.Black;
+            this.Labl_InformationLatest.Location = new System.Drawing.Point(815, 322);
+            this.Labl_InformationLatest.Name = "Labl_InformationLatest";
+            this.Labl_InformationLatest.Padding = new System.Windows.Forms.Padding(18, 8, 8, 8);
+            this.Labl_InformationLatest.Size = new System.Drawing.Size(384, 147);
+            this.Labl_InformationLatest.TabIndex = 8;
+            this.Labl_InformationLatest.Text = "Latest\r\nNo data";
+            this.Labl_InformationLatest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Pnl_InformationSelector
             // 
-            this.Pnl_InformationSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
             this.Pnl_InformationSelector.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.Pnl_InformationSelector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Pnl_InformationSelector.Controls.Add(this.Chk_InfoTemperature);
@@ -463,7 +464,6 @@ namespace BurnInTester.UI
             // 
             // Chk_InfoTemperature
             // 
-            this.Chk_InfoTemperature.AutoSize = false;
             this.Chk_InfoTemperature.BackColor = System.Drawing.Color.Transparent;
             this.Chk_InfoTemperature.Checked = true;
             this.Chk_InfoTemperature.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -479,7 +479,6 @@ namespace BurnInTester.UI
             // 
             // Chk_InfoVoltage
             // 
-            this.Chk_InfoVoltage.AutoSize = false;
             this.Chk_InfoVoltage.BackColor = System.Drawing.Color.Transparent;
             this.Chk_InfoVoltage.Checked = true;
             this.Chk_InfoVoltage.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -495,7 +494,6 @@ namespace BurnInTester.UI
             // 
             // Chk_InfoCurrent
             // 
-            this.Chk_InfoCurrent.AutoSize = false;
             this.Chk_InfoCurrent.BackColor = System.Drawing.Color.Transparent;
             this.Chk_InfoCurrent.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Chk_InfoCurrent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(135)))), ((int)(((byte)(75)))));
@@ -509,7 +507,6 @@ namespace BurnInTester.UI
             // 
             // Chk_InfoPower
             // 
-            this.Chk_InfoPower.AutoSize = false;
             this.Chk_InfoPower.BackColor = System.Drawing.Color.Transparent;
             this.Chk_InfoPower.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Chk_InfoPower.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(75)))), ((int)(((byte)(155)))));
@@ -523,7 +520,6 @@ namespace BurnInTester.UI
             // 
             // Chk_InfoAutoFollow
             // 
-            this.Chk_InfoAutoFollow.AutoSize = false;
             this.Chk_InfoAutoFollow.BackColor = System.Drawing.Color.Transparent;
             this.Chk_InfoAutoFollow.Checked = true;
             this.Chk_InfoAutoFollow.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -537,20 +533,15 @@ namespace BurnInTester.UI
             this.Chk_InfoAutoFollow.Text = "自動追蹤";
             this.Chk_InfoAutoFollow.UseVisualStyleBackColor = false;
             // 
-            // Labl_InformationLatest
+            // Plot_Information
             // 
-            this.Labl_InformationLatest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Labl_InformationLatest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.Labl_InformationLatest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Labl_InformationLatest.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Labl_InformationLatest.ForeColor = System.Drawing.Color.Black;
-            this.Labl_InformationLatest.Location = new System.Drawing.Point(815, 322);
-            this.Labl_InformationLatest.Name = "Labl_InformationLatest";
-            this.Labl_InformationLatest.Padding = new System.Windows.Forms.Padding(18, 8, 8, 8);
-            this.Labl_InformationLatest.Size = new System.Drawing.Size(384, 147);
-            this.Labl_InformationLatest.TabIndex = 8;
-            this.Labl_InformationLatest.Text = "Latest\r\nNo data";
-            this.Labl_InformationLatest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Plot_Information.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Plot_Information.Location = new System.Drawing.Point(3, 50);
+            this.Plot_Information.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Plot_Information.Name = "Plot_Information";
+            this.Plot_Information.Size = new System.Drawing.Size(806, 419);
+            this.Plot_Information.TabIndex = 6;
             // 
             // panel4
             // 
@@ -719,16 +710,6 @@ namespace BurnInTester.UI
             this.Pnl_Info.Size = new System.Drawing.Size(327, 468);
             this.Pnl_Info.TabIndex = 5;
             // 
-            // Plot_Information
-            // 
-            this.Plot_Information.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.Plot_Information.Location = new System.Drawing.Point(3, 50);
-            this.Plot_Information.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Plot_Information.Name = "Plot_Information";
-            this.Plot_Information.Size = new System.Drawing.Size(806, 419);
-            this.Plot_Information.TabIndex = 6;
-            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -741,6 +722,7 @@ namespace BurnInTester.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_StartForm";
             this.Text = "F_Equipment_Setting";
+            this.Load += new System.EventHandler(this.F_StartForm_Load);
             this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
             this.LyPnl_CtrlBoxStatus.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

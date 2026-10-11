@@ -26,7 +26,7 @@ namespace BurnInTester.Logic
         #region parameter define
         private TC_CommManage CommManage;
         private HW_ParamSetting HW_Param;
-        AgingInformation _AgingInformation;
+        private AgingInformation _AgingInformation;
         private int count = 0;
         private int MonitorBoxNum = 0;  // 用於監控溫控箱的編號
         private int CommandBoxNum = 0;  // 用於發送命令的溫控箱編號
@@ -78,7 +78,10 @@ namespace BurnInTester.Logic
                             string command = HW_Param.TC_Box.BoxNum[MonitorBoxNum] + "," + HW_Param.TC_Box.ChNum[MonitorBoxNum];
                             
                             if(HW_Param.TC_Box.Use[MonitorBoxNum] == true)
+                            {
                                 _ = CommManage.UpdateTemperature(HW_Param.TC1, command, MonitorBoxNum);
+                                TemperatureUpdated?.Invoke(MonitorBoxNum);
+                            }
 
                             count++;
 
@@ -104,6 +107,8 @@ namespace BurnInTester.Logic
         #endregion
 
         #region public function
+        public event Action<int> TemperatureUpdated; // 更新溫度,給外部UI訂閱事件. int:溫控箱編號
+
         public void Start(double sv, string cmd = "", int box_num = 0)
         {
             if (box_num == 0)
