@@ -474,7 +474,7 @@ namespace BurnInTester.UI
             this.Chk_InfoTemperature.Name = "Chk_InfoTemperature";
             this.Chk_InfoTemperature.Size = new System.Drawing.Size(112, 28);
             this.Chk_InfoTemperature.TabIndex = 0;
-            this.Chk_InfoTemperature.Text = "溫度 °C";
+            this.Chk_InfoTemperature.Text = "PV °C";
             this.Chk_InfoTemperature.UseVisualStyleBackColor = false;
             // 
             // Chk_InfoVoltage
@@ -489,7 +489,7 @@ namespace BurnInTester.UI
             this.Chk_InfoVoltage.Name = "Chk_InfoVoltage";
             this.Chk_InfoVoltage.Size = new System.Drawing.Size(112, 28);
             this.Chk_InfoVoltage.TabIndex = 1;
-            this.Chk_InfoVoltage.Text = "電壓 V";
+            this.Chk_InfoVoltage.Text = "Voltage V";
             this.Chk_InfoVoltage.UseVisualStyleBackColor = false;
             // 
             // Chk_InfoCurrent
@@ -502,7 +502,7 @@ namespace BurnInTester.UI
             this.Chk_InfoCurrent.Name = "Chk_InfoCurrent";
             this.Chk_InfoCurrent.Size = new System.Drawing.Size(112, 28);
             this.Chk_InfoCurrent.TabIndex = 2;
-            this.Chk_InfoCurrent.Text = "電流 A";
+            this.Chk_InfoCurrent.Text = "Current A";
             this.Chk_InfoCurrent.UseVisualStyleBackColor = false;
             // 
             // Chk_InfoPower
@@ -515,7 +515,7 @@ namespace BurnInTester.UI
             this.Chk_InfoPower.Name = "Chk_InfoPower";
             this.Chk_InfoPower.Size = new System.Drawing.Size(112, 28);
             this.Chk_InfoPower.TabIndex = 3;
-            this.Chk_InfoPower.Text = "功率 W";
+            this.Chk_InfoPower.Text = "Power W";
             this.Chk_InfoPower.UseVisualStyleBackColor = false;
             // 
             // Chk_InfoAutoFollow
@@ -530,7 +530,7 @@ namespace BurnInTester.UI
             this.Chk_InfoAutoFollow.Name = "Chk_InfoAutoFollow";
             this.Chk_InfoAutoFollow.Size = new System.Drawing.Size(126, 28);
             this.Chk_InfoAutoFollow.TabIndex = 4;
-            this.Chk_InfoAutoFollow.Text = "自動追蹤";
+            this.Chk_InfoAutoFollow.Text = "Focus";
             this.Chk_InfoAutoFollow.UseVisualStyleBackColor = false;
             // 
             // Plot_Information

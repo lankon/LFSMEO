@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Changelog>
+	<Release version="1.XX.XX.XX" date="2026-09-29">
+		<Item type="Fixed">MainTask參考了IF_StateControl</Item>
+		<Item type="Fixed"></Item>
+	</Release>
+</Changelog>

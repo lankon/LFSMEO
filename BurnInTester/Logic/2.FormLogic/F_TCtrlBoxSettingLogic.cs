@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using ToolFunction;
 using BurnInTester.Device;
-using BurnInTester.UI;
 using BurnInTester.Logic.nTCtrlBoxSetting;
 
 namespace BurnInTester.Logic.nTCtrlBoxSetting
