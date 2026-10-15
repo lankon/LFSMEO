@@ -408,7 +408,7 @@ namespace AAMachine.UI
             using (MilVisionTool func = new MilVisionTool())
             {
                 MIL_ID source_img = MIL.M_NULL;
-                source_img = func.ImportImage($"C:\\Users\\leo_li\\Desktop\\45度CCD\\Housing Mirror XY Position_{2}.bmp");
+                source_img = func.ImportImage($"C:\\Users\\leo_li\\Desktop\\有問題的圖檔\\Picture_1.png");
                 find.Find45MirrorHousingEdge(source_img);
                 func.SafeMilBufFree(ref source_img);
             }

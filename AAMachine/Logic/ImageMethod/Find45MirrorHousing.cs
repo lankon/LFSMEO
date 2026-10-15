@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Matrox.MatroxImagingLibrary;
-
 using MILX_ImageFunction;
+
 
 namespace AAMachine.Logic.ImageMethod
 {
     public class Find45MirrorHousing
     {
         #region parameter define
-        public string SavePath = "D:\\ProcessingImage\\0.45CCD_MirrorHousingResult\\";
+        public string SavePath = "D:\\ProcessImage\\0.45CCD_MirrorHousingResult\\";
         public ResultInfo Result { get; } = new ResultInfo();
         #endregion
 
@@ -189,7 +189,7 @@ namespace AAMachine.Logic.ImageMethod
 
                     #region 搜尋Left Mirror位置
                     func.CloneImage(source_image, ref source_img_l);
-                    func.BinaryImage(source_img_l, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.FIX_AND_GREATER, ThresholdValue = 128 });
+                    func.BinaryImage(source_img_l, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.FIX_AND_GREATER, ThresholdValue = 200 });
                     func.CloseImage(source_img_l, new MilVisionTool.CloseParameters { Iteration = 5 });
                     func.ExportImage(source_img_l, $"{SavePath}\\LeftMirrorPreImage.bmp", MIL.M_BMP);
 
@@ -229,7 +229,7 @@ namespace AAMachine.Logic.ImageMethod
                         BoxCenterX = 1168,
                         BoxCenterY = 1448,
                         BoxAngle = 89.99,
-                        BoxWidth = 143,
+                        BoxWidth = 383,
                         BoxHeight = 687,
                         Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
                     };
@@ -251,72 +251,78 @@ namespace AAMachine.Logic.ImageMethod
 
                     #region 搜尋Left Housing位置
                     int offsetX = 0, offsetY = 447;
-                    func.CloneImage(source_image, ref source_img_h_l);
-                    func.CropImage(source_img_h_l, ref source_img_h_l_crop, offsetX, offsetY, 2434, 598);
-                    source_img_h_l_crop = func.BinaryImage(source_img_h_l_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 60 });
-                    source_img_h_l_crop = func.CloseImage(source_img_h_l_crop, new MilVisionTool.CloseParameters { Iteration = 4 });
-                    func.ExportImage(source_img_h_l_crop, $"{SavePath}\\LeftHousingPreImage.bmp", MIL.M_BMP);
-
-                    #region Blob定位初始位置
-                    MilVisionTool.BlobDetectionResult blob_result;
-                    blob_result = func.BlobDetect(source_img_h_l_crop, new MilVisionTool.BlobDetectParameters
+                    int[] thresholds = { 50, 40, 35, 30, 25, 20 };
+                    foreach (int threshold in thresholds)
                     {
-                        EnableAreaFilter = true,
-                        AreaFilter = MilVisionTool.BlobAreaFilter.IN_RANGE,
-                        FilterOperater = MilVisionTool.FilterOperater.INCLUDE_ONLY,
-                        MinArea = 40000,
-                        MaxArea = 60000,
+                        func.CloneImage(source_image, ref source_img_h_l);
+                        func.CropImage(source_img_h_l, ref source_img_h_l_crop, offsetX, offsetY, 2434, 598);
+                        source_img_h_l_crop = func.BinaryImage(source_img_h_l_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = threshold });
+                        source_img_h_l_crop = func.CloseImage(source_img_h_l_crop, new MilVisionTool.CloseParameters { Iteration = 4 });
+                        func.ExportImage(source_img_h_l_crop, $"{SavePath}\\LeftHousingPreImage.bmp", MIL.M_BMP);
 
-                        SaveResultImage = true,
-                        SavePath = $"{SavePath}\\BlobResult.bmp"
-                    });
+                        #region Blob定位初始位置
+                        MilVisionTool.BlobDetectionResult blob_result;
+                        blob_result = func.BlobDetect(source_img_h_l_crop, new MilVisionTool.BlobDetectParameters
+                        {
+                            EnableAreaFilter = true,
+                            AreaFilter = MilVisionTool.BlobAreaFilter.IN_RANGE,
+                            FilterOperater = MilVisionTool.FilterOperater.INCLUDE_ONLY,
+                            MinArea = 40000,
+                            MaxArea = 60000,
 
-                    int BlobIndex1 = -1;
-                    for (int i = 0; i < blob_result.BlobCount; i++)
-                    {
+                            SaveResultImage = true,
+                            SavePath = $"{SavePath}\\BlobResult.bmp"
+                        });
 
-                        if (Math.Abs(blob_result.Blobs[i].CenterX - 199) < 150 &&
-                            Math.Abs(blob_result.Blobs[i].CenterY - 317) < 50)
-                            BlobIndex1 = i;
+                        int BlobIndex1 = -1;
+                        for (int i = 0; i < blob_result.BlobCount; i++)
+                        {
+
+                            if (Math.Abs(blob_result.Blobs[i].CenterX - 199) < 150 &&
+                                Math.Abs(blob_result.Blobs[i].CenterY - 317) < 50)
+                                BlobIndex1 = i;
+                        }
+
+                        if (BlobIndex1 == -1)
+                            continue; // 找不到目標Blob
+                        #endregion
+
+                        MilVisionTool.EdgeDetectParameters housingLeftSearch = new MilVisionTool.EdgeDetectParameters
+                        {
+                            BoxCenterX = blob_result.Blobs[BlobIndex1].CenterX-20,
+                            BoxCenterY = blob_result.Blobs[BlobIndex1].CenterY,
+                            BoxAngle = 180,
+                            BoxWidth = 208,
+                            BoxHeight = 368,
+                            Polarity = MilVisionTool.EdgePolarity.NEGATIVE_EDGE,
+                        };
+                        bestEdgeResult = FindBestEdge(func, source_img_h_l_crop, housingLeftSearch);
+
+                        if (!bestEdgeResult.Success)
+                            return; // 找不到最佳邊緣
+
+                        leftHousingLine = ToLineInfo(bestEdgeResult, offsetX, offsetY);
+                        Result.LeftMirrorHousingSignedAngle = CalculateSignedAngle(leftMirrorLine, leftHousingLine);
+                        Result.LeftMirrorHousingDistance = CalculatePointToLineDistance(leftHousingLine.CenterX, leftHousingLine.CenterY, leftMirrorLine);
+
+                        draw_res_img = func.DrawLine(draw_res_img, draw_res_img, new MilVisionTool.DrawLineParameters
+                        {
+                            StartX = (int)bestEdgeResult.StartX + offsetX,
+                            StartY = (int)bestEdgeResult.StartY + offsetY,
+                            EndX = (int)bestEdgeResult.EndX + offsetX,
+                            EndY = (int)bestEdgeResult.EndY + offsetY,
+                            //SavePath = $"{SavePath}\\LeftHosuingResult"
+                        });
+
+                        break;
                     }
-
-                    if (BlobIndex1 == -1)
-                        return; // 找不到目標Blob，直接返回
-
-                    MilVisionTool.EdgeDetectParameters housingLeftSearch = new MilVisionTool.EdgeDetectParameters
-                    {
-                        BoxCenterX = blob_result.Blobs[BlobIndex1].CenterX,
-                        BoxCenterY = blob_result.Blobs[BlobIndex1].CenterY,
-                        BoxAngle = 0,
-                        BoxWidth = 208,
-                        BoxHeight = 368,
-                        Polarity = MilVisionTool.EdgePolarity.NEGATIVE_EDGE,
-                    };
-                    bestEdgeResult = FindBestEdge(func, source_img_h_l_crop, housingLeftSearch);
-
-                    if (!bestEdgeResult.Success)
-                        return; // 找不到最佳邊緣，直接返回
-
-                    leftHousingLine = ToLineInfo(bestEdgeResult, offsetX, offsetY);
-                    Result.LeftMirrorHousingSignedAngle = CalculateSignedAngle(leftMirrorLine, leftHousingLine);
-                    Result.LeftMirrorHousingDistance = CalculatePointToLineDistance(leftHousingLine.CenterX, leftHousingLine.CenterY, leftMirrorLine);
-
-                    draw_res_img = func.DrawLine(draw_res_img, draw_res_img, new MilVisionTool.DrawLineParameters
-                    {
-                        StartX = (int)bestEdgeResult.StartX + offsetX,
-                        StartY = (int)bestEdgeResult.StartY + offsetY,
-                        EndX = (int)bestEdgeResult.EndX + offsetX,
-                        EndY = (int)bestEdgeResult.EndY + offsetY,
-                        //SavePath = $"{SavePath}\\LeftHosuingResult"
-                    });
-                    #endregion
                     #endregion
 
                     #region 搜尋Down Housing位置
                     int downOffsetX = 10, downOffsetY = 1630;
                     func.CloneImage(source_image, ref source_img_h_d);
                     func.CropImage(source_img_h_d, ref source_img_h_d_crop, downOffsetX, downOffsetY, 2432, 412);
-                    func.BinaryImage(source_img_h_d_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 80 });
+                    func.BinaryImage(source_img_h_d_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 60 });
                     func.CloseImage(source_img_h_d_crop, new MilVisionTool.CloseParameters { Iteration = 5 });
                     func.ExportImage(source_img_h_d_crop, $"{SavePath}\\DownHousingPreImage.bmp", MIL.M_BMP);
 
@@ -325,7 +331,7 @@ namespace AAMachine.Logic.ImageMethod
                         BoxCenterX = 1170,
                         BoxCenterY = 137,
                         BoxAngle = 269.7,
-                        BoxWidth = 235,
+                        BoxWidth = 190,//235,
                         BoxHeight = 680,
                         Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
                     };
