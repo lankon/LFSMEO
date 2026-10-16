@@ -9,19 +9,17 @@ using AAMachine.Base;
 using AAMachine.Base.Equipment_Setting;
 using ToolFunction;
 
-namespace AAMachine.MachineFunction
+namespace AAMachine.Machine
 {
-    public partial class MachineFunc
+    public partial class MachineContext
     {
-        public MachineFunc(IBaseTaskDependence dependencies) 
+        public MachineContext() 
         {
-            Deps = dependencies;
             InitialObjects();
         }
 
         #region parameter define
         public AxisDefine Axis { get; private set; } = new AxisDefine();
-        public IBaseTaskDependence Deps;
         #endregion
 
         #region private function

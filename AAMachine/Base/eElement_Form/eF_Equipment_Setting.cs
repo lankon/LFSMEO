@@ -26,5 +26,6 @@ namespace AAMachine.Base.Equipment_Setting
     {
         MIRROR_AA,
         DETESTER,
+        BDSA,
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using DeviceCore;
-using AAMachine.MachineFunction;
+using AAMachine.Machine;
 
 namespace AAMachine.Logic
 {
@@ -19,13 +19,13 @@ namespace AAMachine.Logic
         {
             ProbeTesterMachine = probeTesterMachine;
             ServiceProvider = serviceProvider;
-            Func = ServiceProvider.GetRequiredService<MachineFunc>();
+            Func = ServiceProvider.GetRequiredService<MachineContext>();
         }
 
         #region parameter define
         IAAMachineMachine ProbeTesterMachine;
         IServiceProvider ServiceProvider;
-        MachineFunc Func;
+        MachineContext Func;
         #endregion
 
         #region private function

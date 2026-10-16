@@ -19,6 +19,28 @@ namespace DeviceCore
 
     public enum EIOName
     {
+        #region Common Input
+
+        #endregion
+
+        #region Common Output
+
+        #endregion
+
+        #region AAMachine
+
+        #region BDSA
+        // Input
+        ToolZSafePosition,
+
+        // Output
+
+        #endregion
+
+
+        #endregion
+
+
         #region Analog Input
         Iin,
         

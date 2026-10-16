@@ -8,7 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using AAMachine.Base;
 using AAMachine.UI;
 using AAMachine.Logic;
-using AAMachine.MachineFunction;
+using AAMachine.Machine;
+
+using AAMachine.Machine.BDSA.Task;
+using AAMachine.Machine.BDSA.UI;
 
 namespace AAMachine
 {
@@ -29,6 +32,8 @@ namespace AAMachine
             //services.AddSingleton<IBaseMainTaskMulti, MainTaskMulti>();
             services.AddSingleton<IBaseTaskDependence, BaseTaskDependence>();
             services.AddTransient<Task_MotionInitialize_MirrorAA>();
+            services.AddSingleton<MachineContext>();
+            services.AddTransient<Task_MotionInitialize_BDSA>();
 
             //[Form]
             services.AddSingleton<F_MainForm>();
@@ -56,12 +61,20 @@ namespace AAMachine
             //services.AddSingleton<F_DAQ_ChartLogic>();
 
             //[Logic]
-            services.AddSingleton<MachineFunc>();
+            services.AddSingleton<MachineContext>();
             //services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             //services.AddSingleton<ProbeTesterFunction>();
             //services.AddSingleton<TestResultDataBase>();
 
             return services;
+        }
+    
+    
+        public static void AddAAMachineServices_BDSA(this IServiceCollection services)
+        {
+            //[Form]
+            //退出Form後即close掉,要用再new
+            //services.AddTransient<F_BackSetting>();
         }
     }
 }

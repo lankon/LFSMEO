@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 using DeviceCore;
 
+using AAMachine.Base.Equipment_Setting;
+
 namespace AAMachine
 {
     public class AAMachineMachine : IAAMachineMachine
     {
+        // 機台使用硬體集合
         public IFunction_IO_Card DIOL { get; }
         public IFunction_MotionCard DML { get; }
         public IFunction_LightControl Light { get; }

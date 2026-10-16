@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DeviceCore;
 using ToolFunction;
 using AAMachine.Base;
-using AAMachine.MachineFunction;
+using AAMachine.Machine;
 
 namespace AAMachine.Logic
 {
@@ -30,7 +30,7 @@ namespace AAMachine.Logic
         }
 
         #region parameter
-        MachineFunc func;
+        MachineContext func;
         #region FitTech migration settings
         // FitTech source: EIO.*
         private EIOName UVLightStretch = EIOName.UVLightStretch;
@@ -301,7 +301,7 @@ namespace AAMachine.Logic
                 #region START
                 case WORK.START:
                     {
-                        func = Deps.ServiceProvider.GetRequiredService<MachineFunc>();
+                        func = Deps.ServiceProvider.GetRequiredService<MachineContext>();
 
                         SetIOStatus();
                         //if (!Deps.DIOL.GetInputStatus(UVLightInSensor) ||
