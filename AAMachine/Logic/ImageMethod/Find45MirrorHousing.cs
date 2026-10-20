@@ -135,7 +135,9 @@ namespace AAMachine.Logic.ImageMethod
                     Polarity = searchParam.Polarity,
                 });
 
-                if (edge_res.Score > score)
+                if (edge_res.Score > score && (Math.Abs(edge_res.Angle - searchParam.BoxAngle - 90) < 5 || 
+                                               Math.Abs(edge_res.Angle - (searchParam.BoxAngle - 270)) < 5 ||
+                                               Math.Abs(edge_res.Angle - (searchParam.BoxAngle - 90)) < 5))
                 {
                     score = edge_res.Score;
                     bestEdgeResult = edge_res;
@@ -160,7 +162,7 @@ namespace AAMachine.Logic.ImageMethod
         #endregion
 
         #region public function
-        public void Find45MirrorHousingEdge(MIL_ID source_image)
+        public void Find45MirrorHousingEdge(MIL_ID source_image, string tip = "")
         {
             ResetParam();
 
@@ -175,6 +177,7 @@ namespace AAMachine.Logic.ImageMethod
                 MIL_ID source_img_d = MIL.M_NULL;
                 MIL_ID source_img_h_l = MIL.M_NULL;
                 MIL_ID source_img_h_l_crop = MIL.M_NULL;
+                MIL_ID source_img_h_l_crop2 = MIL.M_NULL;
                 MIL_ID source_img_h_d = MIL.M_NULL;
                 MIL_ID source_img_h_d_crop = MIL.M_NULL;
                 MilVisionTool.EdgeResult bestEdgeResult;
@@ -195,6 +198,7 @@ namespace AAMachine.Logic.ImageMethod
 
                     MilVisionTool.EdgeDetectParameters leftMirrorSearch = new MilVisionTool.EdgeDetectParameters
                     {
+                        // 需依照不同情況做ROI調整
                         BoxCenterX = 341,
                         BoxCenterY = 764,
                         BoxAngle = 0,
@@ -226,14 +230,15 @@ namespace AAMachine.Logic.ImageMethod
 
                     MilVisionTool.EdgeDetectParameters mirrorSearch = new MilVisionTool.EdgeDetectParameters
                     {
+                        // 需依照不同情況做ROI調整
                         BoxCenterX = 1168,
-                        BoxCenterY = 1448,
+                        BoxCenterY = 1339,
                         BoxAngle = 89.99,
                         BoxWidth = 383,
-                        BoxHeight = 687,
+                        BoxHeight = 850,
                         Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
                     };
-                    bestEdgeResult = FindBestEdge(func, source_img_d, mirrorSearch);
+                    bestEdgeResult = FindBestEdge(func, source_img_d, mirrorSearch, angleStart:-2, angleEnd:2);
 
                     if (!bestEdgeResult.Success)
                         return; // 找不到最佳邊緣，直接返回
@@ -251,14 +256,16 @@ namespace AAMachine.Logic.ImageMethod
 
                     #region 搜尋Left Housing位置
                     int offsetX = 0, offsetY = 447;
-                    int[] thresholds = { 50, 40, 35, 30, 25, 20 };
+                    bestEdgeResult.Success = false;
+                    int[] thresholds = { 80, 70, 60, 50, 40, 30, 20 ,10, 5};
                     foreach (int threshold in thresholds)
                     {
                         func.CloneImage(source_image, ref source_img_h_l);
-                        func.CropImage(source_img_h_l, ref source_img_h_l_crop, offsetX, offsetY, 2434, 598);
+                        func.CropImage(source_img_h_l, ref source_img_h_l_crop, offsetX, offsetY, 474, 598);
+                        func.ExportImage(source_img_h_l_crop, $"{SavePath}\\crop{tip}.bmp", MIL.M_BMP);
                         source_img_h_l_crop = func.BinaryImage(source_img_h_l_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = threshold });
-                        source_img_h_l_crop = func.CloseImage(source_img_h_l_crop, new MilVisionTool.CloseParameters { Iteration = 4 });
-                        func.ExportImage(source_img_h_l_crop, $"{SavePath}\\LeftHousingPreImage.bmp", MIL.M_BMP);
+                        source_img_h_l_crop = func.CloseImage(source_img_h_l_crop, new MilVisionTool.CloseParameters { Iteration = 6 });
+                        func.ExportImage(source_img_h_l_crop, $"{SavePath}\\LeftHousingPreImage{tip}.bmp", MIL.M_BMP);
 
                         #region Blob定位初始位置
                         MilVisionTool.BlobDetectionResult blob_result;
@@ -278,7 +285,7 @@ namespace AAMachine.Logic.ImageMethod
                         for (int i = 0; i < blob_result.BlobCount; i++)
                         {
 
-                            if (Math.Abs(blob_result.Blobs[i].CenterX - 199) < 150 &&
+                            if (Math.Abs(blob_result.Blobs[i].CenterX - 264) < 100 &&
                                 Math.Abs(blob_result.Blobs[i].CenterY - 317) < 50)
                                 BlobIndex1 = i;
                         }
@@ -287,16 +294,24 @@ namespace AAMachine.Logic.ImageMethod
                             continue; // 找不到目標Blob
                         #endregion
 
+                        // 利用Blob中心點位置做裁切，抓出Housing位置，針對Housing調整二值化
+                        offsetX = blob_result.Blobs[BlobIndex1].CenterX + offsetX - 78;
+                        offsetY = blob_result.Blobs[BlobIndex1].CenterY + offsetY - 276;
+                        func.CropImage(source_img_h_l, ref source_img_h_l_crop2, offsetX, offsetY, 144, 524);
+                        source_img_h_l_crop2 = func.BinaryImage(source_img_h_l_crop2, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 40 });
+                        source_img_h_l_crop2 = func.CloseImage(source_img_h_l_crop2, new MilVisionTool.CloseParameters { Iteration = 5 });
+                        func.ExportImage(source_img_h_l_crop2, $"{SavePath}\\LeftHousingPreImage2.bmp", MIL.M_BMP);
+
                         MilVisionTool.EdgeDetectParameters housingLeftSearch = new MilVisionTool.EdgeDetectParameters
                         {
-                            BoxCenterX = blob_result.Blobs[BlobIndex1].CenterX-20,
-                            BoxCenterY = blob_result.Blobs[BlobIndex1].CenterY,
+                            BoxCenterX = 51,
+                            BoxCenterY = 265,
                             BoxAngle = 180,
-                            BoxWidth = 208,
-                            BoxHeight = 368,
+                            BoxWidth = 83,
+                            BoxHeight = 406,
                             Polarity = MilVisionTool.EdgePolarity.NEGATIVE_EDGE,
                         };
-                        bestEdgeResult = FindBestEdge(func, source_img_h_l_crop, housingLeftSearch);
+                        bestEdgeResult = FindBestEdge(func, source_img_h_l_crop2, housingLeftSearch);
 
                         if (!bestEdgeResult.Success)
                             return; // 找不到最佳邊緣
@@ -316,10 +331,13 @@ namespace AAMachine.Logic.ImageMethod
 
                         break;
                     }
+
+                    if (!bestEdgeResult.Success)
+                        return; // 找不到最佳邊緣
                     #endregion
 
                     #region 搜尋Down Housing位置
-                    int downOffsetX = 10, downOffsetY = 1630;
+                    int downOffsetX = 10, downOffsetY = 1630;   // 需依照不同情況做裁切調整
                     func.CloneImage(source_image, ref source_img_h_d);
                     func.CropImage(source_img_h_d, ref source_img_h_d_crop, downOffsetX, downOffsetY, 2432, 412);
                     func.BinaryImage(source_img_h_d_crop, new MilVisionTool.BinaryParameters { Method = MilVisionTool.BinaryMethod.PERCENTILE_AND_GREATER, ThresholdValue = 60 });
@@ -328,10 +346,11 @@ namespace AAMachine.Logic.ImageMethod
 
                     MilVisionTool.EdgeDetectParameters housingDownSearch = new MilVisionTool.EdgeDetectParameters
                     {
+                        // 需依照不同情況做ROI調整
                         BoxCenterX = 1170,
                         BoxCenterY = 137,
                         BoxAngle = 269.7,
-                        BoxWidth = 190,//235,
+                        BoxWidth = 190,
                         BoxHeight = 680,
                         Polarity = MilVisionTool.EdgePolarity.POSITIVE_EDGE,
                     };
@@ -351,7 +370,7 @@ namespace AAMachine.Logic.ImageMethod
                         StartY = (int)bestEdgeResult.StartY + downOffsetY,
                         EndX = (int)bestEdgeResult.EndX + downOffsetX,
                         EndY = (int)bestEdgeResult.EndY + downOffsetY,
-                        SavePath = $"{SavePath}\\45CCD_MirrorHousing_Result"
+                        SavePath = $"{SavePath}\\45CCD_MirrorHousing_Result{tip}"
                     });
                     #endregion
                 }
@@ -362,6 +381,7 @@ namespace AAMachine.Logic.ImageMethod
 
                     func.SafeMilBufFree(ref source_img_h_l);
                     func.SafeMilBufFree(ref source_img_h_l_crop);
+                    func.SafeMilBufFree(ref source_img_h_l_crop2);
 
                     func.SafeMilBufFree(ref source_img_h_d);
                     func.SafeMilBufFree(ref source_img_h_d_crop);
@@ -369,7 +389,6 @@ namespace AAMachine.Logic.ImageMethod
                     func.SafeMilBufFree(ref draw_img);
                     func.SafeMilBufFree(ref draw_res_img);
                 }
-
             }
         }
         #endregion
