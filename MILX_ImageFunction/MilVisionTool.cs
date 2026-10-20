@@ -13,6 +13,7 @@ namespace MILX_ImageFunction
     {
         private MIL_ID localMilApplication = MIL.M_NULL;
         private MIL_ID localMilSystem = MIL.M_NULL;
+        private MIL_ID patternContext = MIL.M_NULL; // 用於儲存已訓練的 Pattern Context
 
         public MilVisionTool()
         {
@@ -182,6 +183,8 @@ namespace MILX_ImageFunction
 
         private void ReleaseLocalMilSystem()
         {
+            ClearPattern();
+
             if (localMilSystem != MIL.M_NULL)
             {
                 MIL.MsysFree(localMilSystem);
@@ -464,6 +467,215 @@ namespace MILX_ImageFunction
             SafeMilBufFree(ref resultImage);
         }
 
+        #endregion
+
+        #region Pattern Match
+        public class PatternModelParameters
+        {
+            // Model ROI
+            public double ModelX { get; set; } = 0.0;
+            public double ModelY { get; set; } = 0.0;
+            public double ModelWidth { get; set; } = 0.0;
+            public double ModelHeight { get; set; } = 0.0;
+
+            // Match score
+            public double Acceptance { get; set; } = 40.0;
+            public double Certainty { get; set; } = 80.0;
+        }
+
+        public class PatternMatchResult
+        {
+            public double Score { get; set; } = 0.0;
+            public double PositionX { get; set; } = 0.0;
+            public double PositionY { get; set; } = 0.0;
+            public double Angle { get; set; } = 0.0;
+
+            public bool Success = false;
+        }
+
+        public bool TrainPattern(MIL_ID modelImage, PatternModelParameters param)
+        {
+            // 建立並保存 Pattern Context，適合固定樣板、重複搜尋多張影像。
+            if (!IsValidPatternModel(modelImage, param))
+                return false;
+
+            MIL_ID newPatternContext = MIL.M_NULL;
+
+            try
+            {
+                newPatternContext = CreatePatternContext(modelImage, param);
+
+                if (newPatternContext == MIL.M_NULL)
+                    return false;
+
+                ClearPattern();
+                patternContext = newPatternContext;
+                newPatternContext = MIL.M_NULL;
+
+                return true;
+            }
+            finally
+            {
+                if (newPatternContext != MIL.M_NULL)
+                    MIL.MpatFree(newPatternContext);
+            }
+        }
+
+        public PatternMatchResult PatternMatch(MIL_ID searchImage)
+        {
+            // 使用已經由 TrainPattern 建立的 Pattern Context 搜尋影像。
+            if (patternContext == MIL.M_NULL || searchImage == MIL.M_NULL)
+                return new PatternMatchResult();
+
+            return ExecutePatternMatch(patternContext, searchImage);
+        }
+
+        public PatternMatchResult PatternMatchOnce(
+            MIL_ID modelImage,
+            MIL_ID searchImage,
+            PatternModelParameters param)
+        {
+            // 單次建立樣板並搜尋影像，完成後立即釋放 Pattern Context。
+
+            MIL_ID tempPatternContext = MIL.M_NULL;
+
+            if (searchImage == MIL.M_NULL || !IsValidPatternModel(modelImage, param))
+                return new PatternMatchResult();
+
+            try
+            {
+                tempPatternContext = CreatePatternContext(modelImage, param);
+
+                if (tempPatternContext == MIL.M_NULL)
+                    return new PatternMatchResult();
+
+                return ExecutePatternMatch(tempPatternContext, searchImage);
+            }
+            finally
+            {
+                if (tempPatternContext != MIL.M_NULL)
+                    MIL.MpatFree(tempPatternContext);
+            }
+        }
+
+        private void ClearPattern()
+        {
+            if (patternContext == MIL.M_NULL)
+                return;
+
+            MIL.MpatFree(patternContext);
+            patternContext = MIL.M_NULL;
+        }
+
+        private MIL_ID CreatePatternContext(MIL_ID modelImage, PatternModelParameters param)
+        {
+            MIL_ID newPatternContext = MIL.M_NULL;
+
+            try
+            {
+                MIL.MpatAlloc(localMilSystem, MIL.M_DEFAULT, MIL.M_DEFAULT, ref newPatternContext);
+
+                MIL.MpatDefine(
+                    newPatternContext,
+                    MIL.M_REGULAR_MODEL,
+                    modelImage,
+                    param.ModelX,
+                    param.ModelY,
+                    param.ModelWidth,
+                    param.ModelHeight,
+                    MIL.M_DEFAULT);
+
+                MIL.MpatControl(newPatternContext, MIL.M_CONTEXT, MIL.M_SEARCH_MODE, MIL.M_FIND_BEST_MODELS);
+                MIL.MpatControl(newPatternContext, MIL.M_ALL, MIL.M_ACCEPTANCE, param.Acceptance);
+                MIL.MpatControl(newPatternContext, MIL.M_ALL, MIL.M_CERTAINTY, param.Certainty);
+
+                //if (param.EnableAngleSearch)
+                //{
+                //    MIL.MpatControl(newPatternContext, MIL.M_ALL, MIL.M_SEARCH_ANGLE, MIL.M_ENABLE);
+                //    MIL.MpatControl(newPatternContext, MIL.M_ALL, MIL.M_ANGLE_DELTA_NEG, param.AngleDeltaNegative);
+                //    MIL.MpatControl(newPatternContext, MIL.M_ALL, MIL.M_ANGLE_DELTA_POS, param.AngleDeltaPositive);
+                //}
+
+                MIL.MpatPreprocess(newPatternContext, MIL.M_DEFAULT, MIL.M_NULL);
+
+                MIL_ID resultContext = newPatternContext;
+                newPatternContext = MIL.M_NULL;
+                return resultContext;
+            }
+            finally
+            {
+                if (newPatternContext != MIL.M_NULL)
+                    MIL.MpatFree(newPatternContext);
+            }
+        }
+
+        private PatternMatchResult ExecutePatternMatch(MIL_ID currentPatternContext, MIL_ID searchImage)
+        {
+            MIL_ID patternResult = MIL.M_NULL;
+
+            try
+            {
+                MIL.MpatAllocResult(localMilSystem, MIL.M_DEFAULT, ref patternResult);
+                MIL.MpatFind(currentPatternContext, searchImage, patternResult);
+
+                MIL_INT count = 0;
+                MIL.MpatGetResult(patternResult, MIL.M_DEFAULT,
+                    MIL.M_NUMBER + MIL.M_TYPE_MIL_INT, ref count);
+
+                if (count <= 0)
+                    return new PatternMatchResult();
+
+                double score = 0.0;
+                double positionX = 0.0;
+                double positionY = 0.0;
+                double angle = 0.0;
+
+                MIL.MpatGetResult(patternResult, MIL.M_FIRST, MIL.M_SCORE, ref score);
+                MIL.MpatGetResult(patternResult, MIL.M_FIRST, MIL.M_POSITION_X, ref positionX);
+                MIL.MpatGetResult(patternResult, MIL.M_FIRST, MIL.M_POSITION_Y, ref positionY);
+                MIL.MpatGetResult(patternResult, MIL.M_FIRST, MIL.M_ANGLE, ref angle);
+
+                return new PatternMatchResult
+                {
+                    Score = score,
+                    PositionX = positionX,
+                    PositionY = positionY,
+                    Angle = angle,
+                    Success = true
+                };
+            }
+            finally
+            {
+                if (patternResult != MIL.M_NULL)
+                    MIL.MpatFree(patternResult);
+            }
+        }
+
+        private bool IsValidPatternModel(MIL_ID modelImage, PatternModelParameters param)
+        {
+            if (modelImage == MIL.M_NULL || param == null)
+                return false;
+
+            if (param.ModelX < 0.0 || param.ModelY < 0.0 ||
+                param.ModelWidth <= 0.0 || param.ModelHeight <= 0.0)
+                return false;
+
+            int imageWidth = 0;
+            int imageHeight = 0;
+
+            MIL.MbufInquire(modelImage, MIL.M_SIZE_X, ref imageWidth);
+            MIL.MbufInquire(modelImage, MIL.M_SIZE_Y, ref imageHeight);
+
+            if (param.ModelX + param.ModelWidth > imageWidth ||
+                param.ModelY + param.ModelHeight > imageHeight)
+                return false;
+
+            if (param.Acceptance < 0.0 || param.Acceptance > 100.0 ||
+                param.Certainty < 0.0 || param.Certainty > 100.0)
+                return false;
+
+            return true;
+        }
         #endregion
 
         #region Edge Detection
