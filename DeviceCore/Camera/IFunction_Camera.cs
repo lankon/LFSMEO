@@ -18,9 +18,9 @@ namespace DeviceCore
     }
     public enum CCD_TYPE
     {         
-        //Basler,
         Virtual,
         Hikvision,
+        Basler,
         //Dalsa,
     }
     public enum CCD_NAME
