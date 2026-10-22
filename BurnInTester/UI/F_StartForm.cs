@@ -20,8 +20,11 @@ namespace BurnInTester.UI
 {
     public partial class F_StartForm : Form
     {
-        public F_StartForm(IServiceProvider serviceProvider, F_StartFormLogic startFormLogic, 
-            TC_Task tC_Task, AgingInformation agingInformation)
+        public F_StartForm(
+            IServiceProvider serviceProvider, 
+            F_StartFormLogic startFormLogic,
+            AgingInformation agingInformation,
+            TC_Task tC_Task)
         {
             InitializeComponent();
 
@@ -29,18 +32,8 @@ namespace BurnInTester.UI
             StartFormLogic = startFormLogic;
             _TC_Task = tC_Task;
             _AgingInformation = agingInformation;
+
             InitialForm();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                InformationPlot?.Dispose();
-                components?.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
 
         #region parameter define
@@ -59,6 +52,8 @@ namespace BurnInTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
+
+            StartFormLogic.ReadAllSetting();
 
             ShowHint();
 
@@ -106,6 +101,8 @@ namespace BurnInTester.UI
         private void CreateDynamicElement()
         {
             CtrlBoxStatus1.SetInformation("Finish");
+            CtrlBoxStatus1.SetSelected(true);
+            selectedCtrlBox = CtrlBoxStatus1;
 
             //ControlBox
             for (int i = 0; i < CtrlBoxStatusArray.Length; i++)
@@ -134,24 +131,67 @@ namespace BurnInTester.UI
             _DieMap.Name = "DieMap";
             Pnl_Info.Controls.Add(_DieMap);
 
-            InformationPlot = new InformationTrendPlot(Plot_Information,
-                Chk_InfoTemperature, Chk_InfoVoltage, Chk_InfoCurrent, Chk_InfoPower,
-                Chk_InfoAutoFollow, Labl_InformationLatest);
+            InformationPlot = new InformationTrendPlot(Plot_Information);
+            UpdateInformationTrendDisplay();
+        }
+        private InformationTrendOptions GetInformationTrendOptions()
+        {
+            return new InformationTrendOptions(
+                Chk_InfoTemperature.Checked,
+                Chk_InfoVoltage.Checked,
+                Chk_InfoCurrent.Checked,
+                Chk_InfoPower.Checked,
+                Chk_InfoAutoFollow.Checked);
+        }
+        private void UpdateInformationTrendDisplay()
+        {
+            InformationPlot?.UpdateDisplay(_AgingInformation.CurSelectBoxNo, GetInformationTrendOptions());
+        }
+        private void InformationCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateInformationTrendDisplay();
         }
         private void OnUpdateTemperature(int box_num)
         {
-            box_num = 0;
-
-            if (_AgingInformation.CurSelectBoxNo != box_num)
+            if (box_num < 0 || box_num >= _AgingInformation.TemperatureInfos.Length)
+            {
+                Tool.SaveLogToFile($"收到無效的溫控箱索引: {box_num}", level: "ERR");
                 return;
+            }
 
             DateTime current_time = _AgingInformation.TemperatureInfos[box_num].GetRecordTime();
             double main_temperature = _AgingInformation.TemperatureInfos[box_num].GetPV()[0];
-            InformationPlot.AddData(current_time, main_temperature, 5, 1);
+            InformationPlot.AddData(box_num, current_time, main_temperature, 5, 1);
+
+            //if (box_num == 0)
+            //{
+            //    Tool.SaveLogToFile($"Box1 time: {current_time:HH:mm:ss.fff}", level:"INF");
+            //}
         }
         private void SubscribeEvent()
         {
             _TC_Task.TemperatureUpdated += OnUpdateTemperature;
+            Chk_InfoTemperature.CheckedChanged += InformationCheckBox_CheckedChanged;
+            Chk_InfoVoltage.CheckedChanged += InformationCheckBox_CheckedChanged;
+            Chk_InfoCurrent.CheckedChanged += InformationCheckBox_CheckedChanged;
+            Chk_InfoPower.CheckedChanged += InformationCheckBox_CheckedChanged;
+            Chk_InfoAutoFollow.CheckedChanged += InformationCheckBox_CheckedChanged;
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _TC_Task.TemperatureUpdated -= OnUpdateTemperature;
+                Chk_InfoTemperature.CheckedChanged -= InformationCheckBox_CheckedChanged;
+                Chk_InfoVoltage.CheckedChanged -= InformationCheckBox_CheckedChanged;
+                Chk_InfoCurrent.CheckedChanged -= InformationCheckBox_CheckedChanged;
+                Chk_InfoPower.CheckedChanged -= InformationCheckBox_CheckedChanged;
+                Chk_InfoAutoFollow.CheckedChanged -= InformationCheckBox_CheckedChanged;
+                InformationPlot?.Dispose();
+                components?.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
         #endregion
 
@@ -203,12 +243,21 @@ namespace BurnInTester.UI
             {
                 string name = clickedCtrlBox.Name;
                 int boxNum = int.Parse(name.Replace("CtrlBoxStatus", ""));
+                int boxIndex = boxNum - 1;
+
+                if (boxIndex < 0 || boxIndex >= _AgingInformation.TemperatureInfos.Length)
+                {
+                    Tool.SaveLogToFile($"選取了無效的溫控箱編號: {boxNum}", level: "ERR");
+                    return;
+                }
 
                 StartFormLogic.SaveAgingParam();
-                StartFormLogic.SetCurBoxNum(boxNum);
+                StartFormLogic.SetCurBoxNum(boxIndex);
                 StartFormLogic.UpdateAgingParam();
                 UpdateEnumSettingToForm();
+                UpdateInformationTrendDisplay();
 
+                // 更新選取狀態
                 selectedCtrlBox?.SetSelected(false);
                 selectedCtrlBox = clickedCtrlBox;
                 selectedCtrlBox.SetSelected(true);
@@ -275,68 +324,82 @@ namespace BurnInTester.UI
         }
     }
 
+    public sealed class InformationTrendOptions
+    {
+        public InformationTrendOptions(bool showTemperature, bool showVoltage,
+            bool showCurrent, bool showPower, bool autoFollow)
+        {
+            ShowTemperature = showTemperature;
+            ShowVoltage = showVoltage;
+            ShowCurrent = showCurrent;
+            ShowPower = showPower;
+            AutoFollow = autoFollow;
+        }
+
+        public bool ShowTemperature { get; }
+        public bool ShowVoltage { get; }
+        public bool ShowCurrent { get; }
+        public bool ShowPower { get; }
+        public bool AutoFollow { get; }
+    }
+
     public class InformationTrendPlot : IDisposable
     {
         // 處理即時顯示圖表用
-        public InformationTrendPlot(ScottPlot.FormsPlot plot,
-            CheckBox temperature, CheckBox voltage, CheckBox current, CheckBox power,
-            CheckBox autoFollow, Label latestLabel)
+        public InformationTrendPlot(ScottPlot.FormsPlot plot)
         {
             _Plot_Information = plot;
-            _Chk_InfoTemperature = temperature;
-            _Chk_InfoVoltage = voltage;
-            _Chk_InfoCurrent = current;
-            _Chk_InfoPower = power;
-            _Chk_InfoAutoFollow = autoFollow;
-            Labl_InformationLatest = latestLabel;
-
-            CreateInformationTrendPanel();
-            RefreshInformationPlot();
+            UpdateInterval = GetCurrentTickCount();
         }
 
         #region Parameter define
-        private readonly ScottPlot.FormsPlot _Plot_Information;
-        private readonly CheckBox _Chk_InfoTemperature;
-        private readonly CheckBox _Chk_InfoVoltage;
-        private readonly CheckBox _Chk_InfoCurrent;
-        private readonly CheckBox _Chk_InfoPower;
-        private readonly CheckBox _Chk_InfoAutoFollow;
-        private readonly Label Labl_InformationLatest;
-        private volatile bool _disposed;    // 物件是否被釋放
-        private readonly List<InformationTrendPoint> InformationTrendPoints = new List<InformationTrendPoint>();    // 紀錄資料
+        private readonly ScottPlot.FormsPlot _Plot_Information;     // 顯示資訊趨勢的ScottPlot控制項
+        private InformationTrendOptions _Options;                   // 圖表項目顯示與自動跟隨設定
+        private int _SelectedBoxIndex;                              // 目前圖表顯示的溫控箱索引
+        private int UpdateInterval;                                 // 上次排入圖表更新時的系統毫秒計時值
+        private volatile bool _disposed;                            // 物件是否已被釋放
+        private readonly object _InformationDataSync = new object();   // 保護各溫控箱的趨勢資料
+        private readonly Dictionary<int, List<InformationTrendPoint>> InformationTrendPointsByBox = new Dictionary<int, List<InformationTrendPoint>>();    // 依溫控箱紀錄資料 int: boxIndex, List<InformationTrendPoint>: 資料點
         private readonly TimeSpan InformationKeepTime = TimeSpan.FromHours(5);  // 圖表顯示時間,最多N小時
-
-        //private System.Windows.Forms.Timer InformationTestTimer;
 
         private class InformationTrendPoint
         {
+            // 圖表紀錄資訊
             public DateTime Time { get; set; }
             public double Temperature { get; set; }
             public double Voltage { get; set; }
             public double Current { get; set; }
             public double Power { get; set; }
         }
+
+        private class InformationTrendPlotData
+        {
+            // 交給UI繪圖的資料快照
+            public int BoxIndex { get; set; }
+            public double[] TimeValues { get; set; }
+            public double[] Temperatures { get; set; }
+            public double[] Voltages { get; set; }
+            public double[] Currents { get; set; }
+            public double[] Powers { get; set; }
+        }
         #endregion
 
         #region private function
-        private void CreateInformationTrendPanel()
+        private List<InformationTrendPoint> GetInformationTrendPoints(int boxIndex)
         {
-            // 註冊事件
-            _Chk_InfoTemperature.CheckedChanged += InformationCheckBox_CheckedChanged;
-            _Chk_InfoVoltage.CheckedChanged += InformationCheckBox_CheckedChanged;
-            _Chk_InfoCurrent.CheckedChanged += InformationCheckBox_CheckedChanged;
-            _Chk_InfoPower.CheckedChanged += InformationCheckBox_CheckedChanged;
-            _Chk_InfoAutoFollow.CheckedChanged += InformationCheckBox_CheckedChanged;
+            if (!InformationTrendPointsByBox.TryGetValue(boxIndex, out List<InformationTrendPoint> points))
+            {
+                points = new List<InformationTrendPoint>();
+                InformationTrendPointsByBox.Add(boxIndex, points);
+            }
+
+            return points;
         }
 
-        private void InformationCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void AddInformationPoint(int boxIndex, DateTime time, double temperature, double voltage, double current)
         {
-            RefreshInformationPlot();
-        }
-
-        private void AddInformationPoint(DateTime time, double temperature, double voltage, double current)
-        {
-            InformationTrendPoints.Add(new InformationTrendPoint()
+            List<InformationTrendPoint> points = GetInformationTrendPoints(boxIndex);
+            points.Add(new InformationTrendPoint()
             {
                 Time = time,
                 Temperature = temperature,
@@ -345,22 +408,29 @@ namespace BurnInTester.UI
                 Power = voltage * current
             });
 
-            TrimInformationPoints(time);
+            TrimInformationPoints(points, time);
         }
 
-        private void TrimInformationPoints(DateTime now)
+        private void TrimInformationPoints(List<InformationTrendPoint> points, DateTime now)
         {
             DateTime keepAfter = now.Subtract(InformationKeepTime);
-            InformationTrendPoints.RemoveAll(point => point.Time < keepAfter);
+            points.RemoveAll(point => point.Time < keepAfter);
         }
 
-        private void SetInformationPlotTimeRange()
+        private InformationTrendPlotData CreateInformationTrendPlotData(int boxIndex)
         {
-            DateTime now = DateTime.Now;
-            DateTime startTime = now.AddSeconds(-60);
-            DateTime endTime = now.AddSeconds(1);
-            _Plot_Information.Plot.SetAxisLimitsX(startTime.ToOADate(), endTime.ToOADate());
-            _Plot_Information.Plot.AxisAutoY();
+            List<InformationTrendPoint> points = GetInformationTrendPoints(boxIndex);
+            TrimInformationPoints(points, DateTime.Now);
+
+            return new InformationTrendPlotData()
+            {
+                BoxIndex = boxIndex,
+                TimeValues = points.Select(point => point.Time.ToOADate()).ToArray(),
+                Temperatures = points.Select(point => point.Temperature).ToArray(),
+                Voltages = points.Select(point => point.Voltage).ToArray(),
+                Currents = points.Select(point => point.Current).ToArray(),
+                Powers = points.Select(point => point.Power).ToArray()
+            };
         }
 
         private void KeepInformationPlotZoom(ScottPlot.AxisLimits axisLimitsBeforeRefresh)
@@ -383,121 +453,161 @@ namespace BurnInTester.UI
                 values,
                 color: color,
                 lineWidth: 2,
-                markerSize: 0,
+                markerSize: 5,
                 label: label);
         }
 
-        private void RefreshInformationPlot()
+        private void SetInformationPlotTimeRange()
         {
-            bool autoFollow = _Chk_InfoAutoFollow.Checked;
-            ScottPlot.AxisLimits axisLimitsBeforeRefresh = _Plot_Information.Plot.GetAxisLimits();
+            DateTime now = DateTime.Now;
+            DateTime startTime = now.AddSeconds(-60);
+            DateTime endTime = now.AddSeconds(1);
+            _Plot_Information.Plot.SetAxisLimitsX(startTime.ToOADate(), endTime.ToOADate());
+            _Plot_Information.Plot.AxisAutoY();
+        }
 
-            TrimInformationPoints(DateTime.Now);
+        private void RefreshInformationPlot(InformationTrendPlotData plotData)
+        {
+            if (_Options == null || plotData == null || plotData.BoxIndex != _SelectedBoxIndex)
+                return;
+
+            ScottPlot.AxisLimits axisLimitsBeforeRefresh = _Plot_Information.Plot.GetAxisLimits();
 
             _Plot_Information.Plot.Clear();
             _Plot_Information.Plot.Style(figureBackground: Color.FromArgb(217, 217, 217), dataBackground: Color.White);
 
-            double[] timeValues = InformationTrendPoints.Select(point => point.Time.ToOADate()).ToArray();
-
             // 這邊要想一下之後怎麼因應測試項目新增或刪減
-            if (_Chk_InfoTemperature.Checked)
-                AddInformationScatter(timeValues, InformationTrendPoints.Select(point => point.Temperature).ToArray(), "Temperature (°C)", Color.FromArgb(210, 85, 35));
+            if (_Options.ShowTemperature)
+                AddInformationScatter(plotData.TimeValues, plotData.Temperatures, "Temperature (°C)", Color.FromArgb(210, 85, 35));
 
-            if (_Chk_InfoVoltage.Checked)
-                AddInformationScatter(timeValues, InformationTrendPoints.Select(point => point.Voltage).ToArray(), "Voltage (V)", Color.FromArgb(0, 92, 175));
+            if (_Options.ShowVoltage)
+                AddInformationScatter(plotData.TimeValues, plotData.Voltages, "Voltage (V)", Color.FromArgb(0, 92, 175));
 
-            if (_Chk_InfoCurrent.Checked)
-                AddInformationScatter(timeValues, InformationTrendPoints.Select(point => point.Current).ToArray(), "Current (A)", Color.FromArgb(0, 135, 75));
+            if (_Options.ShowCurrent)
+                AddInformationScatter(plotData.TimeValues, plotData.Currents, "Current (A)", Color.FromArgb(0, 135, 75));
 
-            if (_Chk_InfoPower.Checked)
-                AddInformationScatter(timeValues, InformationTrendPoints.Select(point => point.Power).ToArray(), "Power (W)", Color.FromArgb(125, 75, 155));
+            if (_Options.ShowPower)
+                AddInformationScatter(plotData.TimeValues, plotData.Powers, "Power (W)", Color.FromArgb(125, 75, 155));
 
-            _Plot_Information.Plot.Title("Information Trend");
+            _Plot_Information.Plot.Title($"Information Trend - Box{(plotData.BoxIndex / 4) + 1}-{(plotData.BoxIndex % 4) + 1}");
             _Plot_Information.Plot.XLabel("Time");
             _Plot_Information.Plot.YLabel("Value");
             _Plot_Information.Plot.XAxis.DateTimeFormat(true);
 
-            if (autoFollow)
+            if (_Options.AutoFollow)
                 SetInformationPlotTimeRange();
             else
                 KeepInformationPlotZoom(axisLimitsBeforeRefresh);
 
             _Plot_Information.Plot.Legend();
             _Plot_Information.Refresh();
-
-            UpdateInformationLatestLabel();
         }
 
-        private void AddDataOnUiThread(DateTime time, double temperature, double voltage, double current)
+        private void BeginRefreshInformationPlot(InformationTrendPlotData plotData)
         {
-            if (_disposed || _Plot_Information.IsDisposed || _Plot_Information.Disposing)
+            if (_disposed || !_Plot_Information.IsHandleCreated ||
+                _Plot_Information.IsDisposed || _Plot_Information.Disposing)
                 return;
-
-            AddInformationPoint(time, temperature, voltage, current);
-            RefreshInformationPlot();
-        }
-
-
-        private void UpdateInformationLatestLabel() // 應該不需要,需要的話還要檢查
-        {
-            if (Labl_InformationLatest == null)
-                return;
-
-            InformationTrendPoint latest = InformationTrendPoints.LastOrDefault();
-            if (latest == null)
-            {
-                Labl_InformationLatest.Text = "Latest\r\nNo data";
-                return;
-            }
-
-            Labl_InformationLatest.Text =
-                $"Latest  {latest.Time:HH:mm:ss}\r\n" +
-                $"Temp.   {latest.Temperature,6:0.0} °C\r\n" +
-                $"Volt.   {latest.Voltage,6:0.00} V\r\n" +
-                $"Curr.   {latest.Current,6:0.00} A\r\n" +
-                $"Power   {latest.Power,6:0.00} W";
-        }
-        #endregion
-
-        #region public function
-        public void AddData(DateTime time, double temperature, double voltage, double current)
-        {
-            if (_disposed || _Plot_Information.IsDisposed || _Plot_Information.Disposing)
-                return;
-
-            // Handle 尚未建立時，InvokeRequired 可能回傳 false，不能據此更新 UI。
-            if (!_Plot_Information.IsHandleCreated)
-            {
-                Tool.SaveLogToFile("請在圖表控制項的 Handle 建立後呼叫 AddData。");
-                throw new InvalidOperationException("請在圖表控制項的 Handle 建立後呼叫 AddData。");
-            }
 
             if (_Plot_Information.InvokeRequired)
             {
                 try
                 {
                     _Plot_Information.BeginInvoke(new Action(() =>
-                        AddDataOnUiThread(time, temperature, voltage, current)));
+                    {
+                        if (_disposed || _Plot_Information.IsDisposed || _Plot_Information.Disposing)
+                            return;
+
+                        RefreshInformationPlot(plotData);
+                    }));
                 }
                 catch (InvalidOperationException) when (
                     _disposed || _Plot_Information.IsDisposed || _Plot_Information.Disposing)
                 {
-                    // 排程期間控制項已釋放，不再接收資料。
+                    // 排程期間控制項已釋放，不再更新圖表。
                 }
                 return;
             }
 
-            AddDataOnUiThread(time, temperature, voltage, current);
+            RefreshInformationPlot(plotData);
+        }
+
+        private int GetCurrentTickCount()
+        {
+            return Environment.TickCount;
+        }
+
+        private bool CheckTimeOvermSec(int tick, int time)
+        {
+            int time_count = unchecked(GetCurrentTickCount() - tick);
+            bool res = time_count > time;
+
+            return res;
+        }
+        #endregion
+
+        #region public function
+        public void AddData(int boxIndex, DateTime time, double temperature, double voltage, double current)
+        {
+            if (_disposed || boxIndex < 0)
+                return;
+
+            InformationTrendPlotData plotData = null;
+            lock (_InformationDataSync)
+            {
+                AddInformationPoint(boxIndex, time, temperature, voltage, current);
+
+                if (boxIndex != _SelectedBoxIndex || !CheckTimeOvermSec(UpdateInterval, 200))
+                    return;
+
+                // 在排入UI前更新時間，確保BeginInvoke最少間隔200ms。
+                UpdateInterval = GetCurrentTickCount();
+
+                plotData = CreateInformationTrendPlotData(boxIndex);
+            }
+
+            BeginRefreshInformationPlot(plotData);
+        }
+
+        public void UpdateDisplay(int selectedBoxIndex, InformationTrendOptions options)
+        {
+            if (options == null || selectedBoxIndex < 0)
+                return;
+
+            if (_disposed || _Plot_Information.IsDisposed || _Plot_Information.Disposing)
+                return;
+
+            if (_Plot_Information.InvokeRequired)
+            {
+                try
+                {
+                    _Plot_Information.BeginInvoke(new Action(() =>
+                        UpdateDisplay(selectedBoxIndex, options)));
+                }
+                catch (InvalidOperationException) when (
+                    _disposed || _Plot_Information.IsDisposed || _Plot_Information.Disposing)
+                {
+                    // 排程期間控制項已釋放，不再更新圖表設定。
+                }
+                return;
+            }
+
+            InformationTrendPlotData plotData;
+            lock (_InformationDataSync)
+            {
+                _SelectedBoxIndex = selectedBoxIndex;
+                _Options = options;
+                UpdateInterval = GetCurrentTickCount();
+                plotData = CreateInformationTrendPlotData(selectedBoxIndex);
+            }
+
+            // 使用者切換溫控箱或顯示項目時立即更新，不等待下一筆溫度資料。
+            RefreshInformationPlot(plotData);
         }
 
         public void Dispose()
         {
             _disposed = true;
-            _Chk_InfoTemperature.CheckedChanged -= InformationCheckBox_CheckedChanged;
-            _Chk_InfoVoltage.CheckedChanged -= InformationCheckBox_CheckedChanged;
-            _Chk_InfoCurrent.CheckedChanged -= InformationCheckBox_CheckedChanged;
-            _Chk_InfoPower.CheckedChanged -= InformationCheckBox_CheckedChanged;
-            _Chk_InfoAutoFollow.CheckedChanged -= InformationCheckBox_CheckedChanged;
         }
         #endregion
     }

@@ -74,10 +74,10 @@ namespace BurnInTester.Logic
 
         public void Initial_All_Device()
         {
-            Initial_IO_Function();
-            Initial_Motion_Function();
-            Initial_Light_Function();
-            Initial_Camera_Function();
+            //Initial_IO_Function();
+            //Initial_Motion_Function();
+            //Initial_Light_Function();
+            //Initial_Camera_Function();
             Initial_Temperature_Function();
         }
 
@@ -87,10 +87,10 @@ namespace BurnInTester.Logic
             //ApplicationSetting.ReadAllRecipe<eF_Recipe>();
             //ApplicationSetting.ReadAllRecipe<eF_ParameterSetting>();
 
-            Tool.SaveLogToFile("Load Recipe File");
-            var recipe = ServiceProvider.GetRequiredService<IF_RecipeLogic>();
-            string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
-            recipe.ReadRecipe(cur_recipe_name);
+            //Tool.SaveLogToFile("Load Recipe File");
+            //var recipe = ServiceProvider.GetRequiredService<IF_RecipeLogic>();
+            //string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            //recipe.ReadRecipe(cur_recipe_name);
         }
 
         public int DeleteExpireFileInFolder()

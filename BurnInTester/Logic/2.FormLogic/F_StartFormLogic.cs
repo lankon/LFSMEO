@@ -11,7 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using DeviceCore;
+using RecipeManage.Base;
+using RecipeManage.Logic;
 using BurnInTester.Base;
+
 
 namespace BurnInTester.Logic
 {
@@ -68,7 +71,7 @@ namespace BurnInTester.Logic
                 set = ApplicationSetting.Get_String_Recipe<eF_StartForm>((int)AgingParam[i]);
                 param.Add(AgingParam[i].ToString(), set);
             }
-            AgingInformation.SaveBoxConfig(AgingInformation.AgingConfigFilePath, $"Box{num}", param);
+            AgingInformation.SaveBoxConfig(AgingInformation.AgingConfigFilePath, $"Box{num + 1}", param);
         }
         public void UpdateAgingParam()
         {
@@ -87,21 +90,25 @@ namespace BurnInTester.Logic
 
         public int StartTest()
         {
-            AgingTCTask.Start(50, box_num: GetCurBoxNum());
+            int selectedBoxIndex = GetCurBoxNum();
+            if (selectedBoxIndex < 0)
+                return -1;
+
+            AgingTCTask.Start(50, box_num: selectedBoxIndex);
             return 0;
         }
 
 
         public void ReadAllSetting()
         {
-            //ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
-            //ApplicationSetting.ReadAllRecipe<eF_Recipe>();
-            //ApplicationSetting.ReadAllRecipe<eF_ParameterSetting>();
+            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
+            ApplicationSetting.ReadAllRecipe<eF_Recipe>();
 
-            //Tool.SaveLogToFile("Load Recipe File");
-            //var recipe = ServiceProvider.GetRequiredService<F_RecipeLogic>();
-            //string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
-            //recipe.ReadRecipe(cur_recipe_name);
+            Tool.SaveLogToFile("Load Recipe File");
+            var recipe = ServiceProvider.GetRequiredService<IF_RecipeLogic>();
+            string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            recipe.ReadRecipe(cur_recipe_name);
+            
         }
 
     }

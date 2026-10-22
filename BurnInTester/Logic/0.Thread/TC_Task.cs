@@ -85,7 +85,8 @@ namespace BurnInTester.Logic
                             else
                                 count++;
 
-                            await Task.Delay(1);  //Thread休息用,溫度更新太慢可縮短
+                            if(MonitorBoxNum == 0)
+                                await Task.Delay(1);  // 輪巡完所有溫控箱後,休息一下,避免CPU過度負荷
                         }
                         break;
                     case WORK.ASK_PV:
@@ -94,8 +95,9 @@ namespace BurnInTester.Logic
                             
                             if(HW_Param.TC_Box.Use[MonitorBoxNum] == true)
                             {
-                                _ = CommManage.UpdateTemperature(HW_Param.TC1, command, MonitorBoxNum);
-                                TemperatureUpdated?.Invoke(MonitorBoxNum);
+                                bool updated = await CommManage.UpdateTemperature(HW_Param.TC1, command, MonitorBoxNum);
+                                if (updated)
+                                    TemperatureUpdated?.Invoke(MonitorBoxNum);
                             }
 
                             count++;
@@ -126,11 +128,11 @@ namespace BurnInTester.Logic
         #endregion
 
         #region public function
-        public event Action<int> TemperatureUpdated; // 更新溫度,給外部UI訂閱事件. int:溫控箱編號
+        public event Action<int> TemperatureUpdated; // 更新溫度,給外部UI訂閱事件. int:溫控箱陣列索引（0-based）
 
         public void Start(double sv, string cmd = "", int box_num = 0)
         {
-            if (box_num == 0)
+            if (box_num < 0)
                 return;
 
             _CommandQueue.Enqueue(new CommandInfo 

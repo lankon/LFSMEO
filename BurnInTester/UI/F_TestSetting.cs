@@ -47,6 +47,8 @@ namespace BurnInTester.UI
         }
         private void ReadAllEnumSetting()
         {
+            CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+
             //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
             //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 
@@ -70,9 +72,9 @@ namespace BurnInTester.UI
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
 
-            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo}.xml"; 
+            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo + 1}.xml";
             if (!Tool.DataGrid_DataLoad(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\{file_name}"))
-                Tool.SaveLogToFile("IO表讀取失敗");
+                Tool.SaveLogToFile("測試條件表讀取失敗");
         }
         private void LeavePage()
         {
@@ -106,15 +108,15 @@ namespace BurnInTester.UI
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
-            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo}.xml";
+            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo + 1}.xml";
             Tool.DataGrid_DataSave(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\{file_name}");
         }
 
         private void Btn_Load_Click(object sender, EventArgs e)
         {
-            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo}.xml";
+            string file_name = $"TestSettingBox{_AgingInfo.CurSelectBoxNo + 1}.xml";
             if (!Tool.DataGrid_DataLoad(DGV_TestCondition, $"\\Package\\{CurRecipeName}\\{file_name}"))
-                Tool.SaveLogToFile("IO表讀取失敗");
+                Tool.SaveLogToFile("測試條件表讀取失敗");
         }
 
         private void Btn_Add_Click(object sender, EventArgs e)

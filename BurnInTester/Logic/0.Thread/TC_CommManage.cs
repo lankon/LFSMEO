@@ -97,7 +97,7 @@ namespace BurnInTester.Logic
         #endregion
 
         #region public function
-        public async Task UpdateTemperature(ETemperatureControlName name, string cmd = "", int index = 0)
+        public async Task<bool> UpdateTemperature(ETemperatureControlName name, string cmd = "", int index = 0)
         {
             try
             {
@@ -129,10 +129,13 @@ namespace BurnInTester.Logic
 
                     return "";
                 });
+
+                return true;
             }
             catch (Exception ex)
             {
                 Tool.SaveLogToFile($"通訊失敗: {ex.Message}");
+                return false;
             }
         }
         public async Task Start(ETemperatureControlName name, double sv, string cmd = "", int index = 0)

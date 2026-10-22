@@ -24,7 +24,7 @@ namespace BurnInTester.Logic
         }
 
         #region parameter define
-        public int CurSelectBoxNo { get; set; } = 0;        // 目前選取老化箱編號
+        public int CurSelectBoxNo { get; set; } = 0;        // 目前選取老化箱的陣列索引（0-based）
         private List<AGING_INFO> PARAM_INFO = new List<AGING_INFO>();
         public string AgingConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "AgingConfig.xml");
         public TemperatureInfo[] TemperatureInfos;
@@ -103,6 +103,20 @@ namespace BurnInTester.Logic
             foreach (var box in doc.Descendants("Box"))
             {
                 string name = (string)box.Attribute("name");
+                string boxNumberText = name?.Replace("Box", "");
+
+                if (!int.TryParse(boxNumberText, out int boxNumber))
+                {
+                    Tool.SaveLogToFile($"無效的老化箱設定名稱: {name}", level: "ERR");
+                    continue;
+                }
+
+                int boxIndex = boxNumber - 1;
+                if (boxIndex < 0 || boxIndex >= PARAM_INFO.Count)
+                {
+                    Tool.SaveLogToFile($"老化箱設定超出範圍: {name}", level: "ERR");
+                    continue;
+                }
 
                 // 讀出每個 Parameter
                 foreach (var param in box.Elements("Parameter"))
@@ -110,7 +124,7 @@ namespace BurnInTester.Logic
                     string key = (string)param.Attribute("key");
                     string value = (string)param.Attribute("value");
 
-                    Project2BoxInfo(int.Parse(name.Replace("Box", "")), key, value);
+                    Project2BoxInfo(boxIndex, key, value);
                 }
             }
         }

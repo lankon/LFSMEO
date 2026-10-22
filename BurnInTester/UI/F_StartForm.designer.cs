@@ -18,7 +18,6 @@ namespace BurnInTester.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.LyPnl_CtrlBoxStatus = new System.Windows.Forms.TableLayoutPanel();
-            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.TxtBx_EndTime = new System.Windows.Forms.TextBox();
@@ -69,6 +68,7 @@ namespace BurnInTester.UI
             this.TxtBx_RespDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Pnl_Info = new System.Windows.Forms.Panel();
+            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.LyPnl_CtrlBoxStatus.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -106,14 +106,6 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxStatus.Size = new System.Drawing.Size(653, 943);
             this.LyPnl_CtrlBoxStatus.TabIndex = 0;
-            // 
-            // CtrlBoxStatus1
-            // 
-            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
-            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
-            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
-            this.CtrlBoxStatus1.TabIndex = 0;
-            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
             // 
             // panel1
             // 
@@ -480,8 +472,6 @@ namespace BurnInTester.UI
             // Chk_InfoVoltage
             // 
             this.Chk_InfoVoltage.BackColor = System.Drawing.Color.Transparent;
-            this.Chk_InfoVoltage.Checked = true;
-            this.Chk_InfoVoltage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Chk_InfoVoltage.Font = new System.Drawing.Font("微軟正黑體", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Chk_InfoVoltage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(92)))), ((int)(((byte)(175)))));
             this.Chk_InfoVoltage.Location = new System.Drawing.Point(136, 7);
@@ -709,6 +699,14 @@ namespace BurnInTester.UI
             this.Pnl_Info.Name = "Pnl_Info";
             this.Pnl_Info.Size = new System.Drawing.Size(327, 468);
             this.Pnl_Info.TabIndex = 5;
+            // 
+            // CtrlBoxStatus1
+            // 
+            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
+            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
+            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
+            this.CtrlBoxStatus1.TabIndex = 0;
+            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
             // 
             // F_StartForm
             // 
