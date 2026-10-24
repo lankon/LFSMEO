@@ -391,7 +391,7 @@ namespace AAMachine.UI
             using (MilVisionTool func = new MilVisionTool())
             {
                 MIL_ID source_img = MIL.M_NULL;
-                source_img = func.ImportImage($"D:\\ProcessingImage\\正CCD_環光100軸光100.png");
+                source_img = func.ImportImage($@":\Users\leo_li\Desktop\45度CCD\有問題的圖檔\Picture_PCCD.png");
                 find.FindPositiveMirrorHousingEdge(source_img);
                 func.SafeMilBufFree(ref source_img);
             }
@@ -403,21 +403,60 @@ namespace AAMachine.UI
 
         private void Btn_45CCD_Test_Click(object sender, EventArgs e)
         {
-            Find45MirrorHousing find = new Find45MirrorHousing();
+            string imageFolder = @"C:\Users\leo_li\Desktop\新增資料夾\0.45CCD_MirrorHousingResult\"; //DEP2RC36420040
 
-            using (MilVisionTool func = new MilVisionTool())
+            string[] imageFiles = Directory
+                            .EnumerateFiles(
+                                imageFolder,
+                                "*.*",
+                                SearchOption.AllDirectories)
+                            .Where(file =>
+                                file.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase) ||
+                                file.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                                file.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                                file.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                            .ToArray();
+
+            foreach (string imageFile in imageFiles)
             {
-                MIL_ID source_img = MIL.M_NULL;
-                source_img = func.ImportImage($"C:\\Users\\leo_li\\Desktop\\有問題的圖檔\\Picture_1.png");
-                find.Find45MirrorHousingEdge(source_img);
-                func.SafeMilBufFree(ref source_img);
+                //string imageFile = @"C:\Users\leo_li\Desktop\新增資料夾\0.45CCD_MirrorHousingResult\DEP2RC36420040\HousingXY_SourceImage_7.bmp";
+
+                Find45MirrorHousing find = new Find45MirrorHousing();
+
+                using (MilVisionTool func = new MilVisionTool())
+                {
+                    MIL_ID source_img = MIL.M_NULL;
+
+                    try
+                    {
+                        source_img = func.ImportImage(imageFile);
+
+                        string folderName = new DirectoryInfo(Path.GetDirectoryName(imageFile)).Name;
+                        string fileName = Path.GetFileName(imageFile);
+
+                        find.Find45MirrorHousingEdge(source_img, folderName+$"_{fileName}");
+                        
+                        if (!find.Result.IsSuccess)
+                        {
+                            Console.WriteLine($"Image: {folderName}_{fileName} - Find45MirrorHousing failed.");
+                        }
+                           
+                    }
+                    catch (Exception ex)
+                    {
+                        // 記錄該圖片失敗原因
+                    }
+                    finally
+                    {
+                        if (source_img != MIL.M_NULL)
+                        {
+                            func.SafeMilBufFree(ref source_img);
+                        }
+                    }
+                }
             }
 
-            bool res = find.Result.IsSuccess;
-            double left_distance = find.Result.LeftMirrorHousingDistance;
-            double left_angle = find.Result.LeftMirrorHousingSignedAngle;
-            double down_distance = find.Result.DownMirrorHousingDistance;
-            double down_angle = find.Result.DownMirrorHousingSignedAngle;
+
         }
     }
 }
