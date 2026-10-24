@@ -64,8 +64,27 @@ namespace ProbeTester.UI
             this.Btn_Test = new System.Windows.Forms.Button();
             this.Btn_Calibration = new System.Windows.Forms.Button();
             this.Btn_TestConfocal = new System.Windows.Forms.Button();
-            this.Btn_MILTest = new System.Windows.Forms.Button();
             this.Btn_45Test = new System.Windows.Forms.Button();
+            this.PicBox_FinderResult = new System.Windows.Forms.PictureBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_TZ = new System.Windows.Forms.TextBox();
+            this.TxtBx_TY = new System.Windows.Forms.TextBox();
+            this.TxtBx_TX = new System.Windows.Forms.TextBox();
+            this.TxtBx_Z = new System.Windows.Forms.TextBox();
+            this.TxtBx_Y = new System.Windows.Forms.TextBox();
+            this.Btn_MoveX_N = new System.Windows.Forms.Button();
+            this.Btn_MoveX_P = new System.Windows.Forms.Button();
+            this.Btn_MoveY_P = new System.Windows.Forms.Button();
+            this.Btn_MoveY_N = new System.Windows.Forms.Button();
+            this.Btn_MoveZ_N = new System.Windows.Forms.Button();
+            this.Btn_MoveTX_N = new System.Windows.Forms.Button();
+            this.Btn_MoveTY_N = new System.Windows.Forms.Button();
+            this.Btn_MoveTZ_N = new System.Windows.Forms.Button();
+            this.Btn_MoveZ_P = new System.Windows.Forms.Button();
+            this.Btn_MoveTX_P = new System.Windows.Forms.Button();
+            this.Btn_MoveTY_P = new System.Windows.Forms.Button();
+            this.Btn_MoveTZ_P = new System.Windows.Forms.Button();
+            this.TxtBx_X = new System.Windows.Forms.TextBox();
             this.Pnl_MainButton.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -76,6 +95,8 @@ namespace ProbeTester.UI
             ((System.ComponentModel.ISupportInitialize)(this.PicBx_Mapping)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PicBox_FinderResult)).BeginInit();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Pnl_CCD
@@ -253,7 +274,7 @@ namespace ProbeTester.UI
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.tableLayoutPanel2);
-            this.panel4.Location = new System.Drawing.Point(863, 718);
+            this.panel4.Location = new System.Drawing.Point(1195, 718);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(321, 246);
             this.panel4.TabIndex = 4;
@@ -427,9 +448,9 @@ namespace ProbeTester.UI
             // 
             this.panel6.Controls.Add(this.panel5);
             this.panel6.Controls.Add(this.panel2);
-            this.panel6.Location = new System.Drawing.Point(1061, 74);
+            this.panel6.Location = new System.Drawing.Point(990, 41);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(759, 519);
+            this.panel6.Size = new System.Drawing.Size(759, 134);
             this.panel6.TabIndex = 7;
             this.panel6.Visible = false;
             // 
@@ -463,16 +484,6 @@ namespace ProbeTester.UI
             this.Btn_TestConfocal.UseVisualStyleBackColor = true;
             this.Btn_TestConfocal.Click += new System.EventHandler(this.Btn_TestConfocal_Click);
             // 
-            // Btn_MILTest
-            // 
-            this.Btn_MILTest.Location = new System.Drawing.Point(863, 633);
-            this.Btn_MILTest.Name = "Btn_MILTest";
-            this.Btn_MILTest.Size = new System.Drawing.Size(142, 58);
-            this.Btn_MILTest.TabIndex = 11;
-            this.Btn_MILTest.Text = "MIL Test";
-            this.Btn_MILTest.UseVisualStyleBackColor = true;
-            this.Btn_MILTest.Click += new System.EventHandler(this.Btn_MILTest_Click);
-            // 
             // Btn_45Test
             // 
             this.Btn_45Test.Location = new System.Drawing.Point(1011, 633);
@@ -481,7 +492,207 @@ namespace ProbeTester.UI
             this.Btn_45Test.TabIndex = 12;
             this.Btn_45Test.Text = "45度CCD Test";
             this.Btn_45Test.UseVisualStyleBackColor = true;
-            this.Btn_45Test.Click += new System.EventHandler(this.Btn_45Test_Click);
+            // 
+            // PicBox_FinderResult
+            // 
+            this.PicBox_FinderResult.Location = new System.Drawing.Point(1195, 198);
+            this.PicBox_FinderResult.Name = "PicBox_FinderResult";
+            this.PicBox_FinderResult.Size = new System.Drawing.Size(567, 505);
+            this.PicBox_FinderResult.TabIndex = 11;
+            this.PicBox_FinderResult.TabStop = false;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_TZ, 1, 5);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_TY, 1, 4);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_TX, 1, 3);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_Z, 1, 2);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_Y, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveX_N, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveX_P, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveY_P, 2, 1);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveY_N, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveZ_N, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveTX_N, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveTY_N, 0, 4);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveTZ_N, 0, 5);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveZ_P, 2, 2);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveTX_P, 2, 3);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveTY_P, 2, 4);
+            this.tableLayoutPanel3.Controls.Add(this.Btn_MoveTZ_P, 2, 5);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_X, 1, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(863, 747);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 6;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(304, 217);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // TxtBx_TZ
+            // 
+            this.TxtBx_TZ.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_TZ.Location = new System.Drawing.Point(104, 184);
+            this.TxtBx_TZ.Name = "TxtBx_TZ";
+            this.TxtBx_TZ.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_TZ.TabIndex = 17;
+            // 
+            // TxtBx_TY
+            // 
+            this.TxtBx_TY.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_TY.Location = new System.Drawing.Point(104, 148);
+            this.TxtBx_TY.Name = "TxtBx_TY";
+            this.TxtBx_TY.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_TY.TabIndex = 16;
+            // 
+            // TxtBx_TX
+            // 
+            this.TxtBx_TX.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_TX.Location = new System.Drawing.Point(104, 112);
+            this.TxtBx_TX.Name = "TxtBx_TX";
+            this.TxtBx_TX.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_TX.TabIndex = 15;
+            // 
+            // TxtBx_Z
+            // 
+            this.TxtBx_Z.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Z.Location = new System.Drawing.Point(104, 76);
+            this.TxtBx_Z.Name = "TxtBx_Z";
+            this.TxtBx_Z.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_Z.TabIndex = 14;
+            // 
+            // TxtBx_Y
+            // 
+            this.TxtBx_Y.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_Y.Location = new System.Drawing.Point(104, 40);
+            this.TxtBx_Y.Name = "TxtBx_Y";
+            this.TxtBx_Y.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_Y.TabIndex = 13;
+            // 
+            // Btn_MoveX_N
+            // 
+            this.Btn_MoveX_N.Location = new System.Drawing.Point(4, 4);
+            this.Btn_MoveX_N.Name = "Btn_MoveX_N";
+            this.Btn_MoveX_N.Size = new System.Drawing.Size(93, 29);
+            this.Btn_MoveX_N.TabIndex = 1;
+            this.Btn_MoveX_N.Text = "X";
+            this.Btn_MoveX_N.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveX_P
+            // 
+            this.Btn_MoveX_P.Location = new System.Drawing.Point(205, 4);
+            this.Btn_MoveX_P.Name = "Btn_MoveX_P";
+            this.Btn_MoveX_P.Size = new System.Drawing.Size(95, 29);
+            this.Btn_MoveX_P.TabIndex = 0;
+            this.Btn_MoveX_P.Text = "X";
+            this.Btn_MoveX_P.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveY_P
+            // 
+            this.Btn_MoveY_P.Location = new System.Drawing.Point(205, 40);
+            this.Btn_MoveY_P.Name = "Btn_MoveY_P";
+            this.Btn_MoveY_P.Size = new System.Drawing.Size(95, 29);
+            this.Btn_MoveY_P.TabIndex = 2;
+            this.Btn_MoveY_P.Text = "Y";
+            this.Btn_MoveY_P.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveY_N
+            // 
+            this.Btn_MoveY_N.Location = new System.Drawing.Point(4, 40);
+            this.Btn_MoveY_N.Name = "Btn_MoveY_N";
+            this.Btn_MoveY_N.Size = new System.Drawing.Size(93, 29);
+            this.Btn_MoveY_N.TabIndex = 3;
+            this.Btn_MoveY_N.Text = "Y";
+            this.Btn_MoveY_N.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveZ_N
+            // 
+            this.Btn_MoveZ_N.Location = new System.Drawing.Point(4, 76);
+            this.Btn_MoveZ_N.Name = "Btn_MoveZ_N";
+            this.Btn_MoveZ_N.Size = new System.Drawing.Size(93, 29);
+            this.Btn_MoveZ_N.TabIndex = 4;
+            this.Btn_MoveZ_N.Text = "Z";
+            this.Btn_MoveZ_N.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveTX_N
+            // 
+            this.Btn_MoveTX_N.Location = new System.Drawing.Point(4, 112);
+            this.Btn_MoveTX_N.Name = "Btn_MoveTX_N";
+            this.Btn_MoveTX_N.Size = new System.Drawing.Size(93, 29);
+            this.Btn_MoveTX_N.TabIndex = 5;
+            this.Btn_MoveTX_N.Text = "TX";
+            this.Btn_MoveTX_N.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveTY_N
+            // 
+            this.Btn_MoveTY_N.Location = new System.Drawing.Point(4, 148);
+            this.Btn_MoveTY_N.Name = "Btn_MoveTY_N";
+            this.Btn_MoveTY_N.Size = new System.Drawing.Size(93, 29);
+            this.Btn_MoveTY_N.TabIndex = 6;
+            this.Btn_MoveTY_N.Text = "TY";
+            this.Btn_MoveTY_N.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveTZ_N
+            // 
+            this.Btn_MoveTZ_N.Location = new System.Drawing.Point(4, 184);
+            this.Btn_MoveTZ_N.Name = "Btn_MoveTZ_N";
+            this.Btn_MoveTZ_N.Size = new System.Drawing.Size(93, 29);
+            this.Btn_MoveTZ_N.TabIndex = 7;
+            this.Btn_MoveTZ_N.Text = "TZ";
+            this.Btn_MoveTZ_N.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveZ_P
+            // 
+            this.Btn_MoveZ_P.Location = new System.Drawing.Point(205, 76);
+            this.Btn_MoveZ_P.Name = "Btn_MoveZ_P";
+            this.Btn_MoveZ_P.Size = new System.Drawing.Size(95, 29);
+            this.Btn_MoveZ_P.TabIndex = 8;
+            this.Btn_MoveZ_P.Text = "Z";
+            this.Btn_MoveZ_P.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveTX_P
+            // 
+            this.Btn_MoveTX_P.Location = new System.Drawing.Point(205, 112);
+            this.Btn_MoveTX_P.Name = "Btn_MoveTX_P";
+            this.Btn_MoveTX_P.Size = new System.Drawing.Size(95, 29);
+            this.Btn_MoveTX_P.TabIndex = 9;
+            this.Btn_MoveTX_P.Text = "TX";
+            this.Btn_MoveTX_P.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveTY_P
+            // 
+            this.Btn_MoveTY_P.Location = new System.Drawing.Point(205, 148);
+            this.Btn_MoveTY_P.Name = "Btn_MoveTY_P";
+            this.Btn_MoveTY_P.Size = new System.Drawing.Size(95, 29);
+            this.Btn_MoveTY_P.TabIndex = 10;
+            this.Btn_MoveTY_P.Text = "TY";
+            this.Btn_MoveTY_P.UseVisualStyleBackColor = true;
+            // 
+            // Btn_MoveTZ_P
+            // 
+            this.Btn_MoveTZ_P.Location = new System.Drawing.Point(205, 184);
+            this.Btn_MoveTZ_P.Name = "Btn_MoveTZ_P";
+            this.Btn_MoveTZ_P.Size = new System.Drawing.Size(95, 29);
+            this.Btn_MoveTZ_P.TabIndex = 11;
+            this.Btn_MoveTZ_P.Text = "TZ";
+            this.Btn_MoveTZ_P.UseVisualStyleBackColor = true;
+            // 
+            // TxtBx_X
+            // 
+            this.TxtBx_X.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TxtBx_X.Location = new System.Drawing.Point(104, 4);
+            this.TxtBx_X.Name = "TxtBx_X";
+            this.TxtBx_X.Size = new System.Drawing.Size(94, 29);
+            this.TxtBx_X.TabIndex = 12;
             // 
             // F_StartForm
             // 
@@ -489,8 +700,9 @@ namespace ProbeTester.UI
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
             this.Controls.Add(this.Btn_45Test);
-            this.Controls.Add(this.Btn_MILTest);
             this.Controls.Add(this.Btn_TestConfocal);
+            this.Controls.Add(this.tableLayoutPanel3);
+            this.Controls.Add(this.PicBox_FinderResult);
             this.Controls.Add(this.Btn_Calibration);
             this.Controls.Add(this.Btn_Test);
             this.Controls.Add(this.panel6);
@@ -513,6 +725,9 @@ namespace ProbeTester.UI
             ((System.ComponentModel.ISupportInitialize)(this.PicBx_Mapping)).EndInit();
             this.panel5.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PicBox_FinderResult)).EndInit();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -553,7 +768,26 @@ namespace ProbeTester.UI
         private System.Windows.Forms.Button Btn_Test;
         private System.Windows.Forms.Button Btn_Calibration;
         private System.Windows.Forms.Button Btn_TestConfocal;
-        private System.Windows.Forms.Button Btn_MILTest;
         private System.Windows.Forms.Button Btn_45Test;
+        private System.Windows.Forms.PictureBox PicBox_FinderResult;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Button Btn_MoveX_N;
+        private System.Windows.Forms.Button Btn_MoveX_P;
+        private System.Windows.Forms.Button Btn_MoveY_P;
+        private System.Windows.Forms.Button Btn_MoveY_N;
+        private System.Windows.Forms.Button Btn_MoveZ_N;
+        private System.Windows.Forms.Button Btn_MoveTX_N;
+        private System.Windows.Forms.Button Btn_MoveTY_N;
+        private System.Windows.Forms.Button Btn_MoveTZ_N;
+        private System.Windows.Forms.Button Btn_MoveZ_P;
+        private System.Windows.Forms.Button Btn_MoveTX_P;
+        private System.Windows.Forms.Button Btn_MoveTY_P;
+        private System.Windows.Forms.Button Btn_MoveTZ_P;
+        private System.Windows.Forms.TextBox TxtBx_X;
+        private System.Windows.Forms.TextBox TxtBx_TZ;
+        private System.Windows.Forms.TextBox TxtBx_TY;
+        private System.Windows.Forms.TextBox TxtBx_TX;
+        private System.Windows.Forms.TextBox TxtBx_Z;
+        private System.Windows.Forms.TextBox TxtBx_Y;
     }
 }

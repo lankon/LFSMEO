@@ -11,25 +11,28 @@ using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using UserPrivilege.Base;
+using HistoryReader.Base;
 using RGBTester.Base;
 
 namespace RGBTester.UI
 {
     public partial class F_StartForm_ButtonGroup : Form
     {
-        public F_StartForm_ButtonGroup(IServiceProvider serviceProvider)
+        public F_StartForm_ButtonGroup(IServiceProvider serviceProvider, IF_HistoryReader f_HistoryReader)
         {
             InitializeComponent();
 
-            InitialForm();
-
             ServiceProvider = serviceProvider;
+            HistoryReader = f_HistoryReader;
+
+            InitialForm();
         }
 
         #region parameter define
         List<Panel> PnlPartList = new List<Panel>();
         private int curPnlPart = 0;
         private IServiceProvider ServiceProvider;
+        private IF_HistoryReader HistoryReader;
         #endregion
 
         #region private function
@@ -192,11 +195,7 @@ namespace RGBTester.UI
 
         private void Btn_HistoryLog_Click(object sender, EventArgs e)
         {
-            var historyLog = ServiceProvider.GetRequiredService<F_HistoryLog>();
-
-            Tool.HideElementOnPanel(Scope.MainPanel);
-            Tool.SetForm(Scope.MainPanel, historyLog);
-            historyLog.Show();
+            HistoryReader.ShowOrActivate();
         }
     }
 }

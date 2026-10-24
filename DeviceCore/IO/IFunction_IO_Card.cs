@@ -19,6 +19,28 @@ namespace DeviceCore
 
     public enum EIOName
     {
+        #region Common Input
+
+        #endregion
+
+        #region Common Output
+
+        #endregion
+
+        #region AAMachine
+
+        #region BDSA
+        // Input
+        ToolZSafePosition,
+
+        // Output
+
+        #endregion
+
+
+        #endregion
+
+
         #region Analog Input
         Iin,
         
@@ -82,11 +104,29 @@ namespace DeviceCore
         ILLJigVacuumValue,
 
         SideCCDLightInSensor,
+        UVLightInSensor,
+        PAMaskInSensor,
+        DispensingMaskInSensor,
+        GZSafetyPosition,
+        FZSafetyPosition,
+        TableZSafetyPosition,
+        EXSafetyPosition,
+        CCDX_SafePosition,
+        UpPA_SafePosition,
+        MirrorZ_SafePosition,
         #endregion
 
         #region Output
         SideCCDLightStretch,
         SideCCDLightReStretch,
+        UVLightStretch,
+        UVLightReStretch,
+        PAMaskStretch,
+        PAMaskReStretch,
+        DispensingMaskStretch,
+        DispensingMaskReStretch,
+        GlueCleanStretch,
+        GlueCleanReStretch,
 
         SphereUp,
         SphereDown,

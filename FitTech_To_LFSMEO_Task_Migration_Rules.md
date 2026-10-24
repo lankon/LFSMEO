@@ -52,6 +52,29 @@ FitTech: SubTask_LoadNest.cs
 LFSMEO: SubTask_LoadNest.cs
 ```
 
+## LFSMEO Task / SubTask Constructor Rule
+
+When migrating a Task or SubTask, keep the existing LFSMEO constructor signature. Do not add arbitrary constructor parameters:
+
+```csharp
+public SubTask_Xxx(
+    IBaseTaskDependence dependencies,
+    IF_StateControl f_StateControl,
+    string set_state = "Default")
+    : base(dependencies)
+```
+
+Rules:
+
+1. Do not add `MachineContext`, `MachineFunc`, or other service parameters only for one migrated Task/SubTask.
+2. Obtain hardware and common services through `IBaseTaskDependence`.
+3. If machine settings or another service is required, use the existing dependency path, or extend the shared dependency interface first; do not change only one Task/SubTask constructor.
+4. The caller should be able to construct the migrated Task/SubTask using the existing form:
+
+```csharp
+new SubTask_Xxx(Deps, F_StateControl)
+```
+
 ## LFSMEO Task 外殼格式
 
 新的 LFSMEO Task 必須使用：

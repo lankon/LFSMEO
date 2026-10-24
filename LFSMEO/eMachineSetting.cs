@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace LFSMEO
 {
+    //[新增機型]
     public enum EMachineType
     {
         NONE,
         ProbeTester,
         RGBTester,
         BurnInTester,
+        AAMachine,
     }
 
     public enum eMachineSetting
