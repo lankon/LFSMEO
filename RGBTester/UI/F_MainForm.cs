@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HistoryReader.Logic;
+using Microsoft.Extensions.DependencyInjection;
 using RGBTester.Base;
 using RGBTester.Logic;
 using System;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -104,7 +106,9 @@ namespace RGBTester.UI
             Tool.CreateFolder(Application.StartupPath + @"\Backup");
             Tool.CreateFolder(Application.StartupPath + @"\Setting\Package");
 
-            Tool.CreateLog();
+            HistoryLogHub historyLogHub = ServiceProvider.GetRequiredService<HistoryLogHub>();
+            Directory.CreateDirectory(historyLogHub.HistoryFolder);
+            Tool.CreateLog("History\\Log_", ".log", historyLogHub);
         }
         private void SetHint()
         {

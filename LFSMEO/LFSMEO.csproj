@@ -289,6 +289,10 @@
       <Project>{361bd130-12a3-4bd0-b08e-88bf32c41891}</Project>
       <Name>RGBTester</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HistoryReader\HistoryReader.csproj">
+      <Project>{b0b1d5ee-94af-4608-b571-e3dc7ab68bb7}</Project>
+      <Name>HistoryReader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>
       <Name>ToolFunction</Name>
