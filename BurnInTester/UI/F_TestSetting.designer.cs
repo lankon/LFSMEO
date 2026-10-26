@@ -29,16 +29,13 @@ namespace BurnInTester.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_TestCondition = new System.Windows.Forms.DataGridView();
-            this.Title_Temperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_BurnInTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_RestTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TitleCurrentStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TitleCurrentEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TitleCurrentStep = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_VoltageCond1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_No = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_Skip = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Title_TestProcess = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Title_Content = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Btn_Load = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Btn_RowDown = new System.Windows.Forms.Button();
@@ -46,8 +43,24 @@ namespace BurnInTester.UI
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.TabPg_Temperature = new System.Windows.Forms.TabPage();
+            this.TabPg_LIV = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_TestCondition)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.TabPg_Temperature.SuspendLayout();
+            this.TabPg_LIV.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // DGV_TestCondition
@@ -56,78 +69,70 @@ namespace BurnInTester.UI
             this.DGV_TestCondition.AllowUserToDeleteRows = false;
             this.DGV_TestCondition.AllowUserToResizeColumns = false;
             this.DGV_TestCondition.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_TestCondition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_TestCondition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.DGV_TestCondition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_TestCondition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Title_Temperature,
-            this.Title_BurnInTime,
-            this.Title_RestTime,
-            this.TitleCurrentStart,
-            this.TitleCurrentEnd,
-            this.TitleCurrentStep,
-            this.Title_VoltageCond1});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_TestCondition.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Title_No,
+            this.Title_Skip,
+            this.Title_TestProcess,
+            this.Title_Content});
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_TestCondition.DefaultCellStyle = dataGridViewCellStyle8;
             this.DGV_TestCondition.Location = new System.Drawing.Point(3, 3);
             this.DGV_TestCondition.Name = "DGV_TestCondition";
             this.DGV_TestCondition.RowHeadersVisible = false;
             this.DGV_TestCondition.RowTemplate.Height = 24;
-            this.DGV_TestCondition.Size = new System.Drawing.Size(1738, 961);
+            this.DGV_TestCondition.Size = new System.Drawing.Size(931, 961);
             this.DGV_TestCondition.TabIndex = 15;
+            this.DGV_TestCondition.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_TestCondition_CellClick);
+            this.DGV_TestCondition.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.DGV_TestCondition_EditingControlShowing);
             // 
-            // Title_Temperature
+            // Title_No
             // 
-            this.Title_Temperature.HeaderText = "Temperature (°C)";
-            this.Title_Temperature.Name = "Title_Temperature";
-            this.Title_Temperature.Width = 170;
+            this.Title_No.HeaderText = "No";
+            this.Title_No.Name = "Title_No";
+            this.Title_No.Width = 70;
             // 
-            // Title_BurnInTime
+            // Title_Skip
             // 
-            this.Title_BurnInTime.HeaderText = "BurnIn Time (hr.)";
-            this.Title_BurnInTime.Name = "Title_BurnInTime";
-            this.Title_BurnInTime.Width = 170;
+            this.Title_Skip.HeaderText = "Skip";
+            this.Title_Skip.Name = "Title_Skip";
+            this.Title_Skip.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_Skip.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Title_Skip.Width = 70;
             // 
-            // Title_RestTime
+            // Title_TestProcess
             // 
-            this.Title_RestTime.HeaderText = "Rest Time (hr.)";
-            this.Title_RestTime.Name = "Title_RestTime";
-            this.Title_RestTime.Width = 170;
+            this.Title_TestProcess.HeaderText = "Test Process";
+            this.Title_TestProcess.Items.AddRange(new object[] {
+            "None",
+            "Temperature",
+            "LIV",
+            "VF",
+            "IR"});
+            this.Title_TestProcess.Name = "Title_TestProcess";
+            this.Title_TestProcess.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_TestProcess.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Title_TestProcess.Width = 170;
             // 
-            // TitleCurrentStart
+            // Title_Content
             // 
-            this.TitleCurrentStart.HeaderText = "I Start (mA)";
-            this.TitleCurrentStart.Name = "TitleCurrentStart";
-            this.TitleCurrentStart.Width = 130;
-            // 
-            // TitleCurrentEnd
-            // 
-            this.TitleCurrentEnd.HeaderText = "I End (mA)";
-            this.TitleCurrentEnd.Name = "TitleCurrentEnd";
-            this.TitleCurrentEnd.Width = 130;
-            // 
-            // TitleCurrentStep
-            // 
-            this.TitleCurrentStep.HeaderText = "I Step (mA)";
-            this.TitleCurrentStep.Name = "TitleCurrentStep";
-            this.TitleCurrentStep.Width = 130;
-            // 
-            // Title_VoltageCond1
-            // 
-            this.Title_VoltageCond1.HeaderText = "V1 (mA)";
-            this.Title_VoltageCond1.Name = "Title_VoltageCond1";
+            this.Title_Content.HeaderText = "Content";
+            this.Title_Content.Name = "Title_Content";
+            this.Title_Content.Width = 600;
             // 
             // Btn_Load
             // 
@@ -203,7 +208,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Controls.Add(this.Btn_RowUp, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.Btn_Add, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.Btn_Remove, 0, 3);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1747, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1413, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -215,11 +220,157 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(145, 517);
             this.tableLayoutPanel1.TabIndex = 31;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.TabPg_Temperature);
+            this.tabControl1.Controls.Add(this.TabPg_LIV);
+            this.tabControl1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tabControl1.Location = new System.Drawing.Point(940, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(467, 961);
+            this.tabControl1.TabIndex = 32;
+            // 
+            // TabPg_Temperature
+            // 
+            this.TabPg_Temperature.Controls.Add(this.tableLayoutPanel3);
+            this.TabPg_Temperature.Location = new System.Drawing.Point(4, 29);
+            this.TabPg_Temperature.Name = "TabPg_Temperature";
+            this.TabPg_Temperature.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPg_Temperature.Size = new System.Drawing.Size(459, 928);
+            this.TabPg_Temperature.TabIndex = 0;
+            this.TabPg_Temperature.Text = "Temperature";
+            this.TabPg_Temperature.UseVisualStyleBackColor = true;
+            // 
+            // TabPg_LIV
+            // 
+            this.TabPg_LIV.Controls.Add(this.tableLayoutPanel2);
+            this.TabPg_LIV.Location = new System.Drawing.Point(4, 29);
+            this.TabPg_LIV.Name = "TabPg_LIV";
+            this.TabPg_LIV.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPg_LIV.Size = new System.Drawing.Size(341, 928);
+            this.TabPg_LIV.TabIndex = 1;
+            this.TabPg_LIV.Text = "LIV";
+            this.TabPg_LIV.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.3494F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.6506F));
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(335, 922);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.66666F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.33334F));
+            this.tableLayoutPanel3.Controls.Add(this.label2, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.textBox1, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.label4, 0, 4);
+            this.tableLayoutPanel3.Controls.Add(this.label5, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.button1, 0, 9);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 10;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(453, 922);
+            this.tableLayoutPanel3.TabIndex = 1;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(296, 6);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(151, 29);
+            this.textBox1.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(6, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(281, 35);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Temperature (°C)";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(6, 79);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(281, 35);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Post-Stabilization Wait Time (min)";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(6, 117);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(281, 35);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Temperature Tolerance (±°C)";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(6, 155);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(281, 35);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Stabilization Timeout (min)";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(6, 41);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(281, 35);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Burn-in Duration (min)";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.tableLayoutPanel3.SetColumnSpan(this.button1, 2);
+            this.button1.Location = new System.Drawing.Point(6, 348);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(441, 56);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Set";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // F_TestSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.DGV_TestCondition);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -228,6 +379,11 @@ namespace BurnInTester.UI
             this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_TestCondition)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.TabPg_Temperature.ResumeLayout(false);
+            this.TabPg_LIV.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -242,12 +398,21 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Button Btn_Remove;
         private System.Windows.Forms.Button Btn_Add;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_Temperature;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_BurnInTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_RestTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TitleCurrentStart;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TitleCurrentEnd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TitleCurrentStep;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_VoltageCond1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_No;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Title_Skip;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Title_TestProcess;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_Content;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage TabPg_Temperature;
+        private System.Windows.Forms.TabPage TabPg_LIV;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -1,7 +1,4 @@
-﻿using BurnInTester.Base;
-using BurnInTester.Logic;
-using RecipeManage.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using ToolFunction;
+using RecipeManage.Base;
+using BurnInTester.Base;
+using BurnInTester.Logic;
 
 namespace BurnInTester.UI
 {
@@ -37,6 +38,10 @@ namespace BurnInTester.UI
             UpdateEnumSettingToForm();
 
             ShowHint();
+
+            tabControl1.Appearance = TabAppearance.FlatButtons;
+            tabControl1.SizeMode = TabSizeMode.Fixed;
+            tabControl1.ItemSize = new Size(0, 1);
 
             if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
                 Tool.ShowFormName(this);
@@ -79,6 +84,24 @@ namespace BurnInTester.UI
         private void LeavePage()
         {
         }
+
+        private void TestProcess_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            DataGridViewCell cell = DGV_TestCondition.CurrentCell;
+            if (cell?.OwningColumn != Title_TestProcess)
+                return;
+
+            // Let the ComboBox finish updating its selection and closing before ending the edit.
+            BeginInvoke(new Action(() =>
+            {
+                if (DGV_TestCondition.IsDisposed || DGV_TestCondition.CurrentCell != cell ||
+                    DGV_TestCondition.EditingControl != sender)
+                    return;
+
+                if (DGV_TestCondition.CommitEdit(DataGridViewDataErrorContexts.Commit))
+                    DGV_TestCondition.EndEdit();
+            }));
+        }
         #endregion
 
         #region public function
@@ -87,6 +110,7 @@ namespace BurnInTester.UI
 
         }
         #endregion
+
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
         {
             if (!this.Visible)
@@ -121,10 +145,45 @@ namespace BurnInTester.UI
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-                                            //Temp,BTime,RTime,IStart,IEnd,IStep,  V1,
-            string[] context = new string[] { "25", "2", "0.5", "0", "100", "10", "20" };
+            string[] context = new string[] { "1", "FALSE", "None", "None"};
 
             Tool.DataGrid_AddRow(DGV_TestCondition, context);
+        }
+
+        private void DGV_TestCondition_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (DGV_TestCondition.CurrentCell?.OwningColumn != Title_TestProcess)
+                return;
+
+            var comboBox = e.Control as DataGridViewComboBoxEditingControl;
+            if (comboBox != null)
+            {
+                // DataGridView reuses the editing control between cells.
+                comboBox.SelectionChangeCommitted -= TestProcess_SelectionChangeCommitted;
+                comboBox.SelectionChangeCommitted += TestProcess_SelectionChangeCommitted;
+            }
+        }
+
+        private void DGV_TestCondition_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != Title_TestProcess.Index)
+                return;
+
+            DataGridViewCell cell = DGV_TestCondition.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            if (cell.ReadOnly)
+                return;
+
+            // Open after the click finishes so the native click handling cannot close it again.
+            BeginInvoke(new Action(() =>
+            {
+                if (DGV_TestCondition.IsDisposed || DGV_TestCondition.CurrentCell != cell ||
+                    !DGV_TestCondition.BeginEdit(true))
+                    return;
+
+                var comboBox = DGV_TestCondition.EditingControl as DataGridViewComboBoxEditingControl;
+                if (comboBox != null)
+                    comboBox.DroppedDown = true;
+            }));
         }
     }
 }
