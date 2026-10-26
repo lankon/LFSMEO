@@ -129,6 +129,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\OEM\F_Equipment_Setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OEM\F_Equipment_Setting.designer.cs">
+      <DependentUpon>F_Equipment_Setting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\OEM\F_VirtualTemperature.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,6 +234,9 @@
     <EmbeddedResource Include="UI\F_StateControl.resx">
       <DependentUpon>F_StateControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\OEM\F_Equipment_Setting.resx">
+      <DependentUpon>F_Equipment_Setting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\OEM\F_VirtualTemperature.resx">
       <DependentUpon>F_VirtualTemperature.cs</DependentUpon>
     </EmbeddedResource>
@@ -260,6 +269,10 @@
     <ProjectReference Include="..\RecipeManage\RecipeManage.csproj">
       <Project>{e3a7e02c-c7a0-4e2a-8cc4-8822cfb8ac9d}</Project>
       <Name>RecipeManage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HistoryReader\HistoryReader.csproj">
+      <Project>{b0b1d5ee-94af-4608-b571-e3dc7ab68bb7}</Project>
+      <Name>HistoryReader</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToolFunction\ToolFunction.csproj">
       <Project>{5924ae58-934e-461b-9b7e-f7bf796aecd6}</Project>

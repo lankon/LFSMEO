@@ -59,6 +59,7 @@ namespace BurnInTester.UI
         }
         private void ReadAllEnumSetting()
         {
+            ApplicationSetting.ReadAllRecipe<eF_Equipment_Setting>();
             //ApplicationSetting.ReadAllRecipe<eOEMSetting>();
             //ApplicationSetting.ReadAllRecipe<eF_StartForm>();
 

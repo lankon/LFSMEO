@@ -32,6 +32,7 @@ namespace BurnInTester.UI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm_ButtonGroup));
             this.Pnl_Part1 = new System.Windows.Forms.Panel();
+            this.Btn_HistoryReader = new System.Windows.Forms.Button();
             this.Btn_DAQ_Chart = new System.Windows.Forms.Button();
             this.Btn_Recipe = new System.Windows.Forms.Button();
             this.Btn_LogIn = new System.Windows.Forms.Button();
@@ -49,6 +50,7 @@ namespace BurnInTester.UI
             // 
             // Pnl_Part1
             // 
+            this.Pnl_Part1.Controls.Add(this.Btn_HistoryReader);
             this.Pnl_Part1.Controls.Add(this.Btn_DAQ_Chart);
             this.Pnl_Part1.Controls.Add(this.Btn_Recipe);
             this.Pnl_Part1.Controls.Add(this.Btn_LogIn);
@@ -60,6 +62,17 @@ namespace BurnInTester.UI
             this.Pnl_Part1.Name = "Pnl_Part1";
             this.Pnl_Part1.Size = new System.Drawing.Size(1738, 72);
             this.Pnl_Part1.TabIndex = 32;
+            // 
+            // Btn_HistoryReader
+            // 
+            this.Btn_HistoryReader.BackgroundImage = global::BurnInTester.Properties.Resources.HistoryReaderButton;
+            this.Btn_HistoryReader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_HistoryReader.Location = new System.Drawing.Point(173, 3);
+            this.Btn_HistoryReader.Name = "Btn_HistoryReader";
+            this.Btn_HistoryReader.Size = new System.Drawing.Size(70, 70);
+            this.Btn_HistoryReader.TabIndex = 42;
+            this.Btn_HistoryReader.UseVisualStyleBackColor = true;
+            this.Btn_HistoryReader.Click += new System.EventHandler(this.Btn_HistoryReader_Click);
             // 
             // Btn_DAQ_Chart
             // 
@@ -143,17 +156,17 @@ namespace BurnInTester.UI
             // 
             this.Pnl_Part2.Controls.Add(this.Btn_PreviousPnlPart2);
             this.Pnl_Part2.Controls.Add(this.Btn_NextPnlPart2);
-            this.Pnl_Part2.Location = new System.Drawing.Point(23, 188);
+            this.Pnl_Part2.Location = new System.Drawing.Point(12, 166);
             this.Pnl_Part2.Name = "Pnl_Part2";
-            this.Pnl_Part2.Size = new System.Drawing.Size(1180, 65);
+            this.Pnl_Part2.Size = new System.Drawing.Size(1738, 72);
             this.Pnl_Part2.TabIndex = 34;
             // 
             // Btn_PreviousPnlPart2
             // 
             this.Btn_PreviousPnlPart2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_PreviousPnlPart2.Location = new System.Drawing.Point(0, 6);
+            this.Btn_PreviousPnlPart2.Location = new System.Drawing.Point(0, 3);
             this.Btn_PreviousPnlPart2.Name = "Btn_PreviousPnlPart2";
-            this.Btn_PreviousPnlPart2.Size = new System.Drawing.Size(19, 60);
+            this.Btn_PreviousPnlPart2.Size = new System.Drawing.Size(19, 69);
             this.Btn_PreviousPnlPart2.TabIndex = 34;
             this.Btn_PreviousPnlPart2.Text = "<";
             this.Btn_PreviousPnlPart2.UseVisualStyleBackColor = true;
@@ -162,9 +175,9 @@ namespace BurnInTester.UI
             // Btn_NextPnlPart2
             // 
             this.Btn_NextPnlPart2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_NextPnlPart2.Location = new System.Drawing.Point(1161, 6);
+            this.Btn_NextPnlPart2.Location = new System.Drawing.Point(1716, 3);
             this.Btn_NextPnlPart2.Name = "Btn_NextPnlPart2";
-            this.Btn_NextPnlPart2.Size = new System.Drawing.Size(19, 60);
+            this.Btn_NextPnlPart2.Size = new System.Drawing.Size(19, 69);
             this.Btn_NextPnlPart2.TabIndex = 32;
             this.Btn_NextPnlPart2.Text = ">";
             this.Btn_NextPnlPart2.UseVisualStyleBackColor = true;
@@ -200,5 +213,7 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Button Btn_LogIn;
         private System.Windows.Forms.Button Btn_Recipe;
         private System.Windows.Forms.Button Btn_DAQ_Chart;
+        private System.Windows.Forms.Button Btn_HistoryReader;
     }
 }
+

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using RecipeManage.Base;
+using HistoryReader.Base;
 using BurnInTester.Base;
 
 namespace BurnInTester.UI
@@ -39,6 +40,7 @@ namespace BurnInTester.UI
             toolTip1.SetToolTip(Btn_ParameterSetting, "Parameter Setting");
             toolTip1.SetToolTip(Btn_LogIn, "LogIn");
             toolTip1.SetToolTip(Btn_Recipe, "Recipe");
+            toolTip1.SetToolTip(Btn_HistoryReader, "History Reader");
         }
         private void InitialForm()
         {
@@ -46,8 +48,8 @@ namespace BurnInTester.UI
 
             SetHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
-            //    Tool.ShowFormName(this);
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                Tool.ShowFormName(this);
 
             PnlPartList.Add(Pnl_Part1);
             PnlPartList.Add(Pnl_Part2);
@@ -184,6 +186,11 @@ namespace BurnInTester.UI
             //Tool.HideElementOnPanel(Scope.MainPanel);
             //Tool.SetForm(Scope.MainPanel, chart);
             //chart.Show();
+        }
+
+        private void Btn_HistoryReader_Click(object sender, EventArgs e)
+        {
+            ServiceProvider.GetRequiredService<IF_HistoryReader>().ShowOrActivate();
         }
     }
 }

@@ -48,7 +48,7 @@ namespace BurnInTester
             //[Form]
             //退出Form後即close掉,要用再new
             services.AddTransient<F_OEM_Setting>();
-            //services.AddTransient<F_Equipment_Setting>();
+            services.AddTransient<F_Equipment_Setting>();
             services.AddTransient<IF_Recipe, F_Recipe>();
             services.AddTransient<F_TestSetting>();
             services.AddTransient<F_TCtrlBoxTemperature>();

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing;
+using System.Security.Cryptography;
 
 //[Device]
 using DeviceCore;
@@ -193,13 +194,20 @@ namespace LFSMEO
             Icon myIcon = AppIcon;
 
             // 設定存放路徑
-            string tempIconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{AppName}_app_icon.ico");
-
-            // 使用 FileStream 將 Icon 直接儲存
-            using (FileStream fs = new FileStream(tempIconPath, FileMode.Create))
+            // Use a content-based filename so Windows does not reuse a stale icon-cache entry.
+            byte[] iconBytes;
+            using (MemoryStream ms = new MemoryStream())
             {
-                myIcon.Save(fs); // 這是 Icon 物件內建的方法，會直接轉成 ico 格式存檔
+                myIcon.Save(ms);
+                iconBytes = ms.ToArray();
             }
+            string iconHash;
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                iconHash = BitConverter.ToString(sha256.ComputeHash(iconBytes)).Replace("-", "").Substring(0, 12);
+            }
+            string tempIconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{AppName}_app_icon_{iconHash}.ico");
+            File.WriteAllBytes(tempIconPath, iconBytes);
 
             // 建立捷徑指向這個生成的臨時檔
             string psCommand = $"-Command \"$s = (New-Object -ComObject WScript.Shell).CreateShortcut('{desktopPath}'); " +

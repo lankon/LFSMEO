@@ -11,5 +11,10 @@ namespace BurnInTester.Base
         Cmbx_ShowFormName,
     }
 
-    
+    public enum eMachineSetting
+    {
+        //所有專案共用的enum名稱
+
+        Cmbx_MachineType,
+    }
 }

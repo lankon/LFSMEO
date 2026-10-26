@@ -37,9 +37,11 @@ namespace BurnInTester.UI
             this.label2 = new System.Windows.Forms.Label();
             this.Btn_VirtualTemperature = new System.Windows.Forms.Button();
             this.Lbl_VirtualTemperature = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.Btn_ResourceMonitor = new System.Windows.Forms.Button();
             this.Lbl_ResourceMonitor = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.Btn_EquipmentSetting = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,7 +49,7 @@ namespace BurnInTester.UI
             // 
             this.Btn_TC_Setting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_TC_Setting.BackgroundImage")));
             this.Btn_TC_Setting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_TC_Setting.Location = new System.Drawing.Point(30, 15);
+            this.Btn_TC_Setting.Location = new System.Drawing.Point(160, 15);
             this.Btn_TC_Setting.Margin = new System.Windows.Forms.Padding(30, 15, 30, 5);
             this.Btn_TC_Setting.Name = "Btn_TC_Setting";
             this.Btn_TC_Setting.Size = new System.Drawing.Size(70, 70);
@@ -58,7 +60,7 @@ namespace BurnInTester.UI
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(3, 90);
+            this.label1.Location = new System.Drawing.Point(133, 90);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(124, 51);
             this.label1.TabIndex = 41;
@@ -78,14 +80,16 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.Btn_TC_BoxSetting, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.Btn_TC_Setting, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.Btn_VirtualTemperature, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.Lbl_VirtualTemperature, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.Btn_ResourceMonitor, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.Lbl_ResourceMonitor, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_TC_BoxSetting, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_TC_Setting, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Btn_EquipmentSetting, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 4, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 40);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -98,7 +102,7 @@ namespace BurnInTester.UI
             // 
             this.Btn_TC_BoxSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_TC_BoxSetting.BackgroundImage")));
             this.Btn_TC_BoxSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_TC_BoxSetting.Location = new System.Drawing.Point(160, 15);
+            this.Btn_TC_BoxSetting.Location = new System.Drawing.Point(550, 15);
             this.Btn_TC_BoxSetting.Margin = new System.Windows.Forms.Padding(30, 15, 30, 5);
             this.Btn_TC_BoxSetting.Name = "Btn_TC_BoxSetting";
             this.Btn_TC_BoxSetting.Size = new System.Drawing.Size(70, 70);
@@ -109,7 +113,7 @@ namespace BurnInTester.UI
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(133, 90);
+            this.label2.Location = new System.Drawing.Point(523, 90);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(124, 61);
             this.label2.TabIndex = 43;
@@ -138,18 +142,8 @@ namespace BurnInTester.UI
             this.Lbl_VirtualTemperature.Text = "Virtual \r\nTemperature";
             this.Lbl_VirtualTemperature.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(329, 462);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(159, 79);
-            this.button1.TabIndex = 43;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            //
             // Btn_ResourceMonitor
-            //
+            // 
             this.Btn_ResourceMonitor.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_ResourceMonitor.BackgroundImage")));
             this.Btn_ResourceMonitor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Btn_ResourceMonitor.Location = new System.Drawing.Point(420, 15);
@@ -159,9 +153,9 @@ namespace BurnInTester.UI
             this.Btn_ResourceMonitor.TabIndex = 46;
             this.Btn_ResourceMonitor.UseVisualStyleBackColor = true;
             this.Btn_ResourceMonitor.Click += new System.EventHandler(this.Btn_ResourceMonitor_Click);
-            //
+            // 
             // Lbl_ResourceMonitor
-            //
+            // 
             this.Lbl_ResourceMonitor.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Lbl_ResourceMonitor.Location = new System.Drawing.Point(393, 90);
             this.Lbl_ResourceMonitor.Name = "Lbl_ResourceMonitor";
@@ -169,9 +163,42 @@ namespace BurnInTester.UI
             this.Lbl_ResourceMonitor.TabIndex = 47;
             this.Lbl_ResourceMonitor.Text = "Resource\r\nMonitor";
             this.Lbl_ResourceMonitor.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            //
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(329, 462);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(159, 79);
+            this.button1.TabIndex = 43;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // Btn_EquipmentSetting
+            // 
+            this.Btn_EquipmentSetting.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Btn_EquipmentSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_EquipmentSetting.BackgroundImage")));
+            this.Btn_EquipmentSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_EquipmentSetting.Location = new System.Drawing.Point(30, 15);
+            this.Btn_EquipmentSetting.Margin = new System.Windows.Forms.Padding(30, 15, 30, 5);
+            this.Btn_EquipmentSetting.Name = "Btn_EquipmentSetting";
+            this.Btn_EquipmentSetting.Size = new System.Drawing.Size(70, 70);
+            this.Btn_EquipmentSetting.TabIndex = 44;
+            this.Btn_EquipmentSetting.UseVisualStyleBackColor = true;
+            this.Btn_EquipmentSetting.Click += new System.EventHandler(this.Btn_EquipmentSetting_Click);
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Location = new System.Drawing.Point(3, 90);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(124, 51);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "Equipment";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // F_OEM_Setting
-            //
+            // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
@@ -198,5 +225,7 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Label Lbl_VirtualTemperature;
         private System.Windows.Forms.Button Btn_ResourceMonitor;
         private System.Windows.Forms.Label Lbl_ResourceMonitor;
+        private System.Windows.Forms.Button Btn_EquipmentSetting;
+        private System.Windows.Forms.Label label3;
     }
 }

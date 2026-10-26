@@ -143,5 +143,10 @@ namespace BurnInTester.UI
             Tool.F_Monitor f_Monitor = new Tool.F_Monitor();
             f_Monitor.Show();
         }
+
+        private void Btn_EquipmentSetting_Click(object sender, EventArgs e)
+        {
+            ShowForm<F_Equipment_Setting>();
+        }
     }
 }

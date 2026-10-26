@@ -1,21 +1,21 @@
-﻿using System;
+﻿using BurnInTester.Base;
+using BurnInTester.Logic;
+using HistoryReader.Logic;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Extensions.DependencyInjection;
-
-
 using ToolFunction;
-using BurnInTester.Base;
-using BurnInTester.Logic;
 
 namespace BurnInTester.UI
 {
@@ -101,7 +101,9 @@ namespace BurnInTester.UI
             Tool.CreateFolder(Application.StartupPath + @"\Backup");
             Tool.CreateFolder(Application.StartupPath + @"\Setting\Package");
 
-            Tool.CreateLog();
+            HistoryLogHub historyLogHub = ServiceProvider.GetRequiredService<HistoryLogHub>();
+            Directory.CreateDirectory(historyLogHub.HistoryFolder);
+            Tool.CreateLog("History\\Log_", ".log", historyLogHub);
         }
         private void SetHint()
         {
