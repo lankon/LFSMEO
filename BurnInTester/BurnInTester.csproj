@@ -118,11 +118,14 @@
     <Compile Include="Logic\0.Thread\TC_Task.cs" />
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
+    <Compile Include="Logic\2.FormLogic\F_TestSettingLogic.cs" />
     <Compile Include="BurnInTesterMachine.cs" />
     <Compile Include="BurnInTesterAssemble.cs" />
     <Compile Include="Logic\2.FormLogic\F_TCtrlBoxSettingLogic.cs" />
-    <Compile Include="Logic\Function\AgingInformation.cs" />
+    <Compile Include="Logic\AgingInformation.cs" />
     <Compile Include="Logic\Function\Guishan_TC_Test.cs" />
+    <Compile Include="Logic\TestSetting\TestSettingData.cs" />
+    <Compile Include="Logic\TestSetting\TestSettingRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

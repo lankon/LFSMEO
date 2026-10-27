@@ -29,13 +29,14 @@ namespace BurnInTester.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_TestCondition = new System.Windows.Forms.DataGridView();
             this.Title_No = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Skip = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Title_TestProcess = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Title_Content = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Btn_Load = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Btn_RowDown = new System.Windows.Forms.Button();
@@ -43,24 +44,33 @@ namespace BurnInTester.UI
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Btn_Add = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.TabCtrl_TestCondition = new System.Windows.Forms.TabControl();
             this.TabPg_Temperature = new System.Windows.Forms.TabPage();
-            this.TabPg_LIV = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.TxtBx_TargetTemperature = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Btn_SetTemperature = new System.Windows.Forms.Button();
+            this.TabPg_LIV = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.TxtBx_BurnInDuration = new System.Windows.Forms.TextBox();
+            this.TxtBx_StabiliztionWaitTime = new System.Windows.Forms.TextBox();
+            this.TxtBx_TemperatureTolerance = new System.Windows.Forms.TextBox();
+            this.TxtBx_StabilizationTimeout = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_TestCondition)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.TabCtrl_TestCondition.SuspendLayout();
             this.TabPg_Temperature.SuspendLayout();
-            this.TabPg_LIV.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.TabPg_LIV.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // DGV_TestCondition
@@ -69,28 +79,29 @@ namespace BurnInTester.UI
             this.DGV_TestCondition.AllowUserToDeleteRows = false;
             this.DGV_TestCondition.AllowUserToResizeColumns = false;
             this.DGV_TestCondition.AllowUserToResizeRows = false;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_TestCondition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_TestCondition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.DGV_TestCondition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_TestCondition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_No,
             this.Title_Skip,
             this.Title_TestProcess,
-            this.Title_Content});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_TestCondition.DefaultCellStyle = dataGridViewCellStyle8;
+            this.Title_Content,
+            this.Title_ID});
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_TestCondition.DefaultCellStyle = dataGridViewCellStyle10;
             this.DGV_TestCondition.Location = new System.Drawing.Point(3, 3);
             this.DGV_TestCondition.Name = "DGV_TestCondition";
             this.DGV_TestCondition.RowHeadersVisible = false;
@@ -104,6 +115,7 @@ namespace BurnInTester.UI
             // 
             this.Title_No.HeaderText = "No";
             this.Title_No.Name = "Title_No";
+            this.Title_No.ReadOnly = true;
             this.Title_No.Width = 70;
             // 
             // Title_Skip
@@ -132,7 +144,15 @@ namespace BurnInTester.UI
             // 
             this.Title_Content.HeaderText = "Content";
             this.Title_Content.Name = "Title_Content";
+            this.Title_Content.ReadOnly = true;
             this.Title_Content.Width = 600;
+            // 
+            // Title_ID
+            // 
+            this.Title_ID.HeaderText = "ID";
+            this.Title_ID.Name = "Title_ID";
+            this.Title_ID.ReadOnly = true;
+            this.Title_ID.Visible = false;
             // 
             // Btn_Load
             // 
@@ -185,6 +205,7 @@ namespace BurnInTester.UI
             this.Btn_Remove.TabIndex = 26;
             this.Btn_Remove.Text = "Remove";
             this.Btn_Remove.UseVisualStyleBackColor = true;
+            this.Btn_Remove.Click += new System.EventHandler(this.Btn_Remove_Click);
             // 
             // Btn_Add
             // 
@@ -220,20 +241,21 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(145, 517);
             this.tableLayoutPanel1.TabIndex = 31;
             // 
-            // tabControl1
+            // TabCtrl_TestCondition
             // 
-            this.tabControl1.Controls.Add(this.TabPg_Temperature);
-            this.tabControl1.Controls.Add(this.TabPg_LIV);
-            this.tabControl1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tabControl1.Location = new System.Drawing.Point(940, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(467, 961);
-            this.tabControl1.TabIndex = 32;
+            this.TabCtrl_TestCondition.Controls.Add(this.TabPg_Temperature);
+            this.TabCtrl_TestCondition.Controls.Add(this.TabPg_LIV);
+            this.TabCtrl_TestCondition.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TabCtrl_TestCondition.Location = new System.Drawing.Point(940, 3);
+            this.TabCtrl_TestCondition.Name = "TabCtrl_TestCondition";
+            this.TabCtrl_TestCondition.SelectedIndex = 0;
+            this.TabCtrl_TestCondition.Size = new System.Drawing.Size(467, 961);
+            this.TabCtrl_TestCondition.TabIndex = 32;
             // 
             // TabPg_Temperature
             // 
             this.TabPg_Temperature.Controls.Add(this.tableLayoutPanel3);
+            this.TabPg_Temperature.Controls.Add(this.Btn_SetTemperature);
             this.TabPg_Temperature.Location = new System.Drawing.Point(4, 29);
             this.TabPg_Temperature.Name = "TabPg_Temperature";
             this.TabPg_Temperature.Padding = new System.Windows.Forms.Padding(3);
@@ -242,81 +264,33 @@ namespace BurnInTester.UI
             this.TabPg_Temperature.Text = "Temperature";
             this.TabPg_Temperature.UseVisualStyleBackColor = true;
             // 
-            // TabPg_LIV
-            // 
-            this.TabPg_LIV.Controls.Add(this.tableLayoutPanel2);
-            this.TabPg_LIV.Location = new System.Drawing.Point(4, 29);
-            this.TabPg_LIV.Name = "TabPg_LIV";
-            this.TabPg_LIV.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPg_LIV.Size = new System.Drawing.Size(341, 928);
-            this.TabPg_LIV.TabIndex = 1;
-            this.TabPg_LIV.Text = "LIV";
-            this.TabPg_LIV.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.3494F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.6506F));
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(335, 922);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.66666F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.33334F));
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_StabilizationTimeout, 1, 4);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_TemperatureTolerance, 1, 3);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_StabiliztionWaitTime, 1, 2);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_BurnInDuration, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 2);
-            this.tableLayoutPanel3.Controls.Add(this.textBox1, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.TxtBx_TargetTemperature, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.label3, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.label4, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.button1, 0, 9);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 10;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowCount = 5;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(453, 922);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(453, 193);
             this.tableLayoutPanel3.TabIndex = 1;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(296, 6);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(151, 29);
-            this.textBox1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(6, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(281, 35);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Temperature (°C)";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
             // 
@@ -326,6 +300,22 @@ namespace BurnInTester.UI
             this.label2.TabIndex = 2;
             this.label2.Text = "Post-Stabilization Wait Time (min)";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_TargetTemperature
+            // 
+            this.TxtBx_TargetTemperature.Location = new System.Drawing.Point(296, 6);
+            this.TxtBx_TargetTemperature.Name = "TxtBx_TargetTemperature";
+            this.TxtBx_TargetTemperature.Size = new System.Drawing.Size(151, 29);
+            this.TxtBx_TargetTemperature.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(6, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(281, 35);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Temperature (°C)";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
@@ -354,36 +344,134 @@ namespace BurnInTester.UI
             this.label5.Text = "Burn-in Duration (min)";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button1
+            // Btn_SetTemperature
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.tableLayoutPanel3.SetColumnSpan(this.button1, 2);
-            this.button1.Location = new System.Drawing.Point(6, 348);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(441, 56);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Set";
-            this.button1.UseVisualStyleBackColor = false;
+            this.Btn_SetTemperature.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.Btn_SetTemperature.Location = new System.Drawing.Point(3, 202);
+            this.Btn_SetTemperature.Name = "Btn_SetTemperature";
+            this.Btn_SetTemperature.Size = new System.Drawing.Size(453, 42);
+            this.Btn_SetTemperature.TabIndex = 6;
+            this.Btn_SetTemperature.Text = "Set";
+            this.Btn_SetTemperature.UseVisualStyleBackColor = false;
+            this.Btn_SetTemperature.Click += new System.EventHandler(this.Btn_SetTemperature_Click);
+            // 
+            // TabPg_LIV
+            // 
+            this.TabPg_LIV.Controls.Add(this.tableLayoutPanel2);
+            this.TabPg_LIV.Location = new System.Drawing.Point(4, 29);
+            this.TabPg_LIV.Name = "TabPg_LIV";
+            this.TabPg_LIV.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPg_LIV.Size = new System.Drawing.Size(459, 928);
+            this.TabPg_LIV.TabIndex = 1;
+            this.TabPg_LIV.Text = "LIV";
+            this.TabPg_LIV.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.3494F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.6506F));
+            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label7, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label8, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label9, 0, 3);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(453, 922);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // TxtBx_BurnInDuration
+            // 
+            this.TxtBx_BurnInDuration.Location = new System.Drawing.Point(296, 44);
+            this.TxtBx_BurnInDuration.Name = "TxtBx_BurnInDuration";
+            this.TxtBx_BurnInDuration.Size = new System.Drawing.Size(151, 29);
+            this.TxtBx_BurnInDuration.TabIndex = 7;
+            // 
+            // TxtBx_StabiliztionWaitTime
+            // 
+            this.TxtBx_StabiliztionWaitTime.Location = new System.Drawing.Point(296, 82);
+            this.TxtBx_StabiliztionWaitTime.Name = "TxtBx_StabiliztionWaitTime";
+            this.TxtBx_StabiliztionWaitTime.Size = new System.Drawing.Size(151, 29);
+            this.TxtBx_StabiliztionWaitTime.TabIndex = 8;
+            // 
+            // TxtBx_TemperatureTolerance
+            // 
+            this.TxtBx_TemperatureTolerance.Location = new System.Drawing.Point(296, 120);
+            this.TxtBx_TemperatureTolerance.Name = "TxtBx_TemperatureTolerance";
+            this.TxtBx_TemperatureTolerance.Size = new System.Drawing.Size(151, 29);
+            this.TxtBx_TemperatureTolerance.TabIndex = 9;
+            // 
+            // TxtBx_StabilizationTimeout
+            // 
+            this.TxtBx_StabilizationTimeout.Location = new System.Drawing.Point(296, 158);
+            this.TxtBx_StabilizationTimeout.Name = "TxtBx_StabilizationTimeout";
+            this.TxtBx_StabilizationTimeout.Size = new System.Drawing.Size(151, 29);
+            this.TxtBx_StabilizationTimeout.TabIndex = 10;
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(6, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(270, 35);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Start I (mA)";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(6, 41);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(270, 35);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "Step I (mA)";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(6, 79);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(270, 35);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "End I (mA)";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(6, 117);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(270, 35);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "Temperature (°C)";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // F_TestSetting
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(1896, 967);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.TabCtrl_TestCondition);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.DGV_TestCondition);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_TestSetting";
-            this.Text = "F_Equipment_Setting";
-            this.VisibleChanged += new System.EventHandler(this.F_Equipment_Setting_VisibleChanged);
+            this.Text = "F_TestSetting";
+            this.VisibleChanged += new System.EventHandler(this.F_TestSetting_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.DGV_TestCondition)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.TabCtrl_TestCondition.ResumeLayout(false);
             this.TabPg_Temperature.ResumeLayout(false);
-            this.TabPg_LIV.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.TabPg_LIV.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -398,21 +486,30 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Button Btn_Remove;
         private System.Windows.Forms.Button Btn_Add;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_No;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Title_Skip;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Title_TestProcess;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_Content;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl TabCtrl_TestCondition;
         private System.Windows.Forms.TabPage TabPg_Temperature;
         private System.Windows.Forms.TabPage TabPg_LIV;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TxtBx_TargetTemperature;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Btn_SetTemperature;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_No;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Title_Skip;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Title_TestProcess;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_Content;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_ID;
+        private System.Windows.Forms.TextBox TxtBx_StabilizationTimeout;
+        private System.Windows.Forms.TextBox TxtBx_TemperatureTolerance;
+        private System.Windows.Forms.TextBox TxtBx_StabiliztionWaitTime;
+        private System.Windows.Forms.TextBox TxtBx_BurnInDuration;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
     }
 }
