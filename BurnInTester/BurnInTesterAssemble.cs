@@ -59,6 +59,7 @@ namespace BurnInTester
             //[Form Logic]
             services.AddSingleton<F_MainFormLogic>();
             services.AddSingleton<F_StartFormLogic>();
+            services.AddSingleton<F_TestSettingLogic>();
             services.AddSingleton<IF_RecipeLogic, F_RecipeLogic>();
             //services.AddSingleton<F_DAQ_ChartLogic>();
 
@@ -66,10 +67,10 @@ namespace BurnInTester
             //services.AddSingleton<IWriteFile, RGBTesterDataFile>();
             services.AddSingleton<AgingInformation>();
             //services.AddSingleton<TestResultDataBase>();
-
-
             services.AddSingleton<HW_ParamSetting>();
-            
+
+
+
 
             return services;
         }

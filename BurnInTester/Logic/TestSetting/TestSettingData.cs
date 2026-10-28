@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace BurnInTester.Logic.TestSetting
 {
@@ -58,6 +59,11 @@ namespace BurnInTester.Logic.TestSetting
         {
             get { return TestProcess.LIV; }
         }
+
+        public string StartI { get; set; }
+        public string StepI { get; set; }
+        public string EndI { get; set; }
+        public string DelayTime { get; set; }
     }
 
     public sealed class VfCondition : TestCondition

@@ -1,20 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using BurnInTester.Device;
 using BurnInTester.Logic.TestSetting;
+using RecipeManage.Base;
+using ToolFunction;
 
 namespace BurnInTester.Logic
 {
     public sealed class F_TestSettingLogic
     {
-        public F_TestSettingLogic()
+        public F_TestSettingLogic(HW_ParamSetting hW_ParamSetting, AgingInformation agingInformation)
         {
+            _AgingInfo = agingInformation;
+            _HW_ParamSetting = hW_ParamSetting;
             _Repository = new TestSettingRepository();
             Data = new TestSettingData();
         }
 
         #region parameter
         private readonly TestSettingRepository _Repository;
+        private HW_ParamSetting _HW_ParamSetting;
+        private AgingInformation _AgingInfo;
 
         public TestSettingData Data { get; private set; }
         #endregion
@@ -23,6 +31,25 @@ namespace BurnInTester.Logic
         public void Load(string filePath)
         {
             Data = _Repository.Load(filePath);
+        }
+
+        public void LoadAllAgingProcessSettings()
+        {
+            Tool.SaveLogToFile("Load All Box Aging Process Start");
+
+            for (int i = 0; i< _HW_ParamSetting.TC_Box._CtrlBoxNum; i++)
+            {
+                string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+                string fileName = $"TestSettingBox{i + 1}.xml";
+                string file_path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "Package", CurRecipeName, fileName);
+
+                if (!File.Exists(file_path))
+                    continue;
+
+                _AgingInfo.AgingProcessSetting[i] = _Repository.Load(file_path);
+            }
+
+            Tool.SaveLogToFile("Load All Box Aging Process End");
         }
 
         public void Save(string filePath)
@@ -135,13 +162,45 @@ namespace BurnInTester.Logic
             if (TestStepsIndex < 0)
                 throw new InvalidOperationException($"找不到 ID {id} 的 Temperature 測試條件。");
 
-            Data.TestSteps[TestStepsIndex].Content = $"Temperature : {condition.TargetTemperature} °C , Duration: {condition.BurnInDuration} min";
+            Data.TestSteps[TestStepsIndex].Content = $"Temperature : {condition.TargetTemperature} °C , Duration : {condition.BurnInDuration} min";
         }
 
         public bool TryGetTemperatureCondition(string id, out TemperatureCondition condition)
         {
             condition = Data.Conditions
                 .OfType<TemperatureCondition>()
+                .FirstOrDefault(item => item.TestStepId == id);
+            return condition != null;
+        }
+
+        public void UpdateLIVCondition(string id, LivCondition condition)
+        {
+            if (condition == null)
+                throw new ArgumentNullException(nameof(condition));
+            TestStep step = GetRequiredStep(id);
+            if (step.TestProcess != TestProcess.LIV)
+                throw new InvalidOperationException("目前選擇的項目不是 LIV。");
+            
+            int conditionIndex = Data.Conditions.FindIndex(
+                item => item.TestStepId == id && item.Process == TestProcess.LIV);
+
+            if (conditionIndex < 0)
+                throw new InvalidOperationException($"找不到 ID {id} 的 LIV 測試條件。");
+
+            condition.TestStepId = id;
+            Data.Conditions[conditionIndex] = condition;
+
+            // Content
+            int TestStepsIndex = Data.TestSteps.FindIndex(item => item.Id == id);
+            if (TestStepsIndex < 0)
+                throw new InvalidOperationException($"找不到 ID {id} 的 LIV 測試條件。");
+            Data.TestSteps[TestStepsIndex].Content = $"Start : {condition.StartI} , Step : {condition.StepI} , End : {condition.EndI} (mA) ; Delay : {condition.DelayTime} (ms)";
+        }
+
+        public bool TryGetLIVCondition(string id, out LivCondition condition)
+        {
+            condition = Data.Conditions
+                .OfType<LivCondition>()
                 .FirstOrDefault(item => item.TestStepId == id);
             return condition != null;
         }

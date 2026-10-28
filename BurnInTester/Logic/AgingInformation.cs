@@ -10,6 +10,7 @@ using ToolFunction;
 using DeviceCore;
 using BurnInTester.Base;
 using BurnInTester.Device;
+using BurnInTester.Logic.TestSetting;
 
 namespace BurnInTester.Logic
 {
@@ -28,6 +29,7 @@ namespace BurnInTester.Logic
         private List<AGING_INFO> PARAM_INFO = new List<AGING_INFO>();
         public string AgingConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "AgingConfig.xml");
         public TemperatureInfo[] TemperatureInfos;
+        public TestSettingData[] AgingProcessSetting;
         private HW_ParamSetting _HW_ParamSetting;
 
 
@@ -88,9 +90,13 @@ namespace BurnInTester.Logic
             int BoxCount = _HW_ParamSetting.TC_Box._CtrlBoxNum;
 
             TemperatureInfos = new TemperatureInfo[BoxCount];
+            AgingProcessSetting = new TestSettingData[BoxCount];
             for (int i = 0; i < BoxCount; i++)
+            {
                 TemperatureInfos[i] = new TemperatureInfo();
-
+                AgingProcessSetting[i] = new TestSettingData();
+            }
+                
             //初始化老化箱參數
             for (int i = 0; i < BoxCount; i++)
                 PARAM_INFO.Add(new AGING_INFO());
@@ -206,5 +212,7 @@ namespace BurnInTester.Logic
         {
             return PARAM_INFO.AsReadOnly();
         }
+
+        
     }
 }

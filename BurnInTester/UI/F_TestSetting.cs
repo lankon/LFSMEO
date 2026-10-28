@@ -14,10 +14,10 @@ namespace BurnInTester.UI
 {
     public partial class F_TestSetting : Form
     {
-        public F_TestSetting(AgingInformation agingInformation)
+        public F_TestSetting(AgingInformation agingInformation, F_TestSettingLogic f_TestSettingLogic)
         {
             _AgingInfo = agingInformation;
-            _TestSettingLogic = new F_TestSettingLogic();
+            _TestSettingLogic = f_TestSettingLogic;
 
             InitializeComponent();
 
@@ -75,6 +75,8 @@ namespace BurnInTester.UI
 
         private void LeavePage()
         {
+            SaveTestSettings();
+            _TestSettingLogic.LoadAllAgingProcessSettings();
         }
 
         private void ShowTestProcessPage(TestProcess testProcess)
@@ -224,14 +226,22 @@ namespace BurnInTester.UI
                 GetCellString(row, Title_TestProcess.Name, TestProcess.None.ToString()));
 
             ShowTestProcessPage(process);
-            ClearTemperatureCondition();
+            
+            if (process == TestProcess.Temperature && !string.IsNullOrWhiteSpace(_SelectedTestConditionId))
+            {
+                ClearTemperatureCondition();
+                TemperatureCondition condition;
+                if (_TestSettingLogic.TryGetTemperatureCondition(_SelectedTestConditionId, out condition))
+                    ShowTemperatureCondition(condition);
+            }
 
-            if (process != TestProcess.Temperature || string.IsNullOrWhiteSpace(_SelectedTestConditionId))
-                return;
-
-            TemperatureCondition condition;
-            if (_TestSettingLogic.TryGetTemperatureCondition(_SelectedTestConditionId, out condition))
-                ShowTemperatureCondition(condition);
+            if (process == TestProcess.LIV && !string.IsNullOrWhiteSpace(_SelectedTestConditionId))
+            {
+                ClearLivCondition();
+                LivCondition condition;
+                if (_TestSettingLogic.TryGetLIVCondition(_SelectedTestConditionId, out condition))
+                    ShowLivCondition(condition);
+            }
         }
 
         private void ClearTemperatureCondition()
@@ -243,6 +253,14 @@ namespace BurnInTester.UI
             TxtBx_StabilizationTimeout.Clear();
         }
 
+        private void ClearLivCondition()
+        {
+            TxtBx_StartI.Clear();
+            TxtBx_StepI.Clear();
+            TxtBx_EndI.Clear();
+            TxtBx_LIVDelayTime.Clear();
+        }
+
         private void ShowTemperatureCondition(TemperatureCondition condition)
         {
             TxtBx_TargetTemperature.Text = condition.TargetTemperature ?? "";
@@ -250,6 +268,14 @@ namespace BurnInTester.UI
             TxtBx_StabiliztionWaitTime.Text = condition.StabilizationWaitTime ?? "";
             TxtBx_TemperatureTolerance.Text = condition.TemperatureTolerance ?? "";
             TxtBx_StabilizationTimeout.Text = condition.StabilizationTimeout ?? "";
+        }
+
+        private void ShowLivCondition(LivCondition condition)
+        {
+            TxtBx_StartI.Text = condition.StartI ?? "";
+            TxtBx_StepI.Text = condition.StepI ?? "";
+            TxtBx_EndI.Text = condition.EndI ?? "";
+            TxtBx_LIVDelayTime.Text = condition.DelayTime ?? "";
         }
 
         private string GetCellString(DataGridViewRow row, string columnName, string defaultValue = "")
@@ -288,7 +314,7 @@ namespace BurnInTester.UI
             {
                 SaveAllEnumSetting();
                 ReadAllEnumSetting();
-
+                
                 LeavePage();
                 Tool.ReleaseButtonImages(this);
                 Close();
@@ -413,6 +439,40 @@ namespace BurnInTester.UI
                 };
 
                 _TestSettingLogic.UpdateTemperatureCondition(
+                    _SelectedTestConditionId,
+                    condition);
+
+                UpdateGridFromData();
+            }
+            catch (Exception ex)
+            {
+                ShowError("測試條件設定失敗", ex);
+            }
+        }
+
+        private void Btn_SetLIV_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(_SelectedTestConditionId))
+            {
+                MessageBox.Show(
+                    "請先選擇一筆 LIV 測試條件。",
+                    "尚未選擇測試條件",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                LivCondition condition = new LivCondition
+                {
+                    StartI = TxtBx_StartI.Text.Trim(),
+                    StepI = TxtBx_StepI.Text.Trim(),
+                    EndI = TxtBx_EndI.Text.Trim(),
+                    DelayTime = TxtBx_LIVDelayTime.Text.Trim(),
+                };
+
+                _TestSettingLogic.UpdateLIVCondition(
                     _SelectedTestConditionId,
                     condition);
 

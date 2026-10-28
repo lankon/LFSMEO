@@ -29,8 +29,8 @@ namespace BurnInTester.UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_TestCondition = new System.Windows.Forms.DataGridView();
             this.Title_No = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Skip = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -64,6 +64,11 @@ namespace BurnInTester.UI
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.TxtBx_StartI = new System.Windows.Forms.TextBox();
+            this.TxtBx_StepI = new System.Windows.Forms.TextBox();
+            this.TxtBx_EndI = new System.Windows.Forms.TextBox();
+            this.TxtBx_LIVDelayTime = new System.Windows.Forms.TextBox();
+            this.Btn_SetLIV = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_TestCondition)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.TabCtrl_TestCondition.SuspendLayout();
@@ -79,14 +84,14 @@ namespace BurnInTester.UI
             this.DGV_TestCondition.AllowUserToDeleteRows = false;
             this.DGV_TestCondition.AllowUserToResizeColumns = false;
             this.DGV_TestCondition.AllowUserToResizeRows = false;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGV_TestCondition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGV_TestCondition.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.DGV_TestCondition.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_TestCondition.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_No,
@@ -94,14 +99,14 @@ namespace BurnInTester.UI
             this.Title_TestProcess,
             this.Title_Content,
             this.Title_ID});
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGV_TestCondition.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGV_TestCondition.DefaultCellStyle = dataGridViewCellStyle4;
             this.DGV_TestCondition.Location = new System.Drawing.Point(3, 3);
             this.DGV_TestCondition.Name = "DGV_TestCondition";
             this.DGV_TestCondition.RowHeadersVisible = false;
@@ -358,6 +363,7 @@ namespace BurnInTester.UI
             // TabPg_LIV
             // 
             this.TabPg_LIV.Controls.Add(this.tableLayoutPanel2);
+            this.TabPg_LIV.Controls.Add(this.Btn_SetLIV);
             this.TabPg_LIV.Location = new System.Drawing.Point(4, 29);
             this.TabPg_LIV.Name = "TabPg_LIV";
             this.TabPg_LIV.Padding = new System.Windows.Forms.Padding(3);
@@ -370,22 +376,24 @@ namespace BurnInTester.UI
             // 
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.3494F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.6506F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65.33334F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34.66667F));
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_LIVDelayTime, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_EndI, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_StepI, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.TxtBx_StartI, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label6, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.label7, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label8, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.label9, 0, 3);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowCount = 4;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(453, 922);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(453, 153);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // TxtBx_BurnInDuration
@@ -420,7 +428,7 @@ namespace BurnInTester.UI
             // 
             this.label6.Location = new System.Drawing.Point(6, 3);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(270, 35);
+            this.label6.Size = new System.Drawing.Size(281, 35);
             this.label6.TabIndex = 2;
             this.label6.Text = "Start I (mA)";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -429,7 +437,7 @@ namespace BurnInTester.UI
             // 
             this.label7.Location = new System.Drawing.Point(6, 41);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(270, 35);
+            this.label7.Size = new System.Drawing.Size(281, 35);
             this.label7.TabIndex = 3;
             this.label7.Text = "Step I (mA)";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -438,7 +446,7 @@ namespace BurnInTester.UI
             // 
             this.label8.Location = new System.Drawing.Point(6, 79);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(270, 35);
+            this.label8.Size = new System.Drawing.Size(281, 35);
             this.label8.TabIndex = 4;
             this.label8.Text = "End I (mA)";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -447,10 +455,49 @@ namespace BurnInTester.UI
             // 
             this.label9.Location = new System.Drawing.Point(6, 117);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(270, 35);
+            this.label9.Size = new System.Drawing.Size(281, 35);
             this.label9.TabIndex = 5;
-            this.label9.Text = "Temperature (°C)";
+            this.label9.Text = "Delay Time (ms)";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TxtBx_StartI
+            // 
+            this.TxtBx_StartI.Location = new System.Drawing.Point(299, 6);
+            this.TxtBx_StartI.Name = "TxtBx_StartI";
+            this.TxtBx_StartI.Size = new System.Drawing.Size(148, 29);
+            this.TxtBx_StartI.TabIndex = 6;
+            // 
+            // TxtBx_StepI
+            // 
+            this.TxtBx_StepI.Location = new System.Drawing.Point(299, 44);
+            this.TxtBx_StepI.Name = "TxtBx_StepI";
+            this.TxtBx_StepI.Size = new System.Drawing.Size(148, 29);
+            this.TxtBx_StepI.TabIndex = 7;
+            // 
+            // TxtBx_EndI
+            // 
+            this.TxtBx_EndI.Location = new System.Drawing.Point(299, 82);
+            this.TxtBx_EndI.Name = "TxtBx_EndI";
+            this.TxtBx_EndI.Size = new System.Drawing.Size(148, 29);
+            this.TxtBx_EndI.TabIndex = 8;
+            // 
+            // TxtBx_LIVDelayTime
+            // 
+            this.TxtBx_LIVDelayTime.Location = new System.Drawing.Point(299, 120);
+            this.TxtBx_LIVDelayTime.Name = "TxtBx_LIVDelayTime";
+            this.TxtBx_LIVDelayTime.Size = new System.Drawing.Size(148, 29);
+            this.TxtBx_LIVDelayTime.TabIndex = 9;
+            // 
+            // Btn_SetLIV
+            // 
+            this.Btn_SetLIV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.Btn_SetLIV.Location = new System.Drawing.Point(3, 158);
+            this.Btn_SetLIV.Name = "Btn_SetLIV";
+            this.Btn_SetLIV.Size = new System.Drawing.Size(453, 42);
+            this.Btn_SetLIV.TabIndex = 10;
+            this.Btn_SetLIV.Text = "Set";
+            this.Btn_SetLIV.UseVisualStyleBackColor = false;
+            this.Btn_SetLIV.Click += new System.EventHandler(this.Btn_SetLIV_Click);
             // 
             // F_TestSetting
             // 
@@ -472,6 +519,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel3.PerformLayout();
             this.TabPg_LIV.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -511,5 +559,10 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox TxtBx_LIVDelayTime;
+        private System.Windows.Forms.TextBox TxtBx_EndI;
+        private System.Windows.Forms.TextBox TxtBx_StepI;
+        private System.Windows.Forms.TextBox TxtBx_StartI;
+        private System.Windows.Forms.Button Btn_SetLIV;
     }
 }
