@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace BurnInTester.Logic.TestSetting
 {
@@ -12,21 +11,47 @@ namespace BurnInTester.Logic.TestSetting
         IR
     }
 
+    public enum StageStepRole
+    {
+        Preparation,
+        PreparationMonitor,
+        Execution
+    }
+
+    public enum ExecutionRepeatMode
+    {
+        Once,
+        RepeatSequence
+    }
+
     public sealed class TestSettingData
     {
         public TestSettingData()
         {
+            Stages = new List<AgingStage>();
             TestSteps = new List<TestStep>();
             Conditions = new List<TestCondition>();
         }
 
+        public List<AgingStage> Stages { get; private set; }
         public List<TestStep> TestSteps { get; private set; }
         public List<TestCondition> Conditions { get; private set; }
+    }
+
+    public sealed class AgingStage
+    {
+        public string Id { get; set; }
+        public string Duration { get; set; }
+        public ExecutionRepeatMode ExecutionMode { get; set; }
+        public string ExecutionIntervalSeconds { get; set; }
     }
 
     public sealed class TestStep
     {
         public string No { get; set; }
+        public string StageId { get; set; }
+        public StageStepRole StageRole { get; set; }
+        public string MonitorIntervalSeconds { get; set; }
         public string Skip { get; set; }
         public TestProcess TestProcess { get; set; }
         public string Content { get; set; }
@@ -47,6 +72,8 @@ namespace BurnInTester.Logic.TestSetting
         }
 
         public string TargetTemperature { get; set; }
+
+        // Kept for old XML and UI compatibility. Runtime uses AgingStage.Duration.
         public string BurnInDuration { get; set; }
         public string StabilizationWaitTime { get; set; }
         public string TemperatureTolerance { get; set; }

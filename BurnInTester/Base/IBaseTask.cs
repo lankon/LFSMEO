@@ -44,6 +44,7 @@ namespace BurnInTester.Base
     {
         TASK_STATUS Run(TASK_STATUS command = TASK_STATUS.NONE);
         void GoToPause();
+        bool IsDone();
         //void SetForm(Form form);
     }
     public abstract class IBaseTask<TWork>: IF_BaseTask where TWork: Enum
@@ -57,6 +58,7 @@ namespace BurnInTester.Base
         protected string TaskName = "NonTaskName";              //執行緒名稱
         protected TWork State;                                  //執行緒狀態
         protected readonly IBaseTaskDependence Deps;            //共用方法介面
+        protected bool _IsDone = false;                          //判斷是否執行完成
         private TASK_STATUS status = TASK_STATUS.CONTINUE;      //設定目前狀態機狀態,傳出給MainTask知道
         private TASK_STATUS status_command = TASK_STATUS.NONE;  //設定要傳入SubTask的狀態命令
         private bool is_subtask_processing = false;             //判斷是否有SubTask
@@ -93,6 +95,10 @@ namespace BurnInTester.Base
         //{
 
         //}
+        public virtual bool IsDone()
+        {
+            return _IsDone;
+        }
         #endregion
 
         #region protected

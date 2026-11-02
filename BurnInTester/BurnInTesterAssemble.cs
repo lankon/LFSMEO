@@ -30,8 +30,11 @@ namespace BurnInTester
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
+            services.AddSingleton<AgingSchedulerTask>();
             //services.AddSingleton<IBaseMainTaskMulti, MainTaskMulti>();
             services.AddSingleton<TC_Task>();
+            services.AddSingleton<IAgingProcessTaskFactory, TemperatureProcessTaskFactory>();
+            services.AddSingleton<AgingScheduler>();
             services.AddSingleton<IBaseTaskDependence, BaseTaskDependence>();
 
             //[Form]

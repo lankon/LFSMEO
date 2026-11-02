@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-
-using ToolFunction;
 using RecipeManage.Base;
+using ToolFunction;
 using BurnInTester.Base;
 using BurnInTester.Logic;
 using BurnInTester.Logic.TestSetting;
+
 
 namespace BurnInTester.UI
 {
@@ -20,12 +20,12 @@ namespace BurnInTester.UI
             _TestSettingLogic = f_TestSettingLogic;
 
             InitializeComponent();
-
             InitialForm();
         }
 
         #region parameter define
-        private string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+        private string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>(
+            (int)eF_Recipe.TxtBx_RecipeName);
         private readonly AgingInformation _AgingInfo;
         private readonly F_TestSettingLogic _TestSettingLogic;
         private string _SelectedTestConditionId;
@@ -36,15 +36,21 @@ namespace BurnInTester.UI
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
-
             ShowHint();
 
             TabCtrl_TestCondition.Appearance = TabAppearance.FlatButtons;
             TabCtrl_TestCondition.SizeMode = TabSizeMode.Fixed;
             TabCtrl_TestCondition.ItemSize = new Size(0, 1);
 
-            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+            if (Cmbx_ExecutionMode.Items.Count > 0)
+                Cmbx_ExecutionMode.SelectedIndex = 0;
+            TxtBx_ExecutionIntervalSeconds.Text = "0";
+
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>(
+                (int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+            {
                 Tool.ShowFormName(this);
+            }
         }
 
         private void ShowHint()
@@ -53,7 +59,8 @@ namespace BurnInTester.UI
 
         private void ReadAllEnumSetting()
         {
-            CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
+            CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>(
+                (int)eF_Recipe.TxtBx_RecipeName);
         }
 
         private void UpdateEnumSettingToForm()
@@ -70,7 +77,7 @@ namespace BurnInTester.UI
             UpdateEnumSettingToForm();
 
             if (!LoadTestSettings())
-                Tool.SaveLogToFile("測試條件表讀取失敗");
+                Tool.SaveLogToFile("Test setting file was not found.");
         }
 
         private void LeavePage()
@@ -95,15 +102,17 @@ namespace BurnInTester.UI
         private void TestProcess_SelectionChangeCommitted(object sender, EventArgs e)
         {
             DataGridViewCell cell = DGV_TestCondition.CurrentCell;
-            if (cell?.OwningColumn != Title_TestProcess)
+            if (cell == null || cell.OwningColumn != Title_TestProcess)
                 return;
 
-            // Let the ComboBox finish updating its selection and closing before ending the edit.
+            // Finish the combo-box selection before ending the DataGridView edit.
             BeginInvoke(new Action(() =>
             {
                 if (DGV_TestCondition.IsDisposed || DGV_TestCondition.CurrentCell != cell ||
                     DGV_TestCondition.EditingControl != sender)
+                {
                     return;
+                }
 
                 try
                 {
@@ -111,14 +120,22 @@ namespace BurnInTester.UI
                         DGV_TestCondition.EndEdit();
 
                     string id = GetCellString(cell.OwningRow, Title_ID.Name);
-                    TestProcess process = ParseTestProcess(
-                        GetCellString(cell.OwningRow, Title_TestProcess.Name, TestProcess.None.ToString()));
+                    TestProcess process = ParseTestProcess(GetCellString(
+                        cell.OwningRow,
+                        Title_TestProcess.Name,
+                        TestProcess.None.ToString()));
+
                     _TestSettingLogic.ChangeTestProcess(id, process);
+                    cell.OwningRow.Cells[Title_StageRole.Name].Value =
+                        process == TestProcess.Temperature
+                            ? StageStepRole.Preparation.ToString()
+                            : StageStepRole.Execution.ToString();
+                    cell.OwningRow.Cells[Title_MonitorInterval.Name].Value = "0";
                     SelectTestCondition(cell.OwningRow);
                 }
                 catch (Exception ex)
                 {
-                    ShowError("測試項目設定失敗", ex);
+                    ShowError("Change test process failed", ex);
                 }
             }));
         }
@@ -126,7 +143,12 @@ namespace BurnInTester.UI
         private string GetTestSettingFilePath()
         {
             string fileName = $"TestSettingBox{_AgingInfo.CurSelectBoxNo + 1}.xml";
-            return Path.Combine(Application.StartupPath, "Setting", "Package", CurRecipeName, fileName);
+            return Path.Combine(
+                Application.StartupPath,
+                "Setting",
+                "Package",
+                CurRecipeName,
+                fileName);
         }
 
         private bool SaveTestSettings()
@@ -139,13 +161,13 @@ namespace BurnInTester.UI
                 _TestSettingLogic.SynchronizeTestSteps(GetTestStepsFromGrid());
                 _TestSettingLogic.Save(filePath);
 
-                Tool.SaveLogToFile($"{filePath}儲存完成");
+                Tool.SaveLogToFile($"{filePath} saved");
                 return true;
             }
             catch (Exception ex)
             {
-                Tool.SaveLogToFile($"{filePath}儲存失敗：{ex}");
-                ShowError("測試條件儲存失敗", ex);
+                Tool.SaveLogToFile($"{filePath} save failed: {ex}");
+                ShowError("Save test settings failed", ex);
                 return false;
             }
         }
@@ -163,6 +185,7 @@ namespace BurnInTester.UI
 
                 _SelectedTestConditionId = null;
                 ClearTemperatureCondition();
+                ClearLivCondition();
 
                 if (DGV_TestCondition.Rows.Count > 0)
                 {
@@ -174,15 +197,14 @@ namespace BurnInTester.UI
             }
             catch (Exception ex)
             {
-                Tool.SaveLogToFile($"{filePath}讀取失敗：{ex}");
-                ShowError("測試條件讀取失敗", ex);
+                Tool.SaveLogToFile($"{filePath} load failed: {ex}");
+                ShowError("Load test settings failed", ex);
                 return false;
             }
         }
 
         private List<TestStep> GetTestStepsFromGrid()
         {
-            // 取得表單上的設定值
             List<TestStep> testSteps = new List<TestStep>();
 
             foreach (DataGridViewRow row in DGV_TestCondition.Rows)
@@ -193,9 +215,20 @@ namespace BurnInTester.UI
                 testSteps.Add(new TestStep
                 {
                     No = GetCellString(row, Title_No.Name),
+                    StageId = GetCellString(row, Title_Stage.Name).Trim(),
+                    StageRole = ParseStageRole(GetCellString(
+                        row,
+                        Title_StageRole.Name,
+                        StageStepRole.Execution.ToString())),
+                    MonitorIntervalSeconds = GetCellString(
+                        row,
+                        Title_MonitorInterval.Name,
+                        "0").Trim(),
                     Skip = GetCellString(row, Title_Skip.Name),
-                    TestProcess = ParseTestProcess(
-                        GetCellString(row, Title_TestProcess.Name, TestProcess.None.ToString())),
+                    TestProcess = ParseTestProcess(GetCellString(
+                        row,
+                        Title_TestProcess.Name,
+                        TestProcess.None.ToString())),
                     Content = GetCellString(row, Title_Content.Name),
                     Id = GetCellString(row, Title_ID.Name)
                 });
@@ -212,6 +245,11 @@ namespace BurnInTester.UI
             {
                 DGV_TestCondition.Rows.Add(
                     step.No,
+                    step.StageId,
+                    step.StageRole.ToString(),
+                    string.IsNullOrWhiteSpace(step.MonitorIntervalSeconds)
+                        ? "0"
+                        : step.MonitorIntervalSeconds,
                     step.Skip,
                     step.TestProcess.ToString(),
                     step.Content,
@@ -222,22 +260,36 @@ namespace BurnInTester.UI
         private void SelectTestCondition(DataGridViewRow row)
         {
             _SelectedTestConditionId = GetCellString(row, Title_ID.Name);
-            TestProcess process = ParseTestProcess(
-                GetCellString(row, Title_TestProcess.Name, TestProcess.None.ToString()));
+            TestProcess process = ParseTestProcess(GetCellString(
+                row,
+                Title_TestProcess.Name,
+                TestProcess.None.ToString()));
 
             ShowTestProcessPage(process);
-            
-            if (process == TestProcess.Temperature && !string.IsNullOrWhiteSpace(_SelectedTestConditionId))
+
+            if (process == TestProcess.Temperature &&
+                !string.IsNullOrWhiteSpace(_SelectedTestConditionId))
             {
                 ClearTemperatureCondition();
+
                 TemperatureCondition condition;
-                if (_TestSettingLogic.TryGetTemperatureCondition(_SelectedTestConditionId, out condition))
+                if (_TestSettingLogic.TryGetTemperatureCondition(
+                    _SelectedTestConditionId,
+                    out condition))
+                {
                     ShowTemperatureCondition(condition);
+                }
+
+                AgingStage stage;
+                if (_TestSettingLogic.TryGetStageForStep(_SelectedTestConditionId, out stage))
+                    ShowStageExecutionSettings(stage);
             }
 
-            if (process == TestProcess.LIV && !string.IsNullOrWhiteSpace(_SelectedTestConditionId))
+            if (process == TestProcess.LIV &&
+                !string.IsNullOrWhiteSpace(_SelectedTestConditionId))
             {
                 ClearLivCondition();
+
                 LivCondition condition;
                 if (_TestSettingLogic.TryGetLIVCondition(_SelectedTestConditionId, out condition))
                     ShowLivCondition(condition);
@@ -251,6 +303,8 @@ namespace BurnInTester.UI
             TxtBx_StabiliztionWaitTime.Clear();
             TxtBx_TemperatureTolerance.Clear();
             TxtBx_StabilizationTimeout.Clear();
+            Cmbx_ExecutionMode.SelectedItem = ExecutionRepeatMode.Once.ToString();
+            TxtBx_ExecutionIntervalSeconds.Text = "0";
         }
 
         private void ClearLivCondition()
@@ -270,6 +324,18 @@ namespace BurnInTester.UI
             TxtBx_StabilizationTimeout.Text = condition.StabilizationTimeout ?? "";
         }
 
+        private void ShowStageExecutionSettings(AgingStage stage)
+        {
+            Cmbx_ExecutionMode.SelectedItem = stage.ExecutionMode.ToString();
+            if (Cmbx_ExecutionMode.SelectedIndex < 0)
+                Cmbx_ExecutionMode.SelectedItem = ExecutionRepeatMode.Once.ToString();
+
+            TxtBx_ExecutionIntervalSeconds.Text =
+                string.IsNullOrWhiteSpace(stage.ExecutionIntervalSeconds)
+                    ? "0"
+                    : stage.ExecutionIntervalSeconds;
+        }
+
         private void ShowLivCondition(LivCondition condition)
         {
             TxtBx_StartI.Text = condition.StartI ?? "";
@@ -278,7 +344,10 @@ namespace BurnInTester.UI
             TxtBx_LIVDelayTime.Text = condition.DelayTime ?? "";
         }
 
-        private string GetCellString(DataGridViewRow row, string columnName, string defaultValue = "")
+        private string GetCellString(
+            DataGridViewRow row,
+            string columnName,
+            string defaultValue = "")
         {
             object value = row.Cells[columnName].Value;
             return value == null ? defaultValue : value.ToString();
@@ -290,9 +359,31 @@ namespace BurnInTester.UI
             bool success = Enum.TryParse(value, true, out process);
 
             if (!success || !Enum.IsDefined(typeof(TestProcess), process))
-                throw new InvalidOperationException($"無法辨識的測試項目：{value}");
+                throw new InvalidOperationException($"Unknown test process: {value}");
 
             return process;
+        }
+
+        private StageStepRole ParseStageRole(string value)
+        {
+            StageStepRole role;
+            bool success = Enum.TryParse(value, true, out role);
+
+            if (!success || !Enum.IsDefined(typeof(StageStepRole), role))
+                throw new InvalidOperationException($"Unknown Stage Role: {value}");
+
+            return role;
+        }
+
+        private ExecutionRepeatMode ParseExecutionRepeatMode(string value)
+        {
+            ExecutionRepeatMode mode;
+            bool success = Enum.TryParse(value, true, out mode);
+
+            if (!success || !Enum.IsDefined(typeof(ExecutionRepeatMode), mode))
+                throw new InvalidOperationException($"Unknown Execution Mode: {value}");
+
+            return mode;
         }
 
         private void ShowError(string title, Exception ex)
@@ -307,14 +398,13 @@ namespace BurnInTester.UI
         }
         #endregion
 
-
         private void F_TestSetting_VisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
             {
                 SaveAllEnumSetting();
                 ReadAllEnumSetting();
-                
+
                 LeavePage();
                 Tool.ReleaseButtonImages(this);
                 Close();
@@ -334,17 +424,22 @@ namespace BurnInTester.UI
         private void Btn_Load_Click(object sender, EventArgs e)
         {
             if (!LoadTestSettings())
-                Tool.SaveLogToFile("測試條件表讀取失敗");
+                Tool.SaveLogToFile("Test setting file was not found.");
         }
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            int insertIndex = DGV_TestCondition.CurrentCell?.RowIndex ?? DGV_TestCondition.Rows.Count;
+            int insertIndex = DGV_TestCondition.CurrentCell == null
+                ? DGV_TestCondition.Rows.Count
+                : DGV_TestCondition.CurrentCell.RowIndex;
             TestStep step = _TestSettingLogic.AddTestStep(insertIndex);
 
             DGV_TestCondition.Rows.Insert(
                 insertIndex,
                 step.No,
+                step.StageId,
+                step.StageRole.ToString(),
+                step.MonitorIntervalSeconds,
                 step.Skip,
                 step.TestProcess.ToString(),
                 step.Content,
@@ -354,16 +449,21 @@ namespace BurnInTester.UI
             SelectTestCondition(DGV_TestCondition.Rows[insertIndex]);
         }
 
-        private void DGV_TestCondition_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        private void DGV_TestCondition_EditingControlShowing(
+            object sender,
+            DataGridViewEditingControlShowingEventArgs e)
         {
-            if (DGV_TestCondition.CurrentCell?.OwningColumn != Title_TestProcess)
+            DataGridViewComboBoxEditingControl comboBox =
+                e.Control as DataGridViewComboBoxEditingControl;
+            if (comboBox == null)
                 return;
 
-            DataGridViewComboBoxEditingControl comboBox = e.Control as DataGridViewComboBoxEditingControl;
-            if (comboBox != null)
+            // DataGridView reuses the editing control between cells.
+            comboBox.SelectionChangeCommitted -= TestProcess_SelectionChangeCommitted;
+
+            if (DGV_TestCondition.CurrentCell != null &&
+                DGV_TestCondition.CurrentCell.OwningColumn == Title_TestProcess)
             {
-                // DataGridView reuses the editing control between cells.
-                comboBox.SelectionChangeCommitted -= TestProcess_SelectionChangeCommitted;
                 comboBox.SelectionChangeCommitted += TestProcess_SelectionChangeCommitted;
             }
         }
@@ -376,19 +476,24 @@ namespace BurnInTester.UI
             DataGridViewRow gridRow = DGV_TestCondition.Rows[e.RowIndex];
             SelectTestCondition(gridRow);
 
-            if (e.ColumnIndex != Title_TestProcess.Index)
+            if (e.ColumnIndex != Title_TestProcess.Index &&
+                e.ColumnIndex != Title_StageRole.Index)
+            {
                 return;
+            }
 
             DataGridViewCell cell = gridRow.Cells[e.ColumnIndex];
             if (cell.ReadOnly)
                 return;
 
-            // Open after the click finishes so the native click handling cannot close it again.
+            // Open after Click finishes so native handling cannot close the list.
             BeginInvoke(new Action(() =>
             {
                 if (DGV_TestCondition.IsDisposed || DGV_TestCondition.CurrentCell != cell ||
                     !DGV_TestCondition.BeginEdit(true))
+                {
                     return;
+                }
 
                 DataGridViewComboBoxEditingControl comboBox =
                     DGV_TestCondition.EditingControl as DataGridViewComboBoxEditingControl;
@@ -410,6 +515,7 @@ namespace BurnInTester.UI
 
             _SelectedTestConditionId = null;
             ClearTemperatureCondition();
+            ClearLivCondition();
 
             if (DGV_TestCondition.CurrentRow != null)
                 SelectTestCondition(DGV_TestCondition.CurrentRow);
@@ -420,8 +526,8 @@ namespace BurnInTester.UI
             if (string.IsNullOrWhiteSpace(_SelectedTestConditionId))
             {
                 MessageBox.Show(
-                    "請先選擇一筆 Temperature 測試條件。",
-                    "尚未選擇測試條件",
+                    "Select a Temperature test step first.",
+                    "No test step selected",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 return;
@@ -429,6 +535,13 @@ namespace BurnInTester.UI
 
             try
             {
+                ExecutionRepeatMode executionMode = ParseExecutionRepeatMode(
+                    Cmbx_ExecutionMode.Text);
+                _TestSettingLogic.UpdateStageExecutionSettings(
+                    _SelectedTestConditionId,
+                    executionMode,
+                    TxtBx_ExecutionIntervalSeconds.Text.Trim());
+
                 TemperatureCondition condition = new TemperatureCondition
                 {
                     TargetTemperature = TxtBx_TargetTemperature.Text.Trim(),
@@ -446,7 +559,7 @@ namespace BurnInTester.UI
             }
             catch (Exception ex)
             {
-                ShowError("測試條件設定失敗", ex);
+                ShowError("Update test setting failed", ex);
             }
         }
 
@@ -455,8 +568,8 @@ namespace BurnInTester.UI
             if (string.IsNullOrWhiteSpace(_SelectedTestConditionId))
             {
                 MessageBox.Show(
-                    "請先選擇一筆 LIV 測試條件。",
-                    "尚未選擇測試條件",
+                    "Select an LIV test step first.",
+                    "No test step selected",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 return;
@@ -469,7 +582,7 @@ namespace BurnInTester.UI
                     StartI = TxtBx_StartI.Text.Trim(),
                     StepI = TxtBx_StepI.Text.Trim(),
                     EndI = TxtBx_EndI.Text.Trim(),
-                    DelayTime = TxtBx_LIVDelayTime.Text.Trim(),
+                    DelayTime = TxtBx_LIVDelayTime.Text.Trim()
                 };
 
                 _TestSettingLogic.UpdateLIVCondition(
@@ -480,7 +593,7 @@ namespace BurnInTester.UI
             }
             catch (Exception ex)
             {
-                ShowError("測試條件設定失敗", ex);
+                ShowError("Update test setting failed", ex);
             }
         }
     }

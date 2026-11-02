@@ -21,17 +21,20 @@ namespace BurnInTester.Logic
     public class F_StartFormLogic
     {
         public F_StartFormLogic(IBurnInTesterMachine burnInTesterMachine , IServiceProvider serviceProvider,
-                                AgingInformation agingInformation, TC_Task tC_Task)
+                                AgingInformation agingInformation, AgingScheduler agingScheduler,
+                                F_TestSettingLogic testSettingLogic)
         {
             BurnInTesterMachine = burnInTesterMachine;
             ServiceProvider = serviceProvider;
             AgingInformation = agingInformation;
-            AgingTCTask = tC_Task;
+            _AgingScheduler = agingScheduler;
+            _TestSettingLogic = testSettingLogic;
         }
 
         #region parameter define
         private AgingInformation AgingInformation;
-        private TC_Task AgingTCTask;
+        private AgingScheduler _AgingScheduler;
+        private F_TestSettingLogic _TestSettingLogic;
         private IBurnInTesterMachine BurnInTesterMachine;
         private IServiceProvider ServiceProvider;
         private eF_StartForm[] AgingParam = new eF_StartForm[]
@@ -88,14 +91,43 @@ namespace BurnInTester.Logic
             ApplicationSetting.SetRecipe<eF_StartForm>((int)eF_StartForm.TxtBx_RemainingTime, param[num].RemainingTime);
         }
 
-        public int StartTest()
+        public void StartTest()
         {
             int selectedBoxIndex = GetCurBoxNum();
             if (selectedBoxIndex < 0)
-                return -1;
+                throw new InvalidOperationException("No aging box is selected.");
 
-            AgingTCTask.Start(50, box_num: selectedBoxIndex);
-            return 0;
+            _AgingScheduler.StartBox(selectedBoxIndex);
+        }
+
+        public void PauseTest()
+        {
+            _AgingScheduler.PauseBox(GetRequiredBoxIndex());
+        }
+
+        public void ResumeTest()
+        {
+            _AgingScheduler.ResumeBox(GetRequiredBoxIndex());
+        }
+
+        public void AbortTest()
+        {
+            _AgingScheduler.AbortBox(GetRequiredBoxIndex());
+        }
+
+        public AgingProcessStatusSnapshot GetCurrentTestStatus()
+        {
+            int selectedBoxIndex = GetCurBoxNum();
+            return _AgingScheduler.GetStatus(selectedBoxIndex);
+        }
+
+        private int GetRequiredBoxIndex()
+        {
+            int selectedBoxIndex = GetCurBoxNum();
+            if (selectedBoxIndex < 0)
+                throw new InvalidOperationException("No aging box is selected.");
+
+            return selectedBoxIndex;
         }
 
 
@@ -108,6 +140,7 @@ namespace BurnInTester.Logic
             var recipe = ServiceProvider.GetRequiredService<IF_RecipeLogic>();
             string cur_recipe_name = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
             recipe.ReadRecipe(cur_recipe_name);
+            _TestSettingLogic.LoadAllAgingProcessSettings();
             
         }
 

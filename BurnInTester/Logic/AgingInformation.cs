@@ -30,6 +30,7 @@ namespace BurnInTester.Logic
         public string AgingConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "AgingConfig.xml");
         public TemperatureInfo[] TemperatureInfos;
         public TestSettingData[] AgingProcessSetting;
+        public AgingProcessStatus[] AgingProcessStatuses;
         private HW_ParamSetting _HW_ParamSetting;
 
 
@@ -50,36 +51,60 @@ namespace BurnInTester.Logic
         public class TemperatureInfo
         {
             // 目前最新的溫度資訊
+            private readonly object _SyncRoot = new object();
             private double[] PV = new double[5];
             private double[] SV = new double[5];
-            private DateTime CurDateTime = DateTime.Now;
+            private DateTime CurDateTime = DateTime.MinValue;
 
             public void UpdatePV(double[] newPV)
             {
-                int length = Math.Min(newPV.Length, PV.Length);
+                if (newPV == null)
+                    throw new ArgumentNullException(nameof(newPV));
 
-                for (int i = 0; i < length; i++)
-                    PV[i] = newPV[i];
+                lock (_SyncRoot)
+                {
+                    int length = Math.Min(newPV.Length, PV.Length);
 
-                CurDateTime = DateTime.Now;
+                    for (int i = 0; i < length; i++)
+                        PV[i] = newPV[i];
+
+                    CurDateTime = DateTime.Now;
+                }
             }
             public void UpdateSV(double[] newSV)
             {
-                int length = Math.Min(newSV.Length, SV.Length);
-                for (int i = 0; i < length; i++)
-                    SV[i] = newSV[i];
+                if (newSV == null)
+                    throw new ArgumentNullException(nameof(newSV));
+
+                lock (_SyncRoot)
+                {
+                    int length = Math.Min(newSV.Length, SV.Length);
+                    for (int i = 0; i < length; i++)
+                        SV[i] = newSV[i];
+                }
             }
             public double[] GetPV()
             {
-                return PV;
+                lock (_SyncRoot)
+                    return (double[])PV.Clone();
             }
             public double[] GetSV()
             {
-                return SV;
+                lock (_SyncRoot)
+                    return (double[])SV.Clone();
             }
             public DateTime GetRecordTime()
             {
-                return CurDateTime;
+                lock (_SyncRoot)
+                    return CurDateTime;
+            }
+            public void GetPVSnapshot(out double[] values, out DateTime recordTime)
+            {
+                lock (_SyncRoot)
+                {
+                    values = (double[])PV.Clone();
+                    recordTime = CurDateTime;
+                }
             }
         }
         #endregion
@@ -91,10 +116,12 @@ namespace BurnInTester.Logic
 
             TemperatureInfos = new TemperatureInfo[BoxCount];
             AgingProcessSetting = new TestSettingData[BoxCount];
+            AgingProcessStatuses = new AgingProcessStatus[BoxCount];
             for (int i = 0; i < BoxCount; i++)
             {
                 TemperatureInfos[i] = new TemperatureInfo();
                 AgingProcessSetting[i] = new TestSettingData();
+                AgingProcessStatuses[i] = new AgingProcessStatus(i);
             }
                 
             //初始化老化箱參數

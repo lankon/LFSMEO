@@ -15,6 +15,7 @@ using ToolFunction;
 using BurnInTester.Base;
 using BurnInTester.Logic;
 using DeviceCore;
+using System.Threading;
 
 namespace BurnInTester.UI
 {
@@ -219,7 +220,19 @@ namespace BurnInTester.UI
 
         private void Btn_Start_Click(object sender, EventArgs e)
         {
-            StartFormLogic.StartTest();
+            try
+            {
+                StartFormLogic.StartTest();
+            }
+            catch (Exception ex)
+            {
+                Tool.SaveLogToFile($"Start aging schedule failed: {ex}", level: "ERR");
+                MessageBox.Show(
+                    ex.Message,
+                    "Aging schedule failed",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void Btn_TestSetting_Click(object sender, EventArgs e)
@@ -291,6 +304,9 @@ namespace BurnInTester.UI
         }
         private void Btn_Start_TC_Click(object sender, EventArgs e)
         {
+            var task = ServiceProvider.GetRequiredService<AgingSchedulerTask>();
+            task.Run();
+
             //try
             //{
             //    SaveAllEnumSetting();
@@ -308,7 +324,10 @@ namespace BurnInTester.UI
         }
         private void Btn_Stop_TC_Click(object sender, EventArgs e)
         {
-            TC_Test.Stop();
+            var task = ServiceProvider.GetRequiredService<AgingSchedulerTask>();
+            task.GoToAbort();
+
+            //TC_Test.Stop();
         }
 
         #endregion

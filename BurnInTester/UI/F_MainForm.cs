@@ -68,6 +68,7 @@ namespace BurnInTester.UI
             
             //先觸發執行用
             ServiceProvider.GetRequiredService<IBaseMainTask>();
+            ServiceProvider.GetRequiredService<AgingSchedulerTask>();
             //ServiceProvider.GetRequiredService<IF_StatusBox>();
         }
         private void CreateDynamicElement()
