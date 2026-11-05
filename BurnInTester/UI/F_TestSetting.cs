@@ -24,8 +24,7 @@ namespace BurnInTester.UI
         }
 
         #region parameter define
-        private string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>(
-            (int)eF_Recipe.TxtBx_RecipeName);
+        private string CurRecipeName = ApplicationSetting.Get_String_Recipe<eF_Recipe>((int)eF_Recipe.TxtBx_RecipeName);
         private readonly AgingInformation _AgingInfo;
         private readonly F_TestSettingLogic _TestSettingLogic;
         private string _SelectedTestConditionId;
@@ -101,6 +100,7 @@ namespace BurnInTester.UI
 
         private void TestProcess_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            // «Ý½T»{
             DataGridViewCell cell = DGV_TestCondition.CurrentCell;
             if (cell == null || cell.OwningColumn != Title_TestProcess)
                 return;
@@ -143,6 +143,7 @@ namespace BurnInTester.UI
         private string GetTestSettingFilePath()
         {
             string fileName = $"TestSettingBox{_AgingInfo.CurSelectBoxNo + 1}.xml";
+            
             return Path.Combine(
                 Application.StartupPath,
                 "Setting",
@@ -449,9 +450,7 @@ namespace BurnInTester.UI
             SelectTestCondition(DGV_TestCondition.Rows[insertIndex]);
         }
 
-        private void DGV_TestCondition_EditingControlShowing(
-            object sender,
-            DataGridViewEditingControlShowingEventArgs e)
+        private void DGV_TestCondition_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             DataGridViewComboBoxEditingControl comboBox =
                 e.Control as DataGridViewComboBoxEditingControl;

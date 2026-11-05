@@ -1,32 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+
 using BurnInTester.Logic.TestSetting;
 
 namespace BurnInTester.Logic
 {
-    /// <summary>
-    /// 已完成分類的測試步驟，並保留原始位置及對應的測試條件。
-    /// </summary>
-    public class PlannedStep
-    {
-        public int OriginalIndex { get; set; }
-        public TestStep Step { get; set; }
-        public TestCondition Condition { get; set; }
-    }
-
-    /// <summary>
-    /// Preparation 執行期間，需要固定間隔觸發的監控步驟。
-    /// </summary>
-    public class MonitorPlan
-    {
-        public PlannedStep PlannedStep { get; set; }
-        public TimeSpan Interval { get; set; }
-    }
-
-    /// <summary>
-    /// 一個 Stage 的分類結果。
-    /// </summary>
     public class StagePlan
     {
         public StagePlan()
@@ -45,30 +24,36 @@ namespace BurnInTester.Logic
         public List<PlannedStep> ExecutionSteps { get; private set; }
     }
 
+    public class PlannedStep
+    {
+        // 已完成分類的測試步驟
+        public int OriginalIndex { get; set; }
+        public TestStep Step { get; set; }
+        public TestCondition Condition { get; set; }
+    }
 
+    public class MonitorPlan
+    {
+        // Preparation 執行期間，需要固定間隔觸發的監控步驟。
+        public PlannedStep PlannedStep { get; set; }
+        public TimeSpan Interval { get; set; }
+    }
 
-    /// <summary>
-    /// 單純將 TestSettingData 依 Stage 與 StageRole 分類。
-    /// 此類別不建立 ProcessTask，也不依賴任何 Factory 或硬體控制物件。
-    /// </summary>
     public class AgingStagePlanBuilderNew
     {
-        
+        // 將 TestSettingData 依 Stage 與 StageRole 分類
+        public AgingStagePlanBuilderNew()
+        {
+        }
 
-        /// <summary>
-        /// 將設定依 TestSteps 原始順序分類成各個 Stage。
-        /// </summary>
+        #region public function
         public List<StagePlan> Classify(TestSettingData setting)
         {
             ValidateSetting(setting);
 
-            Dictionary<string, AgingStage> stagesById =
-                CreateStageLookup(setting.Stages);
-            Dictionary<string, TestCondition> conditionsByStepId =
-                CreateConditionLookup(setting.Conditions);
-            List<PlannedStep> steps = CreatePlannedSteps(
-                setting.TestSteps,
-                conditionsByStepId);
+            Dictionary<string, AgingStage> stagesById = CreateStageLookup(setting.Stages);
+            Dictionary<string, TestCondition> conditionsByStepId = CreateConditionLookup(setting.Conditions);
+            List<PlannedStep> steps = CreatePlannedSteps(setting.TestSteps, conditionsByStepId);
 
             ValidateStageOrder(steps);
 
@@ -76,7 +61,10 @@ namespace BurnInTester.Logic
             ValidateStagePlans(plans);
             return plans;
         }
+        #endregion
 
+        #region private function
+        // Check
         private void ValidateSetting(TestSettingData setting)
         {
             if (setting == null)
@@ -89,6 +77,78 @@ namespace BurnInTester.Logic
                 throw new InvalidOperationException("找不到 Condition 設定資料。");
         }
 
+        private void ValidateStageOrder(IList<PlannedStep> steps)
+        {
+            HashSet<string> completedStageIds = new HashSet<string>();
+            string currentStageId = null;
+            bool executionSeen = false;
+
+            foreach (PlannedStep plannedStep in steps)
+            {
+                TestStep step = plannedStep.Step;
+
+                if (currentStageId != step.StageId)
+                {
+                    if (currentStageId != null)
+                        completedStageIds.Add(currentStageId);
+                    if (completedStageIds.Contains(step.StageId))
+                    {
+                        throw new InvalidOperationException(
+                            $"Stage {step.StageId} 的 TestStep 必須連續排列。");
+                    }
+
+                    currentStageId = step.StageId;
+                    executionSeen = false;
+                }
+
+                if (step.StageRole == StageStepRole.Execution)
+                {
+                    executionSeen = true;
+                }
+                else if (executionSeen)
+                {
+                    throw new InvalidOperationException(
+                        $"Stage {step.StageId} 的 Preparation 必須排在 Execution 前面。");
+                }
+            }
+        }
+
+        private void ValidateStep(TestStep step, int index)
+        {
+            if (step == null)
+                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有資料。");
+            if (IsSkipped(step))
+                return;
+            if (string.IsNullOrWhiteSpace(step.Id))
+                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有 ID。");
+            if (string.IsNullOrWhiteSpace(step.StageId))
+                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有 Stage ID。");
+            if (step.TestProcess == TestProcess.None)
+                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有 TestProcess。");
+            if (!Enum.IsDefined(typeof(StageStepRole), step.StageRole))
+                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 的 StageRole 無效。");
+        }
+
+        private void ValidateStagePlans(IEnumerable<StagePlan> plans)
+        {
+            foreach (StagePlan plan in plans)
+            {
+                if (plan.MonitorSteps.Count > 0 && plan.PreparationSteps.Count == 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Stage {plan.Stage.Id} 有 Monitor，但沒有 Preparation。");
+                }
+
+                if (plan.ExecutionMode == ExecutionRepeatMode.RepeatSequence &&
+                    plan.ExecutionSteps.Count == 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Stage {plan.Stage.Id} 設為 RepeatSequence，但沒有 Execution。");
+                }
+            }
+        }
+
+        // Sort
         private Dictionary<string, AgingStage> CreateStageLookup(
             IEnumerable<AgingStage> stages)
         {
@@ -123,10 +183,7 @@ namespace BurnInTester.Logic
                 if (string.IsNullOrWhiteSpace(condition.TestStepId))
                     throw new InvalidOperationException("Condition 設定中存在空白 TestStepId。");
                 if (result.ContainsKey(condition.TestStepId))
-                {
-                    throw new InvalidOperationException(
-                        $"TestStep ID {condition.TestStepId} 存在多筆 Condition。");
-                }
+                    throw new InvalidOperationException($"TestStep ID {condition.TestStepId} 存在多筆 Condition。");
 
                 result.Add(condition.TestStepId, condition);
             }
@@ -171,80 +228,6 @@ namespace BurnInTester.Logic
             return result;
         }
 
-        private void ValidateStep(TestStep step, int index)
-        {
-            if (step == null)
-                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有資料。");
-            if (IsSkipped(step))
-                return;
-            if (string.IsNullOrWhiteSpace(step.Id))
-                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有 ID。");
-            if (string.IsNullOrWhiteSpace(step.StageId))
-                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有 Stage ID。");
-            if (step.TestProcess == TestProcess.None)
-                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 沒有 TestProcess。");
-            if (!Enum.IsDefined(typeof(StageStepRole), step.StageRole))
-                throw new InvalidOperationException($"第 {index + 1} 筆 TestStep 的 StageRole 無效。");
-        }
-
-        private TestCondition GetCondition(
-            TestStep step,
-            int index,
-            IDictionary<string, TestCondition> conditionsByStepId)
-        {
-            TestCondition condition;
-            if (!conditionsByStepId.TryGetValue(step.Id, out condition))
-            {
-                throw new InvalidOperationException(
-                    $"第 {index + 1} 筆 TestStep 找不到對應的 Condition，ID：{step.Id}");
-            }
-
-            if (condition.Process != step.TestProcess)
-            {
-                throw new InvalidOperationException(
-                    $"第 {index + 1} 筆 TestStep 的 TestProcess 是 {step.TestProcess}，" +
-                    $"但 Condition 是 {condition.Process}。");
-            }
-
-            return condition;
-        }
-
-        private void ValidateStageOrder(IList<PlannedStep> steps)
-        {
-            HashSet<string> completedStageIds = new HashSet<string>();
-            string currentStageId = null;
-            bool executionSeen = false;
-
-            foreach (PlannedStep plannedStep in steps)
-            {
-                TestStep step = plannedStep.Step;
-
-                if (currentStageId != step.StageId)
-                {
-                    if (currentStageId != null)
-                        completedStageIds.Add(currentStageId);
-                    if (completedStageIds.Contains(step.StageId))
-                    {
-                        throw new InvalidOperationException(
-                            $"Stage {step.StageId} 的 TestStep 必須連續排列。");
-                    }
-
-                    currentStageId = step.StageId;
-                    executionSeen = false;
-                }
-
-                if (step.StageRole == StageStepRole.Execution)
-                {
-                    executionSeen = true;
-                }
-                else if (executionSeen)
-                {
-                    throw new InvalidOperationException(
-                        $"Stage {step.StageId} 的 Preparation 必須排在 Execution 前面。");
-                }
-            }
-        }
-
         private List<StagePlan> CreateStagePlans(
             IEnumerable<PlannedStep> steps,
             IDictionary<string, AgingStage> stagesById)
@@ -272,17 +255,6 @@ namespace BurnInTester.Logic
             return result;
         }
 
-        private AgingStage GetStage(
-            string stageId,
-            IDictionary<string, AgingStage> stagesById)
-        {
-            AgingStage stage;
-            if (!stagesById.TryGetValue(stageId, out stage))
-                throw new InvalidOperationException($"找不到 Stage {stageId} 的設定資料。");
-
-            return stage;
-        }
-
         private StagePlan CreateStagePlan(AgingStage stage)
         {
             StagePlan plan = new StagePlan
@@ -306,6 +278,40 @@ namespace BurnInTester.Logic
             return plan;
         }
 
+
+        private TestCondition GetCondition(
+            TestStep step,
+            int index,
+            IDictionary<string, TestCondition> conditionsByStepId)
+        {
+            TestCondition condition;
+            if (!conditionsByStepId.TryGetValue(step.Id, out condition))
+            {
+                throw new InvalidOperationException(
+                    $"第 {index + 1} 筆 TestStep 找不到對應的 Condition，ID：{step.Id}");
+            }
+
+            if (condition.Process != step.TestProcess)
+            {
+                throw new InvalidOperationException(
+                    $"第 {index + 1} 筆 TestStep 的 TestProcess 是 {step.TestProcess}，" +
+                    $"但 Condition 是 {condition.Process}。");
+            }
+
+            return condition;
+        }
+
+        private AgingStage GetStage(
+            string stageId,
+            IDictionary<string, AgingStage> stagesById)
+        {
+            AgingStage stage;
+            if (!stagesById.TryGetValue(stageId, out stage))
+                throw new InvalidOperationException($"找不到 Stage {stageId} 的設定資料。");
+
+            return stage;
+        }
+        
         private void AddStep(StagePlan plan, PlannedStep plannedStep)
         {
             switch (plannedStep.Step.StageRole)
@@ -331,25 +337,6 @@ namespace BurnInTester.Logic
                 default:
                     throw new InvalidOperationException(
                         $"TestStep {plannedStep.OriginalIndex + 1} 的 StageRole 無效。");
-            }
-        }
-
-        private void ValidateStagePlans(IEnumerable<StagePlan> plans)
-        {
-            foreach (StagePlan plan in plans)
-            {
-                if (plan.MonitorSteps.Count > 0 && plan.PreparationSteps.Count == 0)
-                {
-                    throw new InvalidOperationException(
-                        $"Stage {plan.Stage.Id} 有 Monitor，但沒有 Preparation。");
-                }
-
-                if (plan.ExecutionMode == ExecutionRepeatMode.RepeatSequence &&
-                    plan.ExecutionSteps.Count == 0)
-                {
-                    throw new InvalidOperationException(
-                        $"Stage {plan.Stage.Id} 設為 RepeatSequence，但沒有 Execution。");
-                }
             }
         }
 
@@ -417,5 +404,6 @@ namespace BurnInTester.Logic
             bool skip;
             return bool.TryParse(step.Skip, out skip) && skip;
         }
+        #endregion
     }
 }

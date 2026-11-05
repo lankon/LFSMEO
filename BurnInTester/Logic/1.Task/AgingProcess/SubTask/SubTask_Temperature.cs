@@ -258,14 +258,13 @@ namespace BurnInTester.Logic
                 
                 case WORK.SUCCESS:
                     {
-                        _IsDone = true;
-                        SetStatus(TASK_STATUS.SUCCESS);
-                        Tool.SaveLogToFile($"{TaskName} End", level: "INF");
+                        SetTempStatus(TASK_STATUS.SUCCESS);
+                        Transition(WORK.END);
                     }
                     break;
                 case WORK.FAIL:
                     {
-                        SetStatus(TASK_STATUS.FAIL);
+                        SetTempStatus(TASK_STATUS.FAIL);
                     }
                     break;
                 case WORK.PAUSE:
@@ -275,7 +274,8 @@ namespace BurnInTester.Logic
                     break;
                 case WORK.ABORT:
                     {
-                        SetStatus(TASK_STATUS.ABORT);
+                        SetTempStatus(TASK_STATUS.ABORT);
+                        Transition(WORK.END);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -289,7 +289,9 @@ namespace BurnInTester.Logic
                     break;
                 case WORK.END:
                     {
-                        SetStatus(TASK_STATUS.SUCCESS);
+                        _IsDone = true;
+                        SetStatus(GetTempStatus());
+                        Tool.SaveLogToFile($"{TaskName} End", level: "INF");
                     }
                     break;
             }

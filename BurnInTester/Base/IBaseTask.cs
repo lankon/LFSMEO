@@ -58,8 +58,9 @@ namespace BurnInTester.Base
         protected string TaskName = "NonTaskName";              //執行緒名稱
         protected TWork State;                                  //執行緒狀態
         protected readonly IBaseTaskDependence Deps;            //共用方法介面
-        protected bool _IsDone = false;                          //判斷是否執行完成
+        protected bool _IsDone = false;                         //判斷是否執行完成
         private TASK_STATUS status = TASK_STATUS.CONTINUE;      //設定目前狀態機狀態,傳出給MainTask知道
+        private TASK_STATUS temp_status = TASK_STATUS.NONE;     //設定暫存狀態
         private TASK_STATUS status_command = TASK_STATUS.NONE;  //設定要傳入SubTask的狀態命令
         private bool is_subtask_processing = false;             //判斷是否有SubTask
         private TWork next_state;                               //設定下一個WORK
@@ -117,8 +118,21 @@ namespace BurnInTester.Base
         {
 
         }
+        /// <summary>
+        /// 設定Task狀態
+        /// </summary>
+        protected void SetTempStatus(TASK_STATUS st)
+        {
+            temp_status = st;
+        }
+        /// <summary>
+        /// 取得Task狀態
+        /// </summary>
+        protected TASK_STATUS GetTempStatus()
+        {
+            return temp_status;
+        }
 
-        
         /// <summary>
         /// 設定Task狀態
         /// </summary>

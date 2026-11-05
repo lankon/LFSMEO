@@ -15,12 +15,14 @@ namespace BurnInTester.Logic
     #region Task
     public class Task_AgingBox : IBaseTask<Task_AgingBox.WORK>
     {
+        // 各獨立老化箱執行流程
         public Task_AgingBox(IBaseTaskDependence dependencies,
             IF_StateControl f_StateControl,
             string set_state = "Default")
             : base(dependencies)
         {
             TaskName = this.GetType().Name;
+
             State = WORK.INITIAL;
             _BoxIndex = Tool.StringToInt(set_state);
 
@@ -34,17 +36,15 @@ namespace BurnInTester.Logic
         private int _StageIndex;                            // 目前 Stage 在 _StagePlans 中的索引
         private int _ExecutionSubTaskIndex = 0;             // ExecutionSubTask執行索引
         private int _DurationTick = 0;                      // 記錄執行時間的tick
-        private Queue<PlannedStep> _PendingSteps = new Queue<PlannedStep>();            // 待執行Preparation
+        private Queue<PlannedStep> _PendingSteps = new Queue<PlannedStep>();        // 待執行Preparation
         private Queue<PlannedStep> _ExecutionSteps = new Queue<PlannedStep>();      // 待執行Execution
-        private Queue<MonitorPlan> _MonitorSteps = new Queue<MonitorPlan>();        // 尚未完成的監控步驟
+        private Queue<MonitorPlan> _MonitorSteps = new Queue<MonitorPlan>();        // 待執行Monitor
+        private List<StagePlan> _StagePlans;                // 老化排程
 
-        private TestSettingData _Setting;                   // 此溫控箱目前使用的測試設定
-        private List<StagePlan> _StagePlans;
-
-        private IF_BaseTask SubTask;                        //子流程
+        private IF_BaseTask SubTask;                        // 子流程
         private List<IF_BaseTask> MonitorSubTask = new List<IF_BaseTask>();     // 監控子流程
         private List<IF_BaseTask> ExecuteSubTask = new List<IF_BaseTask>();     // 執行子流程
-        private IF_StateControl F_StateControl;
+        private IF_StateControl F_StateControl;             // 控制UI,未使用
         private readonly object _SyncRoot = new object();   // UI 執行緒會送命令，排程執行緒會掃描狀態，因此存取執行資料時必須鎖定。
         public enum WORK
         {
@@ -78,12 +78,6 @@ namespace BurnInTester.Logic
             PAUSE,
             ABORT,
             CONTINUE,
-        }
-
-        private sealed class PreparationMonitorStep
-        {
-            public IndexedStep IndexedStep { get; set; }
-            public TimeSpan Interval { get; set; }
         }
         #endregion
 
@@ -209,17 +203,17 @@ namespace BurnInTester.Logic
                 //}
             }
         }
-        private bool ProcessMonitorSubTask()
+        private bool ProcessMonitorSubTask(TASK_STATUS cmd)
         {
-            bool all_success = true;
+            bool all_finish = true;
             for (int i = 0; i < MonitorSubTask.Count; i++)
             {
-                TASK_STATUS monitor_check = MonitorSubTask[i].Run(GetStatusCommand());
+                TASK_STATUS monitor_check = MonitorSubTask[i].Run(cmd);
                 
-                if (monitor_check != TASK_STATUS.SUCCESS)
-                    all_success = false;
+                if (MonitorSubTask[i].IsDone() == false)
+                    all_finish = false;
             }
-            return all_success;
+            return all_finish;
         }
         private void ResetMonitorSubTask()
         {
@@ -273,6 +267,7 @@ namespace BurnInTester.Logic
             if (GetSubTaskProcessing()) //判斷是否有SubTask執行
                 SubTask.GoToPause();
 
+            SetStatus(TASK_STATUS.PAUSE);
         }
 
         public bool Start(TestSettingData setting)
@@ -289,10 +284,12 @@ namespace BurnInTester.Logic
             {
                 AgingStagePlanBuilderNew _PlanBuilder = new AgingStagePlanBuilderNew();
                 _StagePlans = _PlanBuilder.Classify(setting);
-                _Setting = setting;
+
+                MonitorSubTask.Clear();
+                ExecuteSubTask.Clear();
 
                 Transition(WORK.LOAD_STAGE);
-                Tool.SaveLogToFile($"Box {_BoxIndex + 1} schedule started");
+                Tool.SaveLogToFile($"Box {_BoxIndex + 1} schedule started", level:"INF");
             }
             catch (Exception ex)
             {
@@ -368,13 +365,14 @@ namespace BurnInTester.Logic
                     break;
                 case WORK.WAIT_PREPARATION_STEP:
                     {
-                        TASK_STATUS check = SubTask.Run(GetStatusCommand());
+                        TASK_STATUS cmd = GetStatusCommand();
+                        TASK_STATUS check = SubTask.Run(cmd);
 
-                        bool finish = ProcessMonitorSubTask();  // 執行監控流程
+                        bool AllDone = ProcessMonitorSubTask(cmd);  // 執行監控流程
 
-                        if(SubTask.IsDone() && finish)
+                        if(SubTask.IsDone() && AllDone)
                             CheckResult(check, SUCCESS: WORK.FINISH_PREPARATION_STEP);
-                        else if (finish)
+                        else if (AllDone)
                             ResetMonitorSubTask();
                     }
                     break;
@@ -403,7 +401,7 @@ namespace BurnInTester.Logic
                             }
                         }
 
-                        _ExecutionSubTaskIndex = 0;     // 歸零
+                        _ExecutionSubTaskIndex = 0;
                         Transition(WORK.WAIT_EXECUTION_STEP);
                     }
                     break;
@@ -442,6 +440,7 @@ namespace BurnInTester.Logic
                         else if(!Tool.CheckTimeOverSec(_DurationTick, duration) &&
                                 _StagePlans[_StageIndex].ExecutionMode == ExecutionRepeatMode.RepeatSequence)
                         {
+                            _ExecutionSubTaskIndex = 0;
                             ResetExecuteSubTask();
                             Transition(WORK.WAIT_EXECUTION_STEP);
                         }
@@ -451,24 +450,25 @@ namespace BurnInTester.Logic
 
                 case WORK.SUCCESS:
                     {
-                        SetStatus(TASK_STATUS.SUCCESS);
-                        Tool.SaveLogToFile($"{TaskName} End", level: "INF");
+                        //SetTempStatus(TASK_STATUS.SUCCESS);
+                        
                     }
                     break;
                 case WORK.FAIL:
                     {
-                        SetStatus(TASK_STATUS.FAIL);
+                        //SetStatus(TASK_STATUS.FAIL);
                     }
                     break;
                 case WORK.PAUSE:
                     {
-                        SetStatus(TASK_STATUS.PAUSE);
+                        //SetStatus(TASK_STATUS.PAUSE);
                     }
                     break;
                 case WORK.ABORT:
                     {
-                        SetStatus(TASK_STATUS.ABORT);
+                        //SetStatus(TASK_STATUS.ABORT);
                         //SaveHistoryCurrentState(WORK.ABORT);
+                        Transition(WORK.END);
                     }
                     break;
                 case WORK.CONTINUE:
@@ -482,8 +482,9 @@ namespace BurnInTester.Logic
                     break;
                 case WORK.END:
                     {
-                        
-                        SetStatus(TASK_STATUS.SUCCESS);
+                        SetStatus(TASK_STATUS.CONTINUE);
+                        Tool.SaveLogToFile($"{TaskName} End", level: "INF");
+                        Transition(WORK.IDLE);  // 老化流程結束後維持在IDLE
                     }
                     break;
             }

@@ -4,16 +4,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Reflection;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using ToolFunction;
 using BurnInTester.Base;
 using BurnInTester.Logic.TestSetting;
-using Microsoft.Extensions.DependencyInjection;
-
 
 namespace BurnInTester.Logic
 {
     public sealed class AgingSchedulerTask : IBaseMainTask
     {
+        // 老化流程主要排程器
         public AgingSchedulerTask(IServiceProvider serviceProvider, IBurnInTesterMachine burnInTesterMachine, 
                                   IF_StateControl f_StateControl, AgingInformation agingInformation)
         {
@@ -25,11 +26,11 @@ namespace BurnInTester.Logic
         }
 
         #region parameter
-
-
         private bool Terminate = false;
+        private bool InitialComplete = false;
+        private bool[] AbortAfterPause;
         private WORK state = WORK.INITIAL;
-        private TASK_STATUS status_commad = TASK_STATUS.NONE;
+        private TASK_STATUS[] status_commad;
         private TASK_STATUS result_status = TASK_STATUS.NONE;
         private WORK pre_state = WORK.INITIAL;
         private IServiceProvider ServiceProvider;
@@ -44,8 +45,6 @@ namespace BurnInTester.Logic
 
             TASK,
             WAIT_TASK,
-
-            COMPLETE_STAGE,
 
             SUCCESS,
             FAIL,
@@ -66,10 +65,12 @@ namespace BurnInTester.Logic
         /// </summary>
         public void Run()
         {
-            //F_StateControl.SetMainTask(this);
-            //F_StateControl.ShowForm(0);
-            //BaseTask.SetForm(f_StateControl);
-
+            if(InitialComplete == false)
+            {
+                Tool.SaveLogToFile("Aging scheduler task not initialized yet", level:"WRN");
+                return;
+            }
+            
             int boxIndex = _AgingInformation.CurSelectBoxNo; 
             bool success = false;
             if(BaseTask[boxIndex] is Task_AgingBox aging_box)
@@ -89,6 +90,9 @@ namespace BurnInTester.Logic
             //pre_state = state;
             //BaseTask.GoToPause();
             //Transition(WORK.PAUSE);
+
+            int boxIndex = _AgingInformation.CurSelectBoxNo;
+            BaseTask[boxIndex].GoToPause();
         }
         /// <summary>
         /// 放棄Task執行
@@ -99,20 +103,25 @@ namespace BurnInTester.Logic
             //F_StateControl.SetPauseAbortContinue(TASK_STATUS.NONE);
             //Transition(pre_state);
 
-            int boxIndex = _AgingInformation.CurSelectBoxNo;
+            //int boxIndex = _AgingInformation.CurSelectBoxNo;
+            //SetStatusCommand(boxIndex, TASK_STATUS.ABORT);
 
+            // 老化機流程沒有人員按暫停,所以特殊處理
+            int boxIndex = _AgingInformation.CurSelectBoxNo;
+            AbortAfterPause[boxIndex] = true;
+            BaseTask[boxIndex].GoToPause();
         }
         /// <summary>
         /// 繼續Task執行
         /// </summary>
         public void GoToContinue()
         {
-            if (GetResultSatus() == TASK_STATUS.PAUSE)   //如果為流程暫停,傳入繼續指令
-                SetStatusCommand(TASK_STATUS.CONTINUE);
+            //if (GetResultSatus() == TASK_STATUS.PAUSE)   //如果為流程暫停,傳入繼續指令
+            //    SetStatusCommand(TASK_STATUS.CONTINUE);
 
-            F_StateControl.SetPauseAbortContinue(TASK_STATUS.PAUSE);   //設定使用者只能按暫停鍵
+            //F_StateControl.SetPauseAbortContinue(TASK_STATUS.PAUSE);   //設定使用者只能按暫停鍵
 
-            Transition(pre_state);
+            //Transition(pre_state);
         }
         /// <summary>
         /// 強制MainTask至Idle,讓其他Task執行
@@ -130,6 +139,7 @@ namespace BurnInTester.Logic
         }
         public void SetTask<T>(string method = "Default") where T : IF_BaseTask
         {
+            // 此執行緒無法從外部呼叫Task, 因為此執行緒是針對多個溫控箱的流程排程器, 需要依照溫控箱編號來設定Task
             throw new NotImplementedException();
         }
         #endregion
@@ -140,11 +150,17 @@ namespace BurnInTester.Logic
             Tool.SaveLogToFile("Aging scheduler thread started", level:"INF");
 
             BaseTask = new Task_AgingBox[_AgingInformation.AgingProcessSetting.Length];
+            status_commad = new TASK_STATUS[_AgingInformation.AgingProcessSetting.Length];
+            AbortAfterPause = new bool[_AgingInformation.AgingProcessSetting.Length];
 
             for (int i = 0; i < BaseTask.Length; i++)
             {
                 SetTask<Task_AgingBox>(i, method:$"{i.ToString()}");
+                status_commad[i] = TASK_STATUS.NONE;
+                AbortAfterPause[i] = false;
             }
+
+            InitialComplete = true;
         }
 
         /// <summary>
@@ -175,6 +191,7 @@ namespace BurnInTester.Logic
                 method
             };
 
+            // 對應複數溫控箱流程
             BaseTask[box_no] = (IF_BaseTask)ctor.Invoke(constructorArgs);
         }
 
@@ -193,9 +210,9 @@ namespace BurnInTester.Logic
         /// 設定狀態命令
         /// </summary>
         /// <param name="task_status"></param>
-        private void SetStatusCommand(TASK_STATUS task_status)
+        private void SetStatusCommand(int box_num, TASK_STATUS task_status)
         {
-            status_commad = task_status;
+            status_commad[box_num] = task_status;
         }
 
         /// <summary>
@@ -244,11 +261,11 @@ namespace BurnInTester.Logic
         /// 取得狀態命令
         /// </summary>
         /// <returns></returns>
-        private TASK_STATUS GetStatusCommand()
+        private TASK_STATUS GetStatusCommand(int box_num)
         {
             TASK_STATUS temp_status;
-            temp_status = status_commad;
-            status_commad = TASK_STATUS.NONE;
+            temp_status = status_commad[box_num];
+            status_commad[box_num] = TASK_STATUS.NONE;
 
             return temp_status;
         }
@@ -273,18 +290,19 @@ namespace BurnInTester.Logic
                     case WORK.INITIAL:
                         {
                             Preset();
-                            state = WORK.IDLE;
+                            Transition(WORK.IDLE);
                         }
                         break;
                     case WORK.IDLE: //待命
                         {
-
+                            Thread.Sleep(100); // 沒使用時Delay,避免CPU過度使用
                         }
                         break;
                     case WORK.TASK:
                         {
                             //F_StateControl.SetPauseAbortContinue(TASK_STATUS.PAUSE);
-                            SetStatusCommand(TASK_STATUS.NONE);
+                            int boxIndex = _AgingInformation.CurSelectBoxNo;
+                            SetStatusCommand(boxIndex, TASK_STATUS.NONE);
                             Transition(WORK.WAIT_TASK);
                         }
                         break;
@@ -292,15 +310,16 @@ namespace BurnInTester.Logic
                         {
                             for (int boxIndex = 0; boxIndex < BaseTask.Length; boxIndex++)
                             {
-                                TASK_STATUS check = BaseTask[boxIndex].Run(GetStatusCommand());
+                                TASK_STATUS check = BaseTask[boxIndex].Run(GetStatusCommand(boxIndex));
+
+                                if (check == TASK_STATUS.PAUSE && AbortAfterPause[boxIndex])
+                                {
+                                    AbortAfterPause[boxIndex] = false;
+                                    SetStatusCommand(boxIndex, TASK_STATUS.ABORT);
+                                }
                             }
 
                             Thread.Sleep(50);
-                        }
-                        break;
-
-                    case WORK.COMPLETE_STAGE:
-                        {
                         }
                         break;
 
