@@ -15,6 +15,7 @@ using BurnInTester.UI;
 using BurnInTester.Logic;
 using BurnInTester.Device;
 using Device_NationalInstruments;   // 違規用法
+using DeviceFunction;               // 違規用法
 
 namespace BurnInTester
 {
@@ -29,6 +30,7 @@ namespace BurnInTester
             //services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
             //services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
             services.AddSingleton<ISourceMeter, AdapterNIBase>();
+            services.AddSingleton<Function_SourceMeter>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();

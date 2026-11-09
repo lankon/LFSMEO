@@ -14,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ToolFunction;
 using BurnInTester.Base;
 using BurnInTester.Logic;
-using DeviceCore;
-using System.Threading;
+using DeviceCore;           //違規用法
+using DeviceFunction;       //違規用法
 
 namespace BurnInTester.UI
 {
@@ -342,26 +342,36 @@ namespace BurnInTester.UI
             SubscribeEvent();
         }
 
+        #region 電流源測試
+        Function_SourceMeter SMU;
+        private void Btn_Open_Click(object sender, EventArgs e)
+        {
+            SMU = ServiceProvider.GetRequiredService<Function_SourceMeter>();
+            SMU.Open();
+
+            SourceMeterConfiguration config = new SourceMeterConfiguration()
+            {
+                MeasurementSense = SourceMeterMeasurementSense.Remote,
+                TransientResponse = SourceMeterTransientResponse.Normal,
+
+                StartTriggerInputTerminal = SourceMeterTriggerTerminal.None,
+                StartTriggerOutputTerminal = SourceMeterTriggerTerminal.None,
+                SourceCompleteEventOutputTerminal = SourceMeterTriggerTerminal.None,
+                PulseTriggerOutputTerminal = SourceMeterTriggerTerminal.None,
+            };
+
+            SMU.SetSMUConfig(config);
+        }
+
         private void Btn_SourceMeterTest_Click(object sender, EventArgs e)
         {
-            ISourceMeter source_meter = ServiceProvider.GetRequiredService<ISourceMeter>();
-
-            try
-            {
-                int result = source_meter.Open(new SourceMeterConnection()
-                {
-                    ResourceName = "PXI1Slot2",
-                    ChannelName = "0",
-                    ResetDevice = false,
-                    DriverSetupOptions =
-                    "DriverSetup=SenseLeadErrorDetectionEnabled:0"
-                });
-            }
-            catch(Exception ex)
-            {
-                Tool.SaveLogToFile($"{ex}");
-            }
+            double current, voltage;
+            SMU.SIMV(0.003, 2, 50e-3, out current, out voltage);
+            SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }
+
+        
+        #endregion
     }
 
     public sealed class InformationTrendOptions
