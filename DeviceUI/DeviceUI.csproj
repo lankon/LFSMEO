@@ -118,6 +118,12 @@
     <Compile Include="Camera\F_CameraSetting.designer.cs">
       <DependentUpon>F_CameraSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="F_SourceMeter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="F_SourceMeter.designer.cs">
+      <DependentUpon>F_SourceMeter.cs</DependentUpon>
+    </Compile>
     <Compile Include="F_TemperatureControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Camera\F_CameraSetting.resx">
       <DependentUpon>F_CameraSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F_SourceMeter.resx">
+      <DependentUpon>F_SourceMeter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="F_TemperatureControl.resx">
       <DependentUpon>F_TemperatureControl.cs</DependentUpon>

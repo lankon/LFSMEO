@@ -14,6 +14,7 @@ using BurnInTester.Base;
 using BurnInTester.UI;
 using BurnInTester.Logic;
 using BurnInTester.Device;
+using Device_NationalInstruments;   // 違規用法
 
 namespace BurnInTester
 {
@@ -27,6 +28,7 @@ namespace BurnInTester
             //[Device]
             //services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
             //services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
+            services.AddSingleton<ISourceMeter, AdapterNIBase>();
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
@@ -71,9 +73,6 @@ namespace BurnInTester
             services.AddSingleton<AgingInformation>();
             //services.AddSingleton<TestResultDataBase>();
             services.AddSingleton<HW_ParamSetting>();
-
-
-
 
             return services;
         }

@@ -53,6 +53,7 @@
     <Compile Include="LightControl\IFunction_LightControl.cs" />
     <Compile Include="LightControl\IF_LightControl.cs" />
     <Compile Include="LightControl\ILightControl.cs" />
+    <Compile Include="SourceMeter\ISourceMeter.cs" />
     <Compile Include="Spectrometer\IFunction_Spectrometer.cs" />
     <Compile Include="Spectrometer\IF_Spectrometer.cs" />
     <Compile Include="Spectrometer\ISpectrometer.cs" />

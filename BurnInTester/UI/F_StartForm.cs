@@ -341,6 +341,27 @@ namespace BurnInTester.UI
         {
             SubscribeEvent();
         }
+
+        private void Btn_SourceMeterTest_Click(object sender, EventArgs e)
+        {
+            ISourceMeter source_meter = ServiceProvider.GetRequiredService<ISourceMeter>();
+
+            try
+            {
+                int result = source_meter.Open(new SourceMeterConnection()
+                {
+                    ResourceName = "PXI1Slot2",
+                    ChannelName = "0",
+                    ResetDevice = false,
+                    DriverSetupOptions =
+                    "DriverSetup=SenseLeadErrorDetectionEnabled:0"
+                });
+            }
+            catch(Exception ex)
+            {
+                Tool.SaveLogToFile($"{ex}");
+            }
+        }
     }
 
     public sealed class InformationTrendOptions

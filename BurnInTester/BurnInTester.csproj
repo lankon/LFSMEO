@@ -276,6 +276,10 @@
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_NationalInstruments\Device_NationalInstruments.csproj">
+      <Project>{18b02d28-b5d7-4801-8fbe-41d3ebbcf83a}</Project>
+      <Name>Device_NationalInstruments</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Guishan\Device_Guishan.csproj">
       <Project>{55ce2e35-b0cc-47cd-9135-e624bf94ec26}</Project>
       <Name>Device_Guishan</Name>
