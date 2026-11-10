@@ -21,6 +21,7 @@ namespace DeviceCore
         //Basler,
         Virtual,
         Hikvision,
+        MLO,
         //Dalsa,
     }
     public enum CCD_NAME

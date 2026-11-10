@@ -8,115 +8,6 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace ProbeTester.Logic
 {
-    public class RTCP_Controller
-    {
-        // 運動鏈參數
-        private double[] _L1 = new double[3]; // 滑台到 RZ
-        private double[] _L2 = new double[3]; // RZ 到 RX
-        private double[] _L3 = new double[3]; // RX 到 RY
-        private double[] _L4 = new double[3]; // RY 到 45度懸臂轉折點 (關鍵修正！)
-        private double[] _Tool = new double[3]; // 懸臂轉折點到 TCP
-
-        private double _FixedPitchY_Deg = 45.0;
-
-        public struct RobotPose { public double X, Y, Z, Tz, Tx, Ty; }
-
-        
-
-        private Matrix<double> Trans(double[] vec) => DenseMatrix.OfArray(new double[,] { { 1, 0, 0, vec[0] }, { 0, 1, 0, vec[1] }, { 0, 0, 1, vec[2] }, { 0, 0, 0, 1 } });
-        private Matrix<double> RotX(double deg) { double r = deg * Math.PI / 180; return DenseMatrix.OfArray(new double[,] { { 1, 0, 0, 0 }, { 0, Math.Cos(r), -Math.Sin(r), 0 }, { 0, Math.Sin(r), Math.Cos(r), 0 }, { 0, 0, 0, 1 } }); }
-        private Matrix<double> RotY(double deg) { double r = deg * Math.PI / 180; return DenseMatrix.OfArray(new double[,] { { Math.Cos(r), 0, Math.Sin(r), 0 }, { 0, 1, 0, 0 }, { -Math.Sin(r), 0, Math.Cos(r), 0 }, { 0, 0, 0, 1 } }); }
-        private Matrix<double> RotZ(double deg) { double r = deg * Math.PI / 180; return DenseMatrix.OfArray(new double[,] { { Math.Cos(r), -Math.Sin(r), 0, 0 }, { Math.Sin(r), Math.Cos(r), 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } }); }
-
-        private Matrix<double> GetArmMatrix(double tz_deg, double tx_deg, double ty_deg)
-        {
-            return Trans(_L1) * RotZ(tz_deg)
-                 * Trans(_L2) * RotX(tx_deg)
-                 * Trans(_L3) * RotY(ty_deg)
-                 * Trans(_L4) * RotY(_FixedPitchY_Deg)
-                 * Trans(_Tool);
-        }
-
-        private Matrix<double> GetArmRotationMatrix(double tz_deg, double tx_deg, double ty_deg)
-        {
-            return RotZ(tz_deg) * RotX(tx_deg) * RotY(ty_deg) * RotY(_FixedPitchY_Deg);
-        }
-
-        private double[] ExtractMachineAngles(Matrix<double> jointRotation)
-        {
-            double sinTx = Math.Max(-1.0, Math.Min(1.0, jointRotation[2, 1]));
-            double txRad = Math.Asin(sinTx);
-            double tyRad;
-            double tzRad;
-
-            if (Math.Abs(Math.Cos(txRad)) > 1e-6)
-            {
-                tyRad = Math.Atan2(-jointRotation[2, 0], jointRotation[2, 2]);
-                tzRad = Math.Atan2(-jointRotation[0, 1], jointRotation[1, 1]);
-            }
-            else
-            {
-                // Gimbal lock: keep Ty at 0 because Rz and Ry become coupled.
-                tyRad = 0;
-                tzRad = Math.Atan2(jointRotation[1, 0], jointRotation[0, 0]);
-            }
-
-            return new double[]
-            {
-                tzRad * 180.0 / Math.PI,
-                txRad * 180.0 / Math.PI,
-                tyRad * 180.0 / Math.PI
-            };
-        }
-
-        /// <summary>
-        /// 完整運動學鏈：加入 L4 (懸臂起始間隙)
-        /// 順序：Slide -> L1 -> Rz -> L2 -> Rx -> L3 -> Ry -> L4 -> Rot_45 -> Tool
-        /// </summary>
-        private Matrix<double> GetForwardKinematics(RobotPose pose)
-        {
-            return Trans(new double[] { pose.X, pose.Y, pose.Z })
-                 * GetArmMatrix(pose.Tz, pose.Tx, pose.Ty);
-        }
-
-        public void SetKinematicParameters(
-            double[] L1, double[] L2, double[] L3, double[] L4_CantileverGap, double[] Tool, double fixedPitchDeg = 225.0)
-        {
-            _L1 = L1; _L2 = L2; _L3 = L3; _L4 = L4_CantileverGap; _Tool = Tool;
-            _FixedPitchY_Deg = fixedPitchDeg;
-        }
-
-        public RobotPose CalculateRTCPTarget(RobotPose currentPose, double tx_deg, double ty_deg, double tz_deg)
-        {
-            var targetTcpMatrix = GetForwardKinematics(currentPose);
-
-            // tx/ty/tz are local TCP-frame rotations. The fixed 45-degree cantilever
-            // is already part of the current TCP frame, so apply the delta after it.
-            var tcpLocalDelta = RotX(tx_deg) * RotY(ty_deg) * RotZ(tz_deg);
-            var targetTcpRotation = GetArmRotationMatrix(currentPose.Tz, currentPose.Tx, currentPose.Ty) * tcpLocalDelta;
-
-            // Remove the fixed cantilever pitch to recover the machine joint rotation.
-            var targetJointRotation = targetTcpRotation * RotY(_FixedPitchY_Deg).Inverse();
-            var targetAngles = ExtractMachineAngles(targetJointRotation);
-
-            double target_Tz = targetAngles[0];
-            double target_Tx = targetAngles[1];
-            double target_Ty = targetAngles[2];
-
-            var targetArmMatrix = GetArmMatrix(target_Tz, target_Tx, target_Ty);
-
-            return new RobotPose
-            {
-                X = targetTcpMatrix[0, 3] - targetArmMatrix[0, 3],
-                Y = targetTcpMatrix[1, 3] - targetArmMatrix[1, 3],
-                Z = targetTcpMatrix[2, 3] - targetArmMatrix[2, 3],
-                Tx = target_Tx,
-                Ty = target_Ty,
-                Tz = target_Tz
-            };
-        }
-    }
-
     public class BlackBoxRTCP_Controller
     {
         #region parameter define
@@ -379,6 +270,23 @@ namespace ProbeTester.Logic
             var targetAngles = ExtractMachineAngles(targetMachineRotation);
 
             return CalculateRTCPTargetByMachineAngles(currentPose, targetAngles[1], targetAngles[2], targetAngles[0]);
+        }
+
+        public RobotPose CalculateTargetByTcpLocalXYZ(RobotPose currentPose, double localX, double localY, double localZ)
+        {
+            var tcpRotation = GetMachineRotation(currentPose.Tz, currentPose.Tx, currentPose.Ty) * RotY(_FixedPitchY_Deg);
+            var localMove = Vector<double>.Build.Dense(new double[] { localX, localY, localZ });
+            var worldMove = tcpRotation * localMove;
+
+            return new RobotPose
+            {
+                X = currentPose.X + worldMove[0],
+                Y = currentPose.Y + worldMove[1],
+                Z = currentPose.Z + worldMove[2],
+                Tx = currentPose.Tx,
+                Ty = currentPose.Ty,
+                Tz = currentPose.Tz
+            };
         }
 
         public void SetFixedPitch(double fixedPitchDeg)

@@ -267,7 +267,7 @@ namespace Device_Virtual
             {
                 while (!CM_Stop[axis])
                 {
-                    if (Tool.GetTime(startTicks, time: "s") > 10)
+                    if (Tool.GetTime(startTicks, time: "s") > 30)
                     {
                         ret = -1;
                         break;

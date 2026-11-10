@@ -29,16 +29,22 @@ using Device_VirtualLight;
 using Device_Hikvision;
 using Device_VirtualCamera;
 using Device_Spectrum_Virtual;
+using Device_MLO;
 
 //[Tool]
+using ToolFunction;
 using UserPrivilege.Base;
-using UserPrivilege.UI;
 using UserPrivilege.Logic;
+using UserPrivilege.UI;
+using HistoryReader.Base;
+using HistoryReader.Logic;
+using HistoryReader.UI;
 
 //[Machine]
 using RGBTester;
 using ProbeTester;
 using BurnInTester;
+using AAMachine;
 
 namespace LFSMEO
 {
@@ -48,6 +54,7 @@ namespace LFSMEO
 
         public Form BuildAndGetMainForm()
         {
+            //[新增機型]
             switch (Scope.MachineType)
             {
                 case EMachineType.ProbeTester:
@@ -56,6 +63,8 @@ namespace LFSMEO
                     return host.Services.GetRequiredService<RGBTester.UI.F_MainForm>();
                 case EMachineType.BurnInTester:
                     return host.Services.GetRequiredService<BurnInTester.UI.F_MainForm>();
+                case EMachineType.AAMachine:
+                    return host.Services.GetRequiredService<AAMachine.UI.F_MainForm>();
                 default:
                     return host.Services.GetRequiredService<F_SelectMachine>();
             }
@@ -89,6 +98,7 @@ namespace LFSMEO
             OTO Spectro_OTO = new OTO();
             APS APS = new APS();
             ChillerControl_Klzx Klxz = new ChillerControl_Klzx();
+            HistoryLogHub historyLogHub = new HistoryLogHub(Path.Combine(Directory.GetCurrentDirectory(), "History"));
 
             services.AddSingleton<IMotionCard>(mn200);
             services.AddSingleton<IMotionCard>(APS);
@@ -103,6 +113,7 @@ namespace LFSMEO
             services.AddSingleton<ILightControl, VirtualLight>();
             services.AddSingleton<ICamera, Hikvision>();
             services.AddSingleton<ICamera, VirtualCamera>();
+            services.AddSingleton<ICamera, MLO>();
             services.AddSingleton<IChillerControl>(Klxz);
 
             //[Form]
@@ -115,11 +126,14 @@ namespace LFSMEO
             services.AddSingleton<IF_LightControl, F_LightControl>();
             services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
             services.AddSingleton<IF_Spectrometer, F_Spectrometer>();
+            services.AddSingleton<IF_HistoryReader, F_HistoryReader>();
 
             //[Form Logic]
             services.AddSingleton<F_MotionSettingLogic>();
             services.AddSingleton<F_CameraSettingLogic>();
             services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();
+            services.AddSingleton(historyLogHub);
+            services.AddSingleton<IF_HistoryReaderLogic, F_HistoryReaderLogic>();
 
             //[Function]
             services.AddSingleton<IFunction_MotionCard, Function_Motion_Card>();
@@ -144,6 +158,9 @@ namespace LFSMEO
                     services.AddBurnInTesterServices();
                     AppIcon = Properties.Resources.BurnInTester1;
                     AppName = "BurnInTester";
+                    break;
+                case EMachineType.AAMachine:
+                    services.AddAAMachineServices();
                     break;
                 default:
                     services.AddSingleton<F_SelectMachine>();

@@ -50,6 +50,7 @@ namespace LFSMEO
             ApplicationSetting.ReadAllRecipe<eMachineSetting>();
             int option = ApplicationSetting.Get_Int_Recipe<eMachineSetting>((int)eMachineSetting.Cmbx_MachineType);
 
+            //[新增機型]
             if (option == 0)
                 Scope.MachineType = EMachineType.NONE;
             else if (option == 1)
@@ -58,6 +59,8 @@ namespace LFSMEO
                 Scope.MachineType = EMachineType.RGBTester;
             else if(option == 3)
                 Scope.MachineType = EMachineType.BurnInTester;
+            else if(option == 4)
+                Scope.MachineType = EMachineType.AAMachine;
 
             return Scope.MachineType;
         }
