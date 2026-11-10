@@ -232,11 +232,8 @@ namespace Device_NationalInstruments
         private void ApplyStep(SourceMeterConfiguration configuration, SourceMeterStep step,
                                DCPowerSourceOutputFunction outputFunction, double fixedSourceRange)
         {
-            double sourceRange = configuration.SourceRange > 0
-                ? Math.Abs(configuration.SourceRange)
-                : configuration.AutoRangePerStep
-                    ? RangeRequest(configuration.SourceFunction, step.Level)
-                    : fixedSourceRange;
+            double sourceRange = configuration.SourceRange > 0 ? Math.Abs(configuration.SourceRange) : configuration.AutoRangePerStep
+                    ? RangeRequest(configuration.SourceFunction, step.Level) : fixedSourceRange;
 
             double complianceRange = configuration.ComplianceRange > 0
                 ? Math.Abs(configuration.ComplianceRange)

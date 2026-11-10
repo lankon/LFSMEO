@@ -28,8 +28,8 @@ namespace DeviceCore
 
     public enum SourceMeterMeasurementSense
     {
-        Local,
-        Remote
+        Local,  // 二線制
+        Remote  // 四線制
     }
 
     public enum SourceMeterTransientResponse
