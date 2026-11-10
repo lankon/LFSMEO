@@ -67,6 +67,15 @@ namespace BurnInTester.Properties {
                 return ((System.Drawing.Bitmap)(ResourceManager.GetObject("HistoryReaderButton", resourceCulture)));
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SMU_Setting_v2 {
+            get {
+                return ((System.Drawing.Bitmap)(ResourceManager.GetObject("SMU_Setting_v2", resourceCulture)));
+            }
+        }
     }
 }
 

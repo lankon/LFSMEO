@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ToolFunction;
 using BurnInTester.Base;
 using DeviceCore;
+using DeviceUI.SourceMeter;
 
 namespace BurnInTester.UI
 {
@@ -113,6 +114,11 @@ namespace BurnInTester.UI
         private void Btn_TC_Setting_Click(object sender, EventArgs e)
         {
             ShowForm<IF_TemperatureControl>();
+        }
+
+        private void Btn_SMU_Setting_Click(object sender, EventArgs e)
+        {
+            ShowForm<F_SourceMeter>();
         }
 
         private void Btn_TC_BoxSetting_Click(object sender, EventArgs e)

@@ -95,5 +95,37 @@ namespace DeviceUI.SourceMeter
             }
         }
 
+        private void Btn_Save_Click(object sender, EventArgs e)
+        {
+            Tool.DataGrid_DataSave(DGV_SMU, "SourceMeter.xml");
+        }
+
+        private void Btn_Add_Click(object sender, EventArgs e)
+        {
+            string[] context = new string[] { "None", "None", "None", "None" };
+
+            Tool.DataGrid_AddRow(DGV_SMU, context);
+        }
+
+        private void Btn_Remove_Click(object sender, EventArgs e)
+        {
+            Tool.DataGrid_DeleteRow(DGV_SMU);
+        }
+
+        private void Btn_RowUp_Click(object sender, EventArgs e)
+        {
+            Tool.DataGrid_RowUp(DGV_SMU);
+        }
+
+        private void Btn_RowDown_Click(object sender, EventArgs e)
+        {
+            Tool.DataGrid_RowDown(DGV_SMU);
+        }
+
+        private void Btn_Load_Click(object sender, EventArgs e)
+        {
+            if (!Tool.DataGrid_DataLoad(DGV_SMU, "SourceMeter.xml"))
+                Tool.SaveLogToFile("SourceMeter表讀取失敗");
+        }
     }
 }

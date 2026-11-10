@@ -16,6 +16,7 @@ using BurnInTester.Logic;
 using BurnInTester.Device;
 using Device_NationalInstruments;   // 違規用法
 using DeviceFunction;               // 違規用法
+using DeviceUI.SourceMeter;
 
 namespace BurnInTester
 {
@@ -60,6 +61,7 @@ namespace BurnInTester
             services.AddTransient<F_TestSetting>();
             services.AddTransient<F_TCtrlBoxTemperature>();
             services.AddTransient<F_VirtualTemperature>();
+            services.AddTransient<F_SourceMeter>();
             //services.AddTransient<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 

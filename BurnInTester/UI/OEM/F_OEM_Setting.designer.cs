@@ -33,15 +33,17 @@ namespace BurnInTester.UI
             this.Btn_TC_Setting = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.Btn_TC_BoxSetting = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.Btn_SMU_Setting = new System.Windows.Forms.Button();
             this.Btn_VirtualTemperature = new System.Windows.Forms.Button();
             this.Lbl_VirtualTemperature = new System.Windows.Forms.Label();
             this.Btn_ResourceMonitor = new System.Windows.Forms.Button();
             this.Lbl_ResourceMonitor = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Btn_TC_BoxSetting = new System.Windows.Forms.Button();
             this.Btn_EquipmentSetting = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,6 +82,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.Btn_SMU_Setting, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.Btn_VirtualTemperature, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.Lbl_VirtualTemperature, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.Btn_ResourceMonitor, 3, 0);
@@ -90,6 +93,7 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Controls.Add(this.label2, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 5, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 40);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -98,27 +102,17 @@ namespace BurnInTester.UI
             this.tableLayoutPanel1.Size = new System.Drawing.Size(951, 171);
             this.tableLayoutPanel1.TabIndex = 42;
             // 
-            // Btn_TC_BoxSetting
+            // Btn_SMU_Setting
             // 
-            this.Btn_TC_BoxSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_TC_BoxSetting.BackgroundImage")));
-            this.Btn_TC_BoxSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_TC_BoxSetting.Location = new System.Drawing.Point(550, 15);
-            this.Btn_TC_BoxSetting.Margin = new System.Windows.Forms.Padding(30, 15, 30, 5);
-            this.Btn_TC_BoxSetting.Name = "Btn_TC_BoxSetting";
-            this.Btn_TC_BoxSetting.Size = new System.Drawing.Size(70, 70);
-            this.Btn_TC_BoxSetting.TabIndex = 42;
-            this.Btn_TC_BoxSetting.UseVisualStyleBackColor = true;
-            this.Btn_TC_BoxSetting.Click += new System.EventHandler(this.Btn_TC_BoxSetting_Click);
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(523, 90);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 61);
-            this.label2.TabIndex = 43;
-            this.label2.Text = "TC Box Set";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Btn_SMU_Setting.BackgroundImage = global::BurnInTester.Properties.Resources.SMU_Setting_v2;
+            this.Btn_SMU_Setting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_SMU_Setting.Location = new System.Drawing.Point(680, 15);
+            this.Btn_SMU_Setting.Margin = new System.Windows.Forms.Padding(30, 15, 30, 5);
+            this.Btn_SMU_Setting.Name = "Btn_SMU_Setting";
+            this.Btn_SMU_Setting.Size = new System.Drawing.Size(70, 70);
+            this.Btn_SMU_Setting.TabIndex = 50;
+            this.Btn_SMU_Setting.UseVisualStyleBackColor = true;
+            this.Btn_SMU_Setting.Click += new System.EventHandler(this.Btn_SMU_Setting_Click);
             // 
             // Btn_VirtualTemperature
             // 
@@ -164,15 +158,17 @@ namespace BurnInTester.UI
             this.Lbl_ResourceMonitor.Text = "Resource\r\nMonitor";
             this.Lbl_ResourceMonitor.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // button1
+            // Btn_TC_BoxSetting
             // 
-            this.button1.Location = new System.Drawing.Point(329, 462);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(159, 79);
-            this.button1.TabIndex = 43;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Btn_TC_BoxSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_TC_BoxSetting.BackgroundImage")));
+            this.Btn_TC_BoxSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_TC_BoxSetting.Location = new System.Drawing.Point(550, 15);
+            this.Btn_TC_BoxSetting.Margin = new System.Windows.Forms.Padding(30, 15, 30, 5);
+            this.Btn_TC_BoxSetting.Name = "Btn_TC_BoxSetting";
+            this.Btn_TC_BoxSetting.Size = new System.Drawing.Size(70, 70);
+            this.Btn_TC_BoxSetting.TabIndex = 42;
+            this.Btn_TC_BoxSetting.UseVisualStyleBackColor = true;
+            this.Btn_TC_BoxSetting.Click += new System.EventHandler(this.Btn_TC_BoxSetting_Click);
             // 
             // Btn_EquipmentSetting
             // 
@@ -187,6 +183,16 @@ namespace BurnInTester.UI
             this.Btn_EquipmentSetting.UseVisualStyleBackColor = true;
             this.Btn_EquipmentSetting.Click += new System.EventHandler(this.Btn_EquipmentSetting_Click);
             // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Location = new System.Drawing.Point(523, 90);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(124, 61);
+            this.label2.TabIndex = 43;
+            this.label2.Text = "TC Box Set";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -196,6 +202,26 @@ namespace BurnInTester.UI
             this.label3.TabIndex = 48;
             this.label3.Text = "Equipment";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Location = new System.Drawing.Point(653, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 61);
+            this.label4.TabIndex = 49;
+            this.label4.Text = "SMU";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(329, 462);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(159, 79);
+            this.button1.TabIndex = 43;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // F_OEM_Setting
             // 
@@ -227,5 +253,7 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Label Lbl_ResourceMonitor;
         private System.Windows.Forms.Button Btn_EquipmentSetting;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button Btn_SMU_Setting;
     }
 }

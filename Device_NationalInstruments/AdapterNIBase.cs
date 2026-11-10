@@ -67,7 +67,6 @@ namespace Device_NationalInstruments
             }
         }
 
-        // 要修改
         public int Configure(SourceMeterConfiguration configuration)
         {
             try
