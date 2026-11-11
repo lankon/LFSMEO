@@ -129,6 +129,9 @@
       <HintPath>..\..\..\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_FW_API_IV_Curve_Calibration-For FitTech\Z23A_API.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Z23A_P2_API">
+      <HintPath>Device\LightEngine\Command\Z23A_P2_API.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\eElement_Form\eF_MFactorCalibraion.cs" />
@@ -156,6 +159,7 @@
     <Compile Include="Base\ILightEngineCommand.cs" />
     <Compile Include="Base\IWriteFile.cs" />
     <Compile Include="Base\Scope_TaskFlag.cs" />
+    <Compile Include="Device\LightEngine\Command\Z23A_API_Command_P2.cs" />
     <Compile Include="Device\QuantaLogAPI\Command\QuantaAPI.cs" />
     <Compile Include="Device\QuantaLogAPI\Function_DataUpload.cs" />
     <Compile Include="Logic\1.Task\FunctionTest\TaskFunctionTest.cs" />
@@ -344,6 +348,7 @@
     <Compile Include="UI\Standard\F_StateControl.designer.cs">
       <DependentUpon>F_StateControl.cs</DependentUpon>
     </Compile>
+    <Content Include="Device\LightEngine\Command\Z23A_P2_API.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Device\LightEngine\Command\Z23A_API.dll" />
