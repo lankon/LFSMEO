@@ -119,7 +119,8 @@ namespace DeviceUI.TemperatureControl
         #region public function
         public void ShowFormName(bool show)
         {
-
+            if (show)
+                Tool.ShowFormName(this);
         }
         public void Update_TC_List()
         {

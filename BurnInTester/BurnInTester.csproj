@@ -120,13 +120,7 @@
     <Compile Include="Logic\1.Task\AgingProcess\SubTask\SubTask_LIV.cs" />
     <Compile Include="Logic\1.Task\AgingProcess\SubTask\SubTask_Temperature.cs" />
     <Compile Include="Logic\1.Task\AgingProcess\Task_AgingBox.cs" />
-    <Compile Include="Logic\AgingProcess\AgingBoxTask.cs" />
-    <Compile Include="Logic\AgingProcess\AgingStagePlanBuilder.cs" />
-    <Compile Include="Logic\AgingProcess\AgingProcessStatus.cs" />
-    <Compile Include="Logic\AgingProcess\AgingScheduler.cs" />
-    <Compile Include="Logic\AgingProcess\AgingStagePlanBuilderNew.cs" />
-    <Compile Include="Logic\AgingProcess\AgingTaskState.cs" />
-    <Compile Include="Logic\AgingProcess\TemperatureProcessTask.cs" />
+    <Compile Include="Logic\1.Task\AgingProcess\AgingStagePlanBuilder.cs" />
     <Compile Include="Logic\2.FormLogic\F_StartFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_MainFormLogic.cs" />
     <Compile Include="Logic\2.FormLogic\F_TestSettingLogic.cs" />

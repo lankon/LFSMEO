@@ -50,6 +50,10 @@ namespace BurnInTester.UI
             indexNum--;
             Labl_BoxNum.Text = $"Box {indexNum / 4 + 1}-{indexNum % 4 + 1}";
         }
+        public void ShowFormName()
+        {
+            Tool.ShowFormName(this);
+        }
         public string GetBoxNum()
         {
             if (this.InvokeRequired)

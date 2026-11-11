@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using ToolFunction;
+
 namespace BurnInTester.UI
 {
     public partial class UC_CtrlBoxStatus : UserControl
@@ -55,6 +57,10 @@ namespace BurnInTester.UI
             int indexNum = int.Parse(index.Replace("CtrlBoxStatus", ""));
             indexNum--;
             Labl_BoxNum.Text = $"Box {indexNum / 4 + 1}-{indexNum % 4 + 1}";
+        }
+        public void ShowFormName()
+        {
+            Tool.ShowFormName(this);
         }
         public void SetSelected(bool select)
         {

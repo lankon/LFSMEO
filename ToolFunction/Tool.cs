@@ -69,37 +69,46 @@ namespace ToolFunction
         /// 顯示Form Name,Debug的時後使用,其他用途請勿使用,會持續占用記憶體
         /// </summary>
         /// <param name="form"></param>
-        public static void ShowFormName(System.Windows.Forms.Form form, int pos = 0)
+        public static void ShowFormName(Control control, int pos = 0)
         {
-            // 建立 Panel
-            Panel namePanel = new Panel();
-            namePanel.Name = "FormNamePanel";
-            namePanel.BackColor = Color.FromArgb(0, 0, 0, 128); // 半透明黑底
-            namePanel.Size = new Size(350, 30);
+            if (control == null)
+                return;
 
-            if (pos == 0)
-                namePanel.Location = new Point(0, 0); // 左上
-            else if (pos == 1)
-                namePanel.Location = new Point(form.Width - 350, 0); // 右上
+            int panelWidth = Math.Min(350, control.ClientSize.Width);
 
-            namePanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            namePanel.BringToFront(); // 確保在最上層
+            Panel namePanel = new Panel
+            {
+                Name = "FormNamePanel",
+                BackColor = Color.FromArgb(0, 0, 0, 128),
+                Size = new Size(panelWidth, 30)
+            };
 
-            // 建立 Label
-            Label nameLabel = new Label();
-            nameLabel.Text = form.Name; // 或 form.Text 看你想顯示什麼
-            nameLabel.ForeColor = Color.Red;
-            nameLabel.AutoSize = false;
-            nameLabel.Dock = DockStyle.Fill;
-            nameLabel.TextAlign = ContentAlignment.MiddleCenter;
-            nameLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            if (pos == 1)
+            {
+                namePanel.Location =
+                    new Point(control.ClientSize.Width - panelWidth, 0);
 
-            // 加入 Label 到 Panel
+                namePanel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            }
+            else
+            {
+                namePanel.Location = new Point(0, 0);
+                namePanel.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            }
+
+            Label nameLabel = new Label
+            {
+                Text = control.Name,
+                ForeColor = Color.Red,
+                AutoSize = false,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+
             namePanel.Controls.Add(nameLabel);
-
-            // 加入 Panel 到 Form
-            form.Controls.Add(namePanel);
-            namePanel.BringToFront(); // 再次確保最上層
+            control.Controls.Add(namePanel);
+            namePanel.BringToFront();
         }
 
         public static void ReleaseButtonImages(Control parent)

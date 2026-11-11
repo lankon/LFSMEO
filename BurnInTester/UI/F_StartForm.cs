@@ -123,6 +123,9 @@ namespace BurnInTester.UI
                 CtrlBoxStatusArray[i].TabIndex = 1;
                 CtrlBoxStatusArray[i].SetItemIndex($"CtrlBoxStatus{i + 2}");
                 CtrlBoxStatusArray[i].Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    CtrlBoxStatusArray[i].ShowFormName();
             }
 
             //DieMap
@@ -226,11 +229,7 @@ namespace BurnInTester.UI
             catch (Exception ex)
             {
                 Tool.SaveLogToFile($"Start aging schedule failed: {ex}", level: "ERR");
-                MessageBox.Show(
-                    ex.Message,
-                    "Aging schedule failed",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message,"Aging schedule failed",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
         }
 

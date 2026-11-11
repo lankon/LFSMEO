@@ -101,6 +101,9 @@ namespace BurnInTester.UI
                 ShowTemperatureValueArray[i].Size = new System.Drawing.Size(167, 87);
                 ShowTemperatureValueArray[i].TabIndex = 1;
                 ShowTemperatureValueArray[i].SetItemIndex($"ShowTemperatureValue{i + 1}");
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    ShowTemperatureValueArray[i].ShowFormName();
             }
         }
         #endregion

@@ -99,7 +99,8 @@ namespace DeviceUI.SourceMeter
         #region public function
         public void ShowFormName(bool show)
         {
-
+            if (show)
+                Tool.ShowFormName(this);
         }
         public void Update_SMU_List()
         {

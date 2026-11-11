@@ -29,6 +29,10 @@ namespace BurnInTester.UI
         #endregion
 
         #region public function
+        public void ShowFormName()
+        {
+            Tool.ShowFormName(this);
+        }
         public void SetItemIndex(string index)
         {
             ItemIndex = index;

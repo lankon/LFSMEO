@@ -30,7 +30,6 @@ namespace BurnInTester.Logic
         public string AgingConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Setting", "AgingConfig.xml");
         public TemperatureInfo[] TemperatureInfos;
         public TestSettingData[] AgingProcessSetting;
-        public AgingProcessStatus[] AgingProcessStatuses;
         private HW_ParamSetting _HW_ParamSetting;
 
 
@@ -116,12 +115,10 @@ namespace BurnInTester.Logic
 
             TemperatureInfos = new TemperatureInfo[BoxCount];
             AgingProcessSetting = new TestSettingData[BoxCount];
-            AgingProcessStatuses = new AgingProcessStatus[BoxCount];
             for (int i = 0; i < BoxCount; i++)
             {
                 TemperatureInfos[i] = new TemperatureInfo();
                 AgingProcessSetting[i] = new TestSettingData();
-                AgingProcessStatuses[i] = new AgingProcessStatus(i);
             }
                 
             //初始化老化箱參數

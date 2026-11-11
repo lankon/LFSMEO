@@ -21,19 +21,19 @@ namespace BurnInTester.Logic
     public class F_StartFormLogic
     {
         public F_StartFormLogic(IBurnInTesterMachine burnInTesterMachine , IServiceProvider serviceProvider,
-                                AgingInformation agingInformation, AgingScheduler agingScheduler,
-                                F_TestSettingLogic testSettingLogic)
+                                AgingInformation agingInformation,
+                                F_TestSettingLogic testSettingLogic, AgingSchedulerTask agingSchedulerTask)
         {
             BurnInTesterMachine = burnInTesterMachine;
             ServiceProvider = serviceProvider;
             AgingInformation = agingInformation;
-            _AgingScheduler = agingScheduler;
             _TestSettingLogic = testSettingLogic;
+            SchedulerTask = agingSchedulerTask;
         }
 
         #region parameter define
         private AgingInformation AgingInformation;
-        private AgingScheduler _AgingScheduler;
+        private AgingSchedulerTask SchedulerTask;
         private F_TestSettingLogic _TestSettingLogic;
         private IBurnInTesterMachine BurnInTesterMachine;
         private IServiceProvider ServiceProvider;
@@ -93,32 +93,11 @@ namespace BurnInTester.Logic
 
         public void StartTest()
         {
+            SchedulerTask.Run();
+
             int selectedBoxIndex = GetCurBoxNum();
             if (selectedBoxIndex < 0)
                 throw new InvalidOperationException("No aging box is selected.");
-
-            _AgingScheduler.StartBox(selectedBoxIndex);
-        }
-
-        public void PauseTest()
-        {
-            _AgingScheduler.PauseBox(GetRequiredBoxIndex());
-        }
-
-        public void ResumeTest()
-        {
-            _AgingScheduler.ResumeBox(GetRequiredBoxIndex());
-        }
-
-        public void AbortTest()
-        {
-            _AgingScheduler.AbortBox(GetRequiredBoxIndex());
-        }
-
-        public AgingProcessStatusSnapshot GetCurrentTestStatus()
-        {
-            int selectedBoxIndex = GetCurBoxNum();
-            return _AgingScheduler.GetStatus(selectedBoxIndex);
         }
 
         private int GetRequiredBoxIndex()

@@ -110,6 +110,9 @@ namespace BurnInTester.UI
                 TCtrlBoxSettingArray[i].TabIndex = 1;
                 TCtrlBoxSettingArray[i].SetItemIndex($"TCtrlBoxSetting{i + 1}");
                 //TCtrlBoxSettingArray[i].Click += new System.EventHandler(this.TCtrlBoxSetting1_Click);
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    TCtrlBoxSettingArray[i].ShowFormName();
             }
 
             //ControlBox Right
@@ -125,6 +128,9 @@ namespace BurnInTester.UI
                 TCtrlBoxSettingArray[i].TabIndex = 1;
                 TCtrlBoxSettingArray[i].SetItemIndex($"TCtrlBoxSetting{i + 1}");
                 //TCtrlBoxSettingArray[i].Click += new System.EventHandler(this.TCtrlBoxSetting1_Click);
+
+                if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                    TCtrlBoxSettingArray[i].ShowFormName();
             }
         }
         private void UpdateSettingToForm()

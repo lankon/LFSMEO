@@ -282,7 +282,7 @@ namespace BurnInTester.Logic
 
             try
             {
-                AgingStagePlanBuilderNew _PlanBuilder = new AgingStagePlanBuilderNew();
+                AgingStagePlanBuilder _PlanBuilder = new AgingStagePlanBuilder();
                 _StagePlans = _PlanBuilder.Classify(setting);
 
                 MonitorSubTask.Clear();
@@ -296,7 +296,6 @@ namespace BurnInTester.Logic
                 //FailInternal(ex);
                 throw;
             }
-
             return true;
         }
         #endregion

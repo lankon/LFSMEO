@@ -39,10 +39,10 @@ namespace BurnInTester.Logic
         public TimeSpan Interval { get; set; }
     }
 
-    public class AgingStagePlanBuilderNew
+    public class AgingStagePlanBuilder
     {
         // 將 TestSettingData 依 Stage 與 StageRole 分類
-        public AgingStagePlanBuilderNew()
+        public AgingStagePlanBuilder()
         {
         }
 

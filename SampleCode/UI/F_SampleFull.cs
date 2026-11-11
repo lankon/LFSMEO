@@ -76,7 +76,8 @@ namespace SampleCode.UI
         #region public function
         public void ShowFormName(bool show)
         {
-
+            if (show)
+                Tool.ShowFormName(this);
         }
         #endregion
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)

@@ -74,7 +74,7 @@ namespace BurnInTester.UI
         private void LeavePage()
         {
         }
-        private void ShowForm<T>() where T : class
+        private T ShowForm<T>() where T : class
         {
             var para_set = ServiceProvider.GetRequiredService<T>();
             if (para_set is Form form)
@@ -83,6 +83,8 @@ namespace BurnInTester.UI
                 Tool.SetForm(Scope.MainPanel, form);
                 form.Show();
             }
+
+            return para_set;
         }
         #endregion
 
@@ -113,12 +115,19 @@ namespace BurnInTester.UI
 
         private void Btn_TC_Setting_Click(object sender, EventArgs e)
         {
-            ShowForm<IF_TemperatureControl>();
+            IF_TemperatureControl form = ShowForm<IF_TemperatureControl>();
+
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                form.ShowFormName(true);
         }
 
         private void Btn_SMU_Setting_Click(object sender, EventArgs e)
         {
-            ShowForm<IF_SourceMeter>();
+            IF_SourceMeter form = ShowForm<IF_SourceMeter>();
+
+            if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
+                form.ShowFormName(true);
+
         }
 
         private void Btn_TC_BoxSetting_Click(object sender, EventArgs e)
