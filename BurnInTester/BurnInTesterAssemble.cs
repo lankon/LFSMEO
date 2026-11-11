@@ -14,9 +14,6 @@ using BurnInTester.Base;
 using BurnInTester.UI;
 using BurnInTester.Logic;
 using BurnInTester.Device;
-using Device_NationalInstruments;   // 違規用法
-using DeviceFunction;               // 違規用法
-using DeviceUI.SourceMeter;
 
 namespace BurnInTester
 {
@@ -30,8 +27,7 @@ namespace BurnInTester
             //[Device]
             //services.AddSingleton<ILightEngineCommand, Virtual_LEA_Command>();
             //services.AddSingleton<ILightEngineCommand, Z23A_API_Command>();
-            services.AddSingleton<ISourceMeter, AdapterNIBase>();
-            services.AddSingleton<Function_SourceMeter>();
+            
 
             //[Thread]
             services.AddSingleton<IBaseMainTask, MainTask>();
@@ -61,7 +57,6 @@ namespace BurnInTester
             services.AddTransient<F_TestSetting>();
             services.AddTransient<F_TCtrlBoxTemperature>();
             services.AddTransient<F_VirtualTemperature>();
-            services.AddTransient<F_SourceMeter>();
             //services.AddTransient<IF_ParameterSetting, F_ParameterSetting>();
             services.AddTransient<IF_StateControl, F_StateControl>();   //一個Thread會有獨立的一個StateControl
 

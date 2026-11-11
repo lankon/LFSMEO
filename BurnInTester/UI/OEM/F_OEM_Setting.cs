@@ -118,7 +118,7 @@ namespace BurnInTester.UI
 
         private void Btn_SMU_Setting_Click(object sender, EventArgs e)
         {
-            ShowForm<F_SourceMeter>();
+            ShowForm<IF_SourceMeter>();
         }
 
         private void Btn_TC_BoxSetting_Click(object sender, EventArgs e)

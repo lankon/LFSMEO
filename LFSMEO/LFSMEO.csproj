@@ -257,6 +257,10 @@
       <Project>{bfd18304-b910-4652-9208-384492b8ef81}</Project>
       <Name>Device_MN200</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_NationalInstruments\Device_NationalInstruments.csproj">
+      <Project>{18b02d28-b5d7-4801-8fbe-41d3ebbcf83a}</Project>
+      <Name>Device_NationalInstruments</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Device_OTO\Device_OTO.csproj">
       <Project>{00b52f37-94b1-40a9-9168-2afb511f88cd}</Project>
       <Name>Device_OTO</Name>

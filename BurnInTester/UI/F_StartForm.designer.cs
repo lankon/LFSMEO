@@ -70,7 +70,6 @@ namespace BurnInTester.UI
             this.TxtBx_RespDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Pnl_Info = new System.Windows.Forms.Panel();
-            this.Btn_Open = new System.Windows.Forms.Button();
             this.LyPnl_CtrlBoxStatus.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -546,7 +545,6 @@ namespace BurnInTester.UI
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Controls.Add(this.Btn_Open);
             this.panel4.Controls.Add(this.Btn_SourceMeterTest);
             this.panel4.Controls.Add(this.tableLayoutPanel4);
             this.panel4.Controls.Add(this.tableLayoutPanel3);
@@ -722,16 +720,6 @@ namespace BurnInTester.UI
             this.Pnl_Info.Size = new System.Drawing.Size(327, 468);
             this.Pnl_Info.TabIndex = 5;
             // 
-            // Btn_Open
-            // 
-            this.Btn_Open.Location = new System.Drawing.Point(266, 142);
-            this.Btn_Open.Name = "Btn_Open";
-            this.Btn_Open.Size = new System.Drawing.Size(117, 45);
-            this.Btn_Open.TabIndex = 6;
-            this.Btn_Open.Text = "Open";
-            this.Btn_Open.UseVisualStyleBackColor = true;
-            this.Btn_Open.Click += new System.EventHandler(this.Btn_Open_Click);
-            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -820,7 +808,6 @@ namespace BurnInTester.UI
         private System.Windows.Forms.CheckBox Chk_InfoAutoFollow;
         private System.Windows.Forms.Label Labl_InformationLatest;
         private System.Windows.Forms.Button Btn_SourceMeterTest;
-        private System.Windows.Forms.Button Btn_Open;
         //private UC_CtrlBoxStatus CtrlBoxStatus1;
     }
 }

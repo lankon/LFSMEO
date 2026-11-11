@@ -20,6 +20,7 @@ using DeviceUI.LightControl;
 using DeviceUI.Camera;
 using DeviceUI.TemperatureControl;
 using DeviceUI.Spectrometer;
+using DeviceUI.SourceMeter;
 using Device_MN200;
 using Device_PCIS_DASK;
 using Device_Virtual;
@@ -34,6 +35,7 @@ using Device_Spectrum_Virtual;
 using Device_MLO;
 using Device_TemeratureControl_Virtual;
 using Device_Guishan;
+using Device_NationalInstruments;
 
 //[Tool]
 using ToolFunction;
@@ -49,6 +51,7 @@ using RGBTester;
 using ProbeTester;
 using BurnInTester;
 using AAMachine;
+
 
 namespace LFSMEO
 {
@@ -121,6 +124,8 @@ namespace LFSMEO
             services.AddSingleton<IChillerControl>(Klxz);
             services.AddSingleton<ITemperatureControl, Virtual_TemperatureControl>();
             services.AddSingleton<ITemperatureControl, Fittech_AMIDA_WIN>();
+            services.AddSingleton<ISourceMeter, AdapterNIBase>();
+
 
             //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();
@@ -133,6 +138,7 @@ namespace LFSMEO
             services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
             services.AddSingleton<IF_Spectrometer, F_Spectrometer>();
             services.AddTransient<IF_TemperatureControl, F_TemperatureControl>();
+            services.AddTransient<IF_SourceMeter, F_SourceMeter>();
             services.AddSingleton<IF_HistoryReader, F_HistoryReader>();
 
             //[Form Logic]
@@ -149,6 +155,7 @@ namespace LFSMEO
             services.AddSingleton<IFunction_LightControl, Function_LightControl>();
             services.AddSingleton<IFunction_Camera, Function_Camera>();
             services.AddSingleton<IFunction_TemperatureControl, Function_TemperatureControl>();
+            services.AddSingleton<IFunction_SourceMeter, Function_SourceMeter>();
 
             //[Machine]
             Icon AppIcon = null; string AppName = "";

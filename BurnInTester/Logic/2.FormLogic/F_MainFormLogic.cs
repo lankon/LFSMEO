@@ -70,6 +70,26 @@ namespace BurnInTester.Logic
             ServiceProvider.GetRequiredService<TC_Task>();
             Tool.SaveLogToFile("Start TC Task");
         }
+        private void Initial_SMU_Function()
+        {
+            IF_SourceMeter f_sourceMeter = ServiceProvider.GetRequiredService<IF_SourceMeter>();
+            f_sourceMeter.Update_SMU_List();
+            BurnInTesterMachine.SMU.Initial_All_SMU();
+
+            // 暫時先寫這樣
+            SourceMeterConfiguration config = new SourceMeterConfiguration()
+            {
+                MeasurementSense = SourceMeterMeasurementSense.Remote,
+                TransientResponse = SourceMeterTransientResponse.Normal,
+
+                StartTriggerInputTerminal = SourceMeterTriggerTerminal.None,
+                StartTriggerOutputTerminal = SourceMeterTriggerTerminal.None,
+                SourceCompleteEventOutputTerminal = SourceMeterTriggerTerminal.None,
+                PulseTriggerOutputTerminal = SourceMeterTriggerTerminal.None,
+            };
+
+            BurnInTesterMachine.SMU.SetSMUConfig(ESMUName.SMU_1, config);
+        }
         #endregion
 
         public void Initial_All_Device()
@@ -79,6 +99,7 @@ namespace BurnInTester.Logic
             //Initial_Light_Function();
             //Initial_Camera_Function();
             Initial_Temperature_Function();
+            Initial_SMU_Function();
         }
 
         public void ReadAllSetting()

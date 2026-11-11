@@ -14,11 +14,14 @@ namespace BurnInTester
     {
         public IFunction_IO_Card DIOL { get; }
         public IFunction_TemperatureControl TC { get; }
+        public IFunction_SourceMeter SMU { get; }
 
-        public BurnInTesterMachine(IFunction_IO_Card iOCard, IFunction_TemperatureControl function_TemperatureControl)
+        public BurnInTesterMachine(IFunction_IO_Card iOCard, IFunction_TemperatureControl function_TemperatureControl,
+                                   IFunction_SourceMeter sMU)
         {
             DIOL = iOCard;
             TC = function_TemperatureControl;
+            SMU = sMU;
         }
     }
 }

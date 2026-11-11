@@ -9,71 +9,153 @@ using DeviceCore;
 
 namespace DeviceFunction
 {
-    public class Function_SourceMeter
+    public class Function_SourceMeter: IFunction_SourceMeter
     {
         // 測試用
-        public Function_SourceMeter(ISourceMeter sourceMeter)
+        public Function_SourceMeter(IEnumerable<ISourceMeter> sourceMeter)
         {
             SMU = sourceMeter;
         }
 
         #region parameter
-        ISourceMeter SMU;
-        SourceMeterConfiguration SMUConfig;
+        private IEnumerable<ISourceMeter> SMU;
+        private bool IsInitial = false;                 // 是否已經初始化過SMU
+        private List<ISourceMeter> SourceMeterList = new List<ISourceMeter>();
+        private Dictionary<string, SourceMeterData> SourceMeterListDict;        //存放UI SMU設定
+        private SourceMeterConfiguration SMUConfig;
         #endregion
 
-        public bool Open()
+        #region private function
+        private void BindingDeviceIndex()
         {
-            try
+            foreach (KeyValuePair<string, SourceMeterData> entry in SourceMeterListDict)
             {
-                // 先寫死之後再開放設定
-                int result = SMU.Open(new SourceMeterConnection()
-                {
-                    ResourceName = "PXI1Slot2",
-                    ChannelName = "0",
-                    ResetDevice = false,
-                    DriverSetupOptions = "DriverSetup=SenseLeadErrorDetectionEnabled:0"
-                });
+                string name = entry.Key;
+                SourceMeterData smu = entry.Value;
 
-                if(result != (int)SourceMeterErrorCode.Success)
+                for (int j = 0; j < SourceMeterList.Count; j++)
                 {
-                    Tool.SaveLogToFile($"SMU Open Fail, SourceMeterErrorCode = {result}");
-                    return false;
+                    if (smu.Title_SMU_Type == SourceMeterList[j].GetSourceMeterType().ToString())
+                    {
+                        SourceMeterList[j].BindingDeviceIndex(smu.Title_CardID);
+                        break;
+                    }
                 }
             }
-            catch (Exception ex)
+        }
+        #endregion
+
+        public void LoadConfiguration(List<SourceMeterData> newSourceMeterDataList)
+        {
+            SourceMeterListDict = newSourceMeterDataList.GroupBy(x => x.Title_Name).ToDictionary(g => g.Key, g => g.First());
+        }
+
+        public int Initial_All_SMU()
+        {
+            SourceMeterList.Clear();
+
+            //依照SMU型號以及ID名稱分組
+            var hardwareConfigs = SourceMeterListDict.Values.GroupBy(x => new { x.Title_SMU_Type, x.Title_CardID }).Select(g => g.First());
+
+            foreach (var config in hardwareConfigs)
             {
-                Tool.SaveLogToFile($"SMU Open Fail:{ex}");
-                return false;
+                var prototype = SMU.FirstOrDefault(p => p.GetSourceMeterType().ToString() == config.Title_SMU_Type);
+
+                if (prototype != null)
+                {
+                    ISourceMeter newDevice = (ISourceMeter)Activator.CreateInstance(prototype.GetType());
+
+                    int res = -1;
+                    try
+                    {
+                        // for NI設定
+                        res = newDevice.Open(new SourceMeterConnection()
+                        {
+                            ResourceName = config.Title_CardID,
+                            ChannelName = "0",
+                            ResetDevice = false,
+                            DriverSetupOptions = "DriverSetup=SenseLeadErrorDetectionEnabled:0"
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Tool.SaveLogToFile($"SMU {config.Title_SMU_Type} ({config.Title_CardID})連線失敗, Exception: {ex.Message}", level: "ERR");
+                        res = -1;
+                    }
+
+                    if (res == 0)
+                    {
+                        Tool.SaveLogToFile($"SMU:{config.Title_SMU_Type}_{config.Title_CardID} Open Success");
+                        SourceMeterList.Add(newDevice);
+                    }
+                    else
+                        Tool.SaveLogToFile($"SMU {config.Title_SMU_Type} ({config.Title_CardID})連線失敗", level: "ERR");
+                }
             }
 
-            Tool.SaveLogToFile($"SMU:{SMU.InstrumentModel} Open Success");
-            return true;
+            BindingDeviceIndex();
+
+            int ret = -1;
+            for (int i = 0; i < SourceMeterList.Count; i++)
+            {
+                ret = 0;
+                IsInitial = true;
+
+                if (SourceMeterList[i].GetSourceMeterType() != ESMUType.VIRTUAL)
+                {
+                    Tool.SaveLogToFile("實體分光卡 Initial Success");
+                    return 0;
+                }
+            }
+
+            return ret;
         }
 
-        public bool SetSMUConfig(SourceMeterConfiguration config)
+        public bool SetSMUConfig(ESMUName name, SourceMeterConfiguration config)
         {
-            // 設定SMU參數
-            SMUConfig = config;
+            SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
+
+            if (smu_data == null || IsInitial == false)
+                return false;
+
+            var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
+
+            targetDevice?.SetConfiguration(smu_data.Title_CardID, config);
+
             return true;
         }
 
-        public bool SIMV(double current, double voltage_limit, double delay_time, 
+        public bool SIMV(ESMUName name, 
+                         double current, double voltage_limit, double delay_time,
                          out double res_i, out double res_v)
         {
-            res_i = 0;
-            res_v = 0;
-            SMUConfig.SourceFunction = SourceMeterSourceFunction.Current;
-            SMUConfig.OutputMode = SourceMeterOutputMode.ContinuousWave;
-            SMUConfig.ComplianceLimit = voltage_limit;
+            res_i = 0; res_v = 0;
 
-            SMUConfig.SourceRange = 0;
-            SMUConfig.ComplianceRange = 0;
-            SMUConfig.AutoRangePerStep = true;
+            SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
 
-            SMUConfig.LoopCount = 1;
-            
-            SMUConfig.Steps = new List<SourceMeterStep>
+            if (smu_data == null || IsInitial == false)
+                return false;
+
+            ISourceMeter targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
+
+            // 取得所屬SMU目前設定
+            SourceMeterConfiguration config = null;
+            targetDevice?.GetConfiguration(smu_data.Title_CardID, out config);
+
+            if (config == null)
+                return false;
+
+            config.SourceFunction = SourceMeterSourceFunction.Current;
+            config.OutputMode = SourceMeterOutputMode.ContinuousWave;
+            config.ComplianceLimit = voltage_limit;
+
+            config.SourceRange = 0;
+            config.ComplianceRange = 0;
+            config.AutoRangePerStep = true;
+
+            config.LoopCount = 1;
+
+            config.Steps = new List<SourceMeterStep>
             {
                 new SourceMeterStep
                 {
@@ -83,95 +165,93 @@ namespace DeviceFunction
                 }
             };
 
-            return ExecuteSinglePoint("SIMV", out res_i, out res_v);
+            return ExecuteSinglePoint(targetDevice, smu_data, config, "SIMV", out res_i, out res_v);
         }
 
-        public bool SIMV_Pulse(double current, double voltage_limit, double pulse_width, double duty,
-                               out double res_i, out double res_v)
-        {
-            // 單位: current(A), voltage_limit(V), pulse_width(s), Duty(%)
-            res_i = 0;
-            res_v = 0;
+        //public bool SIMV_Pulse(double current, double voltage_limit, double pulse_width, double duty,
+        //                       out double res_i, out double res_v)
+        //{
+        //    // 單位: current(A), voltage_limit(V), pulse_width(s), Duty(%)
+        //    res_i = 0;
+        //    res_v = 0;
 
-            if (pulse_width <= 0)
-            {
-                Tool.SaveLogToFile("SIMV_Pulse Fail: Pulse Width 必須是大於 0 的有限值");
-                return false;
-            }
+        //    if (pulse_width <= 0)
+        //    {
+        //        Tool.SaveLogToFile("SIMV_Pulse Fail: Pulse Width 必須是大於 0 的有限值");
+        //        return false;
+        //    }
 
-            if (duty <= 0 || duty >= 100)
-            {
-                Tool.SaveLogToFile("SIMV_Pulse Fail: Duty 必須介於 0 與 100 之間");
-                return false;
-            }
+        //    if (duty <= 0 || duty >= 100)
+        //    {
+        //        Tool.SaveLogToFile("SIMV_Pulse Fail: Duty 必須介於 0 與 100 之間");
+        //        return false;
+        //    }
 
-            double pulse_off_time = pulse_width / (duty * 0.01) - pulse_width;
-            double source_delay_time = pulse_width * 0.2;   // 上升緣區段,可能需要依照實際情況調整
-            double aperture_time = pulse_width * 0.7;       // 避免取到下降緣,可能需要依照實際情況調整
+        //    double pulse_off_time = pulse_width / (duty * 0.01) - pulse_width;
+        //    double source_delay_time = pulse_width * 0.2;   // 上升緣區段,可能需要依照實際情況調整
+        //    double aperture_time = pulse_width * 0.7;       // 避免取到下降緣,可能需要依照實際情況調整
 
-            SMUConfig.SourceFunction = SourceMeterSourceFunction.Current;
-            SMUConfig.OutputMode = SourceMeterOutputMode.Pulse;
-            SMUConfig.ComplianceLimit = voltage_limit;
+        //    SMUConfig.SourceFunction = SourceMeterSourceFunction.Current;
+        //    SMUConfig.OutputMode = SourceMeterOutputMode.Pulse;
+        //    SMUConfig.ComplianceLimit = voltage_limit;
 
-            SMUConfig.SourceRange = 0;
-            SMUConfig.ComplianceRange = 0;
-            SMUConfig.AutoRangePerStep = true;
+        //    SMUConfig.SourceRange = 0;
+        //    SMUConfig.ComplianceRange = 0;
+        //    SMUConfig.AutoRangePerStep = true;
 
-            SMUConfig.LoopCount = 1;
-            SMUConfig.PulseOnTimeSeconds = pulse_width;
-            SMUConfig.PulseOffTimeSeconds = pulse_off_time;
-            SMUConfig.PulseBiasLevel = 0;
-            SMUConfig.PulseBiasDelaySeconds = 0;
+        //    SMUConfig.LoopCount = 1;
+        //    SMUConfig.PulseOnTimeSeconds = pulse_width;
+        //    SMUConfig.PulseOffTimeSeconds = pulse_off_time;
+        //    SMUConfig.PulseBiasLevel = 0;
+        //    SMUConfig.PulseBiasDelaySeconds = 0;
 
-            SMUConfig.Steps = new List<SourceMeterStep>
-            {
-                new SourceMeterStep
-                {
-                    Level = current,
-                    SourceDelaySeconds = source_delay_time,
-                    ApertureTimeSeconds = aperture_time
-                }
-            };
+        //    SMUConfig.Steps = new List<SourceMeterStep>
+        //    {
+        //        new SourceMeterStep
+        //        {
+        //            Level = current,
+        //            SourceDelaySeconds = source_delay_time,
+        //            ApertureTimeSeconds = aperture_time
+        //        }
+        //    };
 
-            return ExecuteSinglePoint("SIMV_Pulse", out res_i, out res_v);
-        }
+        //    return ExecuteSinglePoint("SIMV_Pulse", out res_i, out res_v);
+        //}
 
-        public bool LIV()
-        {
-            return true;
-        }
+        //public bool LIV()
+        //{
+        //    return true;
+        //}
 
-
-
-
-        private bool ExecuteSinglePoint(string function_name, out double res_i, out double res_v)
+        #region private function
+        private bool ExecuteSinglePoint(ISourceMeter smu, SourceMeterData smu_data, SourceMeterConfiguration config, string function_name, out double res_i, out double res_v)
         {
             res_i = 0;
             res_v = 0;
 
-            int result = SMU.Configure(SMUConfig);
+            int result = smu.SetConfiguration(smu_data.Title_CardID, config);
             if (result != (int)SourceMeterErrorCode.Success)
             {
-                Tool.SaveLogToFile($"{function_name} Configure Fail, SourceMeterErrorCode = {result}, LastError = {SMU.LastError}");
+                Tool.SaveLogToFile($"{function_name} Configure Fail, SourceMeterErrorCode = {result}");
                 return false;
             }
 
             try
             {
-                result = SMU.OutputOn();
+                result = smu.OutputOn(smu_data.Title_CardID);
 
                 if (result != (int)SourceMeterErrorCode.Success)
                 {
-                    Tool.SaveLogToFile($"{function_name} OutputOn Fail, SourceMeterErrorCode = {result}, LastError = {SMU.LastError}");
+                    Tool.SaveLogToFile($"{function_name} OutputOn Fail, SourceMeterErrorCode = {result}");
                     return false;
                 }
 
                 IList<SourceMeterMeasurement> measurements;
-                result = SMU.Fetch(count: 1, timeoutSeconds: 5, out measurements);
+                result = smu.Fetch(smu_data.Title_CardID, count: 1, timeoutSeconds: 5, out measurements);
 
                 if (result != (int)SourceMeterErrorCode.Success)
                 {
-                    Tool.SaveLogToFile($"{function_name} Fetch Fail, SourceMeterErrorCode = {result}, LastError = {SMU.LastError}");
+                    Tool.SaveLogToFile($"{function_name} Fetch Fail, SourceMeterErrorCode = {result}");
                     return false;
                 }
 
@@ -188,9 +268,10 @@ namespace DeviceFunction
             }
             finally
             {
-                SMU.OutputOff();
-                SMU.Reset();
+                smu.OutputOff(smu_data.Title_CardID);
+                smu.Reset(smu_data.Title_CardID);
             }
         }
+        #endregion
     }
 }

@@ -276,14 +276,6 @@
       <Project>{984a1db1-08f4-4bfd-8fce-b78c97bbb83f}</Project>
       <Name>DeviceCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DeviceFunction\DeviceFunction.csproj">
-      <Project>{8ff1cdcb-02f4-41d7-be1e-69c93e2e9e96}</Project>
-      <Name>DeviceFunction</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Device_NationalInstruments\Device_NationalInstruments.csproj">
-      <Project>{18b02d28-b5d7-4801-8fbe-41d3ebbcf83a}</Project>
-      <Name>Device_NationalInstruments</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Guishan\Device_Guishan.csproj">
       <Project>{55ce2e35-b0cc-47cd-9135-e624bf94ec26}</Project>
       <Name>Device_Guishan</Name>

@@ -15,17 +15,31 @@ namespace Device_NationalInstruments
     public class AdapterNIBase : ISourceMeter
     {
         #region parameter
-        private NIDCPower Power;                        // NI-DCPower Driver Session。
-        private string ResourceName;                    // NI 儀器的 Resource Name，例如 PXI1Slot2。
-        private string ChannelName = "0";               // Session 使用的 NI 實體通道，預設為通道 0。
-        private string SequenceName;                    // 建立於 NI Driver 內的 Advanced Sequence 名稱。
-        private int ExpectedMeasurementCount;           // Sequence Step 數乘以 LoopCount 的預期量測筆數。
+        private NIPower[] Powers = new NIPower[MaxCardNumber];  // NI Powers
+        private const int MaxCardNumber = 10;                   // NI SourceMeter支援的卡數。
+        private int InitialIndex = 0;                           // NI SourceMeter初始化的起始卡號。
+        private Dictionary<string, int> DeviceIndex = new Dictionary<string, int>();
+        
+        public class NIPower
+        {
+            public NIDCPower Power;                         // NI-DCPower Driver Session。
+            public SourceMeterConfiguration Configuration;  // NI-DCPower Session 使用的量測設定。
+            public string ResourceName;                     // NI 儀器的 Resource Name，例如 PXI1Slot2。
+            public string ChannelName = "0";                // Session 使用的 NI 實體通道，預設為通道 0。
+            public string SequenceName;                     // 建立於 NI Driver 內的 Advanced Sequence 名稱。
+            public int ExpectedMeasurementCount;            // Sequence Step 數乘以 LoopCount 的預期量測筆數。
 
-        public bool IsOpen { get; private set; } = false;                           // 是否完成初始化
-        public string InstrumentModel { get; private set; } = string.Empty;         // NI 儀器型號。
-        public string IOResourceDescriptor { get; private set; } = string.Empty;    // Driver 實際使用的 I/O Resource Descriptor。
-        public string LastError { get; private set; } = string.Empty;               // 最近一次呼叫的錯誤訊息。
+            public bool IsOpen { get; set; } = false;                           // 是否完成初始化
+            public string InstrumentModel { get; set; } = string.Empty;         // NI 儀器型號。
+            public string IOResourceDescriptor { get; set; } = string.Empty;    // Driver 實際使用的 I/O Resource Descriptor。
+            public string LastError { get; set; } = string.Empty;               // 最近一次呼叫的錯誤訊息。
+        }
+        
         #endregion
+        public ESMUType GetSourceMeterType()
+        {
+            return ESMUType.NI;
+        }
 
         public int Open(SourceMeterConnection connection)
         {
@@ -33,32 +47,38 @@ namespace Device_NationalInstruments
 
             try
             {
-                ResourceName = connection.ResourceName;
-                ChannelName = connection.ChannelName;
-
                 if (string.IsNullOrWhiteSpace(connection.DriverSetupOptions))
                 {
-                    Power = new NIDCPower(
-                        connection.ResourceName,
-                        ChannelName,
-                        connection.ResetDevice);
+                    Powers[InitialIndex] = new NIPower
+                    {
+                        Power = new NIDCPower(connection.ResourceName, connection.ChannelName, connection.ResetDevice)
+                    };
                 }
                 else
                 {
-                    Power = new NIDCPower(
-                        connection.ResourceName,
-                        ChannelName,
-                        connection.ResetDevice,
-                        connection.DriverSetupOptions);
+                    Powers[InitialIndex] = new NIPower
+                    {
+                        Power = new NIDCPower(connection.ResourceName, connection.ChannelName, 
+                                              connection.ResetDevice, connection.DriverSetupOptions)
+                    };
                 }
 
-                InstrumentModel = Power.Identity.InstrumentModel;
-                IOResourceDescriptor = Power.DriverOperation.IOResourceDescriptor;
-                SequenceName = "SequenceName_" + connection.ResourceName;
-                ExpectedMeasurementCount = 0;
-                IsOpen = true;
+                Powers[InitialIndex].InstrumentModel = Powers[InitialIndex].Power.Identity.InstrumentModel;
+                Powers[InitialIndex].IOResourceDescriptor = Powers[InitialIndex].Power.DriverOperation.IOResourceDescriptor;
+                Powers[InitialIndex].SequenceName = "SequenceName_" + connection.ResourceName;
+                Powers[InitialIndex].ExpectedMeasurementCount = 0;
 
-                return Success();
+                if (Powers[InitialIndex].InstrumentModel == connection.ResourceName)
+                {
+                    Powers[InitialIndex].IsOpen = true;
+                    InitialIndex++;
+                    return Success();
+                }
+                else
+                {
+                    CloseSession();
+                    return Fail(SourceMeterErrorCode.InvalidArgument, "開啟 NI-DCPower Session 失敗");
+                }
             }
             catch (Exception ex)
             {
@@ -67,8 +87,28 @@ namespace Device_NationalInstruments
             }
         }
 
-        public int Configure(SourceMeterConfiguration configuration)
+        public void BindingDeviceIndex(string id)
         {
+            for (int i = 0; i < Powers.Length; i++)
+            {
+                if (Powers[i].ResourceName == id)
+                {
+                    DeviceIndex[id] = i;
+                    break;
+                }
+            }
+        }
+
+        public int SetConfiguration(string id, SourceMeterConfiguration configuration)
+        {
+            int index = GetDeviceIndex(id);
+
+            if (index == -1)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
+            NIPower nPower = Powers[index];
+            NIDCPower Power = Powers[index].Power;
+
             try
             {
                 DCPowerSourceOutputFunction outputFunction = ToNIOutputFunction(configuration.SourceFunction, configuration.OutputMode);
@@ -76,142 +116,181 @@ namespace Device_NationalInstruments
 
                 Power.Source.Mode = DCPowerSourceMode.Sequence;
                 Power.Source.SequenceLoopCount = configuration.LoopCount;
-                Power.Outputs[ChannelName].Source.AdvancedSequencing.CreateAdvancedSequence(SequenceName, sequenceProperties, true);
-                Power.Outputs[ChannelName].Source.AdvancedSequencing.ActiveAdvancedSequence = SequenceName;
+                Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequence(nPower.SequenceName, sequenceProperties, true);
+                Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.ActiveAdvancedSequence = nPower.SequenceName;
 
                 double fixedSourceRange = ResolveFixedSourceRange(configuration);
 
                 foreach (SourceMeterStep step in configuration.Steps)
                 {
-                    Power.Outputs[ChannelName].Source.AdvancedSequencing.CreateAdvancedSequenceStep(true);
-                    ApplyStep(configuration, step, outputFunction, fixedSourceRange);
+                    Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequenceStep(true);
+                    ApplyStep(nPower, configuration, step, outputFunction, fixedSourceRange);
                 }
 
                 Power.Measurement.Configuration.MeasureWhen = DCPowerMeasurementWhen.AutomaticallyAfterSourceComplete;
                 Power.Triggers.SourceTrigger.Disable();
-                ConfigureStartTrigger(configuration.StartTriggerInputTerminal);
-                ConfigureExportSignal(DCPowerSignalSource.StartTrigger, configuration.StartTriggerOutputTerminal);
-                ConfigureExportSignal(DCPowerSignalSource.SourceCompleteEvent, configuration.SourceCompleteEventOutputTerminal);
-                ConfigureExportSignal(DCPowerSignalSource.PulseTrigger, configuration.PulseTriggerOutputTerminal);
+                ConfigureStartTrigger(nPower, configuration.StartTriggerInputTerminal);
+                ConfigureExportSignal(nPower, DCPowerSignalSource.StartTrigger, configuration.StartTriggerOutputTerminal);
+                ConfigureExportSignal(nPower, DCPowerSignalSource.SourceCompleteEvent, configuration.SourceCompleteEventOutputTerminal);
+                ConfigureExportSignal(nPower, DCPowerSignalSource.PulseTrigger, configuration.PulseTriggerOutputTerminal);
 
-                ExpectedMeasurementCount = checked(configuration.Steps.Count * configuration.LoopCount);
+                nPower.ExpectedMeasurementCount = checked(configuration.Steps.Count * configuration.LoopCount);
 
                 return Success();
             }
             catch (Exception ex)
             {
-                ExpectedMeasurementCount = 0;
-                Reset();
+                nPower.ExpectedMeasurementCount = 0;
+                Reset(id);
                 return DriverFailure("設定 NI SourceMeter Sequence 失敗", ex);
             }
         }
 
-        public int OutputOn()
+        public int GetConfiguration(string id, out SourceMeterConfiguration configuration)
         {
+            configuration = null;
+
+            int index = GetDeviceIndex(id);
+
+            if (index == -1)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
+            configuration = Powers[index].Configuration;
+
+            return Success();
+        }
+
+        public int OutputOn(string id)
+        {
+            int index = GetDeviceIndex(id);
+
+            if (index == -1)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
             try
             {
-                Power.Outputs[ChannelName].Source.Output.Enabled = true;
-                Power.Control.Commit();
-                Power.Control.Initiate();
+                string channel_name = Powers[index].ChannelName;
+                Powers[index].Power.Outputs[channel_name].Source.Output.Enabled = true;
+                Powers[index].Power.Control.Commit();
+                Powers[index].Power.Control.Initiate();
                 return Success();
             }
             catch (Exception ex)
             {
-                Reset();
+                Reset(id);
                 return DriverFailure("啟動 NI SourceMeter 輸出失敗", ex);
             }
         }
 
-        public int WaitForCompletion(double timeoutSeconds)
+        public int WaitForCompletion(string id, double timeoutSeconds)
         {
+            int index = GetDeviceIndex(id);
+
+            if (index == -1 || Powers[index] == null)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
             if (!IsPositiveFinite(timeoutSeconds))
-                return Fail(SourceMeterErrorCode.InvalidArgument, "timeoutSeconds 必須大於 0。");
+                return Fail(SourceMeterErrorCode.InvalidArgument, "timeoutSeconds 必須大於 0。", index);
 
             try
             {
-                Power.Events.SequenceEngineDoneEvent.WaitForEvent(new PrecisionTimeSpan(timeoutSeconds));
-                return Success();
+                Powers[index].Power.Events.SequenceEngineDoneEvent.WaitForEvent(new PrecisionTimeSpan(timeoutSeconds));
+                return Success(index);
             }
             catch (Exception ex)
             {
-                return DriverFailure("等待 NI Sequence 完成失敗", ex);
+                return DriverFailure("等待 NI Sequence 完成失敗", ex, index);
             }
         }
 
-        public int Fetch(int count, double timeoutSeconds, out IList<SourceMeterMeasurement> measurements)
+        public int Fetch(string id, int count, double timeoutSeconds, out IList<SourceMeterMeasurement> measurements)
         {
             measurements = new List<SourceMeterMeasurement>();
 
-            int fetchCount = count == 0 ? ExpectedMeasurementCount : count;
+            int index = GetDeviceIndex(id);
 
-            if (ExpectedMeasurementCount > 0 && fetchCount > ExpectedMeasurementCount)
-                return Fail(SourceMeterErrorCode.InvalidArgument, "要求的 Fetch 數量大於目前 Sequence 預期量測數量。");
+            if (index == -1 || Powers[index] == null)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
+            int fetchCount = count == 0 ? Powers[index].ExpectedMeasurementCount : count;
+
+            if (Powers[index].ExpectedMeasurementCount > 0 && fetchCount > Powers[index].ExpectedMeasurementCount)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "要求的 Fetch 數量大於目前 Sequence 預期量測數量。", index);
 
             try
             {
                 PrecisionTimeSpan timeout = new PrecisionTimeSpan(timeoutSeconds);
-                Power.Events.SequenceEngineDoneEvent.WaitForEvent(timeout);
+                Powers[index].Power.Events.SequenceEngineDoneEvent.WaitForEvent(timeout);
 
                 // 取得量測數值
-                DCPowerFetchResult result = Power.Measurement.Fetch(ChannelName, timeout, fetchCount);
+                DCPowerFetchResult result = Powers[index].Power.Measurement.Fetch(
+                    Powers[index].ChannelName,
+                    timeout,
+                    fetchCount);
 
                 List<SourceMeterMeasurement> values = new List<SourceMeterMeasurement>(fetchCount);
-                for (int index = 0; index < fetchCount; index++)
+                for (int measurementIndex = 0; measurementIndex < fetchCount; measurementIndex++)
                 {
                     values.Add(new SourceMeterMeasurement
                     {
-                        Voltage = result.VoltageMeasurements[index],
-                        Current = result.CurrentMeasurements[index]
+                        Voltage = result.VoltageMeasurements[measurementIndex],
+                        Current = result.CurrentMeasurements[measurementIndex]
                     });
                 }
 
                 measurements = values;
-                return Success();
+                return Success(index);
             }
             catch (Exception ex)
             {
-                return DriverFailure("取得 NI SourceMeter 量測結果失敗", ex);
+                return DriverFailure("取得 NI SourceMeter 量測結果失敗", ex, index);
             }
         }
 
-        public int OutputOff()
+        public int OutputOff(string id)
         {
+            int index = GetDeviceIndex(id);
+
+            if (index == -1 || Powers[index] == null)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
             try
             {
-                Power.Control.Abort();
-                Power.Outputs[ChannelName].Source.Output.Enabled = false;
-                Power.Control.Commit();
-                return Success();
+                string channelName = Powers[index].ChannelName;
+                Powers[index].Power.Control.Abort();
+                Powers[index].Power.Outputs[channelName].Source.Output.Enabled = false;
+                Powers[index].Power.Control.Commit();
+                return Success(index);
             }
             catch (Exception ex)
             {
-                return DriverFailure("關閉 NI SourceMeter 輸出失敗", ex);
+                return DriverFailure("關閉 NI SourceMeter 輸出失敗", ex, index);
             }
         }
 
-        public int Reset()
+        public int Reset(string id)
         {
-            try
-            {
-                Power.Control.Abort();
-                Power.Outputs[ChannelName].Source.AdvancedSequencing.DeleteAdvancedSequence(SequenceName);
-                Power.Utility.Reset();
-                ExpectedMeasurementCount = 0;
-                return Success();
-            }
-            catch (Exception ex)
-            {
-                return DriverFailure("重設 NI SourceMeter 失敗", ex);
-            }
+            int index = GetDeviceIndex(id);
+
+            if (index == -1 || Powers[index] == null)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
+            return Reset(index);
         }
 
-        public int SetOutputRelay(bool connected)
+        public int SetOutputRelay(string id, bool connected)
         {
+            int index = GetDeviceIndex(id);
+
+            if (index == -1 || Powers[index] == null)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
             try
             {
-                Power.Outputs[ChannelName].Source.Output.Connected = connected;
-                Power.Control.Commit();
-                return Success();
+                string channelName = Powers[index].ChannelName;
+                Powers[index].Power.Outputs[channelName].Source.Output.Connected = connected;
+                Powers[index].Power.Control.Commit();
+                return Success(index);
             }
             catch (Exception ex)
             {
@@ -219,16 +298,65 @@ namespace Device_NationalInstruments
                     connected
                         ? "閉合 NI SourceMeter 輸出 Relay 失敗"
                         : "斷開 NI SourceMeter 輸出 Relay 失敗",
-                    ex);
+                    ex,
+                    index);
             }
         }
+
+
+
+
+
+
+
+
+        private int GetDeviceIndex(string serialNumber)
+        {
+            if (DeviceIndex.TryGetValue(serialNumber, out int index))
+                return index;
+            else
+                return -1; // 未找到對應的設備索引
+        }
+
+        private int Reset(int index)
+        {
+            try
+            {
+                string channelName = Powers[index].ChannelName;
+                Powers[index].Power.Control.Abort();
+                Powers[index].Power.Outputs[channelName].Source.AdvancedSequencing.DeleteAdvancedSequence(
+                    Powers[index].SequenceName);
+                Powers[index].Power.Utility.Reset();
+                Powers[index].ExpectedMeasurementCount = 0;
+                return Success(index);
+            }
+            catch (Exception ex)
+            {
+                return DriverFailure("重設 NI SourceMeter 失敗", ex, index);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        
 
         public int Close()
         {
             return CloseSession();
         }
 
-        private void ApplyStep(SourceMeterConfiguration configuration, SourceMeterStep step,
+        private void ApplyStep(NIPower device, SourceMeterConfiguration configuration, SourceMeterStep step,
                                DCPowerSourceOutputFunction outputFunction, double fixedSourceRange)
         {
             double sourceRange = configuration.SourceRange > 0 ? Math.Abs(configuration.SourceRange) : configuration.AutoRangePerStep
@@ -238,12 +366,14 @@ namespace Device_NationalInstruments
                 ? Math.Abs(configuration.ComplianceRange)
                 : RangeRequest(Opposite(configuration.SourceFunction), configuration.ComplianceLimit);
 
-            DCPowerOutputSource source = Power.Outputs[ChannelName].Source;
+            DCPowerOutputSource source = device.Power.Outputs[device.ChannelName].Source;
             source.Output.Function = outputFunction;
             source.SourceDelay = new PrecisionTimeSpan(step.SourceDelaySeconds);
             source.TransientResponse = ToNiTransientResponse(configuration.TransientResponse);
-            Power.Outputs[ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
-            Power.Outputs[ChannelName].Measurement.ConfigureApertureTime(step.ApertureTimeSeconds, DCPowerMeasureApertureTimeUnits.Seconds);
+            device.Power.Outputs[device.ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
+            device.Power.Outputs[device.ChannelName].Measurement.ConfigureApertureTime(
+                step.ApertureTimeSeconds,
+                DCPowerMeasureApertureTimeUnits.Seconds);
 
             if (configuration.OutputMode == SourceMeterOutputMode.ContinuousWave)
             {
@@ -364,31 +494,31 @@ namespace Device_NationalInstruments
             return properties.ToArray();
         }
 
-        private void ConfigureStartTrigger(SourceMeterTriggerTerminal inputTerminal)
+        private void ConfigureStartTrigger(NIPower device, SourceMeterTriggerTerminal inputTerminal)
         {
             if (inputTerminal == SourceMeterTriggerTerminal.None)
             {
-                Power.Triggers.StartTrigger.Disable();
+                device.Power.Triggers.StartTrigger.Disable();
                 return;
             }
 
-            Power.Triggers.StartTrigger.DigitalEdge.Configure(
+            device.Power.Triggers.StartTrigger.DigitalEdge.Configure(
                 ToNIStartTriggerInputTerminal(inputTerminal),
                 DCPowerTriggerEdge.Rising);
         }
 
-        private void ConfigureExportSignal(DCPowerSignalSource signalSource,
+        private void ConfigureExportSignal(NIPower device,
+                                           DCPowerSignalSource signalSource,
                                            SourceMeterTriggerTerminal outputTerminal)
         {
             if (outputTerminal == SourceMeterTriggerTerminal.None)
                 return;
 
-            string terminalName = "/" + ResourceName + "/PXI_Trig" + (int)outputTerminal;
-            Power.ExportSignal(signalSource, terminalName);
+            string terminalName = "/" + device.ResourceName + "/PXI_Trig" + (int)outputTerminal;
+            device.Power.ExportSignal(signalSource, terminalName);
         }
 
-        private DCPowerDigitalEdgeStartTriggerInputTerminal ToNIStartTriggerInputTerminal(
-            SourceMeterTriggerTerminal inputTerminal)
+        private DCPowerDigitalEdgeStartTriggerInputTerminal ToNIStartTriggerInputTerminal(SourceMeterTriggerTerminal inputTerminal)
         {
             switch (inputTerminal)
             {
@@ -472,48 +602,63 @@ namespace Device_NationalInstruments
 
         private int CloseSession()
         {
-            try
-            {
-                if (Power != null)
-                {
-                    Power.Control.Abort();
-                    Power.Outputs[ChannelName].Source.Output.Enabled = false;
-                    Power.Control.Commit();
-                    Power.Dispose();
-                }
+            int result = (int)SourceMeterErrorCode.Success;
 
-                return Success();
-            }
-            catch (Exception ex)
+            for (int index = 0; index < Powers.Length; index++)
             {
-                return DriverFailure("關閉 NI-DCPower Session 時發生錯誤", ex);
+                if (Powers[index] == null)
+                    continue;
+
+                try
+                {
+                    string channelName = Powers[index].ChannelName;
+                    Powers[index].Power.Control.Abort();
+                    Powers[index].Power.Outputs[channelName].Source.Output.Enabled = false;
+                    Powers[index].Power.Control.Commit();
+                    Powers[index].Power.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    result = DriverFailure("關閉 NI-DCPower Session 時發生錯誤", ex, index);
+                }
+                finally
+                {
+                    Powers[index].Power = null;
+                    Powers[index].ResourceName = string.Empty;
+                    Powers[index].InstrumentModel = string.Empty;
+                    Powers[index].IOResourceDescriptor = string.Empty;
+                    Powers[index].ExpectedMeasurementCount = 0;
+                    Powers[index].IsOpen = false;
+                    Powers[index] = null;
+                }
             }
-            finally
-            {
-                Power = null;
-                ResourceName = string.Empty;
-                InstrumentModel = string.Empty;
-                IOResourceDescriptor = string.Empty;
-                ExpectedMeasurementCount = 0;
-                IsOpen = false;
-            }
+
+            DeviceIndex.Clear();
+            InitialIndex = 0;
+            return result;
         }
 
-        private int Success()
+        private int Success(int index = -1)
         {
-            LastError = string.Empty;
+            if (index >= 0 && index < Powers.Length && Powers[index] != null)
+                Powers[index].LastError = string.Empty;
+
             return (int)SourceMeterErrorCode.Success;
         }
 
-        private int Fail(SourceMeterErrorCode code, string message)
+        private int Fail(SourceMeterErrorCode code, string message, int index = -1)
         {
-            LastError = message ?? string.Empty;
+            if (index >= 0 && index < Powers.Length && Powers[index] != null)
+                Powers[index].LastError = message ?? string.Empty;
+
             return (int)code;
         }
 
-        private int DriverFailure(string operation, Exception exception)
+        private int DriverFailure(string operation, Exception exception, int index = -1)
         {
-            LastError = operation + ": " + exception.Message;
+            if (index >= 0 && index < Powers.Length && Powers[index] != null)
+                Powers[index].LastError = operation + ": " + exception.Message;
+
             return (int)SourceMeterErrorCode.DriverError;
         }
 

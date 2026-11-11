@@ -8,21 +8,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 using ToolFunction;
+using DeviceCore;
 
 namespace DeviceUI.SourceMeter
 {
-    public partial class F_SourceMeter : Form
+    public partial class F_SourceMeter : Form, IF_SourceMeter
     {
-        public F_SourceMeter()
+        public F_SourceMeter(IFunction_SourceMeter function_SourceMeter)
         {
             InitializeComponent();
+
+            Func_SMU = function_SourceMeter;
 
             InitialForm();
         }
 
         #region parameter define
+        IFunction_SourceMeter Func_SMU;
+        List<SourceMeterData> SourceMeterList = new List<SourceMeterData>();
         #endregion
 
         #region private function
@@ -33,8 +37,9 @@ namespace DeviceUI.SourceMeter
 
             ShowHint();
 
-            //if (ApplicationSetting.Get_Int_Recipe<eF_Equipment_Setting>((int)eF_Equipment_Setting.Cmbx_ShowFormName) == 1)
-            //    Tool.ShowFormName(this);
+            if (!Tool.DataGrid_DataLoad(DGV_SMU, "SourceMeter.xml"))
+                Tool.SaveLogToFile("Spectrum控制表讀取失敗");
+
         }
         void ShowHint()
         {
@@ -68,12 +73,37 @@ namespace DeviceUI.SourceMeter
         private void LeavePage()
         {
         }
+        private void Update_SMU_List(DataGridView DGV, List<SourceMeterData> smu_list)
+        {
+            smu_list.Clear();
+
+            foreach (DataGridViewRow row in DGV.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                var data = new SourceMeterData()
+                {
+                    Title_SMU_Type = row.Cells["Title_SMU_Type"]?.Value?.ToString(),
+                    Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
+                    Title_CardID = row.Cells["Title_CardID"]?.Value?.ToString(),
+                    Title_Description = row.Cells["Title_Description"]?.Value?.ToString(),
+                };
+
+                smu_list.Add(data);
+            }
+
+            Func_SMU.LoadConfiguration(smu_list);
+        }
         #endregion
 
         #region public function
         public void ShowFormName(bool show)
         {
 
+        }
+        public void Update_SMU_List()
+        {
+            Update_SMU_List(DGV_SMU, SourceMeterList);
         }
         #endregion
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)

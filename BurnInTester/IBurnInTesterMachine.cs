@@ -12,5 +12,6 @@ namespace BurnInTester
     {
         IFunction_IO_Card DIOL { get; }
         IFunction_TemperatureControl TC { get; }
+        IFunction_SourceMeter SMU { get; }
     }
 }
