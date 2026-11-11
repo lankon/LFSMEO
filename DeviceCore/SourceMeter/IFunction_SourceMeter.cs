@@ -30,6 +30,8 @@ namespace DeviceCore
         void LoadConfiguration(List<SourceMeterData> newSourceMeterDataList);
         int Initial_All_SMU();
         bool SetSMUConfig(ESMUName name, SourceMeterConfiguration config);
+        bool SetRelay(ESMUName name, bool connect);
+        bool Reset(ESMUName name);
 
         // 量測
         bool SIMV(ESMUName name,

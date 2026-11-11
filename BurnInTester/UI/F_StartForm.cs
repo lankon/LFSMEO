@@ -348,6 +348,10 @@ namespace BurnInTester.UI
             IFunction_SourceMeter smu = ServiceProvider.GetRequiredService<IFunction_SourceMeter>();
 
             double current, voltage;
+
+
+
+            smu.SIMV(ESMUName.SMU_1, 0.003, 2, 50e-3, out current, out voltage);
             smu.SIMV(ESMUName.SMU_1, 0.003, 2, 50e-3, out current, out voltage);
             //SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }

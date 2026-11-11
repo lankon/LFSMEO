@@ -87,8 +87,14 @@ namespace BurnInTester.Logic
                 SourceCompleteEventOutputTerminal = SourceMeterTriggerTerminal.None,
                 PulseTriggerOutputTerminal = SourceMeterTriggerTerminal.None,
             };
-
             BurnInTesterMachine.SMU.SetSMUConfig(ESMUName.SMU_1, config);
+
+            for (int i = 0; i < Enum.GetValues(typeof(ESMUName)).Length; i++)
+            {
+                ESMUName name = (ESMUName)i;
+                BurnInTesterMachine.SMU.Reset(name);
+                BurnInTesterMachine.SMU.SetRelay(name, false);
+            }
         }
         #endregion
 

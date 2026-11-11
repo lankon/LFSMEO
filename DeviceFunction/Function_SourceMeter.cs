@@ -68,7 +68,7 @@ namespace DeviceFunction
                     int res = -1;
                     try
                     {
-                        // for NI設定
+                        // for NI設定 先暫時這樣寫
                         res = newDevice.Open(new SourceMeterConnection()
                         {
                             ResourceName = config.Title_CardID,
@@ -120,7 +120,53 @@ namespace DeviceFunction
 
             var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
 
-            targetDevice?.SetConfiguration(smu_data.Title_CardID, config);
+            int? res = targetDevice?.SetConfiguration(smu_data.Title_CardID, config);
+
+            if(res != 0)
+            {
+                Tool.SaveLogToFile("SMU Config 設定失敗", level:"ERR");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool SetRelay(ESMUName name, bool connect)
+        {
+            SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
+
+            if (smu_data == null || IsInitial == false)
+                return false;
+
+            var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
+
+            int? res = targetDevice?.SetOutputRelay(smu_data.Title_CardID, connect);
+
+            if (res != 0)
+            {
+                Tool.SaveLogToFile("SMU SetRelay 失敗", level: "ERR");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Reset(ESMUName name)
+        {
+            SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
+
+            if (smu_data == null || IsInitial == false)
+                return false;
+
+            var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
+
+            int? res = targetDevice?.Reset(smu_data.Title_CardID);
+
+            if (res != 0)
+            {
+                Tool.SaveLogToFile("SMU Reset 失敗", level: "ERR");
+                return false;
+            }
 
             return true;
         }

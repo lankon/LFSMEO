@@ -68,7 +68,7 @@ namespace Device_NationalInstruments
                 Powers[InitialIndex].SequenceName = "SequenceName_" + connection.ResourceName;
                 Powers[InitialIndex].ExpectedMeasurementCount = 0;
 
-                if (Powers[InitialIndex].InstrumentModel == connection.ResourceName)
+                if (Powers[InitialIndex].IOResourceDescriptor == connection.ResourceName)
                 {
                     Powers[InitialIndex].IsOpen = true;
                     InitialIndex++;
@@ -91,7 +91,7 @@ namespace Device_NationalInstruments
         {
             for (int i = 0; i < Powers.Length; i++)
             {
-                if (Powers[i].ResourceName == id)
+                if (Powers[i].IOResourceDescriptor == id)
                 {
                     DeviceIndex[id] = i;
                     break;
@@ -116,6 +116,7 @@ namespace Device_NationalInstruments
 
                 Power.Source.Mode = DCPowerSourceMode.Sequence;
                 Power.Source.SequenceLoopCount = configuration.LoopCount;
+
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequence(nPower.SequenceName, sequenceProperties, true);
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.ActiveAdvancedSequence = nPower.SequenceName;
 
@@ -135,6 +136,8 @@ namespace Device_NationalInstruments
                 ConfigureExportSignal(nPower, DCPowerSignalSource.PulseTrigger, configuration.PulseTriggerOutputTerminal);
 
                 nPower.ExpectedMeasurementCount = checked(configuration.Steps.Count * configuration.LoopCount);
+
+                nPower.Configuration = configuration;
 
                 return Success();
             }
@@ -595,6 +598,9 @@ namespace Device_NationalInstruments
         {
             if (configuration.SourceRange > 0)
                 return Math.Abs(configuration.SourceRange);
+
+            if (configuration.Steps == null || configuration.Steps.Count == 0)
+                return RangeRequest(configuration.SourceFunction, 0);
 
             double maximumLevel = configuration.Steps.Max(step => Math.Abs(step.Level));
             return RangeRequest(configuration.SourceFunction, maximumLevel);
