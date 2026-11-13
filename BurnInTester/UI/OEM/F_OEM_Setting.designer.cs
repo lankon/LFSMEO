@@ -215,7 +215,7 @@ namespace BurnInTester.UI
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(329, 462);
+            this.button1.Location = new System.Drawing.Point(824, 345);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(159, 79);
             this.button1.TabIndex = 43;

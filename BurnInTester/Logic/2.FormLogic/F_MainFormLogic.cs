@@ -77,16 +77,7 @@ namespace BurnInTester.Logic
             BurnInTesterMachine.SMU.Initial_All_SMU();
 
             // 暫時先寫這樣
-            SourceMeterConfiguration config = new SourceMeterConfiguration()
-            {
-                MeasurementSense = SourceMeterMeasurementSense.Remote,
-                TransientResponse = SourceMeterTransientResponse.Normal,
-
-                StartTriggerInputTerminal = SourceMeterTriggerTerminal.None,
-                StartTriggerOutputTerminal = SourceMeterTriggerTerminal.None,
-                SourceCompleteEventOutputTerminal = SourceMeterTriggerTerminal.None,
-                PulseTriggerOutputTerminal = SourceMeterTriggerTerminal.None,
-            };
+            SourceMeterConfiguration config = new SourceMeterConfiguration();
             BurnInTesterMachine.SMU.SetSMUConfig(ESMUName.SMU_1, config);
 
             for (int i = 0; i < Enum.GetValues(typeof(ESMUName)).Length; i++)

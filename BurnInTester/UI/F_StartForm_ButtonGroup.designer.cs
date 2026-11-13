@@ -32,6 +32,7 @@ namespace BurnInTester.UI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm_ButtonGroup));
             this.Pnl_Part1 = new System.Windows.Forms.Panel();
+            this.Btn_EngSetting = new System.Windows.Forms.Button();
             this.Btn_HistoryReader = new System.Windows.Forms.Button();
             this.Btn_DAQ_Chart = new System.Windows.Forms.Button();
             this.Btn_Recipe = new System.Windows.Forms.Button();
@@ -50,6 +51,7 @@ namespace BurnInTester.UI
             // 
             // Pnl_Part1
             // 
+            this.Pnl_Part1.Controls.Add(this.Btn_EngSetting);
             this.Pnl_Part1.Controls.Add(this.Btn_HistoryReader);
             this.Pnl_Part1.Controls.Add(this.Btn_DAQ_Chart);
             this.Pnl_Part1.Controls.Add(this.Btn_Recipe);
@@ -63,15 +65,27 @@ namespace BurnInTester.UI
             this.Pnl_Part1.Size = new System.Drawing.Size(1738, 72);
             this.Pnl_Part1.TabIndex = 32;
             // 
+            // Btn_EngSetting
+            // 
+            this.Btn_EngSetting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.Btn_EngSetting.BackgroundImage = global::BurnInTester.Properties.Resources.EngSettingButton;
+            this.Btn_EngSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_EngSetting.Location = new System.Drawing.Point(1568, 3);
+            this.Btn_EngSetting.Name = "Btn_EngSetting";
+            this.Btn_EngSetting.Size = new System.Drawing.Size(70, 70);
+            this.Btn_EngSetting.TabIndex = 43;
+            this.Btn_EngSetting.UseVisualStyleBackColor = false;
+            // 
             // Btn_HistoryReader
             // 
+            this.Btn_HistoryReader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.Btn_HistoryReader.BackgroundImage = global::BurnInTester.Properties.Resources.HistoryReaderButton;
             this.Btn_HistoryReader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Btn_HistoryReader.Location = new System.Drawing.Point(173, 3);
             this.Btn_HistoryReader.Name = "Btn_HistoryReader";
             this.Btn_HistoryReader.Size = new System.Drawing.Size(70, 70);
             this.Btn_HistoryReader.TabIndex = 42;
-            this.Btn_HistoryReader.UseVisualStyleBackColor = true;
+            this.Btn_HistoryReader.UseVisualStyleBackColor = false;
             this.Btn_HistoryReader.Click += new System.EventHandler(this.Btn_HistoryReader_Click);
             // 
             // Btn_DAQ_Chart
@@ -145,7 +159,7 @@ namespace BurnInTester.UI
             // 
             this.Btn_ParameterSetting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_ParameterSetting.BackgroundImage")));
             this.Btn_ParameterSetting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Btn_ParameterSetting.Location = new System.Drawing.Point(1568, 3);
+            this.Btn_ParameterSetting.Location = new System.Drawing.Point(1370, 2);
             this.Btn_ParameterSetting.Name = "Btn_ParameterSetting";
             this.Btn_ParameterSetting.Size = new System.Drawing.Size(70, 70);
             this.Btn_ParameterSetting.TabIndex = 31;
@@ -214,6 +228,7 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Button Btn_Recipe;
         private System.Windows.Forms.Button Btn_DAQ_Chart;
         private System.Windows.Forms.Button Btn_HistoryReader;
+        private System.Windows.Forms.Button Btn_EngSetting;
     }
 }
 

@@ -59,6 +59,15 @@ namespace BurnInTester.Properties {
                 resourceCulture = value;
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EngSettingButton {
+            get {
+                return ((System.Drawing.Bitmap)(ResourceManager.GetObject("EngSettingButton", resourceCulture)));
+            }
+        }
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>

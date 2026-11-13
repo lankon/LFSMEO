@@ -23,6 +23,10 @@ namespace DeviceCore
         public string Title_Name { get; set; }
         public string Title_CardID { get; set; }
         public string Title_Description { get; set; }
+        public string Title_Sense { get; set; }
+        public string Title_TransResp { get; set; }
+        public string Title_InputTrigger { get; set; }
+        public string Title_OutputTrigger { get; set; }
     }
 
     public interface IFunction_SourceMeter

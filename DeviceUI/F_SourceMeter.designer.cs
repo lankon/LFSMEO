@@ -41,8 +41,12 @@ namespace DeviceUI.SourceMeter
             this.Btn_Remove = new System.Windows.Forms.Button();
             this.Title_SMU_Type = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Title_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title_CardID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Title_Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_CardID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Title_Sense = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Title_TransResp = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Title_InputTrigger = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Title_OutputTrigger = new System.Windows.Forms.DataGridViewComboBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_SMU)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -65,8 +69,12 @@ namespace DeviceUI.SourceMeter
             this.DGV_SMU.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title_SMU_Type,
             this.Title_Name,
+            this.Title_Description,
             this.Title_CardID,
-            this.Title_Description});
+            this.Title_Sense,
+            this.Title_TransResp,
+            this.Title_InputTrigger,
+            this.Title_OutputTrigger});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
@@ -79,7 +87,7 @@ namespace DeviceUI.SourceMeter
             this.DGV_SMU.Name = "DGV_SMU";
             this.DGV_SMU.RowHeadersVisible = false;
             this.DGV_SMU.RowTemplate.Height = 24;
-            this.DGV_SMU.Size = new System.Drawing.Size(868, 644);
+            this.DGV_SMU.Size = new System.Drawing.Size(1418, 644);
             this.DGV_SMU.TabIndex = 16;
             // 
             // tableLayoutPanel1
@@ -92,7 +100,7 @@ namespace DeviceUI.SourceMeter
             this.tableLayoutPanel1.Controls.Add(this.Btn_RowUp, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.Btn_Add, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.Btn_Remove, 0, 3);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(886, 12);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(1436, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -188,18 +196,65 @@ namespace DeviceUI.SourceMeter
             this.Title_Name.Name = "Title_Name";
             this.Title_Name.Width = 200;
             // 
-            // Title_CardID
-            // 
-            this.Title_CardID.HeaderText = "Card ID";
-            this.Title_CardID.Name = "Title_CardID";
-            this.Title_CardID.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Title_CardID.Width = 200;
-            // 
             // Title_Description
             // 
             this.Title_Description.HeaderText = "Description";
             this.Title_Description.Name = "Title_Description";
             this.Title_Description.Width = 300;
+            // 
+            // Title_CardID
+            // 
+            this.Title_CardID.HeaderText = "Card ID";
+            this.Title_CardID.Name = "Title_CardID";
+            this.Title_CardID.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_CardID.Width = 150;
+            // 
+            // Title_Sense
+            // 
+            this.Title_Sense.HeaderText = "Sense";
+            this.Title_Sense.Items.AddRange(new object[] {
+            "Local",
+            "Remote"});
+            this.Title_Sense.Name = "Title_Sense";
+            this.Title_Sense.Width = 150;
+            // 
+            // Title_TransResp
+            // 
+            this.Title_TransResp.HeaderText = "Trans. Resp.";
+            this.Title_TransResp.Items.AddRange(new object[] {
+            "Slow",
+            "Normal",
+            "Fast"});
+            this.Title_TransResp.Name = "Title_TransResp";
+            this.Title_TransResp.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Title_TransResp.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Title_TransResp.Width = 150;
+            // 
+            // Title_InputTrigger
+            // 
+            this.Title_InputTrigger.HeaderText = "Input Trigger";
+            this.Title_InputTrigger.Items.AddRange(new object[] {
+            "None",
+            "Line0",
+            "Line1",
+            "Line2",
+            "Line3",
+            "Line4"});
+            this.Title_InputTrigger.Name = "Title_InputTrigger";
+            this.Title_InputTrigger.Width = 150;
+            // 
+            // Title_OutputTrigger
+            // 
+            this.Title_OutputTrigger.HeaderText = "Output Trigger";
+            this.Title_OutputTrigger.Items.AddRange(new object[] {
+            "None",
+            "Line0",
+            "Line1",
+            "Line2",
+            "Line3",
+            "Line4"});
+            this.Title_OutputTrigger.Name = "Title_OutputTrigger";
+            this.Title_OutputTrigger.Width = 150;
             // 
             // F_SourceMeter
             // 
@@ -230,7 +285,11 @@ namespace DeviceUI.SourceMeter
         private System.Windows.Forms.Button Btn_Remove;
         private System.Windows.Forms.DataGridViewComboBoxColumn Title_SMU_Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title_CardID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title_Description;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title_CardID;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Title_Sense;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Title_TransResp;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Title_InputTrigger;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Title_OutputTrigger;
     }
 }

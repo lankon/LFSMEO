@@ -525,21 +525,21 @@ namespace Device_NationalInstruments
         {
             switch (inputTerminal)
             {
-                case SourceMeterTriggerTerminal.PxiTriggerLine0:
+                case SourceMeterTriggerTerminal.TriggerLine0:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine0;
-                case SourceMeterTriggerTerminal.PxiTriggerLine1:
+                case SourceMeterTriggerTerminal.TriggerLine1:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine1;
-                case SourceMeterTriggerTerminal.PxiTriggerLine2:
+                case SourceMeterTriggerTerminal.TriggerLine2:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine2;
-                case SourceMeterTriggerTerminal.PxiTriggerLine3:
+                case SourceMeterTriggerTerminal.TriggerLine3:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine3;
-                case SourceMeterTriggerTerminal.PxiTriggerLine4:
+                case SourceMeterTriggerTerminal.TriggerLine4:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine4;
-                case SourceMeterTriggerTerminal.PxiTriggerLine5:
+                case SourceMeterTriggerTerminal.TriggerLine5:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine5;
-                case SourceMeterTriggerTerminal.PxiTriggerLine6:
+                case SourceMeterTriggerTerminal.TriggerLine6:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine6;
-                case SourceMeterTriggerTerminal.PxiTriggerLine7:
+                case SourceMeterTriggerTerminal.TriggerLine7:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.PxiTriggerLine7;
                 default:
                     return DCPowerDigitalEdgeStartTriggerInputTerminal.None;

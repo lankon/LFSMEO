@@ -3,6 +3,28 @@ using System.Collections.Generic;
 
 namespace DeviceCore
 {
+    public interface ISourceMeter
+    {
+        //bool IsOpen { get; }                    // Session 是否已開啟。
+        //string InstrumentModel { get; }         // 目前連線的儀器型號。
+        //string LastError { get; }               // 最近一次呼叫的錯誤訊息。
+
+        ESMUType GetSourceMeterType();                          // 取得儀器類型
+        int SetConfiguration(string id, SourceMeterConfiguration configuration);        // 設定輸出、量測、Sequence 與 Trigger。
+        int GetConfiguration(string id, out SourceMeterConfiguration configuration);    // 取得目前儀器的設定。
+        void BindingDeviceIndex(string id);
+
+
+        int Open(SourceMeterConnection connection);     // 開啟儀器 Session
+        int OutputOn(string id);                        // 啟用輸出並開始執行 Sequence。
+        int WaitForCompletion(string id, double timeoutSeconds);    // 等待 Sequence 執行完成。
+        int Fetch(string id, int count, double timeoutSeconds, out IList<SourceMeterMeasurement> measurements);    // 取得電壓與電流量測結果。
+        int OutputOff(string id);                       // 中止 Sequence 並停用輸出
+        int Reset(string id);                           // 中止、刪除 Sequence 並重設儀器
+        int SetOutputRelay(string id, bool connected);  // true 閉合 Relay；false 斷開 Relay
+        int Close();        // 關閉儀器 Session
+    }
+
     public enum ESMUType
     {
         VIRTUAL,
@@ -48,14 +70,14 @@ namespace DeviceCore
     public enum SourceMeterTriggerTerminal
     {
         None = -1,
-        PxiTriggerLine0 = 0,
-        PxiTriggerLine1 = 1,
-        PxiTriggerLine2 = 2,
-        PxiTriggerLine3 = 3,
-        PxiTriggerLine4 = 4,
-        PxiTriggerLine5 = 5,
-        PxiTriggerLine6 = 6,
-        PxiTriggerLine7 = 7
+        TriggerLine0 = 0,
+        TriggerLine1 = 1,
+        TriggerLine2 = 2,
+        TriggerLine3 = 3,
+        TriggerLine4 = 4,
+        TriggerLine5 = 5,
+        TriggerLine6 = 6,
+        TriggerLine7 = 7
     }
 
     public sealed class SourceMeterConnection
@@ -112,27 +134,5 @@ namespace DeviceCore
     {
         public double Voltage { get; set; }
         public double Current { get; set; }
-    }
-
-    public interface ISourceMeter
-    {
-        //bool IsOpen { get; }                    // Session 是否已開啟。
-        //string InstrumentModel { get; }         // 目前連線的儀器型號。
-        //string LastError { get; }               // 最近一次呼叫的錯誤訊息。
-
-        ESMUType GetSourceMeterType();                          // 取得儀器類型
-        int SetConfiguration(string id, SourceMeterConfiguration configuration);        // 設定輸出、量測、Sequence 與 Trigger。
-        int GetConfiguration(string id, out SourceMeterConfiguration configuration);    // 取得目前儀器的設定。
-        void BindingDeviceIndex(string id); 
-        
-
-        int Open(SourceMeterConnection connection);     // 開啟儀器 Session
-        int OutputOn(string id);                        // 啟用輸出並開始執行 Sequence。
-        int WaitForCompletion(string id, double timeoutSeconds);    // 等待 Sequence 執行完成。
-        int Fetch(string id, int count, double timeoutSeconds, out IList<SourceMeterMeasurement> measurements);    // 取得電壓與電流量測結果。
-        int OutputOff(string id);                       // 中止 Sequence 並停用輸出
-        int Reset(string id);                           // 中止、刪除 Sequence 並重設儀器
-        int SetOutputRelay(string id, bool connected);  // true 閉合 Relay；false 斷開 Relay
-        int Close();        // 關閉儀器 Session
     }
 }

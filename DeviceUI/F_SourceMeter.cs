@@ -87,6 +87,10 @@ namespace DeviceUI.SourceMeter
                     Title_Name = row.Cells["Title_Name"]?.Value?.ToString(),
                     Title_CardID = row.Cells["Title_CardID"]?.Value?.ToString(),
                     Title_Description = row.Cells["Title_Description"]?.Value?.ToString(),
+                    Title_Sense = row.Cells["Title_Sense"]?.Value?.ToString(),
+                    Title_TransResp = row.Cells["Title_TransResp"]?.Value?.ToString(),
+                    Title_InputTrigger = row.Cells["Title_InputTrigger"]?.Value?.ToString(),
+                    Title_OutputTrigger = row.Cells["Title_OutputTrigger"]?.Value?.ToString(),
                 };
 
                 smu_list.Add(data);
@@ -133,7 +137,7 @@ namespace DeviceUI.SourceMeter
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            string[] context = new string[] { "None", "None", "None", "None" };
+            string[] context = new string[] { "None", "None", "None", "None", "Local","Normal", "None", "None" };
 
             Tool.DataGrid_AddRow(DGV_SMU, context);
         }

@@ -120,6 +120,11 @@ namespace DeviceFunction
 
             var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
 
+            config.StartTriggerInputTerminal = TransferToTriggerLine(smu_data.Title_InputTrigger);
+            config.StartTriggerOutputTerminal = TransferToTriggerLine(smu_data.Title_OutputTrigger);
+            config.MeasurementSense = TransferToMeasurementSense(smu_data.Title_Sense);
+            config.TransientResponse = TransferToTransientResponse(smu_data.Title_TransResp);
+
             int? res = targetDevice?.SetConfiguration(smu_data.Title_CardID, config);
 
             if(res != 0)
@@ -317,6 +322,48 @@ namespace DeviceFunction
                 smu.OutputOff(smu_data.Title_CardID);
                 smu.Reset(smu_data.Title_CardID);
             }
+        }
+
+        private SourceMeterTriggerTerminal TransferToTriggerLine(string line_name)
+        {
+            line_name = "Trigger" + line_name;
+
+            if (line_name == SourceMeterTriggerTerminal.TriggerLine0.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine0;
+            else if (line_name == SourceMeterTriggerTerminal.TriggerLine1.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine1;
+            else if (line_name == SourceMeterTriggerTerminal.TriggerLine2.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine2;
+            else if (line_name == SourceMeterTriggerTerminal.TriggerLine3.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine3;
+            else if (line_name == SourceMeterTriggerTerminal.TriggerLine4.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine4;
+            else if (line_name == SourceMeterTriggerTerminal.TriggerLine5.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine5;
+            else if (line_name == SourceMeterTriggerTerminal.TriggerLine6.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine6;
+            else if (line_name == SourceMeterTriggerTerminal.TriggerLine7.ToString())
+                return SourceMeterTriggerTerminal.TriggerLine7;
+            else
+                return SourceMeterTriggerTerminal.None;
+        }
+        private SourceMeterMeasurementSense TransferToMeasurementSense(string sense_name)
+        {
+            if (sense_name == SourceMeterMeasurementSense.Local.ToString())
+                return SourceMeterMeasurementSense.Local;
+            else if (sense_name == SourceMeterMeasurementSense.Remote.ToString())
+                return SourceMeterMeasurementSense.Remote;
+            else
+                return SourceMeterMeasurementSense.Local;
+        }
+        private SourceMeterTransientResponse TransferToTransientResponse(string transient_response)
+        {
+            SourceMeterTransientResponse response;
+
+            if (Enum.TryParse(transient_response, true, out response))
+                return response;
+
+            return SourceMeterTransientResponse.Normal;
         }
         #endregion
     }
