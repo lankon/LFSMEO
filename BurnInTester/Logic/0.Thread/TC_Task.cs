@@ -80,6 +80,8 @@ namespace BurnInTester.Logic
                                 }
                             }
 
+                            IsErrorHappened();  // 過溫檢查
+
                             if (HW_Param.TC_Box.Use[MonitorBoxNum] == true)
                                 State = WORK.ASK_PV;
                             else
@@ -124,6 +126,18 @@ namespace BurnInTester.Logic
                         break;
                 }
             }
+        }
+        private bool IsErrorHappened()
+        {
+            // 過溫檢查
+
+            // 連續五筆溫度資料超過設定值,則視為過溫,並停用該溫控箱
+            // 需要跳出警告視窗,並記錄到Log中, StatusBox
+
+            // Tips:
+            // 溫度資訊從AgingInformation中取得
+
+            return false;
         }
         #endregion
 
