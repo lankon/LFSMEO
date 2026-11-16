@@ -343,10 +343,12 @@ namespace BurnInTester.UI
 
             double current, voltage;
 
+            
+            smu.SIMV(ESMUName.SMU_1, 0.003, 5, 1, out current, out voltage);
+            //smu.SIMV(ESMUName.SMU_2, 0.003, 5, 50e-3, out current, out voltage);
 
 
-            smu.SIMV(ESMUName.SMU_1, 0.003, 2, 50e-3, out current, out voltage);
-            smu.SIMV(ESMUName.SMU_1, 0.003, 2, 50e-3, out current, out voltage);
+
             //SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }
         #endregion

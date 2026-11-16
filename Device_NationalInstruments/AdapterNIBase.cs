@@ -63,6 +63,8 @@ namespace Device_NationalInstruments
                     };
                 }
 
+                Powers[InitialIndex].ResourceName = connection.ResourceName;
+                Powers[InitialIndex].ChannelName = connection.ChannelName;
                 Powers[InitialIndex].InstrumentModel = Powers[InitialIndex].Power.Identity.InstrumentModel;
                 Powers[InitialIndex].IOResourceDescriptor = Powers[InitialIndex].Power.DriverOperation.IOResourceDescriptor;
                 Powers[InitialIndex].SequenceName = "SequenceName_" + connection.ResourceName;
@@ -91,6 +93,8 @@ namespace Device_NationalInstruments
         {
             for (int i = 0; i < Powers.Length; i++)
             {
+                if (Powers[i] == null) continue;
+                
                 if (Powers[i].IOResourceDescriptor == id)
                 {
                     DeviceIndex[id] = i;
@@ -608,6 +612,8 @@ namespace Device_NationalInstruments
 
         private int CloseSession()
         {
+            return 0; // 先不要寫之後再想
+            
             int result = (int)SourceMeterErrorCode.Success;
 
             for (int index = 0; index < Powers.Length; index++)

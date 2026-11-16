@@ -79,6 +79,7 @@ namespace BurnInTester.Logic
             // 暫時先寫這樣
             SourceMeterConfiguration config = new SourceMeterConfiguration();
             BurnInTesterMachine.SMU.SetSMUConfig(ESMUName.SMU_1, config);
+            BurnInTesterMachine.SMU.SetSMUConfig(ESMUName.SMU_2, config);
 
             for (int i = 0; i < Enum.GetValues(typeof(ESMUName)).Length; i++)
             {

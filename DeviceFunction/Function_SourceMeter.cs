@@ -59,12 +59,10 @@ namespace DeviceFunction
 
             foreach (var config in hardwareConfigs)
             {
-                var prototype = SMU.FirstOrDefault(p => p.GetSourceMeterType().ToString() == config.Title_SMU_Type);
+                ISourceMeter newDevice = SMU.FirstOrDefault(p => p.GetSourceMeterType().ToString() == config.Title_SMU_Type);
 
-                if (prototype != null)
+                if (newDevice != null)
                 {
-                    ISourceMeter newDevice = (ISourceMeter)Activator.CreateInstance(prototype.GetType());
-
                     int res = -1;
                     try
                     {
@@ -103,7 +101,7 @@ namespace DeviceFunction
 
                 if (SourceMeterList[i].GetSourceMeterType() != ESMUType.VIRTUAL)
                 {
-                    Tool.SaveLogToFile("實體分光卡 Initial Success");
+                    Tool.SaveLogToFile("實體電流源 Initial Success");
                     return 0;
                 }
             }
@@ -205,6 +203,11 @@ namespace DeviceFunction
             config.AutoRangePerStep = true;
 
             config.LoopCount = 1;
+
+            config.StartTriggerInputTerminal = TransferToTriggerLine(smu_data.Title_InputTrigger);
+            config.StartTriggerOutputTerminal = TransferToTriggerLine(smu_data.Title_OutputTrigger);
+            config.MeasurementSense = TransferToMeasurementSense(smu_data.Title_Sense);
+            config.TransientResponse = TransferToTransientResponse(smu_data.Title_TransResp);
 
             config.Steps = new List<SourceMeterStep>
             {

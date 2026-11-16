@@ -69,9 +69,11 @@ namespace DeviceUI.SourceMeter
         {
             ReadAllEnumSetting();
             UpdateEnumSettingToForm();
+            Update_SMU_List(DGV_SMU, SourceMeterList);
         }
         private void LeavePage()
         {
+            Update_SMU_List(DGV_SMU, SourceMeterList);
         }
         private void Update_SMU_List(DataGridView DGV, List<SourceMeterData> smu_list)
         {
