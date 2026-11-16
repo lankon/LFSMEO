@@ -952,7 +952,7 @@
         /8z/B2iDrOMQOwk4AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="button1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="Btn_Stop.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQwAAAEOCAYAAAB8RCmYAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAW
         6gAAFuoB5Y5DEAAABilJREFUeF7t1jFqVgsUhdGA7RuphYVoYeFYrDKbQGKikMQhOAev7/6wwSMbPP2/

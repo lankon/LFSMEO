@@ -18,7 +18,6 @@ namespace BurnInTester.UI
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(F_StartForm));
             this.LyPnl_CtrlBoxStatus = new System.Windows.Forms.TableLayoutPanel();
-            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.TxtBx_EndTime = new System.Windows.Forms.TextBox();
@@ -42,7 +41,7 @@ namespace BurnInTester.UI
             this.label8 = new System.Windows.Forms.Label();
             this.Btn_TestSetting = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Btn_Stop = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -70,6 +69,7 @@ namespace BurnInTester.UI
             this.TxtBx_RespDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.Pnl_Info = new System.Windows.Forms.Panel();
+            this.CtrlBoxStatus1 = new BurnInTester.UI.UC_CtrlBoxStatus();
             this.LyPnl_CtrlBoxStatus.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -107,14 +107,6 @@ namespace BurnInTester.UI
             this.LyPnl_CtrlBoxStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.LyPnl_CtrlBoxStatus.Size = new System.Drawing.Size(653, 943);
             this.LyPnl_CtrlBoxStatus.TabIndex = 0;
-            // 
-            // CtrlBoxStatus1
-            // 
-            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
-            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
-            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
-            this.CtrlBoxStatus1.TabIndex = 0;
-            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
             // 
             // panel1
             // 
@@ -320,7 +312,7 @@ namespace BurnInTester.UI
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.Btn_TestSetting);
             this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.Btn_Stop);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.Btn_Start);
             this.panel2.Location = new System.Drawing.Point(3, 341);
@@ -382,18 +374,19 @@ namespace BurnInTester.UI
             this.label2.Text = "Stop";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // Btn_Stop
             // 
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button1.Location = new System.Drawing.Point(94, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(85, 85);
-            this.button1.TabIndex = 8;
-            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.UseVisualStyleBackColor = true;
+            this.Btn_Stop.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Stop.BackgroundImage")));
+            this.Btn_Stop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Btn_Stop.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_Stop.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Btn_Stop.Location = new System.Drawing.Point(94, 3);
+            this.Btn_Stop.Name = "Btn_Stop";
+            this.Btn_Stop.Size = new System.Drawing.Size(85, 85);
+            this.Btn_Stop.TabIndex = 8;
+            this.Btn_Stop.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.Btn_Stop.UseVisualStyleBackColor = true;
+            this.Btn_Stop.Click += new System.EventHandler(this.Btn_Stop_Click);
             // 
             // label1
             // 
@@ -720,6 +713,14 @@ namespace BurnInTester.UI
             this.Pnl_Info.Size = new System.Drawing.Size(327, 468);
             this.Pnl_Info.TabIndex = 5;
             // 
+            // CtrlBoxStatus1
+            // 
+            this.CtrlBoxStatus1.Location = new System.Drawing.Point(4, 4);
+            this.CtrlBoxStatus1.Name = "CtrlBoxStatus1";
+            this.CtrlBoxStatus1.Size = new System.Drawing.Size(156, 87);
+            this.CtrlBoxStatus1.TabIndex = 0;
+            this.CtrlBoxStatus1.Click += new System.EventHandler(this.CtrlBoxStatus1_Click);
+            // 
             // F_StartForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -762,7 +763,7 @@ namespace BurnInTester.UI
         private System.Windows.Forms.Button Btn_Start;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Btn_Stop;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label Labl_BoxNumber;

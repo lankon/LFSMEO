@@ -274,6 +274,7 @@ namespace BurnInTester.Logic
                     break;
                 case WORK.ABORT:
                     {
+                        Func_TC.Stop(box_num: BoxNum);
                         SetTempStatus(TASK_STATUS.ABORT);
                         Transition(WORK.END);
                     }

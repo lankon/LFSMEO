@@ -30,12 +30,12 @@ namespace BurnInTester.Logic
 
         #region parameter
         private int BoxNum = 0;                     //箱號
-        private int TestInterval = 0;            // 監控間隔時間
-        //private TemperatureCondition TestCondition; //溫控器測試條件
-        private PlannedStep PlannedStep;            //計畫步驟
+        private int TestInterval = 0;               // 監控間隔時間
+        //private TemperatureCondition TestCondition; // 溫控器測試條件
+        private PlannedStep PlannedStep;            // 計畫步驟
         private MonitorPlan _MonitorPlan;           // 監控計畫
-        private AgingInformation _AgingInformation; //老化資訊
-        private IF_BaseTask SubTask;                //子流程
+        private AgingInformation _AgingInformation; // 老化資訊
+        private IF_BaseTask SubTask;                // 子流程
         private IF_StateControl F_StateControl;
         //private F_StateControl TaskForm;
         public enum WORK
@@ -224,10 +224,20 @@ namespace BurnInTester.Logic
                     break;
                 case WORK.INITIAL_RESET:
                     {
-                        int second = (int)_MonitorPlan.Interval.TotalSeconds;
+                        if(_MonitorPlan != null)    // Monitor
+                        {
+                            int second = (int)_MonitorPlan.Interval.TotalSeconds;
 
-                        if (Tool.CheckTimeOverSec(TestInterval, second))
-                            Transition(WORK.START);
+                            if (Tool.CheckTimeOverSec(TestInterval, second))
+                                Transition(WORK.START);
+                        }
+                        else if(PlannedStep != null)
+                        {
+                            int second = (int)PlannedStep.ExecutionInterval.TotalSeconds;
+
+                            if (Tool.CheckTimeOverSec(TestInterval, second))
+                                Transition(WORK.START);
+                        }
                     }
                     break;
                 case WORK.START:

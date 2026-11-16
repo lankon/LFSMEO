@@ -233,6 +233,12 @@ namespace BurnInTester.UI
             }
         }
 
+        private void Btn_Stop_Click(object sender, EventArgs e)
+        {
+            var task = ServiceProvider.GetRequiredService<AgingSchedulerTask>();
+            task.GoToAbort();
+        }
+
         private void Btn_TestSetting_Click(object sender, EventArgs e)
         {
             var para_set = ServiceProvider.GetRequiredService<F_TestSetting>();
@@ -302,9 +308,6 @@ namespace BurnInTester.UI
         }
         private void Btn_Start_TC_Click(object sender, EventArgs e)
         {
-            var task = ServiceProvider.GetRequiredService<AgingSchedulerTask>();
-            task.Run();
-
             //try
             //{
             //    SaveAllEnumSetting();
@@ -322,18 +325,10 @@ namespace BurnInTester.UI
         }
         private void Btn_Stop_TC_Click(object sender, EventArgs e)
         {
-            var task = ServiceProvider.GetRequiredService<AgingSchedulerTask>();
-            task.GoToAbort();
-
             //TC_Test.Stop();
         }
 
         #endregion
-
-        private void Btn_Test_TC_Click(object sender, EventArgs e)
-        {
-            var TC = ServiceProvider.GetRequiredService<TC_Task>();
-        }
 
         private void F_StartForm_Load(object sender, EventArgs e)
         {

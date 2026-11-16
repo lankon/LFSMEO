@@ -158,7 +158,25 @@ namespace BurnInTester.Logic
                 Tool.SaveLogToFile($"通訊失敗: {ex.Message}");
             }
         }
+        public async Task Stop(ETemperatureControlName name, string cmd = "", int index = 0)
+        {
+            try
+            {
+                string result = await EnqueueMainAction(async () =>
+                {
+                    Func_TC.Stop(name, cmd);
 
+                    // GetAnswer內部會等候回傳並解析，直到拿到結果才會繼續往下走，所以這裡不需要額外的等待邏輯
+                    string[] ans = Func_TC.GetAnswer(name, cmd);
+
+                    return "";
+                });
+            }
+            catch (Exception ex)
+            {
+                Tool.SaveLogToFile($"通訊失敗: {ex.Message}");
+            }
+        }
         #endregion
     }
 

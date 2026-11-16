@@ -16,9 +16,8 @@ namespace BurnInTester.Logic
     public class Task_AgingBox : IBaseTask<Task_AgingBox.WORK>
     {
         // 各獨立老化箱執行流程
-        public Task_AgingBox(IBaseTaskDependence dependencies,
-            IF_StateControl f_StateControl,
-            string set_state = "Default")
+        public Task_AgingBox(IBaseTaskDependence dependencies,IF_StateControl f_StateControl, 
+                             string set_state = "Default")
             : base(dependencies)
         {
             TaskName = this.GetType().Name;
@@ -36,9 +35,9 @@ namespace BurnInTester.Logic
         private int _StageIndex;                            // 目前 Stage 在 _StagePlans 中的索引
         private int _ExecutionSubTaskIndex = 0;             // ExecutionSubTask執行索引
         private int _DurationTick = 0;                      // 記錄執行時間的tick
-        private Queue<PlannedStep> _PendingSteps = new Queue<PlannedStep>();        // 待執行Preparation
-        private Queue<PlannedStep> _ExecutionSteps = new Queue<PlannedStep>();      // 待執行Execution
-        private Queue<MonitorPlan> _MonitorSteps = new Queue<MonitorPlan>();        // 待執行Monitor
+        private Queue<PlannedStep> PendingSteps = new Queue<PlannedStep>();        // 待執行Preparation
+        private Queue<PlannedStep> ExecutionSteps = new Queue<PlannedStep>();      // 待執行Execution
+        private Queue<MonitorPlan> MonitorSteps = new Queue<MonitorPlan>();        // 待執行Monitor
         private List<StagePlan> _StagePlans;                // 老化排程
 
         private IF_BaseTask SubTask;                        // 子流程
@@ -65,10 +64,7 @@ namespace BurnInTester.Logic
 
             FINISH_EXECUTION_STEP,
 
-            INITIAL_SUBTASK,
-            SUBTASK_PROCESS,
-            SUBTASK_PROCESS_PAUSE,
-            WAIT_SUBTASK_PROCESS,
+            STOP_AGING_PROCESS,
 
             END,
 
@@ -160,10 +156,10 @@ namespace BurnInTester.Logic
 
         private void LoadPendingSteps(IEnumerable<PlannedStep> steps)
         {
-            _PendingSteps.Clear();
+            PendingSteps.Clear();
 
             foreach (PlannedStep step in steps)
-                _PendingSteps.Enqueue(step);
+                PendingSteps.Enqueue(step);
         }
 
         private bool IsRunningState(WORK state)
@@ -181,15 +177,15 @@ namespace BurnInTester.Logic
             _StageIndex = 0;
 
 
-            _PendingSteps.Clear();
+            PendingSteps.Clear();
         }
 
         private void AddMonitorSubTask()
         {
-            int count = _MonitorSteps.Count;
+            int count = MonitorSteps.Count;
             for (int i = 0; i < count; i++)
             {
-                MonitorPlan monitor_step = _MonitorSteps.Dequeue();
+                MonitorPlan monitor_step = MonitorSteps.Dequeue();
                 if (monitor_step.PlannedStep.Step.TestProcess == TestProcess.LIV)
                 {
                     SubTask_LIV subTask_LIV = new SubTask_LIV(Deps, F_StateControl);
@@ -226,9 +222,9 @@ namespace BurnInTester.Logic
 
         private void ResetExecuteSubTask()
         {
-            for (int i = 0; i < _ExecutionSteps.Count; i++)
+            for (int i = 0; i < ExecuteSubTask.Count; i++)
             {
-                if (MonitorSubTask[i] is SubTask_LIV liv)
+                if (ExecuteSubTask[i] is SubTask_LIV liv)
                     liv.ResetProcess();
             }
         }
@@ -287,6 +283,9 @@ namespace BurnInTester.Logic
 
                 MonitorSubTask.Clear();
                 ExecuteSubTask.Clear();
+                PendingSteps.Clear();
+                MonitorSteps.Clear();
+                ExecutionSteps.Clear();
 
                 Transition(WORK.LOAD_STAGE);
                 Tool.SaveLogToFile($"Box {_BoxIndex + 1} schedule started", level:"INF");
@@ -324,13 +323,13 @@ namespace BurnInTester.Logic
                 case WORK.LOAD_STAGE:
                     {
                         foreach (PlannedStep step in _StagePlans[_StageIndex].PreparationSteps)
-                            _PendingSteps.Enqueue(step);
+                            PendingSteps.Enqueue(step);
 
                         foreach (MonitorPlan step in _StagePlans[_StageIndex].MonitorSteps)
-                            _MonitorSteps.Enqueue(step);
+                            MonitorSteps.Enqueue(step);
 
                         foreach (PlannedStep step in _StagePlans[_StageIndex].ExecutionSteps)
-                            _ExecutionSteps.Enqueue(step);
+                            ExecutionSteps.Enqueue(step);
 
                         Transition(WORK.START_PREPARATION_STEP);
                     }
@@ -339,14 +338,14 @@ namespace BurnInTester.Logic
                 #region PREPARATION
                 case WORK.START_PREPARATION_STEP:
                     {
-                        if (_PendingSteps.Count == 0)
+                        if (PendingSteps.Count == 0)
                         {
                             Transition(WORK.FINISH_PREPARATION_STEP);
                             return;
                         }
 
                         SetSubTaskProcessing(true); // 設定SubTask執行
-                        PlannedStep step = _PendingSteps.Peek();
+                        PlannedStep step = PendingSteps.Peek();
                         if(step.Step.TestProcess == TestProcess.Temperature)
                         {
                             SubTask = new SubTask_Temperature(Deps, F_StateControl);
@@ -370,28 +369,30 @@ namespace BurnInTester.Logic
                         bool AllDone = ProcessMonitorSubTask(cmd);  // 執行監控流程
 
                         if(SubTask.IsDone() && AllDone)
+                        {
                             CheckResult(check, SUCCESS: WORK.FINISH_PREPARATION_STEP);
+                            SetSubTaskProcessing(false);
+                        }
                         else if (AllDone)
                             ResetMonitorSubTask();
                     }
                     break;
                 case WORK.FINISH_PREPARATION_STEP:
                     {
-                        _PendingSteps.Dequeue();    // 移除已完成的Preparation Step
+                        PendingSteps.Dequeue();    // 移除已完成的Preparation Step
 
-                        if (_ExecutionSteps.Count != 0)
+                        if (ExecutionSteps.Count != 0)
                             Transition(WORK.START_EXECUTION_STEP);
                     }
                     break;
                 #endregion
-
                 #region EXECUTION
                 case WORK.START_EXECUTION_STEP:
                     {
-                        int count = _ExecutionSteps.Count;
+                        int count = ExecutionSteps.Count;
                         for (int i = 0; i < count; i++)
                         {
-                            PlannedStep execution_step = _ExecutionSteps.Dequeue();
+                            PlannedStep execution_step = ExecutionSteps.Dequeue();
                             if (execution_step.Step.TestProcess == TestProcess.LIV)
                             {
                                 SubTask_LIV subTask_LIV = new SubTask_LIV(Deps, F_StateControl);
@@ -409,20 +410,19 @@ namespace BurnInTester.Logic
                         if(_ExecutionSubTaskIndex >= ExecuteSubTask.Count)
                         {
                             _DurationTick = Tool.GetCurrentTickCount();
-                            Transition(WORK.WAIT_DURATION);
+                            Transition(WORK.WAIT_DURATION); // 成功執行完所有ExecutionSubTask後確認燒測時間
                             break;
                         }
                         
                         TASK_STATUS check = ExecuteSubTask[_ExecutionSubTaskIndex].Run(GetStatusCommand());
 
                         if (check == TASK_STATUS.SUCCESS)
-                            _ExecutionSubTaskIndex++;
+                            _ExecutionSubTaskIndex++;   // 成功後換下一個ExecutionSubTask執行
 
                         CheckResult(check, SUCCESS: WORK.WAIT_EXECUTION_STEP);
                     }
                     break;
                 #endregion
-
                 #region DURATION
                 case WORK.WAIT_DURATION:
                     {
@@ -447,10 +447,17 @@ namespace BurnInTester.Logic
                     break;
                 #endregion
 
+                #region 
+                case WORK.STOP_AGING_PROCESS:
+                    {
+                    }
+                    break;
+                #endregion
+
                 case WORK.SUCCESS:
                     {
                         //SetTempStatus(TASK_STATUS.SUCCESS);
-                        
+                        Transition(WORK.END);
                     }
                     break;
                 case WORK.FAIL:

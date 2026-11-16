@@ -122,7 +122,15 @@ namespace BurnInTester.Logic
                         }
                         break;
                     case WORK.STOP:
-                        // 在STOP狀態下的處理邏輯
+                        {
+                            if (_CommandQueue.TryDequeue(out CommandInfo cmd))
+                            {
+                                string command = HW_Param.TC_Box.BoxNum[cmd.BoxNum] + "," + HW_Param.TC_Box.ChNum[cmd.BoxNum];
+                                _ = CommManage.Stop(HW_Param.TC1, command, cmd.BoxNum);
+                            }
+
+                            State = WORK.IDLE;
+                        }
                         break;
                 }
             }
@@ -136,6 +144,7 @@ namespace BurnInTester.Logic
 
             // Tips:
             // 溫度資訊從AgingInformation中取得
+            // 停止控溫 WORK.STOP
 
             return false;
         }
@@ -156,7 +165,22 @@ namespace BurnInTester.Logic
                 BoxNum = box_num 
             });
 
-            Tool.SaveLogToFile("開始控溫");
+            Tool.SaveLogToFile($"開始控溫 Cmd:{cmd} BoxNum:{box_num}", level: "INF");
+        }
+
+        public void Stop(string cmd = "", int box_num = 0)
+        {
+            if (box_num < 0)
+                return;
+
+            _CommandQueue.Enqueue(new CommandInfo
+            {
+                CommandType = WORK.STOP,
+                SV = 25,
+                BoxNum = box_num
+            });
+
+            Tool.SaveLogToFile($"停止控溫 Cmd:{cmd} BoxNum:{box_num}", level:"INF");
         }
         #endregion
     }

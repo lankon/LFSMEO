@@ -28,6 +28,7 @@ namespace BurnInTester.Logic
     {
         // 已完成分類的測試步驟
         public int OriginalIndex { get; set; }
+        public TimeSpan ExecutionInterval { get; set; }
         public TestStep Step { get; set; }
         public TestCondition Condition { get; set; }
     }
@@ -331,7 +332,10 @@ namespace BurnInTester.Logic
                     break;
 
                 case StageStepRole.Execution:
-                    plan.ExecutionSteps.Add(plannedStep);
+                    {
+                        plannedStep.ExecutionInterval = plan.ExecutionInterval;
+                        plan.ExecutionSteps.Add(plannedStep);
+                    }
                     break;
 
                 default:
