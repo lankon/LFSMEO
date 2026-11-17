@@ -10,6 +10,7 @@ using DeviceCore;
 using RecipeManage.Base;
 using RecipeManage.Logic;
 using RecipeManage.UI;
+using PhotonicTest.Logic;
 using BurnInTester.Base;
 using BurnInTester.UI;
 using BurnInTester.Logic;
@@ -70,6 +71,8 @@ namespace BurnInTester
             services.AddSingleton<AgingInformation>();
             //services.AddSingleton<TestResultDataBase>();
             services.AddSingleton<HW_ParamSetting>();
+            services.AddSingleton<Vcsel>();
+
 
             return services;
         }

@@ -33,7 +33,12 @@ namespace DeviceCore
     {
         void LoadConfiguration(List<SourceMeterData> newSourceMeterDataList);
         int Initial_All_SMU();
-        bool SetSMUConfig(ESMUName name, SourceMeterConfiguration config);
+        bool SetConfig(ESMUName name, SourceMeterConfiguration config);
+        bool OutputOn(ESMUName name);
+        bool GetMeasureResult(ESMUName name, int data_len, out IList<SourceMeterMeasurement> measurements);
+        bool OutputOff(ESMUName name);
+
+
         bool SetRelay(ESMUName name, bool connect);
         bool Reset(ESMUName name);
 

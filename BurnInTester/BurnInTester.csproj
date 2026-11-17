@@ -274,6 +274,10 @@
       <Project>{55ce2e35-b0cc-47cd-9135-e624bf94ec26}</Project>
       <Name>Device_Guishan</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PhotonicTest\PhotonicTest.csproj">
+      <Project>{ed57cdc8-bdca-49ee-b595-f20d3ee6f381}</Project>
+      <Name>PhotonicTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RecipeManage\RecipeManage.csproj">
       <Project>{e3a7e02c-c7a0-4e2a-8cc4-8822cfb8ac9d}</Project>
       <Name>RecipeManage</Name>

@@ -109,7 +109,7 @@ namespace DeviceFunction
             return ret;
         }
 
-        public bool SetSMUConfig(ESMUName name, SourceMeterConfiguration config)
+        public bool SetConfig(ESMUName name, SourceMeterConfiguration config)
         {
             SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
 
@@ -133,6 +133,63 @@ namespace DeviceFunction
 
             return true;
         }
+
+        public bool OutputOn(ESMUName name)
+        {
+            SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
+
+            if (smu_data == null || IsInitial == false)
+                return false;
+
+            ISourceMeter targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
+
+            int res = targetDevice.OutputOn(smu_data.Title_CardID);
+
+            if (res != 0)
+            {
+                Tool.SaveLogToFile("SMU OutputOn 失敗", level: "ERR");
+                return false;
+            }
+            return true;
+        }
+
+        public bool GetMeasureResult(ESMUName name, int data_len, out IList<SourceMeterMeasurement> measurements)
+        {
+            measurements = null;
+
+            SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
+
+            if (smu_data == null || IsInitial == false)
+                return false;
+
+            var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
+
+            int res = targetDevice.Fetch(smu_data.Title_CardID, count: data_len, timeoutSeconds: 5, out measurements);
+
+            if (res != 0 || measurements == null || measurements.Count == 0)
+            {
+                Tool.SaveLogToFile("SMU Fetch 失敗", level: "ERR");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool OutputOff(ESMUName name)
+        {
+            SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
+            if (smu_data == null || IsInitial == false)
+                return false;
+            var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
+            int? res = targetDevice?.OutputOff(smu_data.Title_CardID);
+            if (res != 0)
+            {
+                Tool.SaveLogToFile("SMU OutputOff 失敗", level: "ERR");
+                return false;
+            }
+            return true;
+        }
+
 
         public bool SetRelay(ESMUName name, bool connect)
         {

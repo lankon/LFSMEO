@@ -34,12 +34,29 @@ namespace Device_NationalInstruments
             public string IOResourceDescriptor { get; set; } = string.Empty;    // Driver 實際使用的 I/O Resource Descriptor。
             public string LastError { get; set; } = string.Empty;               // 最近一次呼叫的錯誤訊息。
         }
-        
+
         #endregion
+
+        #region public function
         public ESMUType GetSourceMeterType()
         {
             return ESMUType.NI;
         }
+
+        public void BindingDeviceIndex(string id)
+        {
+            for (int i = 0; i < Powers.Length; i++)
+            {
+                if (Powers[i] == null) continue;
+
+                if (Powers[i].IOResourceDescriptor == id)
+                {
+                    DeviceIndex[id] = i;
+                    break;
+                }
+            }
+        }
+
 
         public int Open(SourceMeterConnection connection)
         {
@@ -89,18 +106,19 @@ namespace Device_NationalInstruments
             }
         }
 
-        public void BindingDeviceIndex(string id)
+
+        public int GetConfiguration(string id, out SourceMeterConfiguration configuration)
         {
-            for (int i = 0; i < Powers.Length; i++)
-            {
-                if (Powers[i] == null) continue;
-                
-                if (Powers[i].IOResourceDescriptor == id)
-                {
-                    DeviceIndex[id] = i;
-                    break;
-                }
-            }
+            configuration = null;
+
+            int index = GetDeviceIndex(id);
+
+            if (index == -1)
+                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
+
+            configuration = Powers[index].Configuration;
+
+            return Success();
         }
 
         public int SetConfiguration(string id, SourceMeterConfiguration configuration)
@@ -124,6 +142,12 @@ namespace Device_NationalInstruments
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequence(nPower.SequenceName, sequenceProperties, true);
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.ActiveAdvancedSequence = nPower.SequenceName;
 
+                Power.Outputs[nPower.ChannelName].Source.Output.Function = outputFunction;
+                Power.Outputs[nPower.ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
+
+                if (configuration.MeasurementRecordLength.HasValue)
+                    Power.Outputs[nPower.ChannelName].Measurement.RecordLength = configuration.MeasurementRecordLength.Value;
+
                 double fixedSourceRange = ResolveFixedSourceRange(configuration);
 
                 foreach (SourceMeterStep step in configuration.Steps)
@@ -132,7 +156,7 @@ namespace Device_NationalInstruments
                     ApplyStep(nPower, configuration, step, outputFunction, fixedSourceRange);
                 }
 
-                Power.Measurement.Configuration.MeasureWhen = DCPowerMeasurementWhen.AutomaticallyAfterSourceComplete;
+                ConfigureMeasurement(nPower, configuration);
                 Power.Triggers.SourceTrigger.Disable();
                 ConfigureStartTrigger(nPower, configuration.StartTriggerInputTerminal);
                 ConfigureExportSignal(nPower, DCPowerSignalSource.StartTrigger, configuration.StartTriggerOutputTerminal);
@@ -151,20 +175,6 @@ namespace Device_NationalInstruments
                 Reset(id);
                 return DriverFailure("設定 NI SourceMeter Sequence 失敗", ex);
             }
-        }
-
-        public int GetConfiguration(string id, out SourceMeterConfiguration configuration)
-        {
-            configuration = null;
-
-            int index = GetDeviceIndex(id);
-
-            if (index == -1)
-                return Fail(SourceMeterErrorCode.InvalidArgument, "未找到對應的設備索引");
-
-            configuration = Powers[index].Configuration;
-
-            return Success();
         }
 
         public int OutputOn(string id)
@@ -275,6 +285,7 @@ namespace Device_NationalInstruments
             }
         }
 
+
         public int Reset(string id)
         {
             int index = GetDeviceIndex(id);
@@ -310,12 +321,13 @@ namespace Device_NationalInstruments
             }
         }
 
+        public int Close()
+        {
+            return CloseSession();
+        }
+        #endregion
 
-
-
-
-
-
+        #region private function
 
         private int GetDeviceIndex(string serialNumber)
         {
@@ -343,26 +355,6 @@ namespace Device_NationalInstruments
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        
-
-        public int Close()
-        {
-            return CloseSession();
-        }
-
         private void ApplyStep(NIPower device, SourceMeterConfiguration configuration, SourceMeterStep step,
                                DCPowerSourceOutputFunction outputFunction, double fixedSourceRange)
         {
@@ -378,6 +370,10 @@ namespace Device_NationalInstruments
             source.SourceDelay = new PrecisionTimeSpan(step.SourceDelaySeconds);
             source.TransientResponse = ToNiTransientResponse(configuration.TransientResponse);
             device.Power.Outputs[device.ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
+
+            if (configuration.SequenceStepDeltaTimeEnabled.HasValue)
+                source.SequenceStepDeltaTimeEnabled = configuration.SequenceStepDeltaTimeEnabled.Value;
+
             device.Power.Outputs[device.ChannelName].Measurement.ConfigureApertureTime(
                 step.ApertureTimeSeconds,
                 DCPowerMeasureApertureTimeUnits.Seconds);
@@ -501,6 +497,27 @@ namespace Device_NationalInstruments
             return properties.ToArray();
         }
 
+        private void ConfigureMeasurement(NIPower device, SourceMeterConfiguration configuration)
+        {
+            switch (configuration.MeasurementMode)
+            {
+                case SourceMeterMeasurementMode.OnMeasureTrigger:
+                    device.Power.Measurement.Configuration.MeasureWhen = DCPowerMeasurementWhen.OnMeasureTrigger;
+                    device.Power.Triggers.MeasureTrigger.DigitalEdge.Configure(
+                        ToNITerminalName(device, configuration.MeasureTriggerInputTerminal),
+                        DCPowerTriggerEdge.Rising);
+                    break;
+
+                case SourceMeterMeasurementMode.OnDemand:
+                    device.Power.Measurement.Configuration.MeasureWhen = DCPowerMeasurementWhen.OnDemand;
+                    break;
+
+                default:
+                    device.Power.Measurement.Configuration.MeasureWhen = DCPowerMeasurementWhen.AutomaticallyAfterSourceComplete;
+                    break;
+            }
+        }
+
         private void ConfigureStartTrigger(NIPower device, SourceMeterTriggerTerminal inputTerminal)
         {
             if (inputTerminal == SourceMeterTriggerTerminal.None)
@@ -521,8 +538,13 @@ namespace Device_NationalInstruments
             if (outputTerminal == SourceMeterTriggerTerminal.None)
                 return;
 
-            string terminalName = "/" + device.ResourceName + "/PXI_Trig" + (int)outputTerminal;
+            string terminalName = ToNITerminalName(device, outputTerminal);
             device.Power.ExportSignal(signalSource, terminalName);
+        }
+
+        private string ToNITerminalName(NIPower device, SourceMeterTriggerTerminal terminal)
+        {
+            return "/" + device.ResourceName + "/PXI_Trig" + (int)terminal;
         }
 
         private DCPowerDigitalEdgeStartTriggerInputTerminal ToNIStartTriggerInputTerminal(SourceMeterTriggerTerminal inputTerminal)
@@ -575,12 +597,12 @@ namespace Device_NationalInstruments
             {
                 case SourceMeterTransientResponse.Slow:
                     return DCPowerSourceTransientResponse.Slow;
-        case SourceMeterTransientResponse.Fast:
-            return DCPowerSourceTransientResponse.Fast;
-        default:
-            return DCPowerSourceTransientResponse.Normal;
-    }
-}
+                case SourceMeterTransientResponse.Fast:
+                    return DCPowerSourceTransientResponse.Fast;
+                default:
+                    return DCPowerSourceTransientResponse.Normal;
+            }
+        }
 
         private SourceMeterSourceFunction Opposite(SourceMeterSourceFunction sourceFunction)
         {
@@ -683,5 +705,6 @@ namespace Device_NationalInstruments
         {
             return IsFinite(value) && value > 0;
         }
+        #endregion
     }
 }

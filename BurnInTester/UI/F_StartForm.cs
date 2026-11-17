@@ -12,9 +12,9 @@ using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
+using PhotonicTest.Logic;
 using BurnInTester.Base;
 using BurnInTester.Logic;
-using DeviceCore;           //違規用法
 
 namespace BurnInTester.UI
 {
@@ -339,15 +339,16 @@ namespace BurnInTester.UI
 
         private void Btn_SourceMeterTest_Click(object sender, EventArgs e)
         {
-            IFunction_SourceMeter smu = ServiceProvider.GetRequiredService<IFunction_SourceMeter>();
+            //IFunction_SourceMeter smu = ServiceProvider.GetRequiredService<IFunction_SourceMeter>();
 
-            double current, voltage;
+            //double current, voltage;
 
-            
-            smu.SIMV(ESMUName.SMU_1, 0.003, 5, 1, out current, out voltage);
+
+            //smu.SIMV(ESMUName.SMU_1, 0.003, 5, 1, out current, out voltage);
             //smu.SIMV(ESMUName.SMU_2, 0.003, 5, 50e-3, out current, out voltage);
 
-
+            Vcsel TestFunc = ServiceProvider.GetRequiredService<Vcsel>();
+            TestFunc.SIMV(0.003, 5, 1, out double current, out double voltage);
 
             //SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }
