@@ -77,15 +77,15 @@ namespace BurnInTester.Logic
             BurnInTesterMachine.SMU.Initial_All_SMU();
 
             // 暫時先寫這樣
-            SourceMeterConfiguration config = new SourceMeterConfiguration();
-            BurnInTesterMachine.SMU.SetConfig(ESMUName.SMU_1, config);
-            BurnInTesterMachine.SMU.SetConfig(ESMUName.SMU_2, config);
+            //SourceMeterConfiguration config = new SourceMeterConfiguration();
+            //BurnInTesterMachine.SMU.SetConfig(ESMUName.SMU_1, config);
+            //BurnInTesterMachine.SMU.SetConfig(ESMUName.SMU_2, config);
 
             for (int i = 0; i < Enum.GetValues(typeof(ESMUName)).Length; i++)
             {
                 ESMUName name = (ESMUName)i;
                 BurnInTesterMachine.SMU.Reset(name);
-                BurnInTesterMachine.SMU.SetRelay(name, false);
+                BurnInTesterMachine.SMU.SetRelay(name, true);
             }
         }
         #endregion

@@ -141,23 +141,21 @@ namespace Device_NationalInstruments
 
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequence(nPower.SequenceName, sequenceProperties, true);
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.ActiveAdvancedSequence = nPower.SequenceName;
-
+                double fixedSourceRange = ResolveFixedSourceRange(configuration);
+                foreach (SourceMeterStep step in configuration.Steps)
+                {
+                    Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequenceStep(true);
+                    ApplyStep(nPower, configuration, step, outputFunction, fixedSourceRange);
+                }
                 Power.Outputs[nPower.ChannelName].Source.Output.Function = outputFunction;
                 Power.Outputs[nPower.ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
 
                 if (configuration.MeasurementRecordLength.HasValue)
                     Power.Outputs[nPower.ChannelName].Measurement.RecordLength = configuration.MeasurementRecordLength.Value;
 
-                double fixedSourceRange = ResolveFixedSourceRange(configuration);
-
-                foreach (SourceMeterStep step in configuration.Steps)
-                {
-                    Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequenceStep(true);
-                    ApplyStep(nPower, configuration, step, outputFunction, fixedSourceRange);
-                }
-
                 ConfigureMeasurement(nPower, configuration);
                 Power.Triggers.SourceTrigger.Disable();
+
                 ConfigureStartTrigger(nPower, configuration.StartTriggerInputTerminal);
                 ConfigureExportSignal(nPower, DCPowerSignalSource.StartTrigger, configuration.StartTriggerOutputTerminal);
                 ConfigureExportSignal(nPower, DCPowerSignalSource.SourceCompleteEvent, configuration.SourceCompleteEventOutputTerminal);
@@ -277,6 +275,9 @@ namespace Device_NationalInstruments
                 Powers[index].Power.Control.Abort();
                 Powers[index].Power.Outputs[channelName].Source.Output.Enabled = false;
                 Powers[index].Power.Control.Commit();
+
+                Reset(id);
+
                 return Success(index);
             }
             catch (Exception ex)
@@ -343,8 +344,7 @@ namespace Device_NationalInstruments
             {
                 string channelName = Powers[index].ChannelName;
                 Powers[index].Power.Control.Abort();
-                Powers[index].Power.Outputs[channelName].Source.AdvancedSequencing.DeleteAdvancedSequence(
-                    Powers[index].SequenceName);
+                Powers[index].Power.Outputs[channelName].Source.AdvancedSequencing.DeleteAdvancedSequence(Powers[index].SequenceName);
                 Powers[index].Power.Utility.Reset();
                 Powers[index].ExpectedMeasurementCount = 0;
                 return Success(index);

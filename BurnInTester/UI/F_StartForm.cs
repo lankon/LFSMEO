@@ -349,6 +349,7 @@ namespace BurnInTester.UI
 
             Vcsel TestFunc = ServiceProvider.GetRequiredService<Vcsel>();
             TestFunc.SIMV(0.003, 5, 1, out double current, out double voltage);
+            TestFunc.SVMI(3, 0.005, 1, out double current1, out double voltage1);
 
             //SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }

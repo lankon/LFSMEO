@@ -59,6 +59,9 @@ namespace PhotonicTest.Logic
 
             try
             {
+                if (!SMU.SetConfig(Ch, config))
+                    return false;
+
                 if (!SMU.OutputOn(Ch))
                     return false;
 
@@ -115,6 +118,9 @@ namespace PhotonicTest.Logic
 
             try
             {
+                if (!SMU.SetConfig(Ch, config))
+                    return false;
+
                 if (!SMU.OutputOn(Ch))
                     return false;
 
