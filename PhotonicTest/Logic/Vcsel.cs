@@ -54,7 +54,7 @@ namespace PhotonicTest.Logic
                 Tool.SaveLogToFile("LIV 沒有設定 LD 電流 Step", level: "ERR");
                 return false;
             }
-
+            ld_current_steps.Add(0);    // 最後一筆測試歸零準位用
             int point_count = ld_current_steps.Count;
 
             SourceMeterConfiguration ld_config = new SourceMeterConfiguration

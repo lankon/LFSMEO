@@ -85,7 +85,9 @@ namespace BurnInTester.Logic
             {
                 ESMUName name = (ESMUName)i;
                 BurnInTesterMachine.SMU.Reset(name);
+                BurnInTesterMachine.SMU.SetRelay(name, false);
                 BurnInTesterMachine.SMU.SetRelay(name, true);
+                BurnInTesterMachine.SMU.SetRelay(name, false);
             }
         }
         #endregion

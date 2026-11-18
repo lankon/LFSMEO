@@ -342,29 +342,38 @@ namespace BurnInTester.UI
         {
             IFunction_SourceMeter smu = ServiceProvider.GetRequiredService<IFunction_SourceMeter>();
 
-            //double current, voltage;
+            double current, voltage;
 
-
-            //smu.SIMV(ESMUName.SMU_1, 0.003, 5, 1, out current, out voltage);
-            //smu.SIMV(ESMUName.SMU_2, 0.003, 5, 50e-3, out current, out voltage);
+            smu.SetRelay(ESMUName.SMU_1, true);
+            smu.SetRelay(ESMUName.SMU_2, true);
 
             Vcsel TestFunc = ServiceProvider.GetRequiredService<Vcsel>();
-            //TestFunc.SIMV(0.003, 5, 1, out double current, out double voltage);
+            //bool res = TestFunc.SIMV(0.003, 5, 0.015, out current, out voltage);
             //TestFunc.SIMV(0.002, 5, 1, out current, out voltage);
             //TestFunc.SVMI(3, 0.005, 1, out double current1, out double voltage1);
 
 
-            //List<double> current = new List<double>();
-            //current.Add(0.004);
-            //current.Add(0.0035);
-            //current.Add(0.004);
+
+            //double pulse_width = 300e-6;
+            //double duty = 3;
+            //bool res = TestFunc.SIMV_Pulse(2, 5, pulse_width, duty, out current, out voltage);
+            //res = TestFunc.SIMV_Pulse(1, 5, pulse_width, duty, out current, out voltage);
+
+            //List<double> lcurrent = new List<double>();
+            //lcurrent.Add(0.004);
+            //lcurrent.Add(0.0035);
+            //lcurrent.Add(0.004);
             //IList<LIVPoint> points = new List<LIVPoint>();
-            //TestFunc.LIV(current, 5, 3, 0.01, 0.2, 0.8, out points);
+            //TestFunc.LIV(lcurrent, 5, 3, 0.01, 0.002, 0.008, out points);
+
+            List<double> lcurrent = new List<double>();
+            lcurrent.Add(1);
+            lcurrent.Add(2);
+            lcurrent.Add(1.7);
+            IList<LIVPoint> points = new List<LIVPoint>();
+            TestFunc.LIV_Pulse(lcurrent, 5, 3, 0.01, 300e-6, 3, out points);
 
 
-
-            smu.SetRelay(ESMUName.SMU_1, false);
-            smu.SetRelay(ESMUName.SMU_2, false);
 
             //SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }

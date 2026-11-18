@@ -274,7 +274,7 @@ namespace Device_NationalInstruments
             {
                 string channelName = Powers[index].ChannelName;
                 Powers[index].Power.Control.Abort();
-                Powers[index].Power.Outputs[channelName].Source.Output.Enabled = false;
+                //Powers[index].Power.Outputs[channelName].Source.Output.Enabled = false;   //先拿掉會秀斗
                 Powers[index].Power.Control.Commit();
 
                 Reset(id);
@@ -372,7 +372,7 @@ namespace Device_NationalInstruments
             source.TransientResponse = ToNiTransientResponse(configuration.TransientResponse);
             device.Power.Outputs[device.ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
 
-            source.SequenceStepDeltaTimeEnabled = false;// 直接設定false,true對CycleTime計算不值觀 configuration.StepDeltaTimeEnabled;
+            //source.SequenceStepDeltaTimeEnabled = false;// 直接設定false,true對CycleTime計算不值觀 configuration.StepDeltaTimeEnabled;
 
             device.Power.Outputs[device.ChannelName].Measurement.ConfigureApertureTime(
                 step.ApertureTimeSeconds,
