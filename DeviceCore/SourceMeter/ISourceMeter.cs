@@ -86,30 +86,24 @@ namespace DeviceCore
 
     public sealed class SourceMeterConnection
     {
+        // 連線設定
         public string ResourceName { get; set; }
         public string ChannelName { get; set; } = "0";
         public bool ResetDevice { get; set; }
         public string DriverSetupOptions { get; set; } = string.Empty;
     }
 
-    /// <summary>
-    /// A hardware sequence step. Level is expressed in amperes when sourcing
-    /// current and volts when sourcing voltage. All time values are in seconds.
-    /// </summary>
     public sealed class SourceMeterStep
     {
+        // 輸出步驟設定
         public double Level { get; set; }
         public double SourceDelaySeconds { get; set; }
         public double ApertureTimeSeconds { get; set; }
     }
 
-    /// <summary>
-    /// Vendor-neutral source program. A single point is represented by one step
-    /// and one loop; sweeps and trains are represented by their step list and
-    /// loop count without introducing test-specific mode names.
-    /// </summary>
     public sealed class SourceMeterConfiguration
     {
+        // 量測設定
         public SourceMeterSourceFunction SourceFunction { get; set; }       // 輸出功能：定電流或定電壓
         public SourceMeterOutputMode OutputMode { get; set; } = SourceMeterOutputMode.ContinuousWave;               // 輸出模式：連續波或脈衝
         public SourceMeterMeasurementSense MeasurementSense { get; set; } = SourceMeterMeasurementSense.Remote;     // 量測接線：二線式或四線式
@@ -141,6 +135,7 @@ namespace DeviceCore
 
     public sealed class SourceMeterMeasurement
     {
+        // 量測結果
         public double Voltage { get; set; }
         public double Current { get; set; }
     }
