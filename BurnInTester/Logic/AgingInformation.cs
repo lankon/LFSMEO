@@ -43,9 +43,9 @@ namespace BurnInTester.Logic
 
             // [Status]
             public string StartTime;            //啟動時間
-            public string RunnningTime;         //已運行時間
-            public string RemainingTime;        //剩餘時間
-            public string EndTime;              //結束時間
+            public string RunnningTime;         //已運行時間        //Tips 分別記錄各箱
+            public string RemainingTime;        //剩餘時間          //Tips 分別記錄各箱
+            public string EndTime;              //結束時間  
         }
         public class TemperatureInfo
         {

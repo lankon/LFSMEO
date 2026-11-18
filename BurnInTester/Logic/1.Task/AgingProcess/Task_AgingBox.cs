@@ -305,6 +305,8 @@ namespace BurnInTester.Logic
                 GoToCaseAbortState(GetPauseState());
             else if(task_command == TASK_STATUS.CONTINUE)    //人員傳入CONTINUE命令
                 GoToCaseConitinueState();
+
+            // Tips 更新進度條
                 
             switch (State)
             {
@@ -381,6 +383,8 @@ namespace BurnInTester.Logic
                     {
                         PendingSteps.Dequeue();    // 移除已完成的Preparation Step
 
+                        //Tips Prepare完成開始計時燒測運行以及剩餘時間
+
                         if (ExecutionSteps.Count != 0)
                             Transition(WORK.START_EXECUTION_STEP);
                     }
@@ -447,7 +451,7 @@ namespace BurnInTester.Logic
                     break;
                 #endregion
 
-                #region 
+                #region STOP_AGING_PROCESS
                 case WORK.STOP_AGING_PROCESS:
                     {
                     }

@@ -73,6 +73,10 @@ namespace BurnInTester.UI
                 Labl_BoxNum.BackColor = Color.Silver;
             }
         }
+        public void UpdateProgressBar(int value)
+        {
+            // Tips更新PgBar_Aging進度
+        }
         #endregion
     }
 }

@@ -19,7 +19,7 @@ using DeviceCore;
 
 namespace BurnInTester.UI
 {
-    public partial class F_StartForm : Form
+    public partial class F_StartForm : Form  //Tips 要加Interface
     {
         public F_StartForm(
             IServiceProvider serviceProvider, 
@@ -38,7 +38,7 @@ namespace BurnInTester.UI
         }
 
         #region parameter define
-        private UC_CtrlBoxStatus[] CtrlBoxStatusArray = new UC_CtrlBoxStatus[39];
+        private UC_CtrlBoxStatus[] CtrlBoxStatusArray = new UC_CtrlBoxStatus[39];   //Tips 老化箱狀態物件
         private IServiceProvider ServiceProvider;
         private DieMap _DieMap = new DieMap();
         private TC_Task _TC_Task;
@@ -200,6 +200,10 @@ namespace BurnInTester.UI
         #endregion
 
         #region public function
+        public void UpdateBoxStatusArray()
+        {
+            //Tips
+        }
         #endregion
 
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)

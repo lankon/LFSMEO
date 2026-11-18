@@ -30,7 +30,7 @@
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.Labl_BoxNum = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.PgBar_Aging = new System.Windows.Forms.ProgressBar();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.Labl_Information = new System.Windows.Forms.Label();
@@ -44,7 +44,7 @@
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.Labl_BoxNum, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.progressBar1, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.PgBar_Aging, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -69,13 +69,13 @@
             this.Labl_BoxNum.Text = "Box 1-1";
             this.Labl_BoxNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // progressBar1
+            // PgBar_Aging
             // 
-            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.progressBar1.Location = new System.Drawing.Point(4, 128);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(292, 37);
-            this.progressBar1.TabIndex = 1;
+            this.PgBar_Aging.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PgBar_Aging.Location = new System.Drawing.Point(4, 128);
+            this.PgBar_Aging.Name = "PgBar_Aging";
+            this.PgBar_Aging.Size = new System.Drawing.Size(292, 37);
+            this.PgBar_Aging.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
@@ -132,7 +132,7 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label Labl_BoxNum;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar PgBar_Aging;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label Labl_Information;
         private System.Windows.Forms.Label label2;
