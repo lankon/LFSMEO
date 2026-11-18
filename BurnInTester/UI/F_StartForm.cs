@@ -15,6 +15,7 @@ using ToolFunction;
 using PhotonicTest.Logic;
 using BurnInTester.Base;
 using BurnInTester.Logic;
+using DeviceCore;
 
 namespace BurnInTester.UI
 {
@@ -339,7 +340,7 @@ namespace BurnInTester.UI
 
         private void Btn_SourceMeterTest_Click(object sender, EventArgs e)
         {
-            //IFunction_SourceMeter smu = ServiceProvider.GetRequiredService<IFunction_SourceMeter>();
+            IFunction_SourceMeter smu = ServiceProvider.GetRequiredService<IFunction_SourceMeter>();
 
             //double current, voltage;
 
@@ -348,8 +349,22 @@ namespace BurnInTester.UI
             //smu.SIMV(ESMUName.SMU_2, 0.003, 5, 50e-3, out current, out voltage);
 
             Vcsel TestFunc = ServiceProvider.GetRequiredService<Vcsel>();
-            TestFunc.SIMV(0.003, 5, 1, out double current, out double voltage);
-            TestFunc.SVMI(3, 0.005, 1, out double current1, out double voltage1);
+            //TestFunc.SIMV(0.003, 5, 1, out double current, out double voltage);
+            //TestFunc.SIMV(0.002, 5, 1, out current, out voltage);
+            //TestFunc.SVMI(3, 0.005, 1, out double current1, out double voltage1);
+
+
+            //List<double> current = new List<double>();
+            //current.Add(0.004);
+            //current.Add(0.0035);
+            //current.Add(0.004);
+            //IList<LIVPoint> points = new List<LIVPoint>();
+            //TestFunc.LIV(current, 5, 3, 0.01, 0.2, 0.8, out points);
+
+
+
+            smu.SetRelay(ESMUName.SMU_1, false);
+            smu.SetRelay(ESMUName.SMU_2, false);
 
             //SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }
