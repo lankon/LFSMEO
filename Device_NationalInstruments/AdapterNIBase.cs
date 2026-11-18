@@ -133,14 +133,16 @@ namespace Device_NationalInstruments
 
             try
             {
-                DCPowerSourceOutputFunction outputFunction = ToNIOutputFunction(configuration.SourceFunction, configuration.OutputMode);
+                // Sequence 設定
                 DCPowerAdvancedSequenceProperty[] sequenceProperties = BuildSequenceProperties(configuration);
-
                 Power.Source.Mode = DCPowerSourceMode.Sequence;
-                Power.Source.SequenceLoopCount = configuration.LoopCount;
-
+                Power.Source.SequenceLoopCount = 1; // 直接設定為1,>1計算CycleTime不值觀 configuration.LoopCount;
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.CreateAdvancedSequence(nPower.SequenceName, sequenceProperties, true);
                 Power.Outputs[nPower.ChannelName].Source.AdvancedSequencing.ActiveAdvancedSequence = nPower.SequenceName;
+
+
+
+                DCPowerSourceOutputFunction outputFunction = ToNIOutputFunction(configuration.SourceFunction, configuration.OutputMode);
                 double fixedSourceRange = ResolveFixedSourceRange(configuration);
                 foreach (SourceMeterStep step in configuration.Steps)
                 {
@@ -150,8 +152,7 @@ namespace Device_NationalInstruments
                 Power.Outputs[nPower.ChannelName].Source.Output.Function = outputFunction;
                 Power.Outputs[nPower.ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
 
-                if (configuration.MeasurementRecordLength.HasValue)
-                    Power.Outputs[nPower.ChannelName].Measurement.RecordLength = configuration.MeasurementRecordLength.Value;
+                Power.Outputs[nPower.ChannelName].Measurement.RecordLength = 1; //直接設定為1,>1計算CycleTime不值觀 configuration.MeasurementRecordLength.Value;
 
                 ConfigureMeasurement(nPower, configuration);
                 Power.Triggers.SourceTrigger.Disable();
@@ -161,7 +162,7 @@ namespace Device_NationalInstruments
                 ConfigureExportSignal(nPower, DCPowerSignalSource.SourceCompleteEvent, configuration.SourceCompleteEventOutputTerminal);
                 ConfigureExportSignal(nPower, DCPowerSignalSource.PulseTrigger, configuration.PulseTriggerOutputTerminal);
 
-                nPower.ExpectedMeasurementCount = checked(configuration.Steps.Count * configuration.LoopCount);
+                nPower.ExpectedMeasurementCount = checked(configuration.Steps.Count * 1); // configuration.LoopCount
 
                 nPower.Configuration = configuration;
 
@@ -361,9 +362,9 @@ namespace Device_NationalInstruments
             double sourceRange = configuration.SourceRange > 0 ? Math.Abs(configuration.SourceRange) : configuration.AutoRangePerStep
                     ? RangeRequest(configuration.SourceFunction, step.Level) : fixedSourceRange;
 
-            double complianceRange = configuration.ComplianceRange > 0
-                ? Math.Abs(configuration.ComplianceRange)
-                : RangeRequest(Opposite(configuration.SourceFunction), configuration.ComplianceLimit);
+            double complianceRange = configuration.ComplianceRange > 0 ? 
+                Math.Abs(configuration.ComplianceRange) : 
+                RangeRequest(Opposite(configuration.SourceFunction), configuration.ComplianceLimit);
 
             DCPowerOutputSource source = device.Power.Outputs[device.ChannelName].Source;
             source.Output.Function = outputFunction;
@@ -371,8 +372,7 @@ namespace Device_NationalInstruments
             source.TransientResponse = ToNiTransientResponse(configuration.TransientResponse);
             device.Power.Outputs[device.ChannelName].Measurement.Sense = ToNiMeasurementSense(configuration.MeasurementSense);
 
-            if (configuration.SequenceStepDeltaTimeEnabled.HasValue)
-                source.SequenceStepDeltaTimeEnabled = configuration.SequenceStepDeltaTimeEnabled.Value;
+            source.SequenceStepDeltaTimeEnabled = false;// 直接設定false,true對CycleTime計算不值觀 configuration.StepDeltaTimeEnabled;
 
             device.Power.Outputs[device.ChannelName].Measurement.ConfigureApertureTime(
                 step.ApertureTimeSeconds,

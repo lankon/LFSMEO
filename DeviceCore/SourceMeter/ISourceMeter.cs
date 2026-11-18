@@ -96,9 +96,9 @@ namespace DeviceCore
     public sealed class SourceMeterStep
     {
         // 輸出步驟設定
-        public double Level { get; set; }
-        public double SourceDelaySeconds { get; set; }
-        public double ApertureTimeSeconds { get; set; }
+        public double Level { get; set; }                   // 輸出電壓或電流值
+        public double SourceDelaySeconds { get; set; }      // 波型穩定時間
+        public double ApertureTimeSeconds { get; set; }     // 量測時間
     }
 
     public sealed class SourceMeterConfiguration
@@ -113,6 +113,8 @@ namespace DeviceCore
         public double ComplianceLimit { get; set; }                 // 定電流時限制電壓；定電壓時限制電流
         public double SourceRange { get; set; }                     // 固定輸出 Range；0 表示由程式自動選擇
         public double ComplianceRange { get; set; }                 // Compliance 硬體 Range；0 表示依限制值選擇
+        
+        // 待釐清
         public bool AutoRangePerStep { get; set; } = true;          // SourceRange 為 0 時，是否每個 Step 個別選 Range
 
         public SourceMeterTriggerTerminal StartTriggerInputTerminal { get; set; } = SourceMeterTriggerTerminal.None; // Sequence 啟動 Trigger 輸入端
@@ -121,16 +123,15 @@ namespace DeviceCore
         public SourceMeterTriggerTerminal SourceCompleteEventOutputTerminal { get; set; } = SourceMeterTriggerTerminal.None; // Source Complete 事件輸出端
         public SourceMeterTriggerTerminal PulseTriggerOutputTerminal { get; set; } = SourceMeterTriggerTerminal.None; // Pulse Trigger 輸出端
 
-        public int LoopCount { get; set; } = 1;                     // Sequence 重複執行次數
-        public IList<SourceMeterStep> Steps { get; set; } = new List<SourceMeterStep>(); // Sequence 的輸出步驟
-
-        public int? MeasurementRecordLength { get; set; }           // 每次量測記錄的筆數；null 保留 Driver 預設值
-        public bool? SequenceStepDeltaTimeEnabled { get; set; }     // 是否啟用 NI Sequence Step Delta Time；null 保留預設值
-
+        public IList<SourceMeterStep> Steps { get; set; } = new List<SourceMeterStep>(); // 輸出步驟
         public double PulseOnTimeSeconds { get; set; }              // Pulse 輸出維持時間（秒）
         public double PulseOffTimeSeconds { get; set; }             // Pulse 關閉／Bias 維持時間（秒）
         public double PulseBiasLevel { get; set; } = 0;             // Pulse Off 階段的輸出值
-        public double PulseBiasDelaySeconds { get; set; }           // Pulse Bias 後的延遲時間（秒）
+        public double PulseBiasDelaySeconds { get; set; } = 0;      // Pulse Bias 後的延遲時間（秒）
+
+        public int LoopCount { get; set; } = 1;                     // 重複執行次數
+        public int MeasurementRecordLength { get; set; } = 1;       // 每個Step的量測紀錄數量
+        public bool StepDeltaTimeEnabled { get; set; } = false;     // Step到下一筆Step是否要延遲
     }
 
     public sealed class SourceMeterMeasurement

@@ -44,8 +44,6 @@ namespace PhotonicTest.Logic
                 ComplianceRange = 0,
                 AutoRangePerStep = true,
 
-                LoopCount = 1,
-
                 Steps = new List<SourceMeterStep>
                 {
                     new SourceMeterStep
@@ -103,8 +101,6 @@ namespace PhotonicTest.Logic
                 ComplianceRange = 0,
                 AutoRangePerStep = true,
 
-                LoopCount = 1,
-
                 Steps = new List<SourceMeterStep>
                 {
                     new SourceMeterStep
@@ -131,6 +127,73 @@ namespace PhotonicTest.Logic
                 if (measurements == null || measurements.Count == 0)
                 {
                     Tool.SaveLogToFile($"沒有取得量測資料");
+                    return false;
+                }
+
+                res_v = measurements[0].Voltage;
+                res_i = measurements[0].Current;
+
+                return true;
+            }
+            finally
+            {
+                SMU.OutputOff(Ch);
+            }
+        }
+
+        // Pulse Mode單通道送電流量電壓
+        public virtual bool SIMV_Pulse(double current, double voltage_limit,
+                                       double pulse_width, double duty,
+                                       out double res_i, out double res_v)
+        {
+            res_i = 0; res_v = 0;
+            double pulse_off_time = pulse_width / (duty * 0.01) - pulse_width;
+
+            // Pulse On 期間保留 10% 裕量，避免 Aperture Time 超出 Pulse On Time。
+            double source_delay_time = pulse_width * 0.2;
+            double aperture_time = pulse_width * 0.7;
+
+            SourceMeterConfiguration config = new SourceMeterConfiguration()
+            {
+                SourceFunction = SourceMeterSourceFunction.Current,
+                OutputMode = SourceMeterOutputMode.Pulse,
+                ComplianceLimit = voltage_limit,
+
+                SourceRange = 0,
+                ComplianceRange = 0,
+                AutoRangePerStep = true,
+
+
+                PulseOnTimeSeconds = pulse_width,
+                PulseOffTimeSeconds = pulse_off_time,
+                PulseBiasLevel = 0,
+
+                Steps = new List<SourceMeterStep>
+                {
+                    new SourceMeterStep
+                    {
+                        Level = current,
+                        SourceDelaySeconds = source_delay_time,
+                        ApertureTimeSeconds = aperture_time
+                    }
+                },
+            };
+
+            try
+            {
+                if (!SMU.SetConfig(Ch, config))
+                    return false;
+
+                if (!SMU.OutputOn(Ch))
+                    return false;
+
+                IList<SourceMeterMeasurement> measurements;
+                if (!SMU.GetMeasureResult(Ch, 1, out measurements))
+                    return false;
+
+                if (measurements == null || measurements.Count == 0)
+                {
+                    Tool.SaveLogToFile("SIMV_Pulse 沒有取得量測資料", level: "ERR");
                     return false;
                 }
 
