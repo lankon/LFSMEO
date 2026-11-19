@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 using ToolFunction;
 using DeviceCore;
+
 
 namespace DeviceFunction
 {
@@ -15,6 +17,7 @@ namespace DeviceFunction
         public Function_SourceMeter(IEnumerable<ISourceMeter> sourceMeter)
         {
             SMU = sourceMeter;
+            SMU_Log = Tool.CreateLog("History\\SMU_Log_", ".log");
         }
 
         #region parameter
@@ -22,7 +25,7 @@ namespace DeviceFunction
         private bool IsInitial = false;                 // 是否已經初始化過SMU
         private List<ISourceMeter> SourceMeterList = new List<ISourceMeter>();
         private Dictionary<string, SourceMeterData> SourceMeterListDict;        //存放UI SMU設定
-        private SourceMeterConfiguration SMUConfig;
+        private ILogger SMU_Log;
         #endregion
 
         public void LoadConfiguration(List<SourceMeterData> newSourceMeterDataList)
@@ -111,6 +114,7 @@ namespace DeviceFunction
                 return false;
             }
 
+            SaveConfigLog(smu_data.Title_CardID, config);
             return true;
         }
 
@@ -175,8 +179,13 @@ namespace DeviceFunction
         public bool OutputOff(ESMUName name)
         {
             SourceMeterListDict.TryGetValue(name.ToString(), out SourceMeterData smu_data);
+            
             if (smu_data == null || IsInitial == false)
                 return false;
+
+            if (smu_data.Title_SMU_Type == ESMUType.None.ToString())
+                return true;
+
             var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
             int? res = targetDevice?.OutputOff(smu_data.Title_CardID);
             if (res != 0)
@@ -193,6 +202,9 @@ namespace DeviceFunction
 
             if (smu_data == null || IsInitial == false)
                 return false;
+
+            if (smu_data.Title_SMU_Type == ESMUType.None.ToString())
+                return true;
 
             var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
 
@@ -213,6 +225,9 @@ namespace DeviceFunction
 
             if (smu_data == null || IsInitial == false)
                 return false;
+
+            if (smu_data.Title_SMU_Type == ESMUType.None.ToString())
+                return true;
 
             var targetDevice = SourceMeterList.FirstOrDefault(device => device.GetSourceMeterType().ToString() == smu_data.Title_SMU_Type);
 
@@ -285,6 +300,38 @@ namespace DeviceFunction
                 return response;
 
             return SourceMeterTransientResponse.Normal;
+        }
+        private void SaveConfigLog(string card_id, SourceMeterConfiguration config)
+        {
+            Tool.SaveLogToFile($"SMU Config: {card_id}", log: SMU_Log, level:"INF");
+
+            Tool.SaveLogToFile($"SMU Config: SourceFunction={config.SourceFunction}, " +
+                               $"OutputMode={config.OutputMode}, " +
+                               $"ComplianceLimit={config.ComplianceLimit}, ", 
+                               log:SMU_Log);
+
+            if(config.OutputMode == SourceMeterOutputMode.Pulse)
+            {
+                Tool.SaveLogToFile($"SMU Config: PulseOn={config.PulseOnTimeSeconds}s, PulseOff={config.PulseOffTimeSeconds}s", log: SMU_Log);
+            }
+
+            int stepCount = config.Steps.Count;
+            for (int index = 0; index < stepCount; index++)
+            {
+                SourceMeterStep step = config.Steps[index];
+
+                if (step == null)
+                {
+                    Tool.SaveLogToFile($"SMU Step[{index + 1}/{stepCount}]: null", log: SMU_Log);
+                    continue;
+                }
+
+                Tool.SaveLogToFile($"SMU Config: " +
+                                   $"Level={step.Level}, " +
+                                   $"SourceDelay={step.SourceDelaySeconds}s, " +
+                                   $"ApertureTime={step.ApertureTimeSeconds}s",
+                                   log: SMU_Log);
+            }
         }
         #endregion
     }

@@ -281,6 +281,10 @@
       <Project>{4b021977-fa50-49a0-ac58-bfa3f34fcbd0}</Project>
       <Name>Device_VirtualCamera</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Device_VirtualSMU\Device_VirtualSMU.csproj">
+      <Project>{fecd6a90-c199-4bcf-b4ff-e880c8711803}</Project>
+      <Name>Device_VirtualSMU</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Device_Virtual\Device_Virtual.csproj">
       <Project>{5b509d3f-99cd-44e0-bec4-591c3096d61b}</Project>
       <Name>Device_Virtual</Name>

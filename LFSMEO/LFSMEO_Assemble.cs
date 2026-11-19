@@ -36,6 +36,7 @@ using Device_MLO;
 using Device_TemeratureControl_Virtual;
 using Device_Guishan;
 using Device_NationalInstruments;
+using Device_VirtualSMU;
 
 //[Tool]
 using ToolFunction;
@@ -51,7 +52,6 @@ using RGBTester;
 using ProbeTester;
 using BurnInTester;
 using AAMachine;
-
 
 namespace LFSMEO
 {
@@ -125,7 +125,7 @@ namespace LFSMEO
             services.AddSingleton<ITemperatureControl, Virtual_TemperatureControl>();
             services.AddSingleton<ITemperatureControl, Fittech_AMIDA_WIN>();
             services.AddSingleton<ISourceMeter, AdapterNIBase>();
-
+            services.AddSingleton<ISourceMeter, VirtualSMU>();
 
             //[Form]
             services.AddSingleton<IF_MotionSetting, F_MotionSetting>();

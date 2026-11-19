@@ -24,6 +24,7 @@ namespace DeviceCore
 
     public enum ESMUType
     {
+        None,
         VIRTUAL,
         NI,
     }
@@ -114,7 +115,6 @@ namespace DeviceCore
         public double SourceRange { get; set; }                     // 固定輸出 Range；0 表示由程式自動選擇
         public double ComplianceRange { get; set; }                 // Compliance 硬體 Range；0 表示依限制值選擇
         
-        // 待釐清
         public bool AutoRangePerStep { get; set; } = true;          // SourceRange 為 0 時，是否每個 Step 個別選 Range
 
         public SourceMeterTriggerTerminal StartTriggerInputTerminal { get; set; } = SourceMeterTriggerTerminal.None; // Sequence 啟動 Trigger 輸入端
