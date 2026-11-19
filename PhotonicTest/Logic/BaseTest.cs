@@ -115,6 +115,13 @@ namespace PhotonicTest.Logic
                         Level = voltage,
                         SourceDelaySeconds = delay_time*0.2,    // 取20%當作爬升時間
                         ApertureTimeSeconds = delay_time*0.8    // 取80%當作量測
+                    },
+
+                    new SourceMeterStep // 歸零準位用
+                    {
+                        Level = 0,
+                        SourceDelaySeconds = 0.0001,
+                        ApertureTimeSeconds = 0.0001
                     }
                 },
             };

@@ -345,41 +345,43 @@ namespace BurnInTester.UI
         private void Btn_SourceMeterTest_Click(object sender, EventArgs e)
         {
             IFunction_SourceMeter smu = ServiceProvider.GetRequiredService<IFunction_SourceMeter>();
-
-            double current, voltage;
-
             smu.SetRelay(ESMUName.SMU_1, true);
             smu.SetRelay(ESMUName.SMU_2, true);
 
             Vcsel TestFunc = ServiceProvider.GetRequiredService<Vcsel>();
-            //bool res = TestFunc.SIMV(0.003, 5, 0.015, out current, out voltage);
-            //TestFunc.SIMV(0.002, 5, 1, out current, out voltage);
-            //TestFunc.SVMI(3, 0.005, 1, out double current1, out double voltage1);
+            double current, voltage;
+
+            // VF
+            //TestFunc.SIMV(0.003, 5, 0.015, out current, out voltage);
+            //TestFunc.SIMV(0.002, 5, 0.005, out current, out voltage);
+            
+            // IR
+            //TestFunc.SVMI(3, 0.005, 0.005, out current, out  voltage);
+            //TestFunc.SVMI(1.5, 0.005, 0.005, out current, out  voltage);
+
+            // LIV
+            List<double> test_current = new List<double>();
+            test_current.Add(0.004);
+            test_current.Add(0.0035);
+            test_current.Add(0.004);
+            IList<LIVPoint> points = new List<LIVPoint>();
+            TestFunc.LIV(test_current, 5, 3, 0.01, 0.002, 0.008, out points);
 
 
-
+            // Pulse VF
             //double pulse_width = 300e-6;
             //double duty = 3;
-            //bool res = TestFunc.SIMV_Pulse(2, 5, pulse_width, duty, out current, out voltage);
-            //res = TestFunc.SIMV_Pulse(1, 5, pulse_width, duty, out current, out voltage);
+            //TestFunc.SIMV_Pulse(2, 5, pulse_width, duty, out current, out voltage);
+            //TestFunc.SIMV_Pulse(1, 5, pulse_width, duty, out current, out voltage);
 
-            //List<double> lcurrent = new List<double>();
-            //lcurrent.Add(0.004);
-            //lcurrent.Add(0.0035);
-            //lcurrent.Add(0.004);
-            //IList<LIVPoint> points = new List<LIVPoint>();
-            //TestFunc.LIV(lcurrent, 5, 3, 0.01, 0.002, 0.008, out points);
+            // Pulse LIV
+            //List<double> test_pulse_current = new List<double>();
+            //test_pulse_current.Add(1);
+            //test_pulse_current.Add(3);
+            //test_pulse_current.Add(1.7);
+            //IList<LIVPoint> pulse_points = new List<LIVPoint>();
+            //TestFunc.LIV_Pulse(test_pulse_current, 10, 5, 0.01, 300e-6, 3, out pulse_points);
 
-            List<double> lcurrent = new List<double>();
-            lcurrent.Add(1);
-            lcurrent.Add(2);
-            lcurrent.Add(1.7);
-            IList<LIVPoint> points = new List<LIVPoint>();
-            TestFunc.LIV_Pulse(lcurrent, 5, 3, 0.01, 300e-6, 3, out points);
-
-
-
-            //SMU.SIMV(0.005, 2, 1, out current, out voltage);
         }
         #endregion
     }
