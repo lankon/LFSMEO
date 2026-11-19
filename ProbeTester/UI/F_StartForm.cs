@@ -118,7 +118,9 @@ namespace ProbeTester.UI
             //    }
             //}
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
-            MainTask.SetTask<TaskInitial>();
+            
+            //MainTask.SetTask<TaskInitial>();
+            MainTask.SetTask<TaskInitial_XYZA>();
             MainTask.Run();
         }
 
