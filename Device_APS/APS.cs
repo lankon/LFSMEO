@@ -376,6 +376,8 @@ namespace Device_APS
             int axis = devNo;
             int res1, res2;
 
+            pos = TransferToPulse(pos, axis);
+
             res1 = APS168.APS_set_position_f(axis, pos);
             res2 = APS168.APS_set_command_f(axis, pos);
 

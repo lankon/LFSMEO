@@ -180,7 +180,8 @@ namespace DeviceUI.Motion
             Labl_PostionAxis0.Text = MotionSettingLogic.Function_MotionCard.GetPosition(0).ToString("000.000");
             for (int i=0; i< AxisCount; i++)
             {
-                Labl_PostionAxis[i].Text = MotionSettingLogic.Function_MotionCard.GetPosition(i + 1).ToString("000.000");
+                string pos = MotionSettingLogic.Function_MotionCard.GetPosition(i + 1).ToString("000.000");
+                Labl_PostionAxis[i].Text = pos;
             }
         }
 

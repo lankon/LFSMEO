@@ -165,7 +165,10 @@ namespace DeviceFunction
                     case WORK.SERVO_ON:
                         {
                             if (SetServo(axis, true))
+                            {
                                 state = WORK.GO_HOME_FIRST;
+                                await Task.Delay(200);  // Servo On 後延遲再下移動命令
+                            }
                             else
                                 return false;
                         }
@@ -184,7 +187,11 @@ namespace DeviceFunction
                                 return false;
                             }
                             else
+                            {
+                                Tool.SaveLogToFile($"{DML_INFO[axis].AXIS_NANE} GO_HOME_FIRST");
                                 state = WORK.GO_HOME_FIRST_SHIFT;
+                            }
+                                
                         }
                         break;
                     case WORK.GO_HOME_FIRST_SHIFT:
@@ -213,7 +220,10 @@ namespace DeviceFunction
                                     return false;
                                 }
                                 else
+                                {
+                                    Tool.SaveLogToFile($"{DML_INFO[axis].AXIS_NANE} GO_HOME_FIRST_SHIFT");
                                     state = WORK.GO_HOME_SECOND;
+                                }
                             }
                         }
                         break;
@@ -237,7 +247,11 @@ namespace DeviceFunction
                                 return false;
                             }
                             else
+                            {
+                                Tool.SaveLogToFile($"{DML_INFO[axis].AXIS_NANE} GO_HOME_SECOND");
                                 state = WORK.GO_HOME_SECOND_SHIFT;
+                            }
+                                
                         }
                         break;
                     case WORK.GO_HOME_SECOND_SHIFT:
@@ -270,7 +284,10 @@ namespace DeviceFunction
                                     return false;
                                 }
                                 else
+                                {
+                                    Tool.SaveLogToFile($"{DML_INFO[axis].AXIS_NANE} GO_HOME_SECOND_SHIFT");
                                     state = WORK.WAIT_GO_HOME_SECOND_SHIFT;
+                                }
                             }
                         }
                         break;
@@ -283,14 +300,19 @@ namespace DeviceFunction
 
                             return true;
                         }
-                        break;
                 }
 
                 await Task.Delay(interval);
                 elapsed += interval;
             }
 
-            return true;
+            if(elapsed > timeoutMs - 1000)
+            {
+                Tool.SaveLogToFile($"{DML_INFO[axis].AXIS_NANE} TimeOut", level:"ERR");
+                return false;
+            }
+
+            return false;
         }
         private void LoadMotionConfig(string path)
         {
@@ -473,6 +495,8 @@ namespace DeviceFunction
                     name = DML[j].GetName();
 
                 nameToIndex[name] = j;
+
+                Tool.SaveLogToFile($"MotionCard: {DML[j].GetName()} Initial Success");
             }
 
             for (int i = 0; i < DML_INFO.Count; i++)
@@ -567,7 +591,7 @@ namespace DeviceFunction
             DML_Homing[axis] = true;
 
             Tool.SaveLogToFile($"軸:{axis}({DML_INFO[axis].AXIS_NANE}) 開始初始化");
-            bool ok = await GoHome_FSM(axis, 15000);
+            bool ok = await GoHome_FSM(axis, 180000);
 
             if (!ok)
             {
