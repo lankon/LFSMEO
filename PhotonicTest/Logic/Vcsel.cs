@@ -67,7 +67,6 @@ namespace PhotonicTest.Logic
                 ComplianceRange = 0,
                 AutoRangePerStep = false,
 
-
                 Steps = ld_current_steps.Select(current => new SourceMeterStep
                 {
                     Level = current,
@@ -86,12 +85,13 @@ namespace PhotonicTest.Logic
                 ComplianceRange = 0,
                 AutoRangePerStep = false,
 
-                Steps = ld_current_steps.Select(current => new SourceMeterStep
+                Steps = ld_current_steps.Select((current, index) => new SourceMeterStep
                 {
-                    Level = pd_bias_voltage,
+                    Level = index == ld_current_steps.Count - 1? 0 : pd_bias_voltage,   // 最後一筆歸零,其餘bias
                     SourceDelaySeconds = source_delay_seconds,
                     ApertureTimeSeconds = aperture_time_seconds
                 }).ToList()
+
             };
 
             bool ld_output_on = false;
