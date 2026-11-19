@@ -133,6 +133,7 @@
     <Compile Include="Logic\1.Task\DEFindCenter\Task_DESidePACCDFindCenter_DETester.cs" />
     <Compile Include="Logic\1.Task\MLO\SubTask\SubTask_GotoMLOPos_DETester.cs" />
     <Compile Include="Logic\1.Task\MLO\Task_MLO.cs" />
+    <Compile Include="Logic\1.Task\TaskInitial_XYZA.cs" />
     <Compile Include="Logic\1.Task\UnLoadNest\SubTask\SubTask_UnLoadNest_DETester.cs" />
     <Compile Include="Logic\1.Task\UnLoadNest\Task_UnLoadNest.cs" />
     <Compile Include="Logic\1.Task\PTPA\SubTask\SubTaskCalibrationUpCCD.cs" />
