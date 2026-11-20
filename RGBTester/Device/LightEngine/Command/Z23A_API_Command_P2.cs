@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Z23A_API;
 
 using Z23A_P2_API;
 using RGBTester.Base;
@@ -21,7 +22,7 @@ namespace RGBTester.Device
         #region parameter define
         Z23A_P2_FW_API api;
         private bool IsInitial = false;
-        public string ProductName { get; private set; } = eLEAType.Z23A_API.ToString();
+        public string ProductName { get; private set; } = eLEAType.Z23A_API_P2.ToString();
 
         // [使用API時不用定義]
         public byte LED_R_LSB { get; private set; } = (byte)Z23A_P2_FW_API.Color.COLOR_R;
@@ -54,12 +55,8 @@ namespace RGBTester.Device
             try
             {
                 api = new Z23A_P2_FW_API();
+
                 res = api.Initial_UART_Settings();
-            }
-            catch
-            {
-                return false;
-            }
             
             if (res != "Initial UART success")
                 return false;
@@ -71,6 +68,13 @@ namespace RGBTester.Device
 
             IsInitial = true;
             return true;
+        }
+            catch
+            {
+                return false;
+            }
+            
+            
         }
         public bool SetLed_DAC(byte rgb, byte side, int value)
         {
@@ -143,7 +147,7 @@ namespace RGBTester.Device
         }
         public bool SetLed_CurrentMode(string mode)
         {
-            if (IsInitial == false) return false;
+            if (IsInitial == false && Open() == false) return false;
 
             Z23A_P2_FW_API.Current_Mode current_Mode = Z23A_P2_FW_API.Current_Mode.LOW_MODE;
 
@@ -211,6 +215,7 @@ namespace RGBTester.Device
 
         public bool Set_RegisterValue(byte adr, byte len, byte[] value)
         {
+           
             Z23A_P2_FW_API.Error_Code res = api.RAA491901_Set_Register_Value(adr, len, value);
 
             if (res == Z23A_P2_FW_API.Error_Code.STATUS_OK)
@@ -221,6 +226,7 @@ namespace RGBTester.Device
 
         public bool Set_RegisterValue(ushort adr, byte len, byte[] value)
         {
+            
             Z23A_P2_FW_API.Error_Code res = api.C4_Set_Register_Value(adr, len, value);
 
             if (res == Z23A_P2_FW_API.Error_Code.STATUS_OK)
@@ -229,6 +235,7 @@ namespace RGBTester.Device
                 return false;
         }
 
+       
         public bool SetLed_AllColorVoltage(byte side, params double[] values)
         {
             if (IsInitial == false)

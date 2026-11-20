@@ -8,6 +8,7 @@ namespace RGBTester.Base
 {
     public interface IF_StatusBox
     {
+        event EventHandler Confirmed;
         void ShowMessage(string msg, string status = "ERR");
     }
 }

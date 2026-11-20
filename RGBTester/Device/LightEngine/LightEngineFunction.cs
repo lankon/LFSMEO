@@ -57,6 +57,8 @@ namespace RGBTester.Device
                 select_type = eLEAType.GL18;
             else if (type == (int)eLEAType.Z23A_API)
                 select_type = eLEAType.Z23A_API;
+            else if (type == (int)eLEAType.Z23A_API_P2)
+                select_type = eLEAType.Z23A_API_P2;
 
             foreach (ILightEngineCommand lea in LEAs)
             {
@@ -184,6 +186,19 @@ namespace RGBTester.Device
                 return true;
             else
                 return false;
+        }
+        public bool Set_RegisterValue(ushort adr, byte len, byte[] value)
+        {
+            if (LEA.Set_RegisterValue(adr, len, value))
+            {
+                Tool.SaveLogToFile($"Set Register Value: Adr=0x{adr:X4} Len={len} Value={BitConverter.ToString(value)}");
+                return true;
+            }
+            else
+            {
+                Tool.SaveLogToFile($"Set Register Value fail: Adr=0x{adr:X4} Len={len} Value={BitConverter.ToString(value)}", level: "ERR");
+                return false;
+            }
         }
 
         //[Get Function]

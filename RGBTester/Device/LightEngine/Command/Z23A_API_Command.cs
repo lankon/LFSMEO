@@ -219,6 +219,10 @@ namespace RGBTester.Device
             else
                 return false;
         }
+        public bool Set_RegisterValue(ushort adr, byte len, byte[] value)
+        {
+            return true;
+        }
 
         public bool SetLed_AllColorVoltage(byte side, params double[] values)
         {

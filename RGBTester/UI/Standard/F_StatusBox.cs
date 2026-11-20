@@ -28,6 +28,7 @@ namespace RGBTester.UI
 
         #region parameter define
         private IServiceProvider ServiceProvider;
+        public event EventHandler Confirmed;
         #endregion
 
         #region private function
@@ -98,12 +99,12 @@ namespace RGBTester.UI
 
         private void F_StatusBox_VisibleChanged(object sender, EventArgs e)
         {
-
         }
 
         private void Btn_Confirm_Click(object sender, EventArgs e)
         {
             var main_form = ServiceProvider.GetRequiredService<F_MainForm>();
+            Confirmed?.Invoke(this, EventArgs.Empty);
             
             // 顯示到最上層
             main_form.Activate();

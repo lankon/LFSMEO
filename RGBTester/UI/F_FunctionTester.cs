@@ -21,7 +21,7 @@ namespace RGBTester.UI
     {
         public F_FunctionTester(IServiceProvider serviceProvider, F_FunctionTesterLogic f_FunctionTesterLogic,
                                 IFunction_LightEngine lea, IFunction_DataUpload function_DataUpdate,
-                                IF_UserPrivilegeLogic Privilege)
+                                IF_UserPrivilegeLogic Privilege, IF_StatusBox f_StatusBox)
         {
             InitializeComponent();
 
@@ -30,6 +30,7 @@ namespace RGBTester.UI
             LEA = lea;
             DataUpdate = function_DataUpdate;
             UserPrivilege = Privilege;
+            StatusBox = f_StatusBox;
 
             InitialForm();
         }
@@ -40,6 +41,7 @@ namespace RGBTester.UI
         IFunction_LightEngine LEA;
         IFunction_DataUpload DataUpdate;
         F_FunctionTesterLogic FunctionTesterLogic;
+        IF_StatusBox StatusBox;
         #endregion
 
         #region private function
@@ -51,6 +53,8 @@ namespace RGBTester.UI
             FunctionTesterLogic.SetVirtual_IO_Rule();
 
             ShowHint();
+
+            StatusBox.Confirmed += (s, e) => ClearSerialNumber();
 
             LEA.Set_LEA_Type();
             LEA.Open();
@@ -109,6 +113,10 @@ namespace RGBTester.UI
                 form.Show();
             }
         }
+        private void ClearSerialNumber()
+        {
+            TxtBx_SerialNumber.Text = "";
+        }
         #endregion
 
         #region public function
@@ -117,6 +125,8 @@ namespace RGBTester.UI
 
         }
         #endregion
+
+
 
         private void F_Equipment_Setting_VisibleChanged(object sender, EventArgs e)
         {
@@ -163,7 +173,7 @@ namespace RGBTester.UI
 
         private void Btn_StartTest_Click(object sender, EventArgs e)
         {
-            if(TxtBx_SerialNumber.Text.Trim() == "")
+            if (TxtBx_SerialNumber.Text.Trim() == "")
             {
                 MessageBox.Show("Please input Serial Number.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -178,8 +188,6 @@ namespace RGBTester.UI
 
                 if (res == -1)
                     MessageBox.Show("Upload System No Connent", "Information", MessageBoxButtons.OK, MessageBoxIcon.Error);
-             
-                TxtBx_SerialNumber.Text = "";
             }
             else
             {

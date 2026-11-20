@@ -11,6 +11,7 @@ namespace RGBTester.Base
         VIRTUAL,
         Z23A_API,
         GL18,
+        Z23A_API_P2,
     }
     
     public interface IFunction_LightEngine
@@ -29,7 +30,7 @@ namespace RGBTester.Base
         bool SetLed_AllColorVoltage(byte side, params double[] values);
         bool SetLed_CurrentMode(string mode);
         bool Set_RegisterValue(byte adr, byte len, byte[] value);
-
+        bool Set_RegisterValue(ushort adr, byte len, byte[] value);
         string GetTemperature();
         int[] Get_DAC();
         double Get_VoltageLimit(byte rgb, byte side);

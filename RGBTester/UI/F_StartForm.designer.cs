@@ -2427,7 +2427,8 @@ namespace RGBTester.UI
             this.Cmbx_ProductType.Items.AddRange(new object[] {
             "Virtual",
             "Z23A",
-            "GL18"});
+            "GL18",
+            "Z23A_P2"});
             this.Cmbx_ProductType.Location = new System.Drawing.Point(210, 6);
             this.Cmbx_ProductType.Name = "Cmbx_ProductType";
             this.Cmbx_ProductType.Size = new System.Drawing.Size(129, 28);

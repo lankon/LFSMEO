@@ -173,7 +173,10 @@ namespace RGBTester.Device
         {
             return true;
         }
-
+        public bool Set_RegisterValue(ushort adr, byte len, byte[] value)
+        {
+            return true;
+        }
         
 
 
