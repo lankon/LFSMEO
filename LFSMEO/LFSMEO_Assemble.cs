@@ -32,9 +32,13 @@ using Device_Spectrum_Virtual;
 using Device_MLO;
 
 //[Tool]
+using ToolFunction;
 using UserPrivilege.Base;
-using UserPrivilege.UI;
 using UserPrivilege.Logic;
+using UserPrivilege.UI;
+using HistoryReader.Base;
+using HistoryReader.Logic;
+using HistoryReader.UI;
 
 //[Machine]
 using RGBTester;
@@ -94,6 +98,7 @@ namespace LFSMEO
             OTO Spectro_OTO = new OTO();
             APS APS = new APS();
             ChillerControl_Klzx Klxz = new ChillerControl_Klzx();
+            HistoryLogHub historyLogHub = new HistoryLogHub(Path.Combine(Directory.GetCurrentDirectory(), "History"));
 
             services.AddSingleton<IMotionCard>(mn200);
             services.AddSingleton<IMotionCard>(APS);
@@ -121,11 +126,14 @@ namespace LFSMEO
             services.AddSingleton<IF_LightControl, F_LightControl>();
             services.AddSingleton<IF_UserPrivilege, F_UserPrivilege>();
             services.AddSingleton<IF_Spectrometer, F_Spectrometer>();
+            services.AddSingleton<IF_HistoryReader, F_HistoryReader>();
 
             //[Form Logic]
             services.AddSingleton<F_MotionSettingLogic>();
             services.AddSingleton<F_CameraSettingLogic>();
             services.AddSingleton<IF_UserPrivilegeLogic, F_UserPrivilegeLogic>();
+            services.AddSingleton(historyLogHub);
+            services.AddSingleton<IF_HistoryReaderLogic, F_HistoryReaderLogic>();
 
             //[Function]
             services.AddSingleton<IFunction_MotionCard, Function_Motion_Card>();
