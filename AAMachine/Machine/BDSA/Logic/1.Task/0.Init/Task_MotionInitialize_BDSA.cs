@@ -10,11 +10,6 @@ using AAMachine.Machine;
 
 namespace AAMachine.Machine.BDSA.Task
 {
-    /// <summary>
-    /// BDSA motion initialization task migrated from FitTech.
-    /// FitTech-only UI, loader and global-state calls are intentionally kept as TODOs
-    /// until their LFSMEO services are defined.
-    /// </summary>
     public class Task_MotionInitialize_BDSA : IBaseTask<Task_MotionInitialize_BDSA.WORK>
     {
         public Task_MotionInitialize_BDSA(
@@ -24,7 +19,7 @@ namespace AAMachine.Machine.BDSA.Task
             string set_state = "Default")
             : base(dependencies)
         {
-            Machine = machine ?? throw new ArgumentNullException(nameof(machine));
+            Machine = machine;
             F_StateControl = f_StateControl;
             TableX = Machine.Axis.Axis_X;
             TableZ = Machine.Axis.Axis_Z;
@@ -46,17 +41,10 @@ namespace AAMachine.Machine.BDSA.Task
         private readonly MachineContext Machine;
         private readonly IF_StateControl F_StateControl;
 
-        #region FitTech migration settings
-
-        // FitTech source: EIO.DispensingPressure / EIO.WipeNeedle / EIO.CCDFiducial.
-        // These names do not currently exist in DeviceCore.EIOName, so the original
-        // output operations remain explicit TODOs in SetIOStatus().
         private readonly EIOName GZSafetyPosition = EIOName.GZSafetyPosition;
         private readonly EIOName FZSafetyPosition = EIOName.FZSafetyPosition;
         private readonly EIOName TableZSafetyPosition = EIOName.TableZSafetyPosition;
         private readonly EIOName EXSafetyPosition = EIOName.EXSafetyPosition;
-
-        #endregion
 
         #region axis mapping
 
@@ -123,7 +111,6 @@ namespace AAMachine.Machine.BDSA.Task
         #endregion
 
         #region private function
-
         private void MultiAxisGoHome(int[] axisArray, WORK nextState)
         {
             foreach (int axis in axisArray)
