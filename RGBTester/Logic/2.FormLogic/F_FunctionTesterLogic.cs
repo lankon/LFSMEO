@@ -3,29 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 
 using ToolFunction;
 using DeviceCore;
 using RGBTester.Base;
 using RGBTester.Base.UploadDataSetting;
+using RGBTester.Base.F_OpticalTest;
 
 namespace RGBTester.Logic
 {
     public class F_FunctionTesterLogic
     {
-        public F_FunctionTesterLogic(IRGBTesterMachine rGBTesterMachine, IServiceProvider serviceProvider,
+        public F_FunctionTesterLogic(IRGBTesterMachine rGBTesterMachine, IServiceProvider serviceProvider, IF_StatusBox f_StatusBox,
                                      F_StartFormLogic f_StartFormLogic, RGBTesterFunction rGBTesterFunction)
         {
             RGBTesterMachine = rGBTesterMachine;
             ServiceProvider = serviceProvider;
             StartFormLogic = f_StartFormLogic;
             RGBfunc = rGBTesterFunction;
+            StatusBox = f_StatusBox;
         }
 
         #region parameter define
         private IRGBTesterMachine RGBTesterMachine;
         private IServiceProvider ServiceProvider;
+        private IF_StatusBox StatusBox;
         private RGBTesterFunction RGBfunc;
         private F_StartFormLogic StartFormLogic;
         #endregion
@@ -103,12 +107,56 @@ namespace RGBTester.Logic
 
             if (UploadSetting() != 0)
                 return -1;
-            
+
             var MainTask = ServiceProvider.GetRequiredService<IBaseMainTask>();
             MainTask.SetTask<TaskFunctionTest>();
             MainTask.Run();
 
             return 0;
+        }
+
+        public bool CheckContact()
+        {
+            ushort regAddr = 0x0438;
+            byte regCount = 0x01;
+            byte[] data = new byte[] { 0xC0 };
+            RGBTesterMachine.LightEngine.Set_RegisterValue(regAddr, regCount, data);
+            Thread.Sleep(1000);
+
+            RGBTesterMachine.DIOL.Clear_AI_VirtualData();
+            StartFormLogic.ReadVirtual_AI_Data();
+
+            double Voltage_6V = 0;
+            double Voltage_1V2 = 0;
+            double UL_6V = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_6V_UL);
+            double LL_6V = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_6V_LL);
+            double UL_1V2 = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_1V2_UL);
+            double LL_1V2 = ApplicationSetting.Get_Double_Recipe<eF_ParameterSettingRecipe>((int)eF_ParameterSettingRecipe.TxtBx_Voltage_1V2_LL);
+            int method = ApplicationSetting.Get_Int_Recipe<eF_FunctionTester>((int)eF_FunctionTester.Cmbx_TestMode);
+            if (method == (int)eTestMode.LEFT)
+            {
+                Voltage_6V = RGBTesterMachine.DIOL.GetAInputStatus(EIOName.Left_6V);
+                Voltage_1V2 = RGBTesterMachine.DIOL.GetAInputStatus(EIOName.Left_1V2);
+            }
+            else if (method == (int)eTestMode.RIGHT)
+            {
+                Voltage_6V = RGBTesterMachine.DIOL.GetAInputStatus(EIOName.Right_6V);
+                Voltage_1V2 = RGBTesterMachine.DIOL.GetAInputStatus(EIOName.Right_1V2);
+            }
+
+            if (Voltage_6V > UL_6V || Voltage_6V < LL_6V)
+            {
+                StatusBox.ShowMessage($"6V Contact Fail, Voltage={Voltage_6V}V");
+                return false;
+            }
+
+            if(Voltage_1V2 > UL_1V2 || Voltage_1V2 < LL_1V2)
+            {
+                StatusBox.ShowMessage($"1.2V Contact Fail, Voltage={Voltage_1V2}V");
+                return false;
+            }
+
+            return true;
         }
 
     }

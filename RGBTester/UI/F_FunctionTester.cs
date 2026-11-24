@@ -222,5 +222,13 @@ namespace RGBTester.UI
             MainTask.SetTask<SubTaskMoveToElectrical>();
             MainTask.Run();
         }
+
+        private void Btn_CheckContact_Click(object sender, EventArgs e)
+        {
+            bool res = FunctionTesterLogic.CheckContact();
+
+            if(res)
+                MessageBox.Show("Contact Success", "Information", MessageBoxButtons.OK, MessageBoxIcon.None);
+        }
     }
 }

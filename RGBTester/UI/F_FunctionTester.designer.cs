@@ -48,6 +48,7 @@ namespace RGBTester.UI
             this.Btn_MoveToElectrical = new System.Windows.Forms.Button();
             this.Btn_Test = new System.Windows.Forms.Button();
             this.Btn_MoveToOptical = new System.Windows.Forms.Button();
+            this.Btn_CheckContact = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.Pnl_Setting.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -138,7 +139,7 @@ namespace RGBTester.UI
             // Btn_StartTest
             // 
             this.Btn_StartTest.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_StartTest.Location = new System.Drawing.Point(4, 3);
+            this.Btn_StartTest.Location = new System.Drawing.Point(5, 68);
             this.Btn_StartTest.Name = "Btn_StartTest";
             this.Btn_StartTest.Size = new System.Drawing.Size(555, 125);
             this.Btn_StartTest.TabIndex = 9;
@@ -209,17 +210,18 @@ namespace RGBTester.UI
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.Btn_CheckContact);
             this.panel1.Controls.Add(this.Btn_UnLoad);
             this.panel1.Controls.Add(this.Btn_StartTest);
             this.panel1.Location = new System.Drawing.Point(395, 186);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(563, 196);
+            this.panel1.Size = new System.Drawing.Size(563, 261);
             this.panel1.TabIndex = 12;
             // 
             // Btn_UnLoad
             // 
             this.Btn_UnLoad.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.Btn_UnLoad.Location = new System.Drawing.Point(4, 132);
+            this.Btn_UnLoad.Location = new System.Drawing.Point(5, 199);
             this.Btn_UnLoad.Name = "Btn_UnLoad";
             this.Btn_UnLoad.Size = new System.Drawing.Size(555, 59);
             this.Btn_UnLoad.TabIndex = 10;
@@ -258,6 +260,17 @@ namespace RGBTester.UI
             this.Btn_MoveToOptical.TabIndex = 14;
             this.Btn_MoveToOptical.Text = "MoveTo Optical";
             this.Btn_MoveToOptical.UseVisualStyleBackColor = true;
+            // 
+            // Btn_CheckContact
+            // 
+            this.Btn_CheckContact.Font = new System.Drawing.Font("微軟正黑體", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.Btn_CheckContact.Location = new System.Drawing.Point(5, 3);
+            this.Btn_CheckContact.Name = "Btn_CheckContact";
+            this.Btn_CheckContact.Size = new System.Drawing.Size(555, 59);
+            this.Btn_CheckContact.TabIndex = 11;
+            this.Btn_CheckContact.Text = "Check Contact";
+            this.Btn_CheckContact.UseVisualStyleBackColor = true;
+            this.Btn_CheckContact.Click += new System.EventHandler(this.Btn_CheckContact_Click);
             // 
             // F_FunctionTester
             // 
@@ -302,5 +315,6 @@ namespace RGBTester.UI
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox TxtBx_OperatorID;
         private System.Windows.Forms.Button Btn_MoveToOptical;
+        private System.Windows.Forms.Button Btn_CheckContact;
     }
 }

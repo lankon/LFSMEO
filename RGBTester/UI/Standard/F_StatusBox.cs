@@ -92,7 +92,10 @@ namespace RGBTester.UI
             }
             else
             {
-                UpdateUI(msg, main_form);
+                if (status == "ERR")
+                    UpdateUI(msg, main_form);
+                else
+                    UpdateUI_OK(msg, main_form);
             }
         }
         #endregion
