@@ -37,7 +37,7 @@ namespace DeviceCore
         int SetHardwareGain(string id, double gain);
         int SetExposureTime(string id, double time);
 
-        //[]
+        //[Get Image]
         int StartGrabbing(string id);
         int StopGrabbing(string id);
         int SoftwareTrigger(string id);

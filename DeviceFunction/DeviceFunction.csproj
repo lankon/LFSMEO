@@ -70,13 +70,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CameraFrame.cs" />
+    <Compile Include="Camera\CameraFrame.cs" />
     <Compile Include="Function_IO_Card.cs" />
-    <Compile Include="Function_Camera.cs" />
+    <Compile Include="Camera\Function_Camera.cs" />
     <Compile Include="Function_LightControl.cs" />
     <Compile Include="Function_Spectrometer.cs" />
     <Compile Include="Function_Motion_Card.cs" />
-    <Compile Include="F_CameraSettingLogic.cs" />
+    <Compile Include="Camera\F_CameraSettingLogic.cs" />
     <Compile Include="F_MotionSettingLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

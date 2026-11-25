@@ -20,7 +20,7 @@ namespace DeviceUI.Camera
     public partial class F_CameraSetting : Form, IF_CameraSetting
     {
         public F_CameraSetting(IServiceProvider serviceProvider, IF_CameraButton f_CameraButton,
-                                IFunction_Camera function_Camera, F_CameraSettingLogic f_CameraSettingLogic)
+                               IFunction_Camera function_Camera, F_CameraSettingLogic f_CameraSettingLogic)
         {
             InitializeComponent();
 
@@ -29,8 +29,8 @@ namespace DeviceUI.Camera
             ServiceProvider = serviceProvider;
             CameraButton = f_CameraButton;
             Function_Camera = function_Camera;
-            f_CameraSettingLogic.SetCameraSettingIF(this);
             CameraSettingLogic = f_CameraSettingLogic;
+            f_CameraSettingLogic.SetCameraSettingIF(this);
 
             InitialForm();
         }
@@ -85,8 +85,8 @@ namespace DeviceUI.Camera
         {
             CameraSettingLogic.UpdateCameraInfo2Form(CameraSettingLogic.GetCurrentBtnNum());
 
-            //DockDisplayToPanel(Pnl_DockCameraDisplay);
-            DockDisplayToLyPnl(LyPnl_DockCameraDisplay);
+            DockDisplayToPanel(Pnl_DockCameraDisplay);
+            //DockDisplayToLyPnl(LyPnl_DockCameraDisplay);
             SwitchToCameraDisplay(CameraButton.GetCurrentBtnNum());
             FitWindow(CameraButton.GetCurrentBtnNum());
             //ReadAllEnumSetting();
@@ -205,7 +205,7 @@ namespace DeviceUI.Camera
         {
             foreach (CameraDisplayPanel panel in DisplayPanels)
             {
-                tableLayoutPanel.Controls.Add(panel, 0, 0);
+                tableLayoutPanel.Controls.Add(panel, 0, 1);
                 panel.Dock = DockStyle.Fill;
             }
         }

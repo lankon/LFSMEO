@@ -95,7 +95,6 @@ namespace DeviceFunction
         }
         #endregion
 
-
         public int GetCurrentBtnNum()
         {
             return CameraButton.GetCurrentBtnNum();

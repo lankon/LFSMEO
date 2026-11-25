@@ -10,26 +10,28 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
 using ToolFunction;
 
 namespace DeviceFunction
 {
     public class Function_Camera: IFunction_Camera
     {
+        // 統一工業相機執行函式,提供給上層呼叫使用
         public Function_Camera(IEnumerable<ICamera> ccd)
         {
             Camera = ccd;
         }
 
         #region parameter define
-        private IEnumerable<ICamera> Camera;
-        private int[] CCD_Info2List;
-        private bool[] PauseLiveFlag { get; set; }
-        private List<ICamera> CameraList = new List<ICamera>();
-        private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();
-        private Dictionary<int, CancellationTokenSource> _activeLiveTasks = new Dictionary<int, CancellationTokenSource>();
-        private readonly Dictionary<int, CameraFrameBufferPool> _framePools = new Dictionary<int, CameraFrameBufferPool>();
-        private EventHandler<ImageReadyEventArgs>[] OnImageUpdates;
+        private IEnumerable<ICamera> Camera;        // 外部注入的相機驅動集合，例如海康與虛擬相機驅動
+        private int[] CCD_Info2List;                // 各 CCD 編號對應的 CameraList 驅動索引，-1 表示尚未找到對應驅動
+        private bool[] PauseLiveFlag { get; set; }  // 各 CCD 的 Live 暫停旗標，true 為暫停，false 為恢復
+        private List<ICamera> CameraList = new List<ICamera>();         // Connect() 成功的相機驅動清單，一個驅動可管理多台相機
+        private List<CAMERA_INFO> CCD_INFO = new List<CAMERA_INFO>();   // 依 CCD 編號保存的相機設定，包含類型、ID/IP、啟用狀態、名稱與 FPS
+        private Dictionary<int, CancellationTokenSource> _activeLiveTasks = new Dictionary<int, CancellationTokenSource>();     // 以 CCD 編號保存已登記 Live 工作的取消權杖來源，用於要求停止背景迴圈
+        private readonly Dictionary<int, CameraFrameBufferPool> _framePools = new Dictionary<int, CameraFrameBufferPool>();     // 各 CCD 專用的影像緩衝池，用於重複利用影像記憶體
+        private EventHandler<ImageReadyEventArgs>[] OnImageUpdates;     // 各 CCD 的影像更新事件處理器，取像完成後通知訂閱者
         
         enum WORK
         {
@@ -97,6 +99,7 @@ namespace DeviceFunction
         }
         private string GetCameraType(int index)
         {
+            // 取得對應的相機類別,順序配合UI
             if (index == 0)
                 return "None";
             else if (index == 1)
@@ -215,7 +218,7 @@ namespace DeviceFunction
                             break;
                         case WORK.GET_IMAGE:
                             {
-                                if (index > 1)  //測試用
+                                //if (index > 1)  //測試用
                                     index = 0;
 
                                 string path = AppDomain.CurrentDomain.BaseDirectory + $@"\Setting\Virtual\CCD_LIVE\CCD{ccdIndex}_picture{index}.png";
@@ -238,89 +241,21 @@ namespace DeviceFunction
                             break;
                     }
 
-                    int fps = CCD_INFO[ccdIndex].FPS < 0 ? 10 : CCD_INFO[ccdIndex].FPS;
+                    int fps = CCD_INFO[ccdIndex].FPS <= 0 ? 10 : CCD_INFO[ccdIndex].FPS;
                     Thread.Sleep(1000/fps);
                 }
             }
-            catch (Exception ex) { /* 錯誤處理 */ }
-        }
-        #endregion
-
-        private sealed class CameraFrameBufferPool
-        {
-            private readonly object _sync = new object();
-            private readonly FrameSlot[] _slots;
-            private readonly int _ccdIndex;
-
-            public CameraFrameBufferPool(int ccdIndex, int count)
+            catch (Exception ex) 
             {
-                _ccdIndex = ccdIndex;
-                _slots = new FrameSlot[count];
-
-                for (int i = 0; i < _slots.Length; i++)
-                    _slots[i] = new FrameSlot();
-            }
-
-            public CameraFrame TryRent(int width, int height, int stride, PixelFormat format)
-            {
-                lock (_sync)
-                {
-                    for (int i = 0; i < _slots.Length; i++)
-                    {
-                        FrameSlot slot = _slots[i];
-                        if (slot.InUse)
-                            continue;
-
-                        int requiredBytes = stride * height;
-                        if (slot.Buffer == IntPtr.Zero || slot.Capacity < requiredBytes)
-                        {
-                            if (slot.Buffer != IntPtr.Zero)
-                                Marshal.FreeHGlobal(slot.Buffer);
-
-                            slot.Buffer = Marshal.AllocHGlobal(requiredBytes);
-                            slot.Capacity = requiredBytes;
-                        }
-
-                        slot.InUse = true;
-                        slot.Frame = new CameraFrame(slot.Buffer, width, height, stride, format, _ccdIndex, Release);
-                        return slot.Frame;
-                    }
-                }
-
-                return null;
-            }
-
-            private void Release(CameraFrame frame)
-            {
-                lock (_sync)
-                {
-                    for (int i = 0; i < _slots.Length; i++)
-                    {
-                        FrameSlot slot = _slots[i];
-                        if (!object.ReferenceEquals(slot.Frame, frame))
-                            continue;
-
-                        slot.Frame = null;
-                        slot.InUse = false;
-                        return;
-                    }
-                }
-            }
-
-            private sealed class FrameSlot
-            {
-                public IntPtr Buffer = IntPtr.Zero;
-                public int Capacity = 0;
-                public bool InUse = false;
-                public CameraFrame Frame;
+                Tool.SaveLogToFile($"CCD:{ccdIndex} Live Loop Exception:{ex}");
             }
         }
-
         private static class NativeMethods
         {
             [DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory", SetLastError = false)]
             public static extern void CopyMemory(IntPtr dest, IntPtr src, UIntPtr count);
         }
+        #endregion
 
         #region public function
         // [Initial]
@@ -426,12 +361,26 @@ namespace DeviceFunction
                 return false;
             }
 
+            PauseLiveFlag[ccdIndex] = false;
+
             // 建立取消權杖
             var cts = new CancellationTokenSource();
             _activeLiveTasks.Add(ccdIndex, cts);
 
             // 啟動非同步取像迴圈
-            Task.Run(() => CameraLiveLoop(ccdIndex, cts.Token), cts.Token);
+            //Task.Run(() => CameraLiveLoop(ccdIndex, cts.Token), cts.Token);
+            Task worker = Task.Run(() =>
+            {
+                try
+                {
+                    CameraLiveLoop(ccdIndex, cts.Token);
+                }
+                finally
+                {
+                    if (!cts.IsCancellationRequested)
+                        cts.Cancel();
+                }
+            });
 
             return true;
         }

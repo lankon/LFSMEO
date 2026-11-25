@@ -92,7 +92,9 @@ namespace Device_VirtualCamera
         {
             if (!DeviceId.TryGetValue(id, out CameraInfo cameraInfo)) 
                 return -1;
-            
+
+            //C:\Users\User\Desktop\GitHub\LFSMEO\LFSMEO\bin\Debug\Setting\Virtual\CCD_LIVE
+
             if (!File.Exists(cameraInfo.VirtualImagePath)) 
                 return -1;
 
