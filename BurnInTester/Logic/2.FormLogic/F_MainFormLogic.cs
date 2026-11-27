@@ -55,8 +55,8 @@ namespace BurnInTester.Logic
             //Tool.SaveLogToFile("Load Camera Config");
             //ProbeTesterMachine.CCD.LoadCameraConfig();
             //ProbeTesterMachine.CCD.BindingCamera();
-            //IF_CameraSetting f_CameraSetting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
-            //f_CameraSetting.BindingDisplayEvent();
+            //ICameraDisplayService cameraDisplayService = ServiceProvider.GetRequiredService<ICameraDisplayService>();
+            //cameraDisplayService.BindingDisplayEvent();
         }
         #endregion
 

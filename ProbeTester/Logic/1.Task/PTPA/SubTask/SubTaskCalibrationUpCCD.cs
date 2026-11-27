@@ -44,7 +44,7 @@ namespace ProbeTester.Logic
         private long Delay = 0;
         private IF_BaseTask SubTask;                  //子流程
         private IF_StateControl F_StateControl;
-        private IF_CameraSetting CameraSetting;
+        private ICameraDisplayService CameraDisplayService;
         ProbeTesterFunction.AxisHardwareParam Axis;
         ProbeTesterFunction.CameraHardwareParam Camera;
         ProbeTesterFunction ProbeTesterFunc;
@@ -148,7 +148,7 @@ namespace ProbeTester.Logic
 
         private void Preset()
         {
-            CameraSetting = Deps.ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            CameraDisplayService = Deps.ServiceProvider.GetRequiredService<ICameraDisplayService>();
             ProbeTesterFunc = Deps.ServiceProvider.GetRequiredService<ProbeTesterFunction>();
             Axis = ProbeTesterFunc.Axis_HardwareParam;
             Camera = ProbeTesterFunc.Camera_HardwareParam;
@@ -204,7 +204,7 @@ namespace ProbeTester.Logic
                     {
                         Preset();
 
-                        CameraSetting.SwitchToCameraDisplay(Camera.Needle);
+                        CameraDisplayService.SwitchToCameraDisplay(Camera.Needle);
                         Deps.CCD.StartGrab(Camera.Needle);
                         Deps.Light.SetLightValue(ELightName.LIGHT_1, 20);
 

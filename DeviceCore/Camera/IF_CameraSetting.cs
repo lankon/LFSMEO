@@ -12,10 +12,6 @@ namespace DeviceCore
     {
         void UpdateParmeter();
         void SaveCameraParameter();
-        void BindingDisplayEvent();
-        void SwitchToCameraDisplay(int ccd);
-        void DockDisplayToPanel(object container);
-        void FitWindow(int ccd);
         //int Connect();
         //int StartGrabbing(string id);
         //int StopGrabbing(string id);

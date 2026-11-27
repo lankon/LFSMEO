@@ -71,13 +71,13 @@ namespace ProbeTester.UI
         }
         private void UpdatePage()
         {
-            IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
+            ICameraDisplayService cameraDisplayService = ServiceProvider.GetRequiredService<ICameraDisplayService>();
             IF_CameraButton btn = ServiceProvider.GetRequiredService<IF_CameraButton>();
             IFunction_Camera function_Camera = ServiceProvider.GetRequiredService<IFunction_Camera>();
 
-            setting.DockDisplayToPanel(Pnl_CCD);
-            setting.SwitchToCameraDisplay(btn.GetCurrentBtnNum());
-            setting.FitWindow(btn.GetCurrentBtnNum());
+            cameraDisplayService.DockDisplayToPanel(Pnl_CCD);
+            cameraDisplayService.SwitchToCameraDisplay(btn.GetCurrentBtnNum());
+            cameraDisplayService.FitWindow(btn.GetCurrentBtnNum());
             function_Camera.StartLive(btn.GetCurrentBtnNum());
         }
         private void LeavePage()
@@ -141,9 +141,9 @@ namespace ProbeTester.UI
             //    }
             //};
 
-            //IF_CameraSetting setting = ServiceProvider.GetRequiredService<IF_CameraSetting>();
-            //setting.SwitchToCameraDisplay(2);
-            //setting.DockDisplayToPanel(panel1);
+            //ICameraDisplayService cameraDisplayService = ServiceProvider.GetRequiredService<ICameraDisplayService>();
+            //cameraDisplayService.SwitchToCameraDisplay(2);
+            //cameraDisplayService.DockDisplayToPanel(panel1);
 
         }
 

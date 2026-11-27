@@ -107,6 +107,7 @@
     <Compile Include="Camera\CameraDisplayPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Camera\CameraDisplayService.cs" />
     <Compile Include="Camera\F_CameraButton.cs">
       <SubType>Form</SubType>
     </Compile>

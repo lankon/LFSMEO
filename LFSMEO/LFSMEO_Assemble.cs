@@ -127,6 +127,7 @@ namespace LFSMEO
             services.AddSingleton<IFunction_Spectrometer, Function_Spectrometer>();
             services.AddSingleton<IFunction_LightControl, Function_LightControl>();
             services.AddSingleton<IFunction_Camera, Function_Camera>();
+            services.AddSingleton<ICameraDisplayService, CameraDisplayService>();
 
             //[Machine]
             Icon AppIcon = null; string AppName = "";

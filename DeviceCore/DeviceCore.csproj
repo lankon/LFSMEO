@@ -47,6 +47,7 @@
     <Compile Include="Camera\IF_CameraButton.cs" />
     <Compile Include="Camera\IF_CameraSetting.cs" />
     <Compile Include="Camera\ICameraDisplayPanel.cs" />
+    <Compile Include="Camera\ICameraDisplayService.cs" />
     <Compile Include="Camera\ImageReadyEventArgs.cs" />
     <Compile Include="Camera\IImageFrame.cs" />
     <Compile Include="Camera\IFunction_Camera.cs" />
