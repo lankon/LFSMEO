@@ -11,5 +11,6 @@ namespace DeviceCore
     {
         int GetCurrentBtnNum();
         void ShowFormName(bool show);
+        void UpdateButtonNameInvoke();
     }
 }

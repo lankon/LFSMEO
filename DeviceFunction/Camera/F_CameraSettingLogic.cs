@@ -32,6 +32,9 @@ namespace DeviceFunction
 
                 //[CCD Setting]
                 eF_CameraSetting.TxtBx_FPS,
+                eF_CameraSetting.TxtBx_ExposureTime,
+                eF_CameraSetting.TxtBx_Gain,
+
             };
         #endregion
 
@@ -65,6 +68,8 @@ namespace DeviceFunction
             ApplicationSetting.SetRecipe<eF_CameraSetting>((int)eF_CameraSetting.TxtBx_ID_IP, config[axis].IP_ID);
             //[CCD Setting]
             ApplicationSetting.SetRecipe<eF_CameraSetting>((int)eF_CameraSetting.TxtBx_FPS, config[axis].FPS.ToString());
+            ApplicationSetting.SetRecipe<eF_CameraSetting>((int)eF_CameraSetting.TxtBx_ExposureTime, config[axis].ExporesTime.ToString());
+            ApplicationSetting.SetRecipe<eF_CameraSetting>((int)eF_CameraSetting.TxtBx_Gain, config[axis].Gain.ToString());
 
             CameraSetting.UpdateParmeter();
         }

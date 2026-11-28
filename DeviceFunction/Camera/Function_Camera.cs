@@ -94,6 +94,10 @@ namespace DeviceFunction
                 info.CCD_USE = Tool.StringToInt(value);
             if (item == eF_CameraSetting.TxtBx_FPS.ToString())
                 info.FPS = Tool.StringToInt(value);
+            if (item == eF_CameraSetting.TxtBx_ExposureTime.ToString())
+                info.ExporesTime = Tool.StringToInt(value);
+            if (item == eF_CameraSetting.TxtBx_Gain.ToString())
+                info.Gain = Tool.StringToInt(value);         
 
             CCD_INFO[camera] = info;
         }
@@ -509,8 +513,24 @@ namespace DeviceFunction
         {
             return CCD_INFO.AsReadOnly();
         }
+        public bool ApplySettings(int ccd)
+        {
+            if (!CheckCameraEnable(ccd))
+                return false;
 
+            string ip = CCD_INFO[ccd].IP_ID;
 
+            double gain = CCD_INFO[ccd].Gain;
+            int ret = CameraList[CCD_Info2List[ccd]].SetHardwareGain(ip, gain);
+
+            double exposure_time = CCD_INFO[ccd].ExporesTime;
+            ret = CameraList[CCD_Info2List[ccd]].SetExposureTime(ip, exposure_time);
+
+            if (ret == 0)
+                return true;
+            else
+                return false;
+        }
         public void Subscribe(int ccd, EventHandler<ImageReadyEventArgs> handler)
         {
             OnImageUpdates[ccd] += handler;

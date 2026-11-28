@@ -46,7 +46,7 @@ namespace DeviceUI.Camera
             this.TxtBx_ID_IP = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.TxtBx_CCD_Name = new System.Windows.Forms.TextBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.TbCtrl_CCD_Config = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
@@ -59,7 +59,7 @@ namespace DeviceUI.Camera
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.TbCtrl_CCD_Config.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -253,16 +253,16 @@ namespace DeviceUI.Camera
             this.TxtBx_CCD_Name.Size = new System.Drawing.Size(134, 29);
             this.TxtBx_CCD_Name.TabIndex = 11;
             // 
-            // tabControl1
+            // TbCtrl_CCD_Config
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.tabControl1.Location = new System.Drawing.Point(930, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(962, 827);
-            this.tabControl1.TabIndex = 4;
+            this.TbCtrl_CCD_Config.Controls.Add(this.tabPage1);
+            this.TbCtrl_CCD_Config.Controls.Add(this.tabPage2);
+            this.TbCtrl_CCD_Config.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.TbCtrl_CCD_Config.Location = new System.Drawing.Point(930, 12);
+            this.TbCtrl_CCD_Config.Name = "TbCtrl_CCD_Config";
+            this.TbCtrl_CCD_Config.SelectedIndex = 0;
+            this.TbCtrl_CCD_Config.Size = new System.Drawing.Size(962, 827);
+            this.TbCtrl_CCD_Config.TabIndex = 4;
             // 
             // tabPage2
             // 
@@ -354,7 +354,7 @@ namespace DeviceUI.Camera
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.Pnl_DockCameraDisplay);
             this.Controls.Add(this.Pnl_CameraButton);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.TbCtrl_CCD_Config);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "F_CameraSetting";
             this.Text = "F_Equipment_Setting";
@@ -364,7 +364,7 @@ namespace DeviceUI.Camera
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.TbCtrl_CCD_Config.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -387,7 +387,7 @@ namespace DeviceUI.Camera
         private System.Windows.Forms.ComboBox Cmbx_AxisUse;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TxtBx_CCD_Name;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl TbCtrl_CCD_Config;
         private System.Windows.Forms.TableLayoutPanel LyPnl_DockCameraDisplay;
         private System.Windows.Forms.Button Btn_FunctionTest;
         private System.Windows.Forms.Button Btn_FunctionTest1;

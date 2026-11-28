@@ -19,9 +19,9 @@ namespace DeviceCore
         public string CCD_NAME;     //名稱
 
         //[CCD Setting]
-        public int FPS;       //Frames Per Second
-        public int Gain;        //相機增益
-        //public int ExporesTime
+        public int FPS;             //Frames Per Second
+        public int Gain;            //相機增益
+        public int ExporesTime;     //曝光時間
 
 
         //TxtBx_FPS,

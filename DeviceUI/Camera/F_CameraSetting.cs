@@ -41,6 +41,7 @@ namespace DeviceUI.Camera
         IFunction_Camera Function_Camera;
         ICameraDisplayService CameraDisplayService;
         F_CameraSettingLogic CameraSettingLogic;
+        bool isMouseInCameraConfig;
         #endregion
 
         #region private function
@@ -54,8 +55,37 @@ namespace DeviceUI.Camera
             DockCameraButton(typeof(IF_CameraButton));
             CameraDisplayService.DockDisplayToPanel(Pnl_DockCameraDisplay);
 
+            BindCameraConfigMouseEvents(TbCtrl_CCD_Config);
+
             //if (ApplicationSetting.Get_Int_Recipe<eOEMSetting>((int)eOEMSetting.Cmbx_ShowFormName) == 1)
             //    Tool.ShowFormName(this);
+        }
+        private void BindCameraConfigMouseEvents(Control control)
+        {
+            control.MouseEnter += (sender, e) => isMouseInCameraConfig = true;
+            control.MouseLeave += CameraConfig_MouseLeave;
+
+            foreach (Control child in control.Controls)
+                BindCameraConfigMouseEvents(child);
+        }
+        private void CameraConfig_MouseLeave(object sender, EventArgs e)
+        {
+            if (IsDisposed || Disposing || !IsHandleCreated)
+                return;
+
+            // 等內部控制項的滑鼠事件處理完，再確認是否離開整個設定區。
+            BeginInvoke((Action)(() =>
+            {
+                if (IsDisposed || Disposing || !Visible || !TbCtrl_CCD_Config.Visible)
+                    return;
+
+                if (isMouseInCameraConfig &&
+                    !TbCtrl_CCD_Config.RectangleToScreen(TbCtrl_CCD_Config.ClientRectangle).Contains(Control.MousePosition))
+                {
+                    isMouseInCameraConfig = false;
+                    CameraSettingLogic.SaveCamera();
+                }
+            }));
         }
         void ShowHint()
         {
@@ -84,6 +114,7 @@ namespace DeviceUI.Camera
         private void UpdatePage()
         {
             CameraSettingLogic.UpdateCameraInfo2Form(CameraSettingLogic.GetCurrentBtnNum());
+            CameraButton.UpdateButtonNameInvoke();
 
             CameraDisplayService.DockDisplayToPanel(Pnl_DockCameraDisplay);
             //CameraDisplayService.DockDisplayToLyPnl(LyPnl_DockCameraDisplay);

@@ -16,7 +16,8 @@ namespace DeviceUI.Camera
 {
     public partial class F_CameraButton : Form, IF_CameraButton
     {
-        public F_CameraButton(F_CameraSettingLogic f_CameraSettingLogic)
+        public F_CameraButton(ICameraDisplayService cameraDisplayService, IFunction_Camera function_Camera,
+                              F_CameraSettingLogic f_CameraSettingLogic)
         {
             InitializeComponent();
             InitialForm();
@@ -24,14 +25,19 @@ namespace DeviceUI.Camera
             f_CameraSettingLogic.SetCameraButtonIF(this);            
 
             CameraSettingLogic = f_CameraSettingLogic;
+            DisplayService = cameraDisplayService;
+            FuncCamera = function_Camera;
         }
 
         #region parameter define
-        List<Panel> PnlPartList = new List<Panel>();
+        Button[] CameraButton;
+        List <Panel> PnlPartList = new List<Panel>();
         F_CameraSettingLogic CameraSettingLogic;
         private int curPnlPart = 0;
         private int CurBtnNum = 0;
         private const int CameraCount = 5;     //相機數量
+        private ICameraDisplayService DisplayService;
+        private IFunction_Camera FuncCamera;
         #endregion
 
         #region private function
@@ -82,7 +88,7 @@ namespace DeviceUI.Camera
         }
         private void CreateDynamicElement()
         {
-            Button[] CameraButton = new Button[CameraCount];
+            CameraButton = new Button[CameraCount];
             string[] CameraButtonName = new string[CameraCount] { "CCD_1", "CCD_2", "CCD_3", "CCD_4", "CCD_5"};
 
             for (int i=0; i<CameraButton.Length; i++)
@@ -101,6 +107,14 @@ namespace DeviceUI.Camera
                 Pnl_Part1.Controls.Add(CameraButton[i]);
             }
         }
+        private void UpdateButtonName(IReadOnlyList<CAMERA_INFO> config)
+        {
+            Btn_Camera0.Text = config[0].CCD_NAME;
+            for (int i = 0; i < CameraCount; i++)
+            {
+                CameraButton[i].Text = config[i + 1].CCD_NAME;
+            }
+        }
         #endregion
 
         #region public function
@@ -112,6 +126,16 @@ namespace DeviceUI.Camera
         {
             if (show)
                 Tool.ShowFormName(this);
+        }
+        public void UpdateButtonNameInvoke()
+        {
+            FuncCamera.LoadCameraConfig();
+            var config = FuncCamera.GetCameraConfig();
+
+            if (InvokeRequired)
+                Invoke(new Action(() => UpdateButtonName(config)));
+            else
+                UpdateButtonName(config);
         }
         #endregion
 
@@ -133,6 +157,10 @@ namespace DeviceUI.Camera
             CurBtnNum = Tool.StringToInt((string)btn.Tag);
 
             CameraSettingLogic.UpdateCameraInfo2Form(CurBtnNum);
+
+            DisplayService.SwitchToCameraDisplay(CurBtnNum);
+            DisplayService.FitWindow(CurBtnNum);
+            FuncCamera.StartLive(CurBtnNum);
         }
     }
 }
